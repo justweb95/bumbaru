@@ -44,6 +44,33 @@ const SARENO = ['bela', 'crvena', 'zelena', 'zlatna', 'crvena'];
 const setNames = ['Marko', 'Jelena', 'Luka', 'Mila', 'Ana'];
 const nameFields = isSet ? 5 : p.personal === 'imena' ? 4 : 0;
 const askText = `Zdravo, imam pitanje o proizvodu: ${p.title} (šifra ${p.id})\n${SITE.url}${productUrl(p.slug)}`;
+const aboutTitle = live ? (isSet ? 'O setu' : 'O ukrasu') : 'O proizvodu';
+// Ikonice za karakteristike i „Dobro je da znate”
+const specIcon = (k: string) => {
+  const s = k.toLowerCase();
+  if (s.startsWith('motiv') || s === 'oblik') return 'star';
+  if (s.startsWith('boj')) return 'palette';
+  if (s.startsWith('ime')) return 'pen';
+  if (s.startsWith('materijal')) return 'layers';
+  if (s.startsWith('pakovanje') || s.startsWith('u setu') || s.startsWith('u kompletu') || s.startsWith('u pakovanju')) return 'gift';
+  if (s.startsWith('rok')) return 'calendar';
+  if (s.startsWith('plaćanje')) return 'cash';
+  if (s.startsWith('karika') || s.startsWith('kačenje')) return 'key';
+  if (s.startsWith('svetlo')) return 'bulb';
+  if (s.startsWith('montaža')) return 'tool';
+  if (s.startsWith('sklapanje')) return 'blocks';
+  if (s.startsWith('debljin')) return 'ruler';
+  return 'check';
+};
+const detailIcon = (q: string) => {
+  const s = q.toLowerCase();
+  if (s.startsWith('pakovanje')) return 'gift';
+  if (s.startsWith('rok')) return 'truck';
+  if (s.startsWith('povraćaj')) return 'shield';
+  if (s.startsWith('održavanje')) return 'sparkle';
+  if (s.includes('led')) return 'bulb';
+  return 'check';
+};
 ---
 <Base title={p.seoTitle} description={p.meta} image={og} imageAlt={p.images[0]?.alt || p.title} type="product" current={p.category} jsonld={[ld]} ornaments={live}>
   <div class="paper-zone pz">
@@ -106,7 +133,7 @@ const askText = `Zdravo, imam pitanje o proizvodu: ${p.title} (šifra ${p.id})\n
         {priceText && <p class="price">{priceText}</p>}
         <p class="lead" style="color:var(--ink)">{p.lead}</p>
 
-        <form class="order" data-order-form data-id={p.id} data-personal={p.personal || ''} novalidate>
+        <form class="order" id="poruci" data-order-form data-id={p.id} data-personal={p.personal || ''} novalidate>
           {(isUkras || p.personal === 'ime') && (
             <div class="field">
               <label for="f-ime">{isUkras ? 'Ime na ukrasu' : 'Ime na privesku'}</label>
@@ -224,44 +251,108 @@ const askText = `Zdravo, imam pitanje o proizvodu: ${p.title} (šifra ${p.id})\n
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="wrap">
-    <section class="more" aria-labelledby="o-proizvodu">
-      <div>
-        <h2 id="o-proizvodu" class="h2">{live ? (isSet ? 'O setu' : 'O ukrasu') : 'O proizvodu'}</h2>
-        {p.about.map((t) => <p class="muted" style="margin-top:14px">{t}</p>)}
-        {p.specs.length > 0 && (
-          <>
-            <h3 class="h3" style="margin-top:32px">Karakteristike</h3>
-            <table class="specs">
-              <tbody>{p.specs.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
-            </table>
-          </>
-        )}
-      </div>
-      <div>
-        <Accordion items={p.details} />
-        {p.faq.length > 0 && (
-          <>
-            <h2 class="h2" style="margin:48px 0 12px">Česta pitanja</h2>
-            <Accordion items={p.faq} />
-          </>
-        )}
-      </div>
-    </section>
-
-    {related.length > 0 && (
-      <section class="section" aria-labelledby="rel-title">
-        <div class="sec-head">
-          <h2 id="rel-title" class="h2">Uz ovo preporučujemo</h2>
-          <a class="link-arrow" href={catUrl(cat.slug)}>Ceo katalog<Icon name="arrow" /></a>
+    <div class="wrap lower">
+      <!-- O proizvodu i karakteristike -->
+      <section class="about-grid" aria-labelledby="o-proizvodu">
+        <div class="about-card reveal">
+          <img class="about-bee fx-float" src="/img/brand/pcelica.webp" alt="" width="320" height="320" loading="lazy" />
+          <span class="badge badge-honey">{p.custom ? 'Po meri · 3–5 dana' : cat.label}</span>
+          <h2 id="o-proizvodu" class="h1">{aboutTitle}</h2>
+          <svg class="draw-trail" viewBox="0 0 260 24" aria-hidden="true">
+            <defs><mask id="dtm" maskUnits="userSpaceOnUse" x="0" y="0" width="260" height="24"><path class="dt-m" pathLength="100" d="M4 16 C60 2 110 26 160 12 S 230 4 256 10" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" /></mask></defs>
+            <path d="M4 16 C60 2 110 26 160 12 S 230 4 256 10" fill="none" stroke="#312018" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="0 11" mask="url(#dtm)" />
+          </svg>
+          {p.about.map((t) => <p>{t}</p>)}
+          <a class="btn btn-primary btn-lg" href="#poruci"><Icon name="messenger" />{p.personal ? 'Upišite ime i poručite' : 'Poručite preko Messengera'}</a>
         </div>
-        <div class="grid rail-mobile">
-          {related.map((r) => <ProductCard p={r} />)}
+        {p.specs.length > 0 && (
+          <div class="specs-wrap">
+            <h3 class="label specs-title"><Icon name="sparkle" size={16} />Karakteristike</h3>
+            <ul class="spec-grid">
+              {p.specs.map(([k, v], i) => (
+                <li class={`spec reveal tone-${i % 4}`} style={`--d:${i}`}>
+                  <span class="spec-ic"><Icon name={specIcon(k)} size={20} /></span>
+                  <span class="spec-k">{k}</span>
+                  <span class="spec-v">{v}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+
+      <!-- Dobro je da znate -->
+      {p.details.length > 0 && (
+        <section class="section" aria-labelledby="znate-title">
+          <div class="sec-head reveal">
+            <div><h2 id="znate-title" class="h1">Dobro je da znate</h2><p>Pakovanje, rokovi i šta ako nešto nije u redu.</p></div>
+          </div>
+          <ul class="know-grid">
+            {p.details.map((d, i) => (
+              <li class={`know-card reveal tone-${(i + 1) % 4}`} style={`--d:${i}`}>
+                <span class="know-ic"><Icon name={detailIcon(d.q)} size={24} /></span>
+                <h3 class="h3">{d.q}</h3>
+                <p>{d.a}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <!-- Poručivanje u tri koraka -->
+      <section class="section" aria-labelledby="kako-p">
+        <div class="howto reveal">
+          <div class="howto-head">
+            <div>
+              <span class="label">Bez naloga i bez korpe</span>
+              <h2 id="kako-p" class="h1">Poručivanje u tri koraka</h2>
+            </div>
+            <a class="btn btn-paper btn-lg" href="#poruci"><Icon name="messenger" />Poruči preko Messengera</a>
+          </div>
+          <ol class="howto-steps">
+            <li class="reveal" style="--d:1"><span class="num">1</span><div><strong>{p.personal ? 'Upišite ime i izaberite boje' : p.options ? 'Izaberite šta vam treba' : 'Izaberite količinu'}</strong><p class="small">{p.personal ? 'Pregled odmah pokazuje kako će izgledati.' : 'Napomenu možete dodati pre slanja poruke.'}</p></div></li>
+            <li class="reveal" style="--d:2"><span class="num">2</span><div><strong>Pošaljite poruku</strong><p class="small">Naziv, šifra {p.id} i link proizvoda su već u poruci.</p></div></li>
+            <li class="reveal" style="--d:3"><span class="num">3</span><div><strong>Plaćate kuriru</strong><p class="small">Javljamo cenu i rok, a paket stiže kurirom širom Srbije.</p></div></li>
+          </ol>
         </div>
       </section>
-    )}
+
+      <!-- Česta pitanja -->
+      {p.faq.length > 0 && (
+        <section class="section" aria-labelledby="faq-p">
+          <div class="faq-grid">
+            <div class="faq-side reveal">
+              <h2 id="faq-p" class="h1">Česta pitanja</h2>
+              <p class="muted">O ovom proizvodu, ukratko.</p>
+              <div class="help-card">
+                <img class="fx-float" src="/img/brand/pcelica.webp" alt="" width="320" height="320" loading="lazy" />
+                <h3 class="h3">Imate drugo pitanje?</h3>
+                <p class="small">Pišite nam pre porudžbine, odgovaramo u Messenger-u.</p>
+                <a class="btn btn-paper" href={messengerUrl(askText, p.id)} target="_blank" rel="noopener"><Icon name="messenger" />Pitajte na Messenger-u</a>
+              </div>
+            </div>
+            <div class="faq-box reveal" style="--d:1"><Accordion items={p.faq} open={0} /></div>
+          </div>
+        </section>
+      )}
+
+      <!-- Preporuke -->
+      {related.length > 0 && (
+        <section class="section" aria-labelledby="rel-title">
+          <div class="sec-head reveal">
+            <div class="rel-h">
+              <img class="fx-float" src="/img/brand/pcelica.webp" alt="" width="320" height="320" loading="lazy" />
+              <div><h2 id="rel-title" class="h1">Uz ovo preporučujemo</h2><p>Proizvodi koji lepo idu uz ovaj.</p></div>
+            </div>
+            <a class="link-arrow" href={catUrl(cat.slug)}>Ceo katalog<Icon name="arrow" /></a>
+          </div>
+          <div class="grid rail-mobile">
+            {related.map((r, i) => <div class="reveal" style={`--d:${i}`}><ProductCard p={r} /></div>)}
+          </div>
+        </section>
+      )}
+    </div>
   </div>
 </Base>
 
@@ -419,15 +510,75 @@ const askText = `Zdravo, imam pitanje o proizvodu: ${p.title} (šifra ${p.id})\n
   .perks li > span:last-child { display: flex; flex-direction: column; }
   .ti { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--surface-raised); display: inline-flex; align-items: center; justify-content: center; }
   .ask { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
-  .more { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; padding-top: 72px; }
-  .specs { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 15px; line-height: 22px; }
-  .specs th, .specs td { text-align: left; vertical-align: top; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  .specs th { width: 34%; font-weight: 700; padding-right: 16px; }
-  .specs td { color: var(--ink-muted); }
+  #poruci { scroll-margin-top: 110px; }
+
+  /* Donji deo strane: šarene kartice na svetloj podlozi */
+  .lower { padding-top: 88px; }
+  .tone-0 { --tone: var(--honey-soft); }
+  .tone-1 { --tone: var(--wing); }
+  .tone-2 { --tone: var(--leaf-soft); }
+  .tone-3 { --tone: var(--surface-raised); }
+  .about-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+  .about-card { position: relative; background: var(--surface-raised); border-radius: var(--r-lg); padding: 40px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; overflow: hidden; }
+  .about-card::after { content: ''; position: absolute; right: -60px; bottom: -60px; width: 220px; height: 220px; border-radius: 50%; background: var(--honey-soft); z-index: 0; }
+  .about-card > * { position: relative; z-index: 1; }
+  .about-card p { color: var(--ink-muted); max-width: 60ch; }
+  .about-card .btn { margin-top: 8px; }
+  .about-bee { position: absolute !important; right: 28px; top: 24px; width: 76px; height: auto; }
+  .draw-trail { width: 220px; height: 22px; margin: -4px 0 4px; overflow: visible; }
+  .dt-m { stroke-dasharray: 100; stroke-dashoffset: 100; transition: stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1) .35s; }
+  .in .dt-m, html:not(.js) .dt-m { stroke-dashoffset: 0; }
+  .specs-title { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .spec-grid { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .spec { position: relative; background: var(--tone); border-radius: 18px; padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 4px; transition: transform .35s var(--ease), box-shadow .35s ease; }
+  .spec:nth-child(odd):hover { transform: translateY(-4px) rotate(-1deg); box-shadow: var(--shadow); }
+  .spec:nth-child(even):hover { transform: translateY(-4px) rotate(1deg); box-shadow: var(--shadow); }
+  .spec-ic { width: 38px; height: 38px; border-radius: 50%; background: var(--surface-paper); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+  .spec-k { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
+  .spec-v { font-size: 15px; line-height: 21px; font-weight: 600; }
+
+  .know-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .know-card { background: var(--tone); border-radius: var(--r-lg); padding: 24px; display: flex; flex-direction: column; gap: 10px; transition: transform .35s var(--ease), box-shadow .35s ease; }
+  .know-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+  .know-card p { font-size: 15px; line-height: 22px; color: var(--ink-muted); }
+  .know-ic { width: 52px; height: 52px; border-radius: 50%; background: var(--surface-paper); border: 2px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; transition: transform .45s cubic-bezier(.2,.9,.3,1.4); }
+  .know-card:hover .know-ic { transform: rotate(-12deg) scale(1.08); }
+
+  .howto { position: relative; background: var(--honey); border-radius: var(--r-lg); padding: 40px; overflow: hidden; }
+  .howto::before { content: ''; position: absolute; left: 40px; right: 40px; bottom: 26px; height: 6px; background-image: radial-gradient(circle, rgba(49,32,24,.35) 2.4px, transparent 2.9px); background-size: 12px 6px; background-repeat: repeat-x; }
+  .howto-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+  .howto-head .label { display: block; margin-bottom: 6px; }
+  .howto-steps { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-bottom: 20px; }
+  .howto-steps li { background: var(--surface-paper); border-radius: 20px; padding: 20px; display: flex; gap: 14px; align-items: flex-start; transition: transform .35s var(--ease); }
+  .howto-steps li:hover { transform: translateY(-4px) rotate(-.6deg); }
+  .howto-steps li > div { display: flex; flex-direction: column; gap: 4px; }
+  .howto-steps p { color: var(--ink-muted); }
+  .num { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--honey); border: 2px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; }
+
+  .faq-grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 32px; align-items: start; }
+  .faq-side .muted { margin-top: 8px; }
+  .help-card { margin-top: 24px; background: var(--wing); border-radius: var(--r-lg); padding: 24px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .help-card img { width: 64px; height: 64px; }
+  .faq-box { background: var(--surface-raised); border-radius: var(--r-lg); padding: 8px 32px; }
+  .faq-box :global(.acc) { border-top: 0; }
+  .faq-box :global(.acc details:last-child) { border-bottom: 0; }
+  .rel-h { display: flex; gap: 16px; align-items: center; }
+  .rel-h img { width: 64px; height: 64px; flex: none; }
+
   @media (max-width: 960px) {
     .pd { grid-template-columns: 1fr; gap: 28px; }
     .gallery { position: static; }
-    .more { grid-template-columns: 1fr; gap: 40px; padding-top: 56px; }
+    .lower { padding-top: 56px; }
+    .about-grid, .faq-grid { grid-template-columns: 1fr; }
+    .howto-steps { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .about-card, .howto { padding: 24px 20px; }
+    .about-bee { width: 56px; right: 16px; top: 16px; }
+    .spec-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .spec { padding: 14px; }
+    .faq-box { padding: 4px 20px; }
+    .howto::before { left: 20px; right: 20px; }
   }
   @media (max-width: 520px) {
     .buy { flex-direction: column; align-items: stretch; }
