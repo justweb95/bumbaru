@@ -1,0 +1,90 @@
+---
+import Icon from './Icon.astro';
+import { SITE, messengerUrl } from '../data/site';
+interface Props { current?: string }
+const { current = '' } = Astro.props;
+const links = [
+  { href: '/katalog/nova-godina/', label: 'Novogodišnji katalog', key: 'nova-godina', season: true },
+  { href: '/katalog/radionica/', label: 'Radionica', key: 'radionica' },
+  { href: '/katalog/auto-i-moto/', label: 'Auto i moto', key: 'auto-i-moto' },
+  { href: '/katalog/pokloni-sa-imenom/', label: 'Pokloni sa imenom', key: 'pokloni-sa-imenom' },
+  { href: '/katalog/privesci/', label: 'Privesci', key: 'privesci' },
+  { href: '/po-meri/', label: 'Po meri', key: 'po-meri' },
+];
+const mobileExtra = [
+  { href: '/katalog/igracke-za-decu/', label: 'Igračke za decu' },
+  { href: '/pomoc/', label: 'Pomoć i kako poručiti' },
+];
+const ribbon = SITE.ribbon[SITE.season];
+---
+<div class="ribbon">
+  <div class="wrap">
+    <span><Icon name="clock" size={16} />{ribbon}</span>
+    <i class="dot opt" aria-hidden="true"></i>
+    <span class="opt">Poručivanje preko Messengera</span>
+    <i class="dot opt" aria-hidden="true"></i>
+    <span class="opt">Dostava kurirom širom Srbije</span>
+  </div>
+</div>
+<header class="header" id="top">
+  <div class="wrap">
+    <button class="icon-btn menu-btn" type="button" aria-label="Otvori meni" aria-controls="mobile-menu" aria-expanded="false" data-menu-open>
+      <Icon name="menu" size={22} />
+    </button>
+    <a class="logo" href="/" aria-label="Bumbaru, početna strana">
+      <picture>
+        <source srcset="/img/brand/logo-tamni.webp" type="image/webp" />
+        <img src="/img/brand/logo-tamni.png" alt="Bumbaru" width="640" height="205" />
+      </picture>
+    </a>
+    <nav class="nav" aria-label="Glavni meni">
+      {links.map((l) => (
+        <a href={l.href} class={l.season ? 'season' : undefined} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a>
+      ))}
+    </nav>
+    <form class="search" action="/pretraga/" method="get" role="search">
+      <label class="sr-only" for="q-desk">Pretraga</label>
+      <Icon name="search" size={18} />
+      <input id="q-desk" name="q" type="search" placeholder="Pretraga" autocomplete="off" />
+    </form>
+    <a class="btn btn-primary header-msg" href={messengerUrl()} target="_blank" rel="noopener">
+      <Icon name="messenger" />Pišite nam
+    </a>
+    <a class="icon-btn msg-icon" href={messengerUrl()} target="_blank" rel="noopener" aria-label="Pišite nam na Messenger-u">
+      <Icon name="messenger" size={22} />
+    </a>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu" data-menu>
+  <div class="panel" role="dialog" aria-modal="true" aria-label="Meni">
+    <div class="top">
+      <a class="logo" href="/"><img src="/img/brand/logo-tamni.png" alt="Bumbaru" width="640" height="205" style="height:32px;width:auto" /></a>
+      <button class="icon-btn" type="button" aria-label="Zatvori meni" data-menu-close><Icon name="close" size={22} /></button>
+    </div>
+    <form action="/pretraga/" method="get" role="search">
+      <label class="sr-only" for="q-mob">Pretraga</label>
+      <Icon name="search" size={18} />
+      <input id="q-mob" name="q" type="search" placeholder="Pretraga proizvoda" autocomplete="off" />
+    </form>
+    <nav aria-label="Meni na telefonu">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      {mobileExtra.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+    <a class="btn btn-primary btn-lg" href={messengerUrl()} target="_blank" rel="noopener"><Icon name="messenger" />Pišite nam na Messenger-u</a>
+  </div>
+</div>
+<script>
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+  const close = () => { menu?.classList.remove('open'); openBtn?.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; openBtn?.focus(); };
+  openBtn?.addEventListener('click', () => {
+    menu?.classList.add('open'); openBtn.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden';
+    menu?.querySelector<HTMLElement>('[data-menu-close]')?.focus();
+  });
+  menu?.querySelector('[data-menu-close]')?.addEventListener('click', close);
+  menu?.addEventListener('click', (e) => { if (e.target === menu) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu?.classList.contains('open')) close(); });
+  const header = document.querySelector('.header');
+  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 40);
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+</script>

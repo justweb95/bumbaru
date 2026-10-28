@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import Icon from '../../components/Icon.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { CATEGORIES, catUrl } from '../../data/categories';
+import { inCategory, hasPhoto } from '../../data/products';
+---
+<Base title="Katalog: ukrasi, pokloni sa imenom, radionica i auto | Bumbaru" description="Ceo Bumbaru katalog: novogodišnji ukrasi i privesci, pokloni sa imenom, držači za aku alat i delovi za auto i motor. Poručivanje preko Messengera." current="katalog">
+  <div class="wrap">
+    <Crumbs items={[{ label: 'Katalog' }]} />
+    <h1 class="h1">Katalog</h1>
+    <p class="lead" style="margin-top:10px;max-width:680px">Sve što štampamo, po kategorijama. Kliknite na proizvod, izaberite šta vam treba i pošaljite poruku preko Messengera.</p>
+    {CATEGORIES.filter((c) => !c.soon).map((c) => {
+      const list = inCategory(c.slug).sort((a, b) => Number(hasPhoto(b)) - Number(hasPhoto(a)));
+      return (
+        <section class="kat" aria-labelledby={`k-${c.slug}`}>
+          <div class="sec-head">
+            <div style="display:flex;gap:14px;align-items:center">
+              <span class="kicon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={c.icon} /></svg></span>
+              <h2 id={`k-${c.slug}`} class="h2">{c.slug === 'nova-godina' ? 'Novogodišnji katalog' : c.label}</h2>
+            </div>
+            <a class="link-arrow" href={catUrl(c.slug)}>Sve iz kategorije<Icon name="arrow" /></a>
+          </div>
+          <div class="grid rail-mobile">
+            {list.slice(0, 4).map((p) => <ProductCard p={p} />)}
+          </div>
+        </section>
+      );
+    })}
+    <section class="kat" aria-labelledby="k-igracke">
+      <div class="sec-head"><h2 id="k-igracke" class="h2">Igračke za decu</h2><a class="link-arrow" href="/katalog/igracke-za-decu/">Uskoro<Icon name="arrow" /></a></div>
+    </section>
+  </div>
+</Base>
+<style>
+  .kat { margin-top: 64px; }
+  .kicon { width: 40px; height: 40px; border-radius: 50%; background: var(--honey); border: 2px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; }
+</style>

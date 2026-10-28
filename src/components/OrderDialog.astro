@@ -1,0 +1,94 @@
+---
+// Prozor „Poruka za Bumbaru”: složi poruku sa nazivom, šifrom, izborom i linkom proizvoda,
+// kopira je i otvara Messenger stranice. Link proizvoda u poruci Messenger prikazuje sa slikom (og:image).
+import Icon from './Icon.astro';
+import { PRODUCTS, productUrl, cardImg } from '../data/products';
+import { SITE } from '../data/site';
+const map = Object.fromEntries(PRODUCTS.map((p) => [p.id, { t: p.title, u: SITE.url + productUrl(p.slug), i: p.images[0] ? cardImg(p.images[0]) : '' }]));
+---
+<dialog class="order-dialog" id="order-dialog" aria-labelledby="od-title">
+  <form method="dialog" class="od-inner">
+    <div class="od-head">
+      <h2 id="od-title" class="h3">Poruka za Bumbaru</h2>
+      <button class="icon-btn" value="close" aria-label="Zatvori"><Icon name="close" size={20} /></button>
+    </div>
+    <div class="od-prod" data-od-prod>
+      <img data-od-img alt="" width="72" height="72" />
+      <div class="od-ph" data-od-ph hidden><img src="/img/brand/pcelica.webp" alt="" width="40" height="40" /></div>
+      <div>
+        <p style="font-weight:700" data-od-name></p>
+        <p class="small muted">Šifra: <span data-od-id></span></p>
+      </div>
+    </div>
+    <div class="field">
+      <label for="od-text">Vaša poruka (možete je izmeniti)</label>
+      <textarea id="od-text" class="textarea" rows="7" data-od-text></textarea>
+    </div>
+    <ol class="od-steps">
+      <li>Kliknite dugme ispod: poruka se kopira i otvara se naš Messenger.</li>
+      <li>Ako se poruka ne pojavi sama, nalepite je (dugo pritisnite polje, pa „Nalepi”) i pošaljite.</li>
+      <li>Odgovaramo sa cenom, rokom i podacima za dostavu. Plaćate kuriru kad paket stigne.</li>
+    </ol>
+    <div class="od-actions">
+      <a class="btn btn-primary btn-lg btn-block" data-od-go href="https://m.me/" target="_blank" rel="noopener"><Icon name="messenger" />Kopiraj i otvori Messenger</a>
+      <button class="btn btn-block" type="button" data-od-copy><Icon name="copy" />Samo kopiraj poruku</button>
+    </div>
+    <p class="od-status" role="status" aria-live="polite" data-od-status></p>
+  </form>
+</dialog>
+<script type="application/json" id="bu-products" set:html={JSON.stringify(map)} />
+<script define:vars={{ page: SITE.messengerPage }}>
+  (function () {
+    const P = JSON.parse(document.getElementById('bu-products').textContent || '{}');
+    const dlg = document.getElementById('order-dialog');
+    const $ = (s) => dlg.querySelector(s);
+    const ta = $('[data-od-text]'), go = $('[data-od-go]'), status = $('[data-od-status]');
+    let current = '';
+    // %20 umesto „+” za razmake, kako Meta navodi u primeru za m.me linkove
+    const url = (text, ref) => {
+      const q = [];
+      if (text) q.push('text=' + encodeURIComponent(text));
+      if (ref) q.push('ref=' + encodeURIComponent(ref));
+      return 'https://m.me/' + page + (q.length ? '?' + q.join('&') : '');
+    };
+    const sync = () => { go.href = url(ta.value, current); };
+    const copy = async () => {
+      try { await navigator.clipboard.writeText(ta.value); }
+      catch (e) { ta.select(); try { document.execCommand('copy'); } catch (_) {} }
+      status.textContent = 'Poruka je kopirana.';
+    };
+    window.bumbaruOrder = function (id, lines, qty) {
+      const p = P[id]; if (!p) return;
+      current = id;
+      const text = ['Zdravo, želim da poručim:', p.t + ' (šifra ' + id + ')']
+        .concat(lines || [])
+        .concat(['Količina: ' + (qty || 1), '', p.u]).join('\n');
+      ta.value = text;
+      $('[data-od-name]').textContent = p.t;
+      $('[data-od-id]').textContent = id;
+      const img = $('[data-od-img]'), ph = $('[data-od-ph]');
+      if (p.i) { img.src = p.i; img.hidden = false; ph.hidden = true; } else { img.hidden = true; ph.hidden = false; }
+      status.textContent = '';
+      sync();
+      if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    };
+    window.bumbaruMessage = function (text, ref) {
+      current = ref || '';
+      ta.value = text;
+      $('[data-od-name]').textContent = 'Upit za izradu po meri';
+      $('[data-od-id]').textContent = ref || 'po meri';
+      $('[data-od-img]').hidden = true; $('[data-od-ph]').hidden = false;
+      status.textContent = '';
+      sync();
+      if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    };
+    ta.addEventListener('input', sync);
+    go.addEventListener('click', () => { copy(); status.textContent = 'Poruka je kopirana. Otvaramo Messenger…'; });
+    $('[data-od-copy]').addEventListener('click', copy);
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    document.addEventListener('click', (e) => {
+      const b = e.target.closest && e.target.closest('[data-order]');
+      if (b && !b.closest('form[data-order-form]')) { e.preventDefault(); window.bumbaruOrder(b.getAttribute('data-order'), [], 1); }
+    });
+  })();
+</script>

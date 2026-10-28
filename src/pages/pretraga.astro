@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Icon from '../components/Icon.astro';
+import { PRODUCTS, hasPhoto } from '../data/products';
+import { categoryBySlug } from '../data/categories';
+const list = [...PRODUCTS].sort((a, b) => Number(hasPhoto(b)) - Number(hasPhoto(a)));
+const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'dj');
+---
+<Base title="Pretraga | Bumbaru" description="Pretraga Bumbaru kataloga." noindex>
+  <div class="wrap">
+    <Crumbs items={[{ label: 'Pretraga' }]} />
+    <h1 class="h1" data-title>Pretraga</h1>
+    <form class="sform" action="/pretraga/" method="get" role="search">
+      <label class="sr-only" for="q-page">Šta tražite?</label>
+      <input id="q-page" class="input" name="q" type="search" placeholder="npr. ukras, privezak, tablica" data-q />
+      <button class="btn btn-primary" type="submit"><Icon name="search" />Traži</button>
+    </form>
+    <p class="muted" data-info style="margin:20px 0 24px"></p>
+    <div class="grid" data-results>
+      {list.map((p) => (
+        <div data-hay={norm([p.title, p.short, p.id, categoryBySlug(p.category).label, ...(p.options || []).flatMap((o) => o.values)].join(' '))}>
+          <ProductCard p={p} />
+        </div>
+      ))}
+    </div>
+    <section class="empty panel" data-empty hidden>
+      <h2 class="h2">Nismo našli taj proizvod</h2>
+      <p class="muted">Možda ga pravimo po meri. Pošaljite nam ideju, meru ili fotografiju.</p>
+      <a class="btn btn-primary btn-lg" href="/po-meri/">Pošaljite upit</a>
+    </section>
+  </div>
+</Base>
+<script>
+  const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'dj');
+  const q = new URLSearchParams(location.search).get('q') || '';
+  const input = document.querySelector<HTMLInputElement>('[data-q]')!;
+  input.value = q;
+  const words = norm(q).split(/\s+/).filter(Boolean);
+  let n = 0;
+  document.querySelectorAll<HTMLElement>('[data-hay]').forEach((el) => {
+    const ok = words.every((w) => (el.dataset.hay || '').includes(w));
+    el.hidden = !ok; if (ok) n++;
+  });
+  const info = document.querySelector('[data-info]')!;
+  if (q) {
+    document.querySelector('[data-title]')!.textContent = `Pretraga: ${q}`;
+    info.textContent = n ? `Pronađeno: ${n}` : '';
+  } else info.textContent = 'Svi proizvodi';
+  document.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
+</script>
+<style>
+  .sform { display: flex; gap: 12px; margin-top: 20px; max-width: 640px; }
+  .sform .input { border-radius: var(--r-pill); }
+  .empty { padding: 32px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+</style>

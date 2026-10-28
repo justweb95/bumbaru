@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { SITE, messengerUrl } from '../data/site';
+---
+<Base title="Politika privatnosti | Bumbaru" description="Koje podatke sajt Bumbaru koristi: sajt ne prikuplja lične podatke i ne koristi kolačiće za praćenje. Porudžbine idu preko Messengera." current="privatnost">
+  <div class="wrap">
+    <Crumbs items={[{ label: 'Politika privatnosti' }]} />
+    <article class="doc panel">
+      <h1 class="h1">Politika privatnosti</h1>
+      <p class="small muted">Poslednja izmena: 28. 10. 2026.</p>
+      <h2 class="h3">Ukratko</h2>
+      <p>Sajt Bumbaru je katalog. Na sajtu nema naloga, korpe ni formulara koji šalju podatke na naš server. Ne koristimo kolačiće za praćenje, oglase ni alate za analitiku.</p>
+      <h2 class="h3">Porudžbine i upiti preko Messengera</h2>
+      <p>Kad kliknete „Poruči preko Messengera” ili „Pošaljite upit”, sajt u vašem pregledaču složi tekst poruke i otvara Messenger stranice Bumbaru. Poruku šaljete vi, iz svog naloga, i ona ide preko servisa Meta Platforms. Na tu poruku se odnose i pravila privatnosti kompanije Meta.</p>
+      <p>Podatke iz poruke (ime, adresu i telefon za dostavu, imena za personalizaciju) koristimo samo da izradimo i pošaljemo porudžbinu i da vam odgovorimo. Adresu i telefon dajemo kurirskoj službi samo radi dostave paketa.</p>
+      <h2 class="h3">Tehnički podaci</h2>
+      <p>Kao i svaki sajt, i ovaj se poslužuje preko servisa za hosting, koji radi bezbednosti i rada sajta beleži tehničke podatke o zahtevima (na primer IP adresu i vrstu pregledača). Mi te podatke ne koristimo za praćenje posetilaca.</p>
+      <p>Fontove i slike sajt učitava sa sopstvene adrese, bez poziva ka spoljnim servisima.</p>
+      <h2 class="h3">Kolačići i lokalno skladište</h2>
+      <p>Sajt ne postavlja kolačiće. Kopiranje poruke koristi privremenu memoriju (clipboard) vašeg uređaja i ništa ne šalje nama.</p>
+      <h2 class="h3">Vaša prava i kontakt</h2>
+      <p>Ako želite da obrišemo prepisku ili podatke iz porudžbine, ili imate pitanje o privatnosti, pišite nam na <a href={messengerUrl()} target="_blank" rel="noopener">Messenger-u</a>. Radionica: {SITE.city}.</p>
+    </article>
+  </div>
+</Base>
+<style>
+  .doc { max-width: 820px; padding: 40px; display: flex; flex-direction: column; gap: 14px; }
+  .doc h2 { margin-top: 18px; }
+  .doc p { color: var(--ink-muted); }
+  .doc a { color: var(--ink); font-weight: 700; }
+  @media (max-width: 760px) { .doc { padding: 24px 20px; } }
+</style>

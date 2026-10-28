@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+import { SITE, messengerUrl } from '../data/site';
+import { CATEGORIES, catUrl } from '../data/categories';
+const year = new Date().getFullYear();
+---
+<footer class="footer dark">
+  <div class="wrap">
+    <div class="cols">
+      <div class="brand">
+        <img src="/img/brand/logo-svetli.png" alt="Bumbaru" width="640" height="205" style="height:40px;width:auto" loading="lazy" />
+        <p>{SITE.brandSentence}</p>
+        <div class="social">
+          <a href={SITE.facebookUrl} target="_blank" rel="noopener" aria-label="Bumbaru na Facebook-u"><Icon name="facebook" /></a>
+          <a href={messengerUrl()} target="_blank" rel="noopener" aria-label="Pišite nam na Messenger-u"><Icon name="messenger" /></a>
+          {SITE.instagramUrl && <a href={SITE.instagramUrl} target="_blank" rel="noopener" aria-label="Bumbaru na Instagram-u"><Icon name="instagram" /></a>}
+        </div>
+      </div>
+      <div>
+        <h2>Katalog</h2>
+        <ul>
+          {CATEGORIES.map((c) => <li><a href={catUrl(c.slug)}>{c.slug === 'nova-godina' ? 'Novogodišnji katalog' : c.label}</a></li>)}
+          <li><a href="/po-meri/">Po meri</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Pomoć</h2>
+        <ul>
+          <li><a href="/pomoc/#kako-poruciti">Kako poručiti</a></li>
+          <li><a href="/pomoc/#dostava">Dostava i plaćanje</a></li>
+          <li><a href="/pomoc/#reklamacije-i-povracaj">Reklamacije i povraćaj</a></li>
+          <li><a href="/pomoc/#o-nama">O nama</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Kontakt</h2>
+        <ul>
+          <li><a href={messengerUrl()} target="_blank" rel="noopener">Messenger</a></li>
+          <li><a href={SITE.facebookUrl} target="_blank" rel="noopener">facebook.com/bumbaru.rs</a></li>
+          <li style="color:var(--cream-muted)">Radionica: {SITE.city}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="trail trail-honey" style="margin-top:48px" aria-hidden="true"></div>
+    <div class="bottom" style="margin-top:0;border:0">
+      <span>© {year} Bumbaru</span>
+      <nav aria-label="Pravne informacije"><a href="/politika-privatnosti/">Politika privatnosti</a><a href="/pomoc/">Pomoć</a></nav>
+    </div>
+  </div>
+</footer>

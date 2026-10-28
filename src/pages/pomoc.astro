@@ -1,0 +1,127 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Icon from '../components/Icon.astro';
+import Accordion from '../components/Accordion.astro';
+import { SITE, messengerUrl } from '../data/site';
+
+const teme = [
+  ['kako-poruciti', 'Kako poručiti'], ['dostava', 'Dostava'], ['placanje', 'Plaćanje'], ['rokovi', 'Rokovi izrade'],
+  ['reklamacije-i-povracaj', 'Reklamacije i povraćaj'], ['cesta-pitanja', 'Česta pitanja'], ['kontakt', 'Kontakt'], ['o-nama', 'O nama'],
+];
+const faq = [
+  { q: 'Mogu li ime da napišem ćirilicom?', a: 'Možete. Ime upisujete latinicom ili ćirilicom, do 12 slova, i štampamo ga tačno kako ste ga upisali.' },
+  { q: 'Šta ako pogrešim u imenu?', a: 'Pišite nam što pre u Messenger-u. Dok štampa nije počela, ime možemo da ispravimo.' },
+  { q: 'Od čega su proizvodi?', a: 'Od 3D štampane plastike. Ukrase i poklone štampamo od PLA, a delove za radionicu i auto koji trpe toplotu i vlagu od PETG ili ASA.' },
+  { q: 'Mogu li da platim karticom?', a: 'Za sada ne. Plaćate pouzećem, kuriru kad paket stigne.' },
+  { q: 'Šta ako poručim proizvod sa imenom posle 16. 12.?', a: 'Pišite nam pre porudžbine, pa ćemo vam reći da li stiže do praznika.' },
+  { q: 'Mogu li da pošaljem poklon na drugu adresu?', a: 'Možete, ali primalac plaća kuriru, jer je plaćanje pouzećem.' },
+  { q: 'Moram li da imam Facebook nalog?', a: 'Za Messenger je potreban Facebook nalog. Ako ga nemate, zamolite nekog bliskog da nam pošalje poruku za vas, sa nazivom i šifrom proizvoda.' },
+  { q: 'Pravite li proizvode po meri?', a: 'Pravimo. Pošaljite meru, skicu ili fotografiju preko stranice <a href="/po-meri/">Po meri</a>, a mi javljamo cenu i rok.' },
+];
+const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') } })) };
+---
+<Base title="Pomoć: poručivanje, dostava, plaćanje pouzećem i rokovi | Bumbaru" description="Kako se poručuje preko Messengera, kada stiže paket, plaćanje pouzećem, rokovi za Novu godinu i povraćaj. Sve na jednom mestu." current="pomoc" jsonld={[faqLd]}>
+  <div class="wrap">
+    <Crumbs items={[{ label: 'Pomoć' }]} />
+    <div class="intro">
+      <div>
+        <h1 class="h1">Pomoć</h1>
+        <p class="lead" style="margin-top:12px;max-width:620px">Kako se poručuje, kada stiže i šta ako nešto nije u redu. Ako ne nađete odgovor, pišite nam na Messenger-u.</p>
+      </div>
+      <a class="btn btn-primary btn-lg" href={messengerUrl()} target="_blank" rel="noopener"><Icon name="messenger" />Pišite nam</a>
+    </div>
+    <ul class="facts">
+      <li><Icon name="cash" size={22} /><span><strong>Plaćanje pouzećem</strong><span class="small muted">Kuriru, kad paket stigne.</span></span></li>
+      <li><Icon name="truck" size={22} /><span><strong>Dostava 1–2 dana</strong><span class="small muted">Kurirom širom Srbije.</span></span></li>
+      <li><Icon name="calendar" size={22} /><span><strong>Sa imenom 3–5 dana</strong><span class="small muted">Za Novu godinu do 16. 12.</span></span></li>
+    </ul>
+
+    <div class="layout">
+      <nav class="toc" aria-label="Teme">
+        <p class="label" style="margin-bottom:12px">Teme</p>
+        <ul>{teme.map(([id, t]) => <li><a href={`#${id}`}>{t}</a></li>)}</ul>
+      </nav>
+      <div class="content">
+        <section id="kako-poruciti">
+          <h2 class="h2">Kako poručiti</h2>
+          <ol class="num-list">
+            <li>Izaberite proizvod u katalogu. Za poklone upišite ime, a za ostalo izaberite boju, motiv ili model.</li>
+            <li>Kliknite „Poruči preko Messengera”. Poruka sa nazivom, šifrom proizvoda, vašim izborom i linkom se složi sama i kopira.</li>
+            <li>Messenger se otvara na stranici Bumbaru. Ako poruka nije već upisana, nalepite je i pošaljite.</li>
+            <li>Odgovaramo sa cenom, cenom dostave i rokom. Kad potvrdite, pošaljite ime i prezime, adresu i broj telefona za kurira.</li>
+          </ol>
+          <p class="muted">Nalog na sajtu nije potreban. Možete nam pisati i direktno na <a href={SITE.facebookUrl} target="_blank" rel="noopener">Facebook stranici</a>, sa nazivom proizvoda.</p>
+        </section>
+        <section id="dostava">
+          <h2 class="h2">Dostava</h2>
+          <p>Šaljemo kurirskom službom na adrese u Srbiji. Paket stiže za 1–2 radna dana od slanja, a kurir vas zove pre dostave.</p>
+          <p>Cenu dostave javljamo u odgovoru na vašu poruku, zajedno sa cenom proizvoda, i plaća se kuriru zajedno sa porudžbinom.</p>
+          <p>Paket možete poslati i kao poklon na drugu adresu. Tada primalac plaća kuriru pri preuzimanju.</p>
+        </section>
+        <section id="placanje">
+          <h2 class="h2">Plaćanje</h2>
+          <p>Plaćate pouzećem: gotovinom kuriru kad paket stigne. Ne treba vam kartica ni nalog na sajtu. Za sada nemamo plaćanje karticom ni uplatu na račun.</p>
+        </section>
+        <section id="rokovi">
+          <h2 class="h2">Rokovi izrade</h2>
+          <table class="specs"><tbody>
+            <tr><th scope="row">Proizvodi sa imenom</th><td>izrada 3–5 radnih dana</td></tr>
+            <tr><th scope="row">Ostali proizvodi</th><td>rok javljamo u odgovoru na poruku</td></tr>
+            <tr><th scope="row">Po meri</th><td>rok javljamo zajedno sa cenom</td></tr>
+          </tbody></table>
+          <p>Za Novu godinu: porudžbine primamo do 20. 12, a proizvode sa imenom do 16. 12. Ako u porudžbini ima proizvoda sa imenom, šaljemo sve zajedno kad budu gotovi.</p>
+        </section>
+        <section id="reklamacije-i-povracaj">
+          <h2 class="h2">Reklamacije i povraćaj</h2>
+          <p>Ako proizvod stigne oštećen ili ne odgovara porudžbini, javite nam se u Messenger-u što pre, sa fotografijom proizvoda i paketa. Šaljemo novi ili vraćamo novac, kako vam više odgovara.</p>
+          <p>Proizvode bez imena možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Troškove slanja nazad plaćate vi, a novac vraćamo kad paket stigne.</p>
+          <p>Proizvode napravljene po vašoj meri ili sa vašim imenom ne možemo da primimo nazad ako se predomislite, jer ih pravimo samo za vas. Na njih se i dalje odnosi reklamacija zbog greške ili oštećenja.</p>
+        </section>
+        <section id="cesta-pitanja">
+          <h2 class="h2">Česta pitanja</h2>
+          <Accordion items={faq} />
+        </section>
+        <section id="kontakt">
+          <h2 class="h2">Kontakt</h2>
+          <ul class="contact">
+            <li><Icon name="messenger" /><span><strong>Messenger</strong><a href={messengerUrl()} target="_blank" rel="noopener">m.me/{SITE.messengerPage}</a></span></li>
+            <li><Icon name="facebook" /><span><strong>Facebook</strong><a href={SITE.facebookUrl} target="_blank" rel="noopener">facebook.com/bumbaru.rs</a></span></li>
+            <li><Icon name="pin" /><span><strong>Radionica</strong><span class="muted">{SITE.city}</span></span></li>
+          </ul>
+        </section>
+        <section id="o-nama">
+          <h2 class="h2">O nama</h2>
+          <p>Bumbaru je mala radionica 3D štampe. Pravimo poklone sa imenom i delove za radionicu, auto i motor. Svaki komad sami štampamo, proveravamo i pakujemo, a šaljemo kurirom širom Srbije.</p>
+          <p>Ako vam treba nešto čega nema u katalogu, <a href="/po-meri/">pošaljite nam ideju</a>.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+</Base>
+<style>
+  .intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .facts { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
+  .facts li { display: flex; gap: 14px; align-items: center; padding: 20px; background: var(--surface-paper); border-radius: var(--r-lg); }
+  .facts li > span { display: flex; flex-direction: column; }
+  .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; margin-top: 48px; align-items: start; }
+  .toc { position: sticky; top: 100px; background: var(--surface-paper); border-radius: var(--r-lg); padding: 20px 24px; }
+  .toc ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .toc a { font-weight: 600; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .content { display: flex; flex-direction: column; gap: 24px; }
+  .content section { background: var(--surface-paper); border-radius: var(--r-lg); padding: 32px; display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 100px; }
+  .content p { color: var(--ink-muted); max-width: 70ch; }
+  .content p a { color: var(--ink); font-weight: 700; }
+  .num-list { padding-left: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .num-list li { padding-left: 6px; }
+  .specs { width: 100%; border-collapse: collapse; }
+  .specs th, .specs td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .specs th { width: 40%; padding-right: 16px; }
+  .specs td { color: var(--ink-muted); }
+  .contact { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .contact li { display: flex; gap: 12px; align-items: flex-start; }
+  .contact li > span { display: flex; flex-direction: column; gap: 2px; }
+  .contact a { font-weight: 600; word-break: break-word; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; gap: 24px; } .toc { position: static; } .toc ul { flex-direction: row; flex-wrap: wrap; gap: 8px 16px; } .facts, .contact { grid-template-columns: 1fr; } .content section { padding: 22px 20px; } }
+</style>

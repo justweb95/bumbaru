@@ -1,0 +1,76 @@
+---
+import '@fontsource/geologica/400.css';
+import '@fontsource/geologica/600.css';
+import '@fontsource/geologica/700.css';
+import '@fontsource/geologica/800.css';
+import '@fontsource/pacifico/400.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import OrderDialog from '../components/OrderDialog.astro';
+import { SITE } from '../data/site';
+import { ORNAMENT_DEFS } from '../lib/ornament-defs';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string; // putanja do og slike (1200×630)
+  imageAlt?: string;
+  type?: string;
+  current?: string;
+  noindex?: boolean;
+  jsonld?: object[];
+  ornaments?: boolean;
+}
+const { title, description, image = '/img/og/bumbaru.jpg', imageAlt = 'Bumbaru: ukrasi za jelku sa imenom', type = 'website', current, noindex = false, jsonld = [], ornaments = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ogImage = new URL(image, SITE.url).href;
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Bumbaru',
+  url: SITE.url,
+  logo: SITE.url + '/favicon-512.png',
+  sameAs: [SITE.facebookUrl, SITE.instagramUrl].filter(Boolean),
+};
+const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Bumbaru', url: SITE.url, inLanguage: 'sr-Latn' };
+const ld = [org, website, ...jsonld];
+---
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex, follow" />}
+  <meta name="theme-color" content="#F5C137" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta property="og:site_name" content="Bumbaru" />
+  <meta property="og:locale" content="sr_RS" />
+  <meta property="og:type" content={type} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={imageAlt} />
+  <meta name="twitter:card" content="summary_large_image" />
+  {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
+</head>
+<body>
+  <a class="skip" href="#sadrzaj">Preskoči na sadržaj</a>
+  {ornaments && <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs set:html={ORNAMENT_DEFS} /></svg>}
+  <Header current={current} />
+  <main id="sadrzaj">
+    <slot />
+  </main>
+  <Footer />
+  <OrderDialog />
+</body>
+</html>

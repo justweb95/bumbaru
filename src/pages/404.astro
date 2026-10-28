@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+<Base title="Stranica ne postoji | Bumbaru" description="Ova stranica ne postoji. Pogledajte katalog ili pišite nam na Messenger-u." noindex>
+  <div class="wrap">
+    <section class="nf panel">
+      <img src="/img/brand/pcelica.webp" alt="" width="320" height="320" />
+      <h1 class="h1">Ova stranica ne postoji</h1>
+      <p class="lead">Možda je adresa promenjena ili ste je pogrešno upisali. Evo gde ljudi najčešće idu:</p>
+      <ul>
+        <li><a class="link-arrow" href="/proizvod/ukras-za-jelku-sa-imenom/">Ukras za jelku sa imenom<Icon name="arrow" /></a></li>
+        <li><a class="link-arrow" href="/katalog/nova-godina/">Novogodišnji katalog<Icon name="arrow" /></a></li>
+        <li><a class="link-arrow" href="/katalog/radionica/">Držači za aku alat<Icon name="arrow" /></a></li>
+        <li><a class="link-arrow" href="/pomoc/">Pomoć<Icon name="arrow" /></a></li>
+      </ul>
+      <a class="btn btn-primary btn-lg" href="/">Na početnu</a>
+    </section>
+  </div>
+</Base>
+<style>
+  .nf { max-width: 760px; margin: 48px auto 0; padding: 48px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; }
+  .nf img { width: 120px; height: 120px; }
+  .nf ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  @media (max-width: 760px) { .nf { padding: 28px 20px; } }
+</style>

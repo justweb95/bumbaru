@@ -1,0 +1,36 @@
+---
+import Icon from './Icon.astro';
+import type { Product } from '../data/products';
+import { productUrl, cardImg } from '../data/products';
+import { SITE, din } from '../data/site';
+interface Props { p: Product; eager?: boolean; tags?: boolean }
+const { p, eager = false, tags = false } = Astro.props;
+const img = p.images[0];
+const showPrice = SITE.showPrices && p.price;
+const price = showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) : '';
+const url = productUrl(p.slug);
+---
+<article class="card" data-tags={tags ? (p.tags || []).join(' ') : undefined}>
+  <div class="media">
+    <a class="media-link" href={url} tabindex="-1" aria-hidden="true">
+      {img ? (
+        <img src={cardImg(img)} alt="" width="900" height="900" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+      ) : (
+        <div class="soon-photo"><img src="/img/brand/pcelica.webp" alt="" width="320" height="320" loading="lazy" /><span>Fotografija uskoro</span></div>
+      )}
+    </a>
+    {p.custom && <span class="badge badge-custom">Po meri · 3–5 dana</span>}
+    {p.personal ? (
+      <a class="quick" href={url} aria-label={`Poruči sa imenom: ${p.title}`}><Icon name="plus" size={22} stroke={2.4} /></a>
+    ) : (
+      <button class="quick" type="button" data-order={p.id} aria-label={`Poruči preko Messengera: ${p.title}`}><Icon name="plus" size={22} stroke={2.4} /></button>
+    )}
+  </div>
+  <div class="body">
+    <div class="row">
+      <h3><a href={url}>{p.title}</a></h3>
+      {price && <span class="price" style="font-size:18px">{price}</span>}
+    </div>
+    <p class="note">{p.short}</p>
+  </div>
+</article>

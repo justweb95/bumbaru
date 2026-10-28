@@ -1,0 +1,13 @@
+---
+import Icon from './Icon.astro';
+interface Props { items: { q: string; a: string }[]; open?: number; headingLevel?: 'h3' | 'none' }
+const { items, open = -1 } = Astro.props;
+---
+<div class="acc">
+  {items.map((it, i) => (
+    <details open={i === open}>
+      <summary>{it.q}<Icon name="chev" class="chev" stroke={2.4} /></summary>
+      <div class="ans" set:html={it.a} />
+    </details>
+  ))}
+</div>

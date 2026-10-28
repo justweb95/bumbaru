@@ -1,0 +1,438 @@
+---
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import Icon from '../../components/Icon.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Accordion from '../../components/Accordion.astro';
+import { PRODUCTS, productBySlug, productUrl, cardImg, type Product } from '../../data/products';
+import { categoryBySlug, catUrl } from '../../data/categories';
+import { SITE, din, messengerUrl } from '../../data/site';
+import { BOJE, MOTIVI } from '../../lib/ornament';
+import { ornamentG } from '../../lib/ornament-svg';
+
+export function getStaticPaths() {
+  return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: Product };
+const cat = categoryBySlug(p.category);
+const related = p.related.map((s) => productBySlug(s)).filter(Boolean) as Product[];
+const showPrice = SITE.showPrices && p.price;
+const priceText = showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) : '';
+const isUkras = p.personal === 'ukras';
+const isSet = p.personal === 'set';
+const live = isUkras || isSet;
+const ngCustom = p.custom && p.categories.includes('nova-godina');
+const og = p.images[0] ? (p.images[0].src.startsWith('/img/p/') ? `/img/og/${p.slug}.jpg` : isSet ? '/img/og/ukras-set.jpg' : isUkras ? '/img/og/ukras-sofija.jpg' : '/img/og/bumbaru.jpg') : '/img/og/bumbaru.jpg';
+const ld: any = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.title,
+  sku: p.id,
+  description: p.lead,
+  brand: { '@type': 'Brand', name: 'Bumbaru' },
+  image: p.images.map((i) => SITE.url + i.src + '-lg.webp'),
+  url: SITE.url + productUrl(p.slug),
+};
+if (showPrice) ld.offers = { '@type': 'Offer', priceCurrency: 'RSD', price: p.price, availability: 'https://schema.org/InStock', url: SITE.url + productUrl(p.slug) };
+
+// Pregled ukrasa
+const S = 1.62, HY = 136;
+const setPos = (n: number) => n === 4
+  ? { s: 0.92, pts: [[165, 36], [435, 36], [165, 312], [435, 312]] }
+  : { s: 0.76, pts: [[108, 44], [300, 44], [492, 44], [204, 318], [396, 318]] };
+const SARENO = ['bela', 'crvena', 'zelena', 'zlatna', 'crvena'];
+const setNames = ['Marko', 'Jelena', 'Luka', 'Mila', 'Ana'];
+const nameFields = isSet ? 5 : p.personal === 'imena' ? 4 : 0;
+const askText = `Zdravo, imam pitanje o proizvodu: ${p.title} (šifra ${p.id})\n${SITE.url}${productUrl(p.slug)}`;
+---
+<Base title={p.seoTitle} description={p.meta} image={og} imageAlt={p.images[0]?.alt || p.title} type="product" current={p.category} jsonld={[ld]} ornaments={live}>
+  <div class="paper-zone pz">
+    <div class="wrap">
+      <Crumbs items={[{ label: cat.label, href: catUrl(cat.slug) }, { label: p.title }]} />
+    </div>
+    <div class="wrap pd">
+      <!-- Galerija -->
+      <div class="gallery" data-gallery>
+        <div class="stage">
+          {live && (
+            <div class="slide live" data-slide="live">
+              <span class="badge live-badge"><i class="dotlive"></i>Pregled uživo</span>
+              {isUkras && (
+                <svg viewBox="0 0 600 600" role="img" aria-label="Pregled ukrasa sa vašim imenom" data-preview="ukras">
+                  <g class="sway" style="transform-origin:300px 0px">
+                    <line x1="300" y1="0" x2="300" y2={HY} stroke="#8E2A22" stroke-width="2.6" />
+                    <g transform={`translate(300 ${HY}) scale(${S}) translate(-120 -64)`} filter="url(#orn-sh)" data-tf set:html={ornamentG({ motif: 'zvezde', color: 'bela', nameColor: 'crvena', fallback: 'Mila', key: 'main' })} />
+                  </g>
+                </svg>
+              )}
+              {isSet && [4, 5].map((n) => {
+                const L = setPos(n);
+                return (
+                  <svg viewBox="0 0 600 600" role="img" aria-label={`Pregled porodičnog seta od ${n} ukrasa`} data-preview={`set${n}`} hidden={n === 5}>
+                    {L.pts.map(([x, y], i) => (
+                      <g transform={`translate(${x} ${y}) scale(${L.s}) translate(-120 -49)`} filter="url(#orn-sh)" set:html={ornamentG({ motif: 'zvezde', color: SARENO[i], nameColor: 'ista', fallback: setNames[i], key: `s${i}` })} />
+                    ))}
+                  </svg>
+                );
+              })}
+            </div>
+          )}
+          {p.images.map((im, i) => (
+            <div class="slide" data-slide={`i${i}`} hidden={live || i > 0}>
+              {im.w !== im.h && <img class="backdrop" src={cardImg(im)} alt="" width="900" height="900" loading="lazy" aria-hidden="true" />}
+              <img class="full" src={`${im.src}-lg.webp`} alt={im.alt} width={im.w} height={im.h} loading={i === 0 && !live ? 'eager' : 'lazy'} fetchpriority={i === 0 && !live ? 'high' : undefined} decoding="async" />
+            </div>
+          ))}
+          {!live && p.images.length === 0 && (
+            <div class="slide"><div class="soon-photo"><img src="/img/brand/pcelica.webp" alt="" width="320" height="320" /><span>Fotografija uskoro</span></div></div>
+          )}
+        </div>
+        {(live ? p.images.length > 0 : p.images.length > 1) && (
+          <div class="thumbs" role="group" aria-label="Fotografije">
+            {live && <button type="button" class="thumb thumb-live" data-thumb="live" aria-pressed="true" aria-label="Pregled sa vašim imenom"><Icon name="star" size={22} /><span>Pregled</span></button>}
+            {p.images.map((im, i) => (
+              <button type="button" class="thumb" data-thumb={`i${i}`} aria-pressed={!live && i === 0 ? 'true' : 'false'} aria-label={`Fotografija ${i + 1}: ${im.alt}`}><img src={cardImg(im)} alt="" width="120" height="120" loading="lazy" /></button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <!-- Podaci i porudžbina -->
+      <div class="info">
+        <div class="badges">
+          {p.custom ? <><span class="badge badge-custom">Po meri</span><span class="badge">Izrada 3–5 radnih dana</span></> : <span class="badge">{cat.label}</span>}
+        </div>
+        <h1 class="h1">{p.title}</h1>
+        {priceText && <p class="price">{priceText}</p>}
+        <p class="lead" style="color:var(--ink)">{p.lead}</p>
+
+        <form class="order" data-order-form data-id={p.id} data-personal={p.personal || ''} novalidate>
+          {(isUkras || p.personal === 'ime') && (
+            <div class="field">
+              <label for="f-ime">{isUkras ? 'Ime na ukrasu' : 'Ime na privesku'}</label>
+              <input id="f-ime" class="input" name="ime" maxlength="12" placeholder="npr. Mila ili Љубица" autocomplete="off" data-ime required />
+              <p class="hint"><span data-err-ime>Latinicom ili ćirilicom. Štampamo tačno kako upišete.</span><span data-cnt>0/12</span></p>
+            </div>
+          )}
+          {isSet && (
+            <fieldset class="field">
+              <legend class="flabel">Broj ukrasa</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="broj" value="4" checked />4 ukrasa</label>
+                <label class="chip"><input type="radio" name="broj" value="5" />5 ukrasa</label>
+              </div>
+            </fieldset>
+          )}
+          {nameFields > 0 && (
+            <fieldset class="field">
+              <legend class="flabel">Imena</legend>
+              <div class="names">
+                {Array.from({ length: nameFields }, (_, i) => (
+                  <div class="name-row" data-name-row={i} hidden={isSet && i === 4}>
+                    <label class="sr-only" for={`f-n${i}`}>Ime {i + 1}</label>
+                    <input id={`f-n${i}`} class="input" name={`ime${i}`} maxlength="12" placeholder={`Ime ${i + 1}${p.personal === 'imena' && i >= 2 ? ' (nije obavezno)' : ''}`} autocomplete="off" data-set-name={i} />
+                  </div>
+                ))}
+              </div>
+              <p class="hint"><span data-err-names>Do 12 slova po imenu, latinicom ili ćirilicom.</span></p>
+            </fieldset>
+          )}
+          {live && (
+            <fieldset class="field">
+              <legend class="flabel">{isSet ? 'Motiv za sve ukrase' : 'Motiv'}</legend>
+              <div class="tile-grid">
+                {MOTIVI.map((m, i) => (
+                  <label class="tile">
+                    <input type="radio" name="motiv" value={m.id} checked={i === 0} data-label={m.label} />
+                    <svg viewBox="0 40 240 250" aria-hidden="true"><use href={`#orn-${m.id}`} fill="#7A6A5A" stroke="#7A6A5A" /></svg>
+                    {m.label}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          {live && (
+            <fieldset class="field">
+              <legend class="flabel">Boja ukrasa</legend>
+              <div class="chips">
+                {isSet && <label class="chip"><input type="radio" name="boja" value="sareno" checked data-label="Šareno" /><span class="sw sw-mix" aria-hidden="true"></span>Šareno</label>}
+                {BOJE.map((b, i) => (
+                  <label class="chip"><input type="radio" name="boja" value={b.id} checked={!isSet && i === 0} data-label={b.label} /><span class="sw" style={`background:${b.face}`} aria-hidden="true"></span>{b.label}</label>
+                ))}
+              </div>
+              {isSet && <p class="hint">Šareno: svaki ukras u drugoj boji.</p>}
+            </fieldset>
+          )}
+          {live && (
+            <fieldset class="field">
+              <legend class="flabel">Boja imena</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="bojaImena" value="ista" checked={isSet} data-label="Kao ukras" /><span class="sw sw-same" aria-hidden="true"></span>Kao ukras</label>
+                {BOJE.map((b) => (
+                  <label class="chip"><input type="radio" name="bojaImena" value={b.id} checked={isUkras && b.id === 'crvena'} data-label={b.label} /><span class="sw" style={`background:${b.face}`} aria-hidden="true"></span>{b.label}</label>
+                ))}
+              </div>
+              <p class="hint">Ime u drugoj boji štampamo u istom komadu, bez lepljenja.</p>
+            </fieldset>
+          )}
+          {(p.options || []).map((o) => (
+            o.values.length <= 4 ? (
+              <fieldset class="field">
+                <legend class="flabel">{o.label}</legend>
+                <div class="chips">
+                  {o.values.map((v, i) => <label class="chip"><input type="radio" name={`o-${o.id}`} value={v} checked={i === 0} data-option={o.label} />{v}</label>)}
+                </div>
+              </fieldset>
+            ) : (
+              <div class="field">
+                <label for={`o-${o.id}`}>{o.label}</label>
+                <select id={`o-${o.id}`} class="select" name={`o-${o.id}`} data-option={o.label}>
+                  {o.values.map((v) => <option>{v}</option>)}
+                </select>
+              </div>
+            )
+          ))}
+          <div class="field">
+            <label for="f-nap">Napomena <span style="text-transform:none;letter-spacing:0;font-weight:400">(nije obavezno)</span></label>
+            <input id="f-nap" class="input" name="napomena" maxlength="160" placeholder={p.custom ? 'npr. poruka za karticu u paketu' : 'npr. boja, broj komada, rok'} autocomplete="off" />
+          </div>
+          <div class="buy">
+            <div class="qty" role="group" aria-label="Količina">
+              <button type="button" data-dec aria-label="Smanji količinu">−</button>
+              <input type="number" name="kol" value="1" min="1" max="50" inputmode="numeric" aria-label="Količina" />
+              <button type="button" data-inc aria-label="Povećaj količinu">+</button>
+            </div>
+            <button class="btn btn-primary btn-lg buy-btn" type="submit"><Icon name="messenger" />Poruči preko Messengera</button>
+          </div>
+          <ul class="notes small">
+            {ngCustom && <li><Icon name="calendar" size={18} />Poručite do 16. 12. i stiže pre Nove godine.</li>}
+            <li><Icon name="cash" size={18} />Plaćate kuriru kad paket stigne. Cenu i dostavu javljamo u odgovoru.</li>
+            <li><Icon name="messenger" size={18} />Poruka se složi sama: naziv, šifra {p.id}, vaš izbor i link proizvoda.</li>
+          </ul>
+        </form>
+
+        <div class="trail" aria-hidden="true"></div>
+        <ul class="perks">
+          <li><span class="ti"><Icon name="cash" /></span><span><strong>Plaćanje pouzećem</strong><span class="small muted">Plaćate kuriru kad paket stigne.</span></span></li>
+          <li><span class="ti"><Icon name="truck" /></span><span><strong>Dostava širom Srbije</strong><span class="small muted">Kurirom za 1–2 radna dana.</span></span></li>
+          {p.custom ? <li><span class="ti"><Icon name="shield" /></span><span><strong>Proveravamo svako ime</strong><span class="small muted">Pre štampe, a ako nešto nije jasno, pišemo vam.</span></span></li>
+            : <li><span class="ti"><Icon name="box" /></span><span><strong>Vraćanje 14 dana</strong><span class="small muted">Bez navođenja razloga.</span></span></li>}
+        </ul>
+        <div class="ask">
+          <p class="small muted">Niste sigurni šta da izaberete? Pitajte nas pre porudžbine.</p>
+          <a class="btn" href={messengerUrl(askText, p.id)} target="_blank" rel="noopener"><Icon name="messenger" />Pitajte na Messenger-u</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="more" aria-labelledby="o-proizvodu">
+      <div>
+        <h2 id="o-proizvodu" class="h2">{live ? (isSet ? 'O setu' : 'O ukrasu') : 'O proizvodu'}</h2>
+        {p.about.map((t) => <p class="muted" style="margin-top:14px">{t}</p>)}
+        {p.specs.length > 0 && (
+          <>
+            <h3 class="h3" style="margin-top:32px">Karakteristike</h3>
+            <table class="specs">
+              <tbody>{p.specs.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
+            </table>
+          </>
+        )}
+      </div>
+      <div>
+        <Accordion items={p.details} />
+        {p.faq.length > 0 && (
+          <>
+            <h2 class="h2" style="margin:48px 0 12px">Česta pitanja</h2>
+            <Accordion items={p.faq} />
+          </>
+        )}
+      </div>
+    </section>
+
+    {related.length > 0 && (
+      <section class="section" aria-labelledby="rel-title">
+        <div class="sec-head">
+          <h2 id="rel-title" class="h2">Uz ovo preporučujemo</h2>
+          <a class="link-arrow" href={catUrl(cat.slug)}>Ceo katalog<Icon name="arrow" /></a>
+        </div>
+        <div class="grid rail-mobile">
+          {related.map((r) => <ProductCard p={r} />)}
+        </div>
+      </section>
+    )}
+  </div>
+</Base>
+
+<script>
+  import { fitName, boja, motiv } from '../../lib/ornament';
+  const form = document.querySelector<HTMLFormElement>('[data-order-form]')!;
+  const personal = form.dataset.personal || '';
+  const id = form.dataset.id || '';
+
+  // Galerija
+  const gal = document.querySelector('[data-gallery]');
+  gal?.querySelectorAll<HTMLButtonElement>('[data-thumb]').forEach((b) => b.addEventListener('click', () => {
+    gal.querySelectorAll<HTMLElement>('[data-slide]').forEach((s) => { s.hidden = s.dataset.slide !== b.dataset.thumb; });
+    gal.querySelectorAll('[data-thumb]').forEach((t) => t.setAttribute('aria-pressed', String(t === b)));
+  }));
+  const showLive = () => (gal?.querySelector('[data-thumb="live"]') as HTMLButtonElement | null)?.click();
+
+  // Količina
+  const kol = form.querySelector<HTMLInputElement>('input[name="kol"]')!;
+  const clamp = (v: number) => Math.max(1, Math.min(50, v || 1));
+  form.querySelector('[data-inc]')?.addEventListener('click', () => { kol.value = String(clamp(+kol.value + 1)); });
+  form.querySelector('[data-dec]')?.addEventListener('click', () => { kol.value = String(clamp(+kol.value - 1)); });
+
+  const val = (name: string) => (form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value) || '';
+  const lab = (name: string) => (form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.dataset.label) || '';
+
+  // Pregled uživo
+  function paint(g: Element, o: { motif: string; color: string; nameColor: string; name: string; fallback: string }) {
+    const M = motiv(o.motif), B = boja(o.color), N = o.nameColor === 'ista' ? B : boja(o.nameColor);
+    const f = fitName(o.name, o.fallback);
+    const e = g.querySelector('.orn-edge')!, fc = g.querySelector('.orn-face')!;
+    [e, fc].forEach((u) => u.setAttribute('href', '#orn-' + M.id));
+    e.setAttribute('fill', B.edge); e.setAttribute('stroke', B.edge);
+    fc.setAttribute('fill', B.face); fc.setAttribute('stroke', B.face);
+    const ne = g.querySelector('.orn-ne')!, nf = g.querySelector('.orn-nf')!;
+    ne.setAttribute('fill', N.edge); ne.setAttribute('stroke', N.edge);
+    nf.setAttribute('fill', N.face); nf.setAttribute('stroke', N.face);
+    g.querySelectorAll('.orn-name').forEach((t) => { t.textContent = f.name; t.setAttribute('font-size', f.fs); t.setAttribute('y', f.y); });
+    g.querySelectorAll('.orn-rail').forEach((r) => { r.setAttribute('d', f.rails); r.setAttribute('stroke-width', f.railW); });
+    return M;
+  }
+  const SARENO = ['bela', 'crvena', 'zelena', 'zlatna', 'crvena'];
+  const FALL = ['Marko', 'Jelena', 'Luka', 'Mila', 'Ana'];
+  function update() {
+    if (personal === 'ukras') {
+      const g = document.querySelector('[data-orn="main"]');
+      const ime = form.querySelector<HTMLInputElement>('[data-ime]')!;
+      if (g) {
+        const M = paint(g, { motif: val('motiv'), color: val('boja'), nameColor: val('bojaImena'), name: ime.value, fallback: 'Mila' });
+        g.parentElement?.setAttribute('transform', `translate(300 136) scale(1.62) translate(-120 -${M.hy})`);
+      }
+    }
+    if (personal === 'set') {
+      const n = val('broj') === '5' ? 5 : 4;
+      document.querySelectorAll<SVGElement>('[data-preview^="set"]').forEach((s) => { s.toggleAttribute('hidden', s.dataset.preview !== 'set' + n); });
+      form.querySelectorAll<HTMLElement>('[data-name-row]').forEach((r) => { r.hidden = Number(r.dataset.nameRow) >= n; });
+      const svg = document.querySelector(`[data-preview="set${n}"]`);
+      svg?.querySelectorAll('[data-orn]').forEach((g, i) => {
+        const inp = form.querySelector<HTMLInputElement>(`[data-set-name="${i}"]`);
+        paint(g, { motif: val('motiv'), color: val('boja') === 'sareno' ? SARENO[i] : val('boja'), nameColor: val('bojaImena'), name: inp?.value || '', fallback: FALL[i] });
+      });
+    }
+    // boja motiva na pločicama
+    if (personal === 'ukras' || personal === 'set') {
+      const c = val('boja') === 'sareno' || !val('boja') ? null : boja(val('boja'));
+      const col = c && c.id !== 'bela' ? c.face : '#7A6A5A';
+      form.querySelectorAll('.tile use').forEach((u) => { u.setAttribute('fill', col); u.setAttribute('stroke', col); });
+    }
+    const ime = form.querySelector<HTMLInputElement>('[data-ime]');
+    const cnt = form.querySelector('[data-cnt]');
+    if (ime && cnt) cnt.textContent = Array.from(ime.value.trim()).length + '/12';
+  }
+  form.addEventListener('input', (e) => {
+    update();
+    const t = e.target as HTMLElement;
+    if (t.matches('[data-ime], [data-set-name], input[name="motiv"], input[name="boja"], input[name="bojaImena"], input[name="broj"]')) showLive();
+  });
+  // ime iz adrese (?ime=Mila), npr. sa početne strane
+  const qIme = new URLSearchParams(location.search).get('ime');
+  const imeInp = form.querySelector<HTMLInputElement>('[data-ime]');
+  if (qIme && imeInp) imeInp.value = qIme.slice(0, 12);
+  update();
+
+  // Slanje: složi poruku i otvori prozor za Messenger
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const lines: string[] = [];
+    const errIme = form.querySelector('[data-err-ime]');
+    if (personal === 'ukras' || personal === 'ime') {
+      const v = imeInp?.value.trim() || '';
+      if (!v) { imeInp?.focus(); imeInp?.setAttribute('aria-invalid', 'true'); if (errIme) { errIme.textContent = 'Upišite ime koje štampamo.'; (errIme as HTMLElement).style.color = 'var(--berry)'; } return; }
+      imeInp?.removeAttribute('aria-invalid');
+      lines.push('Ime: ' + v);
+    }
+    if (personal === 'set' || personal === 'imena') {
+      const n = personal === 'set' ? (val('broj') === '5' ? 5 : 4) : 4;
+      const names = Array.from({ length: n }, (_, i) => form.querySelector<HTMLInputElement>(`[data-set-name="${i}"]`)?.value.trim() || '').filter(Boolean);
+      const need = personal === 'set' ? n : 2;
+      const err = form.querySelector<HTMLElement>('[data-err-names]');
+      if (names.length < need) {
+        if (err) { err.textContent = personal === 'set' ? (n === 4 ? 'Upišite sva 4 imena.' : 'Upišite svih 5 imena.') : 'Upišite najmanje 2 imena.'; err.style.color = 'var(--berry)'; }
+        form.querySelector<HTMLInputElement>('[data-set-name]:placeholder-shown')?.focus();
+        return;
+      }
+      if (personal === 'set') lines.push('Broj ukrasa: ' + n);
+      lines.push('Imena: ' + names.join(', '));
+    }
+    if (personal === 'ukras' || personal === 'set') {
+      lines.push('Motiv: ' + lab('motiv'), 'Boja ukrasa: ' + lab('boja'), 'Boja imena: ' + lab('bojaImena'));
+    }
+    form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-option]').forEach((el) => {
+      if (el instanceof HTMLInputElement && !el.checked) return;
+      lines.push(el.dataset.option + ': ' + el.value);
+    });
+    const nap = (form.querySelector<HTMLInputElement>('input[name="napomena"]')?.value || '').trim();
+    if (nap) lines.push('Napomena: ' + nap);
+    const qty = personal === 'set' ? +kol.value : +kol.value;
+    (window as any).bumbaruOrder(id, lines, clamp(qty));
+  });
+</script>
+
+<style>
+  .pz { padding-top: 0; }
+  .pd { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+  .gallery { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 12px; }
+  .stage { position: relative; aspect-ratio: 1 / 1; border-radius: var(--r-lg); overflow: hidden; background: var(--surface-raised); }
+  .slide { position: absolute; inset: 0; }
+  .slide img { width: 100%; height: 100%; object-fit: cover; }
+  .slide .backdrop { position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); filter: blur(24px) saturate(1.1); opacity: .8; }
+  .slide .full { position: relative; object-fit: contain; }
+  .slide.live { background: radial-gradient(circle at 50% 40%, #F7F3EC, #E4DDD2 75%); }
+  .slide.live svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .live-badge { position: absolute; left: 16px; top: 16px; z-index: 2; background: var(--surface-paper); border: 2px solid var(--ink); }
+  .dotlive { width: 8px; height: 8px; border-radius: 50%; background: var(--leaf); display: inline-block; }
+  .thumbs { display: flex; gap: 10px; flex-wrap: wrap; }
+  .thumb { width: 84px; height: 84px; padding: 0; border: 2px solid transparent; border-radius: 14px; overflow: hidden; background: var(--surface-raised); cursor: pointer; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 11px; font-weight: 700; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .thumb[aria-pressed="true"] { border-color: var(--ink); }
+  .thumb-live { background: var(--honey-soft); }
+  .info { display: flex; flex-direction: column; gap: 18px; padding-top: 4px; }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .order { display: flex; flex-direction: column; gap: 22px; margin-top: 6px; }
+  fieldset.field { border: 0; padding: 0; margin: 0; min-width: 0; }
+  fieldset.field legend { padding: 0; margin-bottom: 8px; }
+  .names { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sw-mix { background: conic-gradient(#F3EEE5 0 25%, #B3312A 0 50%, #2F5B3B 0 75%, #D6A23E 0); }
+  .sw-same { background: linear-gradient(135deg, var(--surface-paper) 50%, var(--line) 50%); }
+  .buy { display: flex; gap: 12px; align-items: center; }
+  .buy-btn { flex: 1; }
+  .notes { list-style: none; display: flex; flex-direction: column; gap: 8px; color: var(--ink-muted); }
+  .notes li { display: flex; gap: 10px; align-items: flex-start; }
+  .notes svg { flex: none; margin-top: 1px; color: var(--ink); }
+  .perks { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .perks li { display: flex; gap: 14px; align-items: center; }
+  .perks li > span:last-child { display: flex; flex-direction: column; }
+  .ti { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--surface-raised); display: inline-flex; align-items: center; justify-content: center; }
+  .ask { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .more { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; padding-top: 72px; }
+  .specs { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 15px; line-height: 22px; }
+  .specs th, .specs td { text-align: left; vertical-align: top; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .specs th { width: 34%; font-weight: 700; padding-right: 16px; }
+  .specs td { color: var(--ink-muted); }
+  @media (max-width: 960px) {
+    .pd { grid-template-columns: 1fr; gap: 28px; }
+    .gallery { position: static; }
+    .more { grid-template-columns: 1fr; gap: 40px; padding-top: 56px; }
+  }
+  @media (max-width: 520px) {
+    .buy { flex-direction: column; align-items: stretch; }
+    .qty { align-self: flex-start; }
+    .names { grid-template-columns: 1fr; }
+    .thumb { width: 68px; height: 68px; }
+  }
+</style>

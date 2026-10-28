@@ -1,0 +1,476 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Accordion from '../components/Accordion.astro';
+import { productBySlug, productUrl } from '../data/products';
+import { SITE, messengerUrl } from '../data/site';
+import { ornamentG } from '../lib/ornament-svg';
+
+const ng = [
+  'privezak-deda-mraz', 'patuljak-sa-led-svecicom', 'mini-jelka-za-sto',
+  'prstenovi-za-salvete-set-od-6', 'zlatna-jelka-za-sklapanje', 'ukras-za-jelku-sa-imenom',
+  'privezak-irvas', 'jelkica-za-punjenje', 'porodicni-set-ukrasa-sa-imenima',
+].map((s) => productBySlug(s)!);
+
+const hang = [
+  { x: 110, hy: 180, rot: -3, s: 0.84, motif: 'planine', color: 'zelena', nameColor: 'ista', fb: 'Luka', key: 'a', cls: 'sway sway-1' },
+  { x: 530, hy: 225, rot: 3, s: 0.84, motif: 'masna', color: 'crvena', nameColor: 'ista', fb: 'Mila', key: 'c', cls: 'sway sway-3' },
+  { x: 330, hy: 110, rot: 0, s: 1.12, motif: 'zvezde', color: 'bela', nameColor: 'crvena', fb: 'Sofija', key: 'b', cls: 'sway' },
+];
+const hy = (m: string) => (m === 'masna' ? 71 : 64);
+
+const prednosti = [
+  { icon: 'cash', title: 'Plaćanje pouzećem', text: 'Plaćate kuriru kad paket stigne.' },
+  { icon: 'truck', title: 'Dostava širom Srbije', text: 'Kurirom za 1–2 radna dana.' },
+  { icon: 'star', title: 'Izrada po meri', text: 'Ime, mera ili boja: 3–5 radnih dana.' },
+  { icon: 'shield', title: 'Proveravamo svako ime', text: 'Pre štampe, a ako nešto nije jasno, pišemo vam.' },
+];
+
+const faq = [
+  { q: 'Kako se poručuje?', a: 'Izaberite proizvod i kliknite „Poruči preko Messengera”. Poruka sa nazivom i šifrom proizvoda se složi sama, a vi je samo pošaljete. Odgovaramo sa cenom i rokom. <a href="/pomoc/#kako-poruciti">Više u Pomoći</a>' },
+  { q: 'Kako se plaća?', a: 'Pouzećem, kuriru kad paket stigne. Kartica i nalog nisu potrebni. <a href="/pomoc/#placanje">Više u Pomoći</a>' },
+  { q: 'Kada stiže?', a: 'Proizvodi sa imenom se prave 3–5 radnih dana, a kurir nosi 1–2 radna dana. Za ostale proizvode rok javljamo u poruci. <a href="/pomoc/#rokovi">Više u Pomoći</a>' },
+  { q: 'Mogu li ime da napišem ćirilicom?', a: 'Možete. Štampamo tačno kako upišete, latinicom ili ćirilicom.' },
+  { q: 'Mogu li da pošaljem poklon na drugu adresu?', a: 'Možete, ali primalac plaća kuriru, jer je plaćanje pouzećem.' },
+  { q: 'Mogu li da vratim proizvod?', a: 'Proizvode bez imena u roku od 14 dana od prijema. Proizvode sa imenom samo zbog greške ili oštećenja. <a href="/pomoc/#reklamacije-i-povracaj">Više u Pomoći</a>' },
+];
+const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') } })) };
+
+const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
+---
+<Base
+  title="Ukrasi za jelku sa imenom i pokloni po meri | Bumbaru"
+  description="Ukrasi za jelku sa imenom, novogodišnji privesci, patuljak sa LED svećicom i dekoracija za praznični sto. 3D štampa iz Leskovca, poručivanje preko Messengera, dostava širom Srbije."
+  image="/img/og/bumbaru.jpg"
+  current=""
+  jsonld={[faqLd]}
+  ornaments
+>
+  <div class="paper-zone">
+    <!-- Vrh: sezona -->
+    <section class="wrap hero-sec" aria-labelledby="hero-title">
+      <div class="hero">
+        <div class="hero-media">
+        <picture class="hero-bg">
+          <source media="(min-width: 901px)" srcset="/img/bg/hero-nova-godina.webp" />
+          <img src="/img/bg/hero-nova-godina-tel.webp" alt="" width="1000" height="562" fetchpriority="high" />
+        </picture>
+        <div class="hero-stage">
+          <svg class="hero-trail" aria-hidden="true" width="300" height="240" viewBox="0 0 300 240">
+            <defs><mask id="trailMask" maskUnits="userSpaceOnUse" x="0" y="0" width="300" height="240"><path class="fx-trail" pathLength="100" d="M8 232 C40 130 120 160 160 100 S 250 30 292 40" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" /></mask></defs>
+            <path d="M8 232 C40 130 120 160 160 100 S 250 30 292 40" fill="none" stroke="#312018" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 12" mask="url(#trailMask)" />
+          </svg>
+          <span class="hero-bee fx-bee"><img class="fx-float" src="/img/brand/pcelica.webp" alt="" width="320" height="320" /></span>
+          <a class="float-card fx-drop" style="--d:0;--r:-3deg" href={productUrl(patuljak.slug)}>
+            <span class="fc-img" style="aspect-ratio:5/6"><img src={`${patuljak.images[0].src}-sm.webp`} alt={patuljak.images[0].alt} width="640" height="768" /></span>
+            <span class="fc-label">Patuljak sa LED svećicom</span>
+          </a>
+          <a class="float-card fc-2 fx-drop" style="--d:1;--r:3deg" href="/katalog/nova-godina/?filter=privesci">
+            <span class="fc-img" style="aspect-ratio:1/1"><img src="/img/c/privesci-zbirno-sm.webp" alt="Novogodišnji privesci: irvas, jelka, Deda Mraz i Sneško" width="640" height="640" /></span>
+            <span class="fc-label">Novogodišnji privesci</span>
+          </a>
+        </div>
+        </div>
+        <div class="hero-intro">
+          <span class="badge badge-honey fx-rise" style="--d:0">Novogodišnji katalog</span>
+          <h1 id="hero-title" class="display fx-rise" style="--d:1">Ukrasi za jelku sa imenom</h1>
+          <p class="lead fx-rise" style="--d:2">Upišite ime, izaberite motiv i boju i odmah vidite kako ukras izgleda. U katalogu su i privesci, patuljak sa LED svećicom i dekoracija za praznični sto.</p>
+        </div>
+        <div class="hero-cta">
+          <dl class="facts fx-rise" style="--d:3">
+            <div><dt>Ukras sa imenom</dt><dd>4 motiva, 4 boje</dd></div>
+            <div><dt>Porodični set</dt><dd>4–5 imena u kutiji</dd></div>
+          </dl>
+          <div class="btns fx-rise" style="--d:4">
+            <a class="btn btn-primary btn-lg" href="/proizvod/ukras-za-jelku-sa-imenom/">Upišite ime</a>
+            <a class="btn btn-paper btn-lg" href="/katalog/nova-godina/">Pogledajte katalog</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Novogodišnji katalog -->
+    <section class="wrap section" aria-labelledby="ng-title">
+      <div class="sec-head">
+        <div>
+          <h2 id="ng-title" class="h2">Novogodišnji katalog</h2>
+          <p>Ukrasi, privesci i dekoracija za praznični sto.</p>
+        </div>
+        <a class="link-arrow" href="/katalog/nova-godina/">Ceo novogodišnji katalog<Icon name="arrow" /></a>
+      </div>
+      <div class="grid grid-3 rail-mobile">
+        {ng.map((p, i) => <ProductCard p={p} eager={i < 3} />)}
+      </div>
+    </section>
+
+    <!-- Vaše ime na ukrasu -->
+    <section class="wrap section fx-reveal" aria-labelledby="ukras-title">
+      <div class="ukr-panel">
+        <img class="ukr-bg" src="/img/bg/ukras-pozadina.webp" alt="" width="1000" height="750" loading="lazy" />
+        <div class="ukr-text">
+          <span class="badge">Po meri</span>
+          <h2 id="ukras-title" class="h1">Vaše ime na ukrasu za jelku</h2>
+          <p class="lead" style="color:var(--ink)">Upišite ime i odmah vidite kako izgleda na ukrasu. Četiri motiva, u jednoj ili dve boje, latinicom ili ćirilicom.</p>
+          <form class="ukr-form" action="/proizvod/ukras-za-jelku-sa-imenom/" method="get">
+            <div class="field">
+              <label for="home-ime">Ime na ukrasu</label>
+              <input id="home-ime" class="input" name="ime" maxlength="12" placeholder="npr. Mila ili Љубица" autocomplete="off" data-home-ime />
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit">Prikaži na ukrasu</button>
+          </form>
+          <p class="small muted">Do 12 slova. Sa imenom primamo do 16. 12.</p>
+        </div>
+        <svg class="ukr-stage" viewBox="0 0 620 560" role="img" aria-label="Tri ukrasa za jelku sa imenima: zeleni sa planinama, beli sa zvezdama i crveni sa mašnom">
+          {hang.map((h) => (
+            <g class={h.cls} style={`transform-origin:${h.x}px 0px`}>
+              <line x1={h.x} y1="0" x2={h.x} y2={h.hy} stroke="#8E2A22" stroke-width={h.s > 1 ? 2 : 1.5} />
+              <g transform={`translate(${h.x} ${h.hy}) rotate(${h.rot}) scale(${h.s}) translate(-120 -${hy(h.motif)})`} filter="url(#orn-sh)" set:html={ornamentG({ motif: h.motif, color: h.color, nameColor: h.nameColor, fallback: h.fb, key: h.key })} />
+            </g>
+          ))}
+        </svg>
+      </div>
+    </section>
+
+    <!-- Prednosti -->
+    <section class="wrap section-sm" aria-label="Zašto Bumbaru">
+      <ul class="trust">
+        {prednosti.map((x) => (
+          <li><span class="ti"><Icon name={x.icon} size={22} /></span><span><strong>{x.title}</strong><span class="small muted">{x.text}</span></span></li>
+        ))}
+      </ul>
+    </section>
+  </div>
+
+  <!-- Stalna ponuda -->
+  <section class="wrap section" aria-labelledby="stalna-title">
+    <div class="sec-head">
+      <div>
+        <h2 id="stalna-title" class="h1">Stalna ponuda</h2>
+        <p>Pravimo ih cele godine: poklone i priveske sa imenom po vašem imenu, a delove za radionicu i auto po vašem alatu i meri.</p>
+      </div>
+      <a class="link-arrow" href="/katalog/">Ceo katalog<Icon name="arrow" /></a>
+    </div>
+    <div class="cats">
+      <article class="cat cat-big">
+        <div class="cat-media" style="background-image:url(/img/bg/kraft.webp)">
+          <span class="cat-icon"><Icon name="gift" size={22} /></span>
+          <a class="polaroid" style="--r:-4deg;left:6%;top:20%" href="/proizvod/ukras-za-jelku-sa-imenom/"><img src="/img/c/ukras-sofija-sm.webp" alt="" width="640" height="640" loading="lazy" /><span>Sofija · bela</span></a>
+          <a class="polaroid pol-lg" style="--r:2deg;left:33%;top:32%" href="/proizvod/porodicni-set-ukrasa-sa-imenima/"><img src="/img/c/ukras-set-sm.webp" alt="" width="640" height="640" loading="lazy" /><span>Porodični set</span></a>
+          <a class="polaroid" style="--r:4deg;right:6%;top:16%" href="/proizvod/ukras-za-jelku-sa-imenom/"><img src="/img/c/ukras-luka-sm.webp" alt="" width="640" height="640" loading="lazy" /><span>Luka · zelena</span></a>
+        </div>
+        <div class="cat-body">
+          <span class="badge badge-custom">Po meri · 3–5 dana</span>
+          <h3 class="h2">Pokloni sa imenom</h3>
+          <p class="muted">Ime upišete latinicom ili ćirilicom i odmah vidite kako izgleda. Pre štampe proveravamo svako ime.</p>
+          <ul class="cat-list">
+            <li><a href="/proizvod/ukras-za-jelku-sa-imenom/"><span><strong>Ukras za jelku sa imenom</strong><span class="small muted">4 motiva, 4 boje</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/porodicni-set-ukrasa-sa-imenima/"><span><strong>Porodični set ukrasa sa imenima</strong><span class="small muted">4 ili 5 imena u jednoj kutiji</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/porodicni-privezak-sa-imenima/"><span><strong>Porodični privezak sa imenima</strong><span class="small muted">2–4 imena, za ključeve</span></span><Icon name="arrow" /></a></li>
+          </ul>
+          <div class="cat-actions">
+            <a class="btn btn-primary btn-lg" href="/proizvod/ukras-za-jelku-sa-imenom/">Upišite ime</a>
+            <a class="link-arrow" href="/katalog/pokloni-sa-imenom/">Svi pokloni sa imenom<Icon name="arrow" /></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="cat cat-row">
+        <div class="cat-media" style="background-image:url(/img/bg/radionica.webp)"><span class="cat-icon"><Icon name="tool" size={22} /></span></div>
+        <div class="cat-body">
+          <span class="badge badge-leaf">PETG · po meri</span>
+          <h3 class="h3">Radionica</h3>
+          <p class="small muted">Alat visi na zidu, a baterije stoje pored njega. Za drugi brend pravimo držač po meri.</p>
+          <ul class="cat-list">
+            <li><a href="/proizvod/drzac-za-aku-alat-parkside-x20v/"><span><strong>Držači za Parkside X20 V</strong><span class="small muted">2 za alat, 2 za baterije</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/zidni-drzac-za-bateriju/"><span><strong>Zidni držač za bateriju</strong><span class="small muted">Za vaš model, i drugi brendovi</span></span><Icon name="arrow" /></a></li>
+          </ul>
+          <a class="link-arrow" href="/katalog/radionica/">Sve za radionicu<Icon name="arrow" /></a>
+        </div>
+      </article>
+
+      <article class="cat cat-row">
+        <div class="cat-media" style="background-image:url(/img/bg/auto-moto.webp)"><span class="cat-icon"><Icon name="car" size={22} /></span></div>
+        <div class="cat-body">
+          <span class="badge badge-leaf">Za auto i motor</span>
+          <h3 class="h3">Auto i moto</h3>
+          <p class="small muted">Tablica bez rama oko slova, nalepnica koja ostaje na mestu i sitnice za održavanje motora.</p>
+          <ul class="cat-list">
+            <li><a href="/proizvod/drzac-tablice-bez-okvira/"><span><strong>Držač tablice bez okvira</strong><span class="small muted">Par, bez bušenja</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/nosac-registracione-nalepnice-za-motor/"><span><strong>Nosač nalepnice za motor</strong><span class="small muted">Za motor, skuter i kvad</span></span><Icon name="arrow" /></a></li>
+          </ul>
+          <a class="link-arrow" href="/katalog/auto-i-moto/">Sve za auto i motor<Icon name="arrow" /></a>
+        </div>
+      </article>
+
+      <article class="cat cat-row cat-wing">
+        <div class="cat-media cat-pol">
+          <span class="cat-icon"><Icon name="key" size={22} /></span>
+          <a class="polaroid pol-sm pa" style="--r:-5deg" href="/proizvod/privezak-sa-imenom/"><img src="/img/c/privezak-ime-sm.webp" alt="" width="600" height="600" loading="lazy" /><span>Sa imenom</span></a>
+          <a class="polaroid pol-sm pb" style="--r:4deg" href="/proizvod/privezak-deda-mraz/"><img src="/img/p/privezak-deda-mraz/1-sq.webp" alt="" width="900" height="900" loading="lazy" /><span>Deda Mraz</span></a>
+        </div>
+        <div class="cat-body">
+          <span class="badge badge-custom">Sa imenom ili bez</span>
+          <h3 class="h3">Privesci</h3>
+          <p class="small muted">Mali poklon koji se nosi svaki dan: sa imenom, slovima od kockica ili novogodišnji.</p>
+          <ul class="cat-list">
+            <li><a href="/proizvod/privezak-sa-imenom/"><span><strong>Privezak sa imenom</strong><span class="small muted">Latinica ili ćirilica, dve boje</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/pikselasti-privezak-sa-imenom/"><span><strong>Pikselasti privezak sa imenom</strong><span class="small muted">Slova od kockica</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/privezak-deda-mraz/"><span><strong>Privezak Deda Mraz</strong><span class="small muted">Poklon uz čestitku</span></span><Icon name="arrow" /></a></li>
+          </ul>
+          <a class="link-arrow" href="/katalog/privesci/">Svi privesci<Icon name="arrow" /></a>
+        </div>
+      </article>
+
+      <article class="cat cat-row cat-honey">
+        <div class="cat-media cat-toys"><span class="cat-icon"><Icon name="blocks" size={22} /></span><img src="/img/c/igracke-sm.webp" alt="" width="600" height="600" loading="lazy" /></div>
+        <div class="cat-body">
+          <span class="badge badge-berry">Uskoro</span>
+          <h3 class="h3">Igračke za decu</h3>
+          <p class="small muted">Prve igračke od 3D štampe stižu uskoro. Javite nam šta vaše dete voli, pa vam pišemo kad krenu.</p>
+          <a class="btn" href={messengerUrl('Zdravo, javite mi kad stignu igračke za decu.', 'igracke')} target="_blank" rel="noopener"><Icon name="messenger" />Javite mi na Messenger-u</a>
+          <a class="link-arrow" href="/katalog/pokloni-sa-imenom/">Do tada: pokloni sa imenom<Icon name="arrow" /></a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Po meri -->
+  <section class="wrap section fx-reveal" aria-labelledby="pomeri-title">
+    <div class="pomeri dark">
+      <img src="/img/bg/po-meri.webp" alt="3D štampač u radionici sa odštampanim delovima" width="1000" height="750" loading="lazy" />
+      <div class="pomeri-text">
+        <span class="label" style="color:var(--honey)">3D štampa po meri</span>
+        <h2 id="pomeri-title" class="h1">Treba vam deo po meri?</h2>
+        <p class="lead" style="color:var(--cream-muted)">Pošaljite meru, skicu ili fotografiju dela koji vam treba. Javljamo cenu i rok izrade, a gotov deo šaljemo kurirom.</p>
+        <ul class="checks">
+          <li><span><Icon name="check" size={14} stroke={3.2} /></span>Deo koji je pukao ili se više ne prodaje</li>
+          <li><span><Icon name="check" size={14} stroke={3.2} /></span>Držač za alat drugog brenda</li>
+          <li><span><Icon name="check" size={14} stroke={3.2} /></span>Poklon sa imenom kog nema u katalogu</li>
+        </ul>
+        <div><a class="btn btn-primary btn-lg" href="/po-meri/">Pošaljite upit</a></div>
+        <p class="small" style="color:var(--cream-muted)">Upit je besplatan. Ne plaćate ništa do potvrde cene i roka.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kako poručiti -->
+  <section class="wrap section fx-reveal" aria-labelledby="kako-title">
+    <div class="kako">
+      <div class="sec-head" style="margin-bottom:24px">
+        <div><h2 id="kako-title" class="h1">Kako poručiti</h2><p style="color:var(--ink-muted)">Tri koraka i paket je na putu.</p></div>
+        <div class="chips"><span class="pill">Bez naloga</span><span class="pill">Preko Messengera</span><span class="pill">Plaćanje pouzećem</span></div>
+      </div>
+      <ol class="steps">
+        <li>
+          <div class="step-art art-1">
+            <img class="s1a" src="/img/p/patuljak-sa-led-svecicom/1-sq.webp" alt="" width="900" height="900" loading="lazy" />
+            <img class="s1b" src="/img/c/ukras-sofija-sm.webp" alt="" width="640" height="640" loading="lazy" />
+            <img class="s1c" src="/img/p/mini-jelka-za-sto/1-sq.webp" alt="" width="900" height="900" loading="lazy" />
+          </div>
+          <div class="step-txt"><span class="num">1</span><div><h3 class="h3">Izaberite proizvod</h3><p class="small muted">Iz kataloga, ili nam pošaljite meru i fotografiju onoga što vam treba.</p></div></div>
+        </li>
+        <li>
+          <div class="step-art art-2">
+            <div class="bubble">
+              <span class="small muted">Vaša poruka</span>
+              <p><strong>Zdravo, želim da poručim:</strong><br />Ukras za jelku sa imenom (NG-01)<br />Ime: Mila</p>
+            </div>
+            <span class="send"><Icon name="messenger" size={18} />Poruči preko Messengera</span>
+          </div>
+          <div class="step-txt"><span class="num">2</span><div><h3 class="h3">Pošaljite poruku</h3><p class="small muted">Kliknite „Poruči preko Messengera”: naziv, šifra i link proizvoda su već u poruci.</p></div></div>
+        </li>
+        <li>
+          <div class="step-art art-3">
+            <svg viewBox="0 0 300 210" fill="none" aria-hidden="true">
+              <path d="M14 112h50M30 136h34M6 160h58" stroke="#335A22" stroke-width="6" stroke-linecap="round" stroke-dasharray="0 13" />
+              <path d="M86 78 L176 106 L176 198 L86 170 Z" fill="#C99A5E" />
+              <path d="M176 106 L266 78 L266 170 L176 198 Z" fill="#D9B07A" />
+              <path d="M86 78 L176 50 L266 78 L176 106 Z" fill="#E6C291" />
+              <path d="M122 67 L140 61 L230 89 L212 95 Z" fill="#F5E2A8" />
+              <path d="M212 95 L230 89 L230 181 L212 187 Z" fill="#F5E2A8" />
+              <path d="M100 120 L150 135 L150 162 L100 147 Z" fill="#EEEAE3" stroke="#312018" stroke-width="2.5" stroke-linejoin="round" />
+              <path d="M108 132 L140 142 M108 141 L132 148" stroke="#312018" stroke-width="2.5" stroke-linecap="round" />
+              <path d="M86 78 L176 50 L266 78 L266 170 L176 198 L86 170 Z M86 78 L176 106 L266 78 M176 106 L176 198" stroke="#312018" stroke-width="4" stroke-linejoin="round" />
+            </svg>
+            <img class="s3bee" src="/img/brand/pcelica.webp" alt="" width="320" height="320" loading="lazy" />
+            <span class="pay"><Icon name="cash" size={16} stroke={2.2} />Plaćate kuriru</span>
+          </div>
+          <div class="step-txt"><span class="num">3</span><div><h3 class="h3">Stiže kurirom</h3><p class="small muted">Javljamo cenu i rok, a paket šaljemo kurirom. Plaćate kuriru kad paket stigne.</p></div></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Česta pitanja -->
+  <section class="wrap section" aria-labelledby="faq-title">
+    <div class="faq-wrap">
+      <div class="faq-side">
+        <h2 id="faq-title" class="h1">Česta pitanja</h2>
+        <p class="muted" style="margin-top:8px">Plaćanje, dostava, rokovi i povraćaj, ukratko.</p>
+        <div class="help-card">
+          <img src="/img/brand/pcelica.webp" alt="" width="320" height="320" loading="lazy" style="width:64px;height:64px" />
+          <h3 class="h3">Niste našli odgovor?</h3>
+          <p class="small">Pišite nam na Messenger-u ili pogledajte sva pitanja u Pomoći.</p>
+          <a class="btn btn-paper" href={messengerUrl()} target="_blank" rel="noopener"><Icon name="messenger" />Pišite nam</a>
+          <a class="link-arrow small" href="/pomoc/">Sva pitanja u Pomoći<Icon name="arrow" size={18} /></a>
+        </div>
+      </div>
+      <div class="faq-panel"><Accordion items={faq} /></div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { fitName } from '../lib/ornament';
+  const input = document.querySelector<HTMLInputElement>('[data-home-ime]');
+  const fallback: Record<string, string> = { a: 'Luka', b: 'Sofija', c: 'Mila' };
+  input?.addEventListener('input', () => {
+    document.querySelectorAll<SVGGElement>('.ukr-stage [data-orn]').forEach((g) => {
+      const f = fitName(input.value, fallback[g.dataset.orn || 'b']);
+      g.querySelectorAll('.orn-name').forEach((t) => { t.textContent = f.name; t.setAttribute('font-size', f.fs); t.setAttribute('y', f.y); });
+      g.querySelectorAll('.orn-rail').forEach((r) => { r.setAttribute('d', f.rails); r.setAttribute('stroke-width', f.railW); });
+    });
+  });
+</script>
+
+<style>
+  .hero-sec { padding-top: 8px; }
+  .hero { position: relative; min-height: 640px; border-radius: var(--r-lg); overflow: hidden; background: var(--surface); padding-right: 560px; }
+  .hero-media { position: absolute; inset: 0; }
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: right center; }
+  .hero-intro, .hero-cta { position: relative; z-index: 1; padding: 0 0 0 80px; }
+  .hero-intro { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; padding-top: 104px; max-width: 680px; }
+  .hero-intro .lead { color: var(--ink); max-width: 520px; }
+  .hero-cta { display: flex; flex-direction: column; gap: 24px; padding-top: 28px; padding-bottom: 80px; }
+  .facts { display: flex; gap: 40px; margin: 0; }
+  .facts dt { font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+  .facts dd { margin: 0; font-size: 20px; line-height: 26px; font-weight: 800; }
+  .btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-stage { position: absolute; top: 0; bottom: 0; right: 24px; width: 536px; z-index: 1; }
+  .hero-trail { position: absolute; left: -96px; top: 96px; }
+  .hero-bee { position: absolute; left: 132px; top: 84px; width: 92px; display: block; }
+  .float-card { position: absolute; left: 24px; bottom: 56px; width: 240px; display: flex; flex-direction: column; gap: 10px; padding: 10px 10px 14px; background: var(--surface-paper); border-radius: 18px; box-shadow: var(--shadow); text-decoration: none; transform: rotate(var(--r)); }
+  .float-card.fc-2 { left: 290px; bottom: 112px; width: 220px; }
+  .float-card:hover { transform: rotate(0deg) translateY(-4px) !important; transition: transform .35s var(--ease); }
+  .fc-img { display: block; border-radius: 12px; overflow: hidden; }
+  .fc-img img { width: 100%; height: 100%; object-fit: cover; }
+  .fc-label { font-size: 15px; line-height: 20px; font-weight: 700; padding: 0 4px; }
+  @media (max-width: 1240px) { .hero { padding-right: 460px; } .hero-stage { width: 450px; right: 8px; } .hero-intro, .hero-cta { padding-left: 56px; } .float-card { width: 200px; } .float-card.fc-2 { left: 230px; width: 190px; } }
+  @media (max-width: 900px) {
+    .hero { display: flex; flex-direction: column; background: none; min-height: 0; overflow: visible; gap: 20px; padding-right: 0; }
+    .hero-media { position: relative; order: 2; height: 440px; border-radius: var(--r-lg); overflow: hidden; }
+    .hero-bg img { object-position: center top; }
+    .hero-intro { order: 1; padding: 24px 0 0; max-width: none; }
+    .hero-stage { inset: 0; width: auto; right: 0; }
+    .hero-cta { order: 3; padding: 0 0 8px; }
+    .hero-trail { left: -40px; top: 40px; transform: scale(.7); transform-origin: left top; }
+    .hero-bee { left: auto; right: 34%; top: 24px; width: 64px; }
+    .float-card { left: 6%; bottom: 28px; width: 46%; max-width: 220px; padding: 8px 8px 10px; }
+    .float-card.fc-2 { left: auto; right: 5%; bottom: 64px; width: 42%; max-width: 200px; }
+    .fc-label { font-size: 13px; line-height: 17px; }
+    .btns .btn { flex: 1 1 100%; }
+    .facts { gap: 24px; }
+  }
+
+  .ukr-panel { position: relative; border-radius: var(--r-lg); overflow: hidden; min-height: 560px; display: flex; align-items: center; background: #E9DCC4; }
+  .ukr-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ukr-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 18px; align-items: flex-start; padding: 64px 80px; max-width: 600px; }
+  .ukr-form { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 440px; }
+  .ukr-form .input { background: rgba(238,234,227,.92); }
+  .ukr-stage { position: absolute; top: 0; right: 24px; width: 620px; height: 560px; z-index: 1; }
+  @media (max-width: 1240px) { .ukr-stage { right: 0; width: 520px; height: 470px; } .ukr-text { padding: 56px; max-width: 520px; } }
+  @media (max-width: 1080px) {
+    .ukr-panel { flex-direction: column; align-items: stretch; }
+    .ukr-stage { position: relative; order: -1; right: auto; width: min(620px, 100%); height: auto; aspect-ratio: 620 / 560; margin: 0 auto; }
+    .ukr-text { max-width: none; padding: 0 24px 32px; background: linear-gradient(transparent, rgba(245,226,168,.85) 18%); }
+    .ukr-form .btn { width: 100%; }
+  }
+
+  .trust { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding: 24px 32px; background: var(--surface-raised); border-radius: var(--r-lg); }
+  .trust li { display: flex; gap: 14px; align-items: center; }
+  .trust li > span:last-child { display: flex; flex-direction: column; }
+  .trust strong { font-size: 15px; line-height: 20px; }
+  .ti { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--surface-paper); display: inline-flex; align-items: center; justify-content: center; }
+  @media (max-width: 1000px) { .trust { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .trust { grid-template-columns: 1fr; padding: 20px; } }
+
+  .cats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .cat { background: var(--surface-paper); border-radius: var(--r-lg); overflow: hidden; display: flex; transition: transform .35s var(--ease), box-shadow .35s ease; }
+  .cat:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .cat-big { grid-row: span 2; flex-direction: column; }
+  .cat-row { min-height: 300px; }
+  .cat-media { position: relative; background-size: cover; background-position: center; background-color: var(--surface-raised); }
+  .cat-big .cat-media { height: 380px; }
+  .cat-row .cat-media { flex: 0 0 38%; }
+  .cat-icon { position: absolute; left: 16px; top: 16px; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: var(--surface-paper); display: inline-flex; align-items: center; justify-content: center; }
+  .cat-body { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 28px; flex: 1; min-width: 0; }
+  .cat-big .cat-body { padding: 32px; }
+  .cat-list { list-style: none; width: 100%; border-top: 1px solid var(--line); }
+  .cat-list a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+  .cat-list a > span { display: flex; flex-direction: column; }
+  .cat-list strong { font-size: 15px; line-height: 20px; }
+  .cat-list svg { flex: none; transition: transform .3s var(--ease); }
+  .cat-list a:hover svg { transform: translateX(4px); }
+  .cat-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 8px; }
+  .polaroid { position: absolute; width: 30%; padding: 8px 8px 10px; background: var(--surface-paper); border-radius: 10px; box-shadow: var(--shadow); transform: rotate(var(--r)); text-decoration: none; display: flex; flex-direction: column; gap: 6px; transition: transform .35s var(--ease); }
+  .polaroid:hover { transform: rotate(0) translateY(-4px); }
+  .polaroid::before { content: ''; position: absolute; left: 50%; top: -10px; width: 56px; height: 20px; margin-left: -28px; background: rgba(245,226,168,.85); transform: rotate(-3deg); }
+  .polaroid img { border-radius: 6px; aspect-ratio: 1; object-fit: cover; width: 100%; }
+  .polaroid span { font-size: 12px; line-height: 16px; font-weight: 700; }
+  .pol-lg { width: 34%; }
+  .pol-sm { width: 52%; }
+  .pa { left: 12%; top: 10%; }
+  .pb { left: 26%; top: 50%; }
+  .cat-pol { overflow: hidden; }
+  .cat-wing .cat-media { background: var(--wing); }
+  .cat-honey .cat-media { background: #F4E2AA; display: flex; align-items: center; justify-content: center; }
+  .cat-toys img { width: auto; max-width: 80%; max-height: 88%; object-fit: contain; }
+  .cat-media { overflow: hidden; }
+  @media (max-width: 1000px) { .cats { grid-template-columns: 1fr; } .cat-big { grid-row: auto; } }
+  @media (max-width: 620px) {
+    .cat-row { flex-direction: column; }
+    .cat-row .cat-media { flex: none; height: 200px; }
+    .cat-big .cat-media { height: 280px; }
+    .cat-body, .cat-big .cat-body { padding: 22px 20px; }
+    .pol-sm { width: 36%; }
+    .pa { left: 12%; top: 16%; }
+    .pb { left: 54%; top: 12%; }
+    .cat-row .cat-pol { height: 240px; }
+  }
+
+  .pomeri { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 24px; border-radius: var(--r-lg); background: var(--dark); color: var(--cream); align-items: center; }
+  .pomeri > img { width: 100%; height: 100%; min-height: 420px; object-fit: cover; border-radius: 18px; }
+  .pomeri-text { display: flex; flex-direction: column; gap: 18px; padding: 24px 32px 24px 8px; }
+  .checks { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .checks li { display: flex; gap: 12px; align-items: center; font-weight: 600; }
+  .checks li > span { width: 22px; height: 22px; border-radius: 50%; background: var(--honey); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  @media (max-width: 900px) { .pomeri { grid-template-columns: 1fr; padding: 16px; } .pomeri > img { min-height: 240px; height: 260px; } .pomeri-text { padding: 8px 8px 16px; } }
+
+  .kako { background: var(--honey-soft); border-radius: var(--r-lg); padding: 48px; }
+  .pill { display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border: 2px solid var(--ink); border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+  .steps { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .steps > li { background: var(--surface-paper); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 16px; }
+  .step-art { position: relative; height: 230px; border-radius: 14px; overflow: hidden; }
+  .art-1 { background: var(--surface-raised); }
+  .art-1 img { position: absolute; border-radius: 10px; border: 6px solid var(--surface-paper); box-shadow: var(--shadow); object-fit: cover; }
+  .s1a { width: 46%; aspect-ratio: 4/5; left: 6%; top: 18%; transform: rotate(-6deg); }
+  .s1b { width: 40%; aspect-ratio: 1; left: 30%; top: 12%; z-index: 2; transform: rotate(2deg); }
+  .s1c { width: 34%; aspect-ratio: 3/4; right: 6%; top: 20%; transform: rotate(6deg); }
+  .art-2 { background: var(--wing); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 16px; }
+  .bubble { background: var(--surface-paper); border-radius: 16px 16px 16px 4px; padding: 12px 14px; font-size: 14px; line-height: 20px; box-shadow: var(--shadow); max-width: 260px; display: flex; flex-direction: column; gap: 4px; }
+  .send { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: var(--r-pill); background: var(--honey); border: 2px solid var(--ink); font-size: 13px; font-weight: 700; }
+  .art-3 { background: var(--leaf-soft); display: flex; align-items: center; justify-content: center; }
+  .art-3 svg { width: 74%; height: auto; overflow: visible; }
+  .s3bee { position: absolute; width: 56px; right: 18%; top: 10%; }
+  .pay { position: absolute; right: 12%; bottom: 14%; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: var(--r-pill); background: var(--surface-paper); border: 2px solid var(--ink); font-size: 12px; font-weight: 700; box-shadow: var(--shadow); }
+  .step-txt { display: flex; gap: 14px; align-items: flex-start; padding: 0 6px 6px; }
+  .step-txt > div { display: flex; flex-direction: column; gap: 4px; }
+  .num { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--honey); border: 2px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; }
+  @media (max-width: 960px) { .steps { grid-template-columns: 1fr; } .kako { padding: 28px 16px; } .step-art { height: 210px; } }
+
+  .faq-wrap { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 32px; align-items: start; }
+  .help-card { margin-top: 24px; background: var(--wing); border-radius: var(--r-lg); padding: 24px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  @media (max-width: 900px) { .faq-wrap { grid-template-columns: 1fr; } }
+</style>
