@@ -1,0 +1,66 @@
+---
+// Izbor boje iz liste boja filamenta (samo boje koje su na stanju).
+import { BOJE_NA_STANJU, isLight, pick } from '../lib/colors';
+interface Props {
+  name: string; // ime polja u formularu
+  label: string; // npr. „Boja slova”
+  def: string; // id podrazumevane boje
+  mix?: string; // tekst opcije „Šareno” (ako postoji)
+  mixDefault?: boolean;
+  extra?: { value: string; label: string; css: string; checked?: boolean }[]; // dodatne opcije, npr. „Kao ukras”
+  attrs?: Record<string, string>;
+}
+const { name, label, def, mix, mixDefault = false, extra = [], attrs = {} } = Astro.props;
+const defId = pick(def);
+const extraChecked = extra.find((e) => e.checked);
+const checkedId = mixDefault || extraChecked ? '' : defId;
+const shown = mixDefault ? mix : extraChecked ? extraChecked.label : BOJE_NA_STANJU.find((b) => b.id === defId)?.naziv;
+---
+<fieldset class="field cp" data-cp {...attrs}>
+  <legend class="flabel">{label}: <span class="cp-name" data-cp-name>{shown}</span></legend>
+  <div class="cp-list">
+    {mix && (
+      <label class="cp-sw" title={mix}>
+        <input type="radio" name={name} value="sareno" checked={mixDefault} data-label={mix} aria-label={mix} />
+        <span class="cp-dot cp-mix" aria-hidden="true"></span>
+      </label>
+    )}
+    {extra.map((e) => (
+      <label class="cp-sw" title={e.label}>
+        <input type="radio" name={name} value={e.value} checked={!!e.checked} data-label={e.label} aria-label={e.label} />
+        <span class="cp-dot" style={`background:${e.css}`} aria-hidden="true"></span>
+      </label>
+    ))}
+    {BOJE_NA_STANJU.map((b) => (
+      <label class="cp-sw" title={b.naziv}>
+        <input type="radio" name={name} value={b.id} checked={b.id === checkedId} data-label={b.naziv} data-hex={b.hex} aria-label={b.naziv} />
+        <span class={`cp-dot${isLight(b.hex) ? ' cp-light' : ''}`} style={`background:${b.hex}`} aria-hidden="true"></span>
+      </label>
+    ))}
+  </div>
+</fieldset>
+
+<script>
+  document.addEventListener('change', (e) => {
+    const t = e.target as HTMLInputElement;
+    if (!t.matches || !t.matches('[data-cp] input[type="radio"]')) return;
+    const n = t.closest('[data-cp]')?.querySelector('[data-cp-name]');
+    if (n) n.textContent = t.dataset.label || '';
+  });
+</script>
+
+<style>
+  .cp { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .cp legend { padding: 0; margin-bottom: 10px; }
+  .cp-name { text-transform: none; letter-spacing: 0; font-weight: 700; color: var(--ink-muted); }
+  .cp-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cp-sw { position: relative; display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; }
+  .cp-sw input { position: absolute; opacity: 0; pointer-events: none; }
+  .cp-dot { width: 34px; height: 34px; border-radius: 50%; border: 2px solid rgba(49,32,24,.18); transition: transform .2s var(--ease); }
+  .cp-light { border-color: rgba(49,32,24,.35); }
+  .cp-mix { background: conic-gradient(#F3EEE5 0 20%, #B3312A 0 40%, #2F6DB5 0 60%, #F2C230 0 80%, #2F5B3B 0); }
+  .cp-sw:hover .cp-dot { transform: scale(1.08); }
+  .cp-sw:has(input:checked) { box-shadow: 0 0 0 2px var(--ink); }
+  .cp-sw:has(input:checked) .cp-dot { transform: scale(.86); }
+  .cp-sw:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
+</style>

@@ -105,7 +105,7 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
     </section>
 
     <!-- Vaše ime na ukrasu -->
-    <section class="wrap section fx-reveal" aria-labelledby="ukras-title">
+    <section class="wrap section reveal" aria-labelledby="ukras-title">
       <div class="ukr-panel">
         <img class="ukr-bg" src="/img/bg/ukras-pozadina.webp" alt="" width="1000" height="750" loading="lazy" />
         <div class="ukr-text">
@@ -121,14 +121,16 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
           </form>
           <p class="small muted">Do 12 slova. Sa imenom primamo do 16. 12.</p>
         </div>
-        <svg class="ukr-stage" viewBox="0 0 620 560" role="img" aria-label="Tri ukrasa za jelku sa imenima: zeleni sa planinama, beli sa zvezdama i crveni sa mašnom">
+        <div class="ukr-stage" role="img" aria-label="Tri ukrasa za jelku sa imenima: zeleni sa planinama, beli sa zvezdama i crveni sa mašnom">
           {hang.map((h) => (
-            <g class={h.cls} style={`transform-origin:${h.x}px 0px`}>
-              <line x1={h.x} y1="0" x2={h.x} y2={h.hy} stroke="#8E2A22" stroke-width={h.s > 1 ? 2 : 1.5} />
-              <g transform={`translate(${h.x} ${h.hy}) rotate(${h.rot}) scale(${h.s}) translate(-120 -${hy(h.motif)})`} filter="url(#orn-sh)" set:html={ornamentG({ motif: h.motif, color: h.color, nameColor: h.nameColor, fallback: h.fb, key: h.key })} />
-            </g>
+            <div class={`ukr-layer ${h.cls}`} style={`transform-origin:${(h.x / 620 * 100).toFixed(2)}% 0`}>
+              <svg viewBox="0 0 620 560" aria-hidden="true">
+                <line x1={h.x} y1="0" x2={h.x} y2={h.hy} stroke="#8E2A22" stroke-width={h.s > 1 ? 2 : 1.5} />
+                <g transform={`translate(${h.x} ${h.hy}) rotate(${h.rot}) scale(${h.s}) translate(-120 -${hy(h.motif)})`} filter="url(#orn-sh)" set:html={ornamentG({ motif: h.motif, color: h.color, nameColor: h.nameColor, fallback: h.fb, key: h.key })} />
+              </svg>
+            </div>
           ))}
-        </svg>
+        </div>
       </div>
     </section>
 
@@ -166,7 +168,7 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
           <ul class="cat-list">
             <li><a href="/proizvod/ukras-za-jelku-sa-imenom/"><span><strong>Ukras za jelku sa imenom</strong><span class="small muted">4 motiva, 4 boje</span></span><Icon name="arrow" /></a></li>
             <li><a href="/proizvod/porodicni-set-ukrasa-sa-imenima/"><span><strong>Porodični set ukrasa sa imenima</strong><span class="small muted">4 ili 5 imena u jednoj kutiji</span></span><Icon name="arrow" /></a></li>
-            <li><a href="/proizvod/porodicni-privezak-sa-imenima/"><span><strong>Porodični privezak sa imenima</strong><span class="small muted">2–4 imena, za ključeve</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/porodicni-privezak-sa-imenima/"><span><strong>Porodični set privezaka sa imenima</strong><span class="small muted">2 do 8 imena, 5 stilova slova</span></span><Icon name="arrow" /></a></li>
           </ul>
           <div class="cat-actions">
             <a class="btn btn-primary btn-lg" href="/proizvod/ukras-za-jelku-sa-imenom/">Upišite ime</a>
@@ -206,17 +208,17 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
       <article class="cat cat-row cat-wing">
         <div class="cat-media cat-pol">
           <span class="cat-icon"><Icon name="key" size={22} /></span>
-          <a class="polaroid pol-sm pa" style="--r:-5deg" href="/proizvod/privezak-sa-imenom/"><img src="/img/c/privezak-ime-sm.webp" alt="" width="600" height="600" loading="lazy" /><span>Sa imenom</span></a>
-          <a class="polaroid pol-sm pb" style="--r:4deg" href="/proizvod/privezak-deda-mraz/"><img src="/img/p/privezak-deda-mraz/1-sq.webp" alt="" width="900" height="900" loading="lazy" /><span>Deda Mraz</span></a>
+          <a class="polaroid pol-sm pa" style="--r:-5deg" href="/proizvod/porodicni-privezak-sa-imenima/"><img src="/img/p/porodicni-privezak-sa-imenima/1-sq.webp" alt="" width="900" height="900" loading="lazy" /><span>Sa imenima</span></a>
+          <a class="polaroid pol-sm pb" style="--r:4deg" href="/proizvod/privezak-sa-imenom-kockice/"><img src="/img/p/privezak-sa-imenom-kockice/1-sq.webp" alt="" width="900" height="900" loading="lazy" /><span>Kockice</span></a>
         </div>
         <div class="cat-body">
           <span class="badge badge-custom">Sa imenom ili bez</span>
           <h3 class="h3">Privesci</h3>
-          <p class="small muted">Mali poklon koji se nosi svaki dan: sa imenom, slovima od kockica ili novogodišnji.</p>
+          <p class="small muted">Mali poklon koji se nosi svaki dan: ime u stilu koji izaberete i bojama koje volite.</p>
           <ul class="cat-list">
-            <li><a href="/proizvod/privezak-sa-imenom/"><span><strong>Privezak sa imenom</strong><span class="small muted">Latinica ili ćirilica, dve boje</span></span><Icon name="arrow" /></a></li>
-            <li><a href="/proizvod/pikselasti-privezak-sa-imenom/"><span><strong>Pikselasti privezak sa imenom</strong><span class="small muted">Slova od kockica</span></span><Icon name="arrow" /></a></li>
-            <li><a href="/proizvod/privezak-deda-mraz/"><span><strong>Privezak Deda Mraz</strong><span class="small muted">Poklon uz čestitku</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/privezak-sa-imenom/"><span><strong>Privezak sa imenom</strong><span class="small muted">Pisana ili štampana slova, vaše boje</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/privezak-sa-imenom-kockice/"><span><strong>Slova kao od kockica</strong><span class="small muted">I bajkovita ili pikselasta slova</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/porodicni-privezak-sa-imenima/"><span><strong>Porodični set privezaka</strong><span class="small muted">2 do 8 imena, 5 stilova slova</span></span><Icon name="arrow" /></a></li>
           </ul>
           <a class="link-arrow" href="/katalog/privesci/">Svi privesci<Icon name="arrow" /></a>
         </div>
@@ -236,7 +238,7 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
   </section>
 
   <!-- Po meri -->
-  <section class="wrap section fx-reveal" aria-labelledby="pomeri-title">
+  <section class="wrap section reveal" aria-labelledby="pomeri-title">
     <div class="pomeri dark">
       <img src="/img/bg/po-meri.webp" alt="3D štampač u radionici sa odštampanim delovima" width="1000" height="750" loading="lazy" />
       <div class="pomeri-text">
@@ -255,7 +257,7 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
   </section>
 
   <!-- Kako poručiti -->
-  <section class="wrap section fx-reveal" aria-labelledby="kako-title">
+  <section class="wrap section reveal" aria-labelledby="kako-title">
     <div class="kako">
       <div class="sec-head" style="margin-bottom:24px">
         <div><h2 id="kako-title" class="h1">Kako poručiti</h2><p style="color:var(--ink-muted)">Tri koraka i paket je na putu.</p></div>
@@ -353,7 +355,6 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
   .hero-bee { position: absolute; left: 132px; top: 84px; width: 92px; display: block; }
   .float-card { position: absolute; left: 24px; bottom: 56px; width: 240px; display: flex; flex-direction: column; gap: 10px; padding: 10px 10px 14px; background: var(--surface-paper); border-radius: 18px; box-shadow: var(--shadow); text-decoration: none; transform: rotate(var(--r)); }
   .float-card.fc-2 { left: 290px; bottom: 112px; width: 220px; }
-  .float-card:hover { transform: rotate(0deg) translateY(-4px) !important; transition: transform .35s var(--ease); }
   .fc-img { display: block; border-radius: 12px; overflow: hidden; }
   .fc-img img { width: 100%; height: 100%; object-fit: cover; }
   .fc-label { font-size: 15px; line-height: 20px; font-weight: 700; padding: 0 4px; }
@@ -380,6 +381,8 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
   .ukr-form { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 440px; }
   .ukr-form .input { background: rgba(238,234,227,.92); }
   .ukr-stage { position: absolute; top: 0; right: 24px; width: 620px; height: 560px; z-index: 1; }
+  .ukr-layer { position: absolute; inset: 0; pointer-events: none; }
+  .ukr-layer svg { display: block; width: 100%; height: 100%; overflow: visible; }
   @media (max-width: 1240px) { .ukr-stage { right: 0; width: 520px; height: 470px; } .ukr-text { padding: 56px; max-width: 520px; } }
   @media (max-width: 1080px) {
     .ukr-panel { flex-direction: column; align-items: stretch; }
@@ -398,7 +401,6 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
 
   .cats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .cat { background: var(--surface-paper); border-radius: var(--r-lg); overflow: hidden; display: flex; transition: transform .35s var(--ease), box-shadow .35s ease; }
-  .cat:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   .cat-big { grid-row: span 2; flex-direction: column; }
   .cat-row { min-height: 300px; }
   .cat-media { position: relative; background-size: cover; background-position: center; background-color: var(--surface-raised); }
@@ -415,7 +417,6 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
   .cat-list a:hover svg { transform: translateX(4px); }
   .cat-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 8px; }
   .polaroid { position: absolute; width: 30%; padding: 8px 8px 10px; background: var(--surface-paper); border-radius: 10px; box-shadow: var(--shadow); transform: rotate(var(--r)); text-decoration: none; display: flex; flex-direction: column; gap: 6px; transition: transform .35s var(--ease); }
-  .polaroid:hover { transform: rotate(0) translateY(-4px); }
   .polaroid::before { content: ''; position: absolute; left: 50%; top: -10px; width: 56px; height: 20px; margin-left: -28px; background: rgba(245,226,168,.85); transform: rotate(-3deg); }
   .polaroid img { border-radius: 6px; aspect-ratio: 1; object-fit: cover; width: 100%; }
   .polaroid span { font-size: 12px; line-height: 16px; font-weight: 700; }
@@ -473,4 +474,9 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
   .faq-wrap { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 32px; align-items: start; }
   .help-card { margin-top: 24px; background: var(--wing); border-radius: var(--r-lg); padding: 24px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
   @media (max-width: 900px) { .faq-wrap { grid-template-columns: 1fr; } }
+  @media (hover: hover) {
+    .float-card:hover { transform: rotate(0deg) translateY(-4px) !important; transition: transform .35s var(--ease); }
+    .cat:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .polaroid:hover { transform: rotate(0) translateY(-4px); }
+  }
 </style>

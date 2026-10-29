@@ -1,12 +1,11 @@
 // Pregled ukrasa sa imenom: boje, motivi i raspored imena preko obruča.
 // Isti kod se koristi pri izradi strane i u pregledu uživo u pregledaču.
 
-export const BOJE = [
-  { id: 'bela', label: 'Bela', face: '#F3EEE5', edge: '#B9AE9C' },
-  { id: 'crvena', label: 'Crvena', face: '#B3312A', edge: '#7E1F1A' },
-  { id: 'zelena', label: 'Zelena', face: '#2F5B3B', edge: '#1C3A25' },
-  { id: 'zlatna', label: 'Zlatna', face: '#D6A23E', edge: '#A0741F' },
-];
+import { SVE_BOJE, darken } from './colors';
+
+// Boje ukrasa dolaze iz liste boja filamenta (admin panel); ivica je tamnija nijansa.
+const IVICE: Record<string, string> = { bela: '#B9AE9C', crvena: '#7E1F1A', zelena: '#1C3A25', zlatna: '#A0741F' };
+export const BOJE = SVE_BOJE.map((b) => ({ id: b.id, label: b.naziv, face: b.hex, edge: IVICE[b.id] || darken(b.hex, b.id === 'crna' ? -0.35 : 0.32) }));
 
 export const MOTIVI = [
   { id: 'zvezde', label: 'Zvezde i jelke', hy: 64 },

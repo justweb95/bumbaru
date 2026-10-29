@@ -1,12 +1,17 @@
 // Proizvodi. Novi proizvod = novi objekat u nizu PRODUCTS.
-// Slike: /public/img/p/<slug>/<n>-lg.webp i <n>-sm.webp (prva slika je sa žigom, ide na kartice i u deljenje linka).
+// Slike: /public/img/p/<slug>/<n>-lg.webp (cela) i <n>-sq.webp (kvadrat za kartice); prva slika je sa žigom.
+// Boje: colors: [{ id, label, def }] nudi boje iz admin panela (src/data/boje.json).
 // Cene: upisuje se broj (npr. price: 390). Prikazuju se tek kad je SITE.showPrices = true.
 
 import type { Faq } from './categories';
 
 export interface Img { src: string; w: number; h: number; alt: string }
 export interface Option { id: string; label: string; values: string[] }
-export type Personal = 'ukras' | 'set' | 'imena' | 'ime';
+export type Personal = 'ukras' | 'set' | 'privezak';
+// Izbor boje iz liste boja filamenta (admin panel); def = id podrazumevane boje
+export interface ColorChoice { id: string; label: string; def: string }
+// Privezak sa imenom: stilovi slova (src/lib/keychain.ts) i broj imena (svako ime je jedan privezak)
+export interface KeychainCfg { stilovi: string[]; startImena: number; minImena: number; maxImena: number; sareno?: boolean }
 
 export interface Product {
   id: string; // šifra koja ide u poruku
@@ -22,7 +27,9 @@ export interface Product {
   priceFrom?: boolean;
   images: Img[];
   options?: Option[];
+  colors?: ColorChoice[];
   personal?: Personal;
+  keychain?: KeychainCfg;
   about: string[];
   specs: [string, string][];
   details: Faq[];
@@ -43,6 +50,24 @@ const POVRACAJ = 'Proizvod možete vratiti u roku od 14 dana od prijema, bez nav
 const PRIVEZAK_FAQ: Faq[] = [
   { q: 'Da li je privezak igračka?', a: 'Nije. Sitni delovi i karika nisu za decu mlađu od 3 godine.' },
   { q: 'Mogu li više komada?', a: 'Možete. Upišite količinu pre slanja poruke ili nam je napišite u Messenger-u.' },
+];
+const IME_FAQ: Faq[] = [
+  { q: 'Mogu li ime ćirilicom?', a: 'Možete. Štampamo tačno kako upišete, latinicom ili ćirilicom.' },
+  { q: 'Mogu li više privezaka sa različitim imenima?', a: 'Možete. Kliknite „Dodajte još jedno ime”: svako ime je poseban privezak, a sva stižu u istom paketu.' },
+  { q: 'Mogu li da biram boje?', a: 'Možete. Birate boju slova, okvira i osnove od boja koje trenutno imamo, a pregled odmah pokazuje kako će izgledati.' },
+  { q: 'Da li je privezak igračka?', a: 'Nije. Sitni delovi i karika nisu za decu mlađu od 3 godine.' },
+];
+const PRIVEZAK_IME_SPECS: [string, string][] = [
+  ['Ime', 'do 12 slova, latinica ili ćirilica'],
+  ['Boje', 'slova, okvir i osnova, po izboru'],
+  ['Karika', 'metalna karika za ključeve'],
+  ['Materijal', 'PLA plastika'],
+  ['Rok', 'izrada 3–5 radnih dana'],
+];
+const PRIVEZAK_IME_DETAILS: Faq[] = [
+  { q: 'Rok izrade i dostava', a: ROK_IME },
+  { q: 'Povraćaj i reklamacije', a: POVRACAJ_IME },
+  { q: 'Održavanje', a: PLA },
 ];
 
 export const PRODUCTS: Product[] = [
@@ -224,6 +249,7 @@ export const PRODUCTS: Product[] = [
       p('patuljak-sa-led-svecicom', 3, 1200, 900, 'Tri motiva patuljka: sa fenjerom, sa zvezdicama i sa zvezdom'),
     ],
     options: [{ id: 'motiv', label: 'Motiv', values: ['Sa zvezdicama na kapi', 'Sa fenjerom', 'Sa zvezdom u ruci', 'Set od 3 motiva'] }],
+    colors: [{ id: 'boja', label: 'Boja', def: 'bela' }],
     about: [
       'Patuljak je štampan od bele plastike, sa zvezdicama kroz koje prolazi svetlo. Imamo tri motiva: sa zvezdicama na kapi, sa fenjerom i sa zvezdom u ruci, a možete uzeti i sva tri.',
       'Patuljak ide samo sa LED svećicom, koju dobijate u kompletu. Pravu sveću ne stavljajte: plastika omekšava na toploti.',
@@ -231,7 +257,7 @@ export const PRODUCTS: Product[] = [
     specs: [
       ['Motivi', 'sa zvezdicama na kapi, sa fenjerom, sa zvezdom u ruci'],
       ['Svetlo', 'LED svećica u kompletu'],
-      ['Boja', 'bela'],
+      ['Boja', 'bela, ili druga boja po izboru'],
       ['Materijal', 'PLA plastika'],
     ],
     details: [
@@ -261,14 +287,14 @@ export const PRODUCTS: Product[] = [
       p('prstenovi-za-salvete-set-od-6', 2, 896, 1195, 'Salvete sa crvenim prstenovima: zvezda, jelen i Deda Mraz'),
       p('prstenovi-za-salvete-set-od-6', 3, 896, 1195, 'Šest motiva prstenova za salvete: sneško, zvezda, Deda Mraz, poklon, jelen i irvas'),
     ],
-    options: [{ id: 'boja', label: 'Boja', values: ['Crvena', 'Tirkizna', 'Druga boja (napišite u poruci)'] }],
+    colors: [{ id: 'boja', label: 'Boja', def: 'crvena' }],
     about: [
       'Svaki prsten ima drugi motiv, pa gosti lako zapamte svoje mesto za stolom. Ravni su i laki, a posle praznika staju u kovertu do sledeće godine.',
-      'Set ima šest komada u jednoj boji. Za veći sto poručite dva seta.',
+      'Set ima šest komada u jednoj boji, koju birate sami. Za veći sto poručite dva seta.',
     ],
     specs: [
       ['U setu', '6 prstenova: sneško, zvezda, Deda Mraz, poklon, jelen, irvas'],
-      ['Boje', 'crvena ili tirkizna, a druge na upit'],
+      ['Boje', 'po izboru, od boja koje imamo'],
       ['Materijal', 'PLA plastika'],
     ],
     details: [
@@ -277,7 +303,7 @@ export const PRODUCTS: Product[] = [
       { q: 'Održavanje', a: 'Brišite suvom ili blago vlažnom krpom. Ne perite u mašini za sudove.' },
     ],
     faq: [
-      { q: 'Mogu li dva seta u različitim bojama?', a: 'Možete. Napišite nam u poruci koje boje želite.' },
+      { q: 'Mogu li dva seta u različitim bojama?', a: 'Možete. Izaberite jednu boju, a drugu napišite u napomeni.' },
       { q: 'Odgovaraju li za platnene i papirne salvete?', a: 'Odgovaraju za obe vrste, salveta se samo provuče kroz prsten.' },
     ],
     related: ['patuljak-sa-led-svecicom', 'mini-jelka-za-sto', 'zlatna-jelka-za-sklapanje', 'porodicni-set-ukrasa-sa-imenima'],
@@ -297,6 +323,7 @@ export const PRODUCTS: Product[] = [
       p('mini-jelka-za-sto', 1, 896, 1195, 'Zelena mini jelka sa zvezdom na prazničnom stolu, pored sveća'),
       p('mini-jelka-za-sto', 2, 896, 1195, 'Mini jelka za sto sa kuglama i svećama'),
     ],
+    colors: [{ id: 'boja', label: 'Boja', def: 'zelena' }],
     about: [
       'Jelka ima slojevite grane, braon stablo i zvezdu na vrhu. Stoji sama, bez postolja, pa je lepa na stolu, polici ili prozoru.',
       'Dobar je mali poklon za kolege: ne zauzima mesto, a radni sto odmah izgleda praznično.',
@@ -311,7 +338,7 @@ export const PRODUCTS: Product[] = [
       { q: 'Održavanje', a: PLA },
     ],
     faq: [
-      { q: 'Može li jelka u drugoj boji?', a: 'Može. Napišite nam u poruci koju boju želite.' },
+      { q: 'Može li jelka u drugoj boji?', a: 'Može. Izaberite boju pre slanja poruke, od boja koje trenutno imamo.' },
     ],
     related: ['patuljak-sa-led-svecicom', 'zlatna-jelka-za-sklapanje', 'prstenovi-za-salvete-set-od-6', 'jelkica-za-punjenje'],
     seoTitle: 'Mini jelka za sto, novogodišnja dekoracija | Bumbaru',
@@ -330,6 +357,7 @@ export const PRODUCTS: Product[] = [
       p('zlatna-jelka-za-sklapanje', 1, 896, 1194, 'Sklopljena zlatna jelka i zlatna spirala na stolu'),
       p('zlatna-jelka-za-sklapanje', 2, 896, 1194, 'Ravni delovi zlatne jelke i spirala pre sklapanja'),
     ],
+    colors: [{ id: 'boja', label: 'Boja', def: 'zlatna' }],
     about: [
       'Jelka se sastoji od dva ravna dela sa šarama koji se uklope jedan u drugi. Sklapa se za par sekundi, bez lepka i alata, a posle praznika se rasklopi i vrati u kovertu.',
       'Uz jelku ide i zlatna spirala za ukras. Lep je poklon koji se šalje u čestitki, umesto još jedne kartice.',
@@ -367,13 +395,13 @@ export const PRODUCTS: Product[] = [
       p('jelkica-za-punjenje', 2, 928, 1152, 'Tirkizna jelkica za punjenje okačena na jelku'),
       p('jelkica-za-punjenje', 3, 928, 1152, 'Crvena jelkica za punjenje okačena na jelku'),
     ],
-    options: [{ id: 'boja', label: 'Boja', values: ['Tirkizna', 'Crvena', 'Druga boja (napišite u poruci)'] }],
+    colors: [{ id: 'boja', label: 'Boja', def: 'tirkizna' }],
     about: [
       'Jelkica ima mrežaste zidove, pa se vidi šta je unutra, i kukicu za kačenje na jelku. Može i da stoji na stolu ili polici.',
       'Bombone stavljajte umotane. Jelkica je ukras, nije posuda za hranu.',
     ],
     specs: [
-      ['Boje', 'tirkizna ili crvena, a druge na upit'],
+      ['Boje', 'po izboru, od boja koje imamo'],
       ['Kačenje', 'kukica na vrhu'],
       ['Materijal', 'PLA plastika'],
     ],
@@ -395,33 +423,38 @@ export const PRODUCTS: Product[] = [
   {
     id: 'PK-01',
     slug: 'porodicni-privezak-sa-imenima',
-    title: 'Porodični privezak sa imenima',
+    title: 'Porodični set privezaka sa imenima',
     category: 'pokloni-sa-imenom',
     categories: ['pokloni-sa-imenom', 'privesci', 'nova-godina'],
     tags: ['ime', 'privesci'],
-    short: 'Privezak za ključeve sa 2–4 imena, latinicom ili ćirilicom.',
-    lead: 'Privezak za ključeve sa imenima cele porodice, od dva do četiri imena. Ide uz ključeve cele godine, a ne samo za praznike.',
+    short: 'Privezak sa imenom za svakog u porodici. Birate stil slova i boje.',
+    lead: 'Za svakog člana porodice po jedan privezak sa imenom, u istom stilu slova. Birate jedan od pet stilova, a boje slova mogu biti iste ili svaka druga.',
     custom: true,
-    images: [],
-    personal: 'imena',
+    images: [
+      p('porodicni-privezak-sa-imenima', 1, 1200, 1200, 'Privesci sa imenima Dijana, Mateo, Luka, Sofija, Ema, Noa, Olivia i Gabrijel u bajkovitim slovima'),
+      p('porodicni-privezak-sa-imenima', 2, 1024, 1024, 'Privesci sa imenima pisanim slovima u više boja: Milica, Tijana, Đurđa, Dunja, Sofija, Anđa'),
+      p('porodicni-privezak-sa-imenima', 3, 1184, 1184, 'Privesci sa imenima Marija, Petar, Jovan i Milica ćirilicom, slova kao od kockica'),
+      p('porodicni-privezak-sa-imenima', 4, 1024, 1024, 'Pikselasti privesci sa imenima Branko, Željko, Miloš i Vukašin'),
+    ],
+    personal: 'privezak',
+    keychain: { stilovi: ['pisana', 'bajka', 'kockice', 'pikseli', 'stampana'], startImena: 3, minImena: 2, maxImena: 8, sareno: true },
     about: [
-      'Imena pišete latinicom ili ćirilicom i štampamo ih tačno kako ih upišete. Pre štampe proveravamo svako ime, a ako nešto nije jasno, pišemo vam.',
-      'Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
+      'Svako ime je poseban privezak, a svi stižu zajedno u jednom paketu. Stil slova je isti za ceo set, a boje slova mogu biti šarene, svako ime u drugoj boji.',
+      'Imena pišete latinicom ili ćirilicom i štampamo ih tačno kako ih upišete. Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
     ],
     specs: [
-      ['Imena', '2–4 imena, latinica ili ćirilica'],
-      ['Karika', 'metalna karika za ključeve'],
+      ['U setu', '2–8 privezaka, svaki sa jednim imenom'],
+      ['Stil slova', 'pisana, bajkovita, kao od kockica, pikselasta ili štampana'],
+      ['Boje', 'slova (iste ili šarene), okvir i osnova, po izboru'],
+      ['Karika', 'metalna karika za svaki privezak'],
       ['Materijal', 'PLA plastika'],
       ['Rok', 'izrada 3–5 radnih dana'],
     ],
-    details: [
-      { q: 'Rok izrade i dostava', a: ROK_IME },
-      { q: 'Povraćaj i reklamacije', a: POVRACAJ_IME },
-    ],
-    faq: PRIVEZAK_FAQ,
-    related: ['privezak-sa-imenom', 'porodicni-set-ukrasa-sa-imenima', 'ukras-za-jelku-sa-imenom', 'pikselasti-privezak-sa-imenom'],
-    seoTitle: 'Porodični privezak sa imenima | Bumbaru',
-    meta: 'Privezak za ključeve sa 2–4 imena cele porodice, latinicom ili ćirilicom. Izrada 3–5 radnih dana, plaćanje pouzećem.',
+    details: PRIVEZAK_IME_DETAILS,
+    faq: IME_FAQ,
+    related: ['privezak-sa-imenom', 'privezak-sa-imenom-bajkovita-slova', 'privezak-sa-imenom-kockice', 'pikselasti-privezak-sa-imenom'],
+    seoTitle: 'Porodični set privezaka sa imenima | Bumbaru',
+    meta: 'Privezak sa imenom za svakog u porodici, u istom stilu slova i bojama po izboru. Latinica ili ćirilica, izrada 3–5 radnih dana.',
   },
   {
     id: 'PR-01',
@@ -430,30 +463,73 @@ export const PRODUCTS: Product[] = [
     category: 'privesci',
     categories: ['privesci', 'pokloni-sa-imenom'],
     tags: ['ime', 'privesci'],
-    short: 'Ime pisanim slovima, latinica ili ćirilica, u dve boje.',
-    lead: 'Privezak sa imenom ispisanim pisanim slovima, u dve boje. Najmanji poklon koji se nosi svaki dan: na ključevima, rancu ili torbi.',
+    short: 'Pisana ili štampana slova, boje birate sami.',
+    lead: 'Privezak sa imenom, pisanim ili štampanim slovima. Slova, okvir i osnova su u bojama koje izaberete, a pregled odmah pokazuje kako će izgledati.',
     custom: true,
-    images: [c('privezak-ime', 600, 600, 'Privesci sa imenima Luka i Mila, u dve boje')],
-    personal: 'ime',
-    options: [{ id: 'boja', label: 'Boje', values: ['Zelena i bela', 'Crvena i bela', 'Druge boje (napišite u poruci)'] }],
+    images: [
+      p('privezak-sa-imenom', 1, 1024, 1024, 'Privesci sa imenima pisanim slovima u više boja: Milica, Tijana, Đurđa, Dunja, Sofija, Anđa, Mia, Slađa, Maša, Nikolina'),
+      p('privezak-sa-imenom', 2, 1024, 1024, 'Beli privezak sa imenom štampanim crnim slovima, pored privezaka sa pisanim slovima'),
+    ],
+    personal: 'privezak',
+    keychain: { stilovi: ['pisana', 'stampana'], startImena: 1, minImena: 1, maxImena: 6, sareno: true },
     about: [
-      'Ime pišete latinicom ili ćirilicom i štampamo ga tačno kako ga upišete. Slova su u jednoj boji, a podloga u drugoj.',
-      'Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
+      'Birate pisana ili štampana slova i boje za slova, okvir i osnovu. Ime pišete latinicom ili ćirilicom i štampamo ga tačno kako ga upišete.',
+      'Za više imena dodajte još redova: svako ime je poseban privezak. Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
     ],
-    specs: [
-      ['Ime', 'do 12 slova, latinica ili ćirilica'],
-      ['Boje', 'dve boje, po izboru'],
-      ['Materijal', 'PLA plastika'],
-      ['Rok', 'izrada 3–5 radnih dana'],
+    specs: PRIVEZAK_IME_SPECS,
+    details: PRIVEZAK_IME_DETAILS,
+    faq: IME_FAQ,
+    related: ['privezak-sa-imenom-bajkovita-slova', 'privezak-sa-imenom-kockice', 'pikselasti-privezak-sa-imenom', 'porodicni-privezak-sa-imenima'],
+    seoTitle: 'Privezak sa imenom, boje po izboru | Bumbaru',
+    meta: 'Privezak za ključeve sa imenom, pisanim ili štampanim slovima. Boje slova, okvira i osnove birate sami, pregled uživo. Izrada 3–5 radnih dana.',
+  },
+  {
+    id: 'PR-04',
+    slug: 'privezak-sa-imenom-bajkovita-slova',
+    title: 'Privezak sa imenom, bajkovita slova',
+    category: 'privesci',
+    categories: ['privesci', 'pokloni-sa-imenom'],
+    tags: ['ime', 'privesci'],
+    short: 'Razigrana slova kao iz crtanog filma. Boje birate sami.',
+    lead: 'Privezak sa imenom ispisanim razigranim slovima, kao sa naslovne strane slikovnice. Najlepše izgleda u jarkim bojama, sa belim okvirom i tamnom osnovom.',
+    custom: true,
+    images: [p('privezak-sa-imenom-bajkovita-slova', 1, 1200, 1200, 'Privesci sa imenima Dijana, Mateo, Luka, Sofija, Ema, Noa, Olivia i Gabrijel u bajkovitim slovima')],
+    personal: 'privezak',
+    keychain: { stilovi: ['bajka'], startImena: 1, minImena: 1, maxImena: 6, sareno: true },
+    about: [
+      'Slova su razigrana i debela, sa okvirom u drugoj boji, pa se ime vidi i izdaleka. Deca ga kače na ranac, a odrasli na ključeve.',
+      'Za više imena dodajte još redova: svako ime je poseban privezak. Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
     ],
-    details: [
-      { q: 'Rok izrade i dostava', a: ROK_IME },
-      { q: 'Povraćaj i reklamacije', a: POVRACAJ_IME },
+    specs: PRIVEZAK_IME_SPECS,
+    details: PRIVEZAK_IME_DETAILS,
+    faq: IME_FAQ,
+    related: ['privezak-sa-imenom', 'privezak-sa-imenom-kockice', 'pikselasti-privezak-sa-imenom', 'porodicni-privezak-sa-imenima'],
+    seoTitle: 'Privezak sa imenom, bajkovita slova | Bumbaru',
+    meta: 'Privezak za ključeve sa imenom u razigranim slovima kao iz crtanog filma. Boje po izboru, pregled uživo. Izrada 3–5 radnih dana.',
+  },
+  {
+    id: 'PR-05',
+    slug: 'privezak-sa-imenom-kockice',
+    title: 'Privezak sa imenom, slova kao od kockica',
+    category: 'privesci',
+    categories: ['privesci', 'pokloni-sa-imenom'],
+    tags: ['ime', 'privesci'],
+    short: 'Debela slova sa duplim okvirom, za male graditelje.',
+    lead: 'Privezak sa imenom u debelim, kosim slovima sa duplim okvirom, kao na kutijama sa kockicama. Pravi poklon za male graditelje.',
+    custom: true,
+    images: [p('privezak-sa-imenom-kockice', 1, 1184, 1184, 'Privesci sa imenima Marija, Petar, Jovan i Milica ćirilicom, bela slova sa žutim i crvenim okvirom')],
+    personal: 'privezak',
+    keychain: { stilovi: ['kockice'], startImena: 1, minImena: 1, maxImena: 6, sareno: true },
+    about: [
+      'Bela slova sa žutim okvirom i crvenom osnovom su najpoznatija kombinacija, ali boje birate sami. Ime može latinicom ili ćirilicom.',
+      'Za više imena dodajte još redova: svako ime je poseban privezak. Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
     ],
-    faq: PRIVEZAK_FAQ,
-    related: ['pikselasti-privezak-sa-imenom', 'porodicni-privezak-sa-imenima', 'privezak-deda-mraz', 'ukras-za-jelku-sa-imenom'],
-    seoTitle: 'Privezak sa imenom, latinica ili ćirilica | Bumbaru',
-    meta: 'Privezak za ključeve sa imenom pisanim slovima, u dve boje, latinicom ili ćirilicom. Izrada 3–5 radnih dana.',
+    specs: PRIVEZAK_IME_SPECS,
+    details: PRIVEZAK_IME_DETAILS,
+    faq: IME_FAQ,
+    related: ['privezak-sa-imenom-bajkovita-slova', 'pikselasti-privezak-sa-imenom', 'privezak-sa-imenom', 'porodicni-privezak-sa-imenima'],
+    seoTitle: 'Privezak sa imenom, slova kao od kockica | Bumbaru',
+    meta: 'Privezak za ključeve sa imenom u debelim slovima sa duplim okvirom, za ljubitelje kockica. Boje po izboru, latinica ili ćirilica.',
   },
   {
     id: 'PR-02',
@@ -462,30 +538,28 @@ export const PRODUCTS: Product[] = [
     category: 'privesci',
     categories: ['privesci', 'pokloni-sa-imenom'],
     tags: ['ime', 'privesci'],
-    short: 'Slova od kockica, deca ga vole.',
-    lead: 'Privezak sa imenom ispisanim slovima od kockica, kao u video igrici. Deca ga kače na ranac, a odrasli na ključeve.',
+    short: 'Pikselasta slova kao u video igrici, deca ga vole.',
+    lead: 'Privezak sa imenom u pikselastim slovima, kao u video igrici. Deca ga kače na ranac, a odrasli na ključeve.',
     custom: true,
-    images: [c('privezak-piksel', 600, 600, 'Pikselasti privesci sa imenima LUKA i MINA, slova od kockica')],
-    personal: 'ime',
-    options: [{ id: 'boja', label: 'Boje', values: ['Žuta i braon', 'Plava i bela', 'Druge boje (napišite u poruci)'] }],
+    images: [p('pikselasti-privezak-sa-imenom', 1, 1024, 1024, 'Pikselasti privesci sa imenima Branko, Željko, Miloš i Vukašin, zelena slova na crnoj osnovi')],
+    personal: 'privezak',
+    keychain: { stilovi: ['pikseli'], startImena: 1, minImena: 1, maxImena: 6, sareno: true },
     about: [
-      'Ime štampamo velikim slovima od kockica, u dve boje. Najlepše izgleda sa kraćim imenima, do 8 slova.',
-      'Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
+      'Ime štampamo velikim pikselastim slovima, u dve boje: slova i osnova. Najlepše izgleda sa kraćim imenima, do 8 slova.',
+      'Za više imena dodajte još redova: svako ime je poseban privezak. Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
     ],
     specs: [
-      ['Ime', 'do 12 slova, najlepše do 8'],
-      ['Boje', 'dve boje, po izboru'],
+      ['Ime', 'do 12 slova, najlepše do 8; latinica ili ćirilica'],
+      ['Boje', 'slova i osnova, po izboru'],
+      ['Karika', 'metalna karika za ključeve'],
       ['Materijal', 'PLA plastika'],
       ['Rok', 'izrada 3–5 radnih dana'],
     ],
-    details: [
-      { q: 'Rok izrade i dostava', a: ROK_IME },
-      { q: 'Povraćaj i reklamacije', a: POVRACAJ_IME },
-    ],
-    faq: PRIVEZAK_FAQ,
-    related: ['privezak-sa-imenom', 'porodicni-privezak-sa-imenima', 'privezak-irvas', 'ukras-za-jelku-sa-imenom'],
+    details: PRIVEZAK_IME_DETAILS,
+    faq: IME_FAQ,
+    related: ['privezak-sa-imenom-kockice', 'privezak-sa-imenom-bajkovita-slova', 'privezak-sa-imenom', 'porodicni-privezak-sa-imenima'],
     seoTitle: 'Pikselasti privezak sa imenom za decu | Bumbaru',
-    meta: 'Privezak sa imenom od pikselastih slova, u dve boje. Za ranac ili ključeve. Izrada 3–5 radnih dana.',
+    meta: 'Privezak sa imenom u pikselastim slovima kao u video igrici. Boje po izboru, pregled uživo. Za ranac ili ključeve, izrada 3–5 radnih dana.',
   },
   {
     id: 'PR-03',
@@ -497,7 +571,7 @@ export const PRODUCTS: Product[] = [
     short: 'Rasklopi se i drži telefon na stolu.',
     lead: 'Privezak za ključeve koji se rasklopi u stalak za telefon. Uvek je pri ruci kad gledate video ili imate video poziv.',
     images: [],
-    options: [{ id: 'boja', label: 'Boja', values: ['Plava', 'Siva', 'Druga boja (napišite u poruci)'] }],
+    colors: [{ id: 'boja', label: 'Boja', def: 'plava' }],
     about: ['Sklopljen je mali privezak na ključevima, a rasklopljen drži telefon uspravno ili položeno na stolu.'],
     specs: [['Materijal', 'PLA plastika']],
     details: [
@@ -521,6 +595,7 @@ export const PRODUCTS: Product[] = [
     lead: 'Set od četiri zidna držača za Parkside X20 V: dva za alat sa baterijom i dva za rezervne baterije. Alat visi na zidu spreman za rad, a baterije stoje pored njega.',
     price: 1390,
     images: [],
+    colors: [{ id: 'boja', label: 'Boja', def: 'crna' }],
     about: [
       'Držači su pravljeni po meri baterije Parkside X20 V. Štampamo ih od PETG plastike, koja ne puca od udaraca i podnosi toplotu u garaži.',
       'Imate alat drugog brenda? Pošaljite meru ili fotografiju baterije u Messenger-u, pa pravimo držač za vaš model.',
@@ -554,6 +629,7 @@ export const PRODUCTS: Product[] = [
     custom: true,
     images: [],
     options: [{ id: 'model', label: 'Brend baterije', values: ['Parkside X20 V', 'Einhell', 'Bosch', 'Makita', 'DeWalt', 'Drugi (napišite u poruci)'] }],
+    colors: [{ id: 'boja', label: 'Boja', def: 'crna' }],
     about: ['Napišite nam brend i model baterije, a ako niste sigurni, pošaljite fotografiju u Messenger-u. Štampamo od PETG plastike.'],
     specs: [['Materijal', 'PETG'], ['Montaža', 'na zid ili dasku, šrafovima']],
     details: [
@@ -575,6 +651,7 @@ export const PRODUCTS: Product[] = [
     lead: 'Zidna polica sa držačem za aku bušilicu. Bušilica visi ispod police, a gore stoje bitovi, burgije i rezervna baterija.',
     images: [],
     options: [{ id: 'model', label: 'Brend bušilice', values: ['Parkside X20 V', 'Einhell', 'Bosch', 'Makita', 'Drugi (napišite u poruci)'] }],
+    colors: [{ id: 'boja', label: 'Boja', def: 'crna' }],
     about: ['Polica se kači na zid šrafovima. Štampamo je od PETG plastike, koja podnosi težinu alata i toplotu u garaži.'],
     specs: [['Materijal', 'PETG'], ['Montaža', 'na zid, šrafovima']],
     details: [
@@ -596,6 +673,7 @@ export const PRODUCTS: Product[] = [
     lead: 'Set distancera za montažu kuhinjskih frontova i vrata. Debljina je utisnuta na svakom komadu, pa se ne mešaju.',
     price: 990,
     images: [],
+    colors: [{ id: 'boja', label: 'Boja', def: 'crna' }],
     about: ['Distanceri drže jednak razmak između frontova dok ih pritežete. Set ima debljine od 1 do 5 mm.'],
     specs: [['Debljine', '1–5 mm, utisnuto na svakom komadu'], ['Materijal', 'PETG']],
     details: [
@@ -619,11 +697,12 @@ export const PRODUCTS: Product[] = [
     lead: 'Par držača za registarsku tablicu bez okvira. Idu na postojeće rupe, bez bušenja, a tablica se utisne u njih i drži čvrsto.',
     price: 790,
     images: [],
+    colors: [{ id: 'boja', label: 'Boja', def: 'crna' }],
     about: [
       'Rama oko tablice nema, pa se vide sva slova i brojevi. Odgovara za standardnu tablicu 520 × 110 mm sa dve rupe za šrafove.',
       'Delove koji idu napolje štampamo od plastike koja podnosi sunce i kišu.',
     ],
-    specs: [['U pakovanju', '2 držača'], ['Boja', 'crna'], ['Za tablicu', '520 × 110 mm'], ['Montaža', 'na postojeće rupe, bez bušenja']],
+    specs: [['U pakovanju', '2 držača'], ['Boja', 'crna, ili druga po izboru'], ['Za tablicu', '520 × 110 mm'], ['Montaža', 'na postojeće rupe, bez bušenja']],
     details: [
       { q: 'Rok i dostava', a: ROK },
       { q: 'Povraćaj i reklamacije', a: POVRACAJ },
@@ -646,12 +725,10 @@ export const PRODUCTS: Product[] = [
     lead: 'Nosač registracione nalepnice za motor, skuter i kvad. Nalepnica ostaje vidljiva, zaštićena i na mestu.',
     price: 690,
     images: [],
-    options: [
-      { id: 'oblik', label: 'Oblik', values: ['Okrugli', 'Pravougaoni'] },
-      { id: 'boja', label: 'Boja', values: ['Crna', 'Bela'] },
-    ],
+    options: [{ id: 'oblik', label: 'Oblik', values: ['Okrugli', 'Pravougaoni'] }],
+    colors: [{ id: 'boja', label: 'Boja', def: 'crna' }],
     about: ['Delove koji idu napolje štampamo od plastike koja podnosi sunce i kišu. Ako niste sigurni gde ide na vašem motoru, pošaljite fotografiju u Messenger-u.'],
-    specs: [['Oblik', 'okrugli ili pravougaoni'], ['Boja', 'crna ili bela']],
+    specs: [['Oblik', 'okrugli ili pravougaoni'], ['Boja', 'po izboru, od boja koje imamo']],
     details: [
       { q: 'Rok i dostava', a: ROK },
       { q: 'Povraćaj i reklamacije', a: POVRACAJ },
@@ -670,6 +747,7 @@ export const PRODUCTS: Product[] = [
     short: 'Nasadi se na sprej, a mazivo ide pravo na lanac.',
     lead: 'Nastavak koji se nasadi na sprej za lanac. Mazivo ide pravo na lanac, a ne na felnu i gumu.',
     images: [],
+    colors: [{ id: 'boja', label: 'Boja', def: 'crna' }],
     about: ['Mazivo ide tamo gde treba, pa se manje rasipa i ne prlja felnu. Pre porudžbine nam napišite koji sprej koristite.'],
     specs: [['Za', 'sprej za lanac motora']],
     details: [

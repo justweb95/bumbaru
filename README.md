@@ -19,11 +19,12 @@ Potreban je Node.js 20 ili noviji.
 
 ## Objavljivanje (deploy)
 
-Sajt je čist statički sajt (folder `dist/`), pa radi na bilo kom statičkom hostingu.
+Sajt je statički, osim jedne male serverske funkcije za admin panel boja (`/api/boje/`), koja radi na Vercel-u
+(adapter `@astrojs/vercel`, izlaz u `.vercel/output/`).
 
 **Vercel**
 1. vercel.com → Add New → Project → izaberite GitHub repozitorijum `justweb95/bumbaru` → Import.
-2. Framework: Astro (prepozna sam). Build: `npm run build`, Output: `dist`. → Deploy.
+2. Framework: Astro (prepozna sam). Build: `npm run build`. → Deploy.
 3. Settings → Domains → dodajte `bumbaru.sajt.net`; Vercel prikaže DNS zapis (obično CNAME na `cname.vercel-dns.com`).
 
 > Napomena: besplatni Vercel Hobby plan je po pravilima Vercel-a samo za nekomercijalnu upotrebu, a sajt koji
@@ -41,6 +42,23 @@ i `url` u `src/data/site.ts`.
 
 Svaki `git push` na granu `main` posle toga sam objavljuje novu verziju.
 
+## Admin panel: boje filamenta
+
+Adresa: `/admin/` (nije u pretrazi ni u mapi sajta). Tu se upisuju boje koje imate, uključuje i isključuje
+„na stanju” i menja redosled. Boje na stanju kupci vide i biraju na svim proizvodima (ukrasi, privesci,
+držači…). Posle „Sačuvaj i objavi” izmena se upiše u `src/data/boje.json` na GitHub-u, a Vercel za oko
+minut objavi novu verziju sajta.
+
+Jednom treba podesiti na Vercel-u (Project → Settings → Environment Variables), pa uraditi Redeploy:
+
+| Promenljiva | Vrednost |
+| --- | --- |
+| `ADMIN_PASSWORD` | lozinka za admin panel (dugačka, samo vi je znate) |
+| `GITHUB_TOKEN` | GitHub fine-grained token: Repository access → samo `justweb95/bumbaru`, Permissions → Contents: Read and write |
+
+Bez ovih promenljivih admin i dalje radi, ali umesto čuvanja ponudi „Preuzmi boje.json”, koji se onda ručno
+stavi u `src/data/boje.json`.
+
 ## Gde se šta menja
 
 | Šta | Fajl |
@@ -48,6 +66,8 @@ Svaki `git push` na granu `main` posle toga sam objavljuje novu verziju.
 | Messenger stranica, Facebook, Instagram, adresa sajta, traka na vrhu, sezona | `src/data/site.ts` |
 | Prikaz cena (sada isključen) | `src/data/site.ts` → `showPrices: true` |
 | Proizvodi: nazivi, tekstovi, šifre, cene, opcije, slike | `src/data/products.ts` |
+| Boje filamenta (najlakše iz admin panela) | `src/data/boje.json` |
+| Stilovi slova za priveske sa imenom | `src/lib/keychain.ts` |
 | Kategorije i njihovi tekstovi i pitanja | `src/data/categories.ts` |
 | Početna strana | `src/pages/index.astro` |
 | Pomoć, Po meri, Politika privatnosti | `src/pages/*.astro` |
@@ -65,6 +85,8 @@ Svaki `git push` na granu `main` posle toga sam objavljuje novu verziju.
 - Proizvodi bez fotografije prikazuju „Fotografija uskoro”.
 - Modlice za medenjake nisu na sajtu (nema deklaracije za kontakt sa hranom). Zbirna fotografija privezaka
   koristi se samo isečena, bez zaštićenog lika.
+- Privesci sa imenom: stilovi slova imaju opisne nazive (pisana, bajkovita, kao od kockica, pikselasta,
+  štampana), bez imena tuđih brendova i likova. Na fotografiji „kockice” figurica i kocke su isečene.
 
 ## Šta je namerno izostavljeno u prvoj verziji
 - Korpa, plaćanje i nalog (porudžbine idu preko Messengera).

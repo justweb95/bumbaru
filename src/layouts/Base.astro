@@ -81,6 +81,11 @@ const ld = [org, website, ...jsonld];
         entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
       }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
       els.forEach(function (e) { io.observe(e); });
+      // beskonačne animacije (njihanje, lebdenje) rade samo dok su na ekranu
+      var io2 = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { en.target.classList.toggle('anim-off', !en.isIntersecting); });
+      }, { rootMargin: '120px 0px' });
+      document.querySelectorAll('.sway, .fx-float').forEach(function (e) { io2.observe(e); });
     })();
   </script>
 </body>

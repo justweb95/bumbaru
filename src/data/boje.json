@@ -1,0 +1,18 @@
+{
+  "napomena": "Boje filamenta. Menja se iz admin panela (/admin/). dostupna: false = boja se ne nudi kupcima.",
+  "boje": [
+    { "id": "bela", "naziv": "Bela", "hex": "#F3EEE5", "dostupna": true },
+    { "id": "crna", "naziv": "Crna", "hex": "#2B2622", "dostupna": true },
+    { "id": "crvena", "naziv": "Crvena", "hex": "#B3312A", "dostupna": true },
+    { "id": "zelena", "naziv": "Zelena", "hex": "#2F5B3B", "dostupna": true },
+    { "id": "svetlozelena", "naziv": "Svetlozelena", "hex": "#5DB761", "dostupna": true },
+    { "id": "zlatna", "naziv": "Zlatna", "hex": "#D6A23E", "dostupna": true },
+    { "id": "zuta", "naziv": "Žuta", "hex": "#F2C230", "dostupna": true },
+    { "id": "narandzasta", "naziv": "Narandžasta", "hex": "#E8722A", "dostupna": true },
+    { "id": "roze", "naziv": "Roze", "hex": "#E66A9C", "dostupna": true },
+    { "id": "ljubicasta", "naziv": "Ljubičasta", "hex": "#7A4FB5", "dostupna": true },
+    { "id": "plava", "naziv": "Plava", "hex": "#2F6DB5", "dostupna": true },
+    { "id": "tirkizna", "naziv": "Tirkizna", "hex": "#2BB3A8", "dostupna": true },
+    { "id": "siva", "naziv": "Siva", "hex": "#8A8D91", "dostupna": true }
+  ]
+}

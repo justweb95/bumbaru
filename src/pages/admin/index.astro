@@ -1,0 +1,269 @@
+---
+// Admin: boje filamenta koje kupci mogu da biraju na svim proizvodima.
+// Čuvanje ide preko /api/boje (lozinka ADMIN_PASSWORD na Vercel-u), a sajt se posle toga sam objavi ponovo.
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import podaci from '../../data/boje.json';
+import { PRODUCTS } from '../../data/products';
+import { STILOVI } from '../../lib/keychain';
+
+// boje koje proizvodi i stilovi privezaka koriste kao početne
+const koriste = new Set<string>([
+  ...PRODUCTS.flatMap((p) => (p.colors || []).map((c) => c.def)),
+  ...STILOVI.flatMap((s) => s.slojevi.map((sl) => s.def[sl])),
+  'bela', 'crvena',
+]);
+---
+<Base title="Admin: boje filamenta | Bumbaru" description="Upravljanje bojama filamenta." noindex>
+  <div class="paper-zone">
+  <section class="wrap adm">
+    <div class="adm-head">
+      <span class="badge badge-honey">Admin</span>
+      <h1 class="h1">Boje filamenta</h1>
+      <p class="muted">Boje koje ovde označite kao „na stanju” kupci vide i mogu da izaberu na svim proizvodima: ukrasima, privescima i ostalom.</p>
+    </div>
+
+    <form class="card-box login" data-login>
+      <div class="field">
+        <label for="adm-pass">Lozinka</label>
+        <input id="adm-pass" class="input" type="password" autocomplete="current-password" required data-pass />
+      </div>
+      <button class="btn btn-primary btn-lg" type="submit">Uđi</button>
+      <p class="small" data-login-msg role="status"></p>
+    </form>
+
+    <div class="card-box editor" data-editor hidden>
+      <div class="ed-top">
+        <div>
+          <h2 class="h3">Kupci sada vide</h2>
+          <div class="preview" data-preview aria-live="polite"></div>
+        </div>
+        <button type="button" class="btn" data-add><Icon name="plus" size={18} />Dodaj boju</button>
+      </div>
+
+      <ul class="rows" data-rows></ul>
+
+      <p class="small muted note">Boju koju trenutno nemate bolje je isključiti nego obrisati. Ako obrišete boju koju proizvod koristi kao početnu, proizvod uzima prvu boju na stanju. Oznaka <span class="tag">početna</span> znači da je neki proizvod ili stil priveska nudi prvu.</p>
+
+      <div class="save-bar">
+        <button type="button" class="btn btn-primary btn-lg" data-save><Icon name="check" size={20} />Sačuvaj i objavi</button>
+        <button type="button" class="btn" data-download><Icon name="box" size={18} />Preuzmi boje.json</button>
+        <p class="small" data-msg role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <template data-row-tpl>
+    <li class="row">
+      <label class="sw" title="Izaberite nijansu"><input type="color" data-hex aria-label="Nijansa" /></label>
+      <div class="nm">
+        <input class="input" maxlength="30" placeholder="Naziv boje, npr. Narandžasta" aria-label="Naziv boje" data-naziv />
+        <span class="meta"><code data-hex-txt></code><span class="tag" data-def hidden>početna</span></span>
+      </div>
+      <label class="tog"><input type="checkbox" data-dostupna /><span class="tog-ui" aria-hidden="true"></span><span class="tog-t">Na stanju</span></label>
+      <div class="acts">
+        <button type="button" class="icon-btn sm" data-up aria-label="Pomeri gore"><Icon name="chev" size={18} class="up" /></button>
+        <button type="button" class="icon-btn sm" data-down aria-label="Pomeri dole"><Icon name="chev" size={18} /></button>
+        <button type="button" class="icon-btn sm del" data-del aria-label="Obriši boju"><Icon name="close" size={18} /></button>
+      </div>
+    </li>
+  </template>
+
+  <script type="application/json" id="adm-data" set:html={JSON.stringify({ boje: podaci.boje, koriste: [...koriste] })} />
+</Base>
+
+<script>
+  interface Boja { id: string; naziv: string; hex: string; dostupna: boolean; nova?: boolean }
+  const init = JSON.parse(document.getElementById('adm-data')!.textContent || '{}');
+  const koriste = new Set<string>(init.koriste || []);
+  let boje: Boja[] = (init.boje || []).map((b: Boja) => ({ ...b }));
+  let lozinka = '';
+
+  const $ = <T extends Element = HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const loginForm = $<HTMLFormElement>('[data-login]');
+  const editor = $('[data-editor]');
+  const rowsEl = $('[data-rows]');
+  const tpl = $<HTMLTemplateElement>('[data-row-tpl]');
+  const msg = $('[data-msg]');
+  const loginMsg = $('[data-login-msg]');
+  const say = (el: HTMLElement, t: string, tone: 'ok' | 'err' | '' = '') => { el.textContent = t; el.dataset.tone = tone; };
+
+  const slug = (s: string) => s.toLowerCase().replace(/đ/g, 'dj').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30);
+
+  function preview() {
+    const p = $('[data-preview]');
+    const na = boje.filter((b) => b.dostupna);
+    p.replaceChildren(...na.map((b) => { const s = document.createElement('span'); s.className = 'pv'; s.style.background = b.hex; s.title = b.naziv; return s; }));
+    if (!na.length) p.textContent = 'Nijedna boja nije na stanju.';
+  }
+
+  function render() {
+    rowsEl.replaceChildren();
+    boje.forEach((b, i) => {
+      const li = (tpl.content.firstElementChild as HTMLElement).cloneNode(true) as HTMLElement;
+      const hex = li.querySelector<HTMLInputElement>('[data-hex]')!;
+      const nm = li.querySelector<HTMLInputElement>('[data-naziv]')!;
+      const dost = li.querySelector<HTMLInputElement>('[data-dostupna]')!;
+      hex.value = b.hex.toLowerCase();
+      (hex.parentElement as HTMLElement).style.background = b.hex;
+      nm.value = b.naziv;
+      dost.checked = b.dostupna;
+      li.querySelector('[data-hex-txt]')!.textContent = b.hex.toUpperCase();
+      li.querySelector<HTMLElement>('[data-def]')!.hidden = !koriste.has(b.id);
+      li.classList.toggle('off', !b.dostupna);
+      li.querySelector<HTMLButtonElement>('[data-up]')!.disabled = i === 0;
+      li.querySelector<HTMLButtonElement>('[data-down]')!.disabled = i === boje.length - 1;
+      li.dataset.i = String(i);
+      rowsEl.appendChild(li);
+    });
+    preview();
+  }
+
+  rowsEl.addEventListener('input', (e) => {
+    const t = e.target as HTMLInputElement;
+    const li = t.closest<HTMLElement>('.row'); if (!li) return;
+    const b = boje[+li.dataset.i!];
+    if (t.matches('[data-hex]')) { b.hex = t.value.toUpperCase(); (t.parentElement as HTMLElement).style.background = b.hex; li.querySelector('[data-hex-txt]')!.textContent = b.hex; }
+    if (t.matches('[data-naziv]')) b.naziv = t.value;
+    if (t.matches('[data-dostupna]')) { b.dostupna = t.checked; li.classList.toggle('off', !b.dostupna); }
+    preview();
+    say(msg, 'Ima nesačuvanih izmena.');
+  });
+  rowsEl.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button'); if (!btn) return;
+    const i = +(btn.closest<HTMLElement>('.row')!.dataset.i!);
+    if (btn.matches('[data-up]') && i > 0) [boje[i - 1], boje[i]] = [boje[i], boje[i - 1]];
+    else if (btn.matches('[data-down]') && i < boje.length - 1) [boje[i + 1], boje[i]] = [boje[i], boje[i + 1]];
+    else if (btn.matches('[data-del]')) boje.splice(i, 1);
+    else return;
+    render();
+    say(msg, 'Ima nesačuvanih izmena.');
+  });
+  $('[data-add]').addEventListener('click', () => {
+    boje.push({ id: '', naziv: '', hex: '#E8722A', dostupna: true, nova: true });
+    render();
+    rowsEl.querySelector<HTMLInputElement>('.row:last-child [data-naziv]')?.focus();
+  });
+
+  // Nove boje dobijaju oznaku iz naziva; postojeće zadržavaju svoju (na nju se oslanjaju proizvodi).
+  function zaSlanje(): Boja[] | string {
+    const ids = new Set(boje.filter((b) => !b.nova).map((b) => b.id));
+    const out: Boja[] = [];
+    for (const b of boje) {
+      const naziv = b.naziv.trim();
+      if (!naziv) return 'Svaka boja mora da ima naziv.';
+      let id = b.id;
+      if (b.nova) {
+        const base = slug(naziv) || 'boja';
+        id = base; let n = 2;
+        while (ids.has(id)) id = `${base}-${n++}`;
+        ids.add(id);
+      }
+      out.push({ id, naziv, hex: b.hex.toUpperCase(), dostupna: b.dostupna });
+    }
+    if (!out.some((b) => b.dostupna)) return 'Bar jedna boja mora biti na stanju.';
+    return out;
+  }
+
+  async function api(method: 'GET' | 'POST', body?: unknown) {
+    const r = await fetch('/api/boje/', { method, headers: { 'x-admin-password': lozinka, ...(body ? { 'Content-Type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined });
+    let data: any = {};
+    try { data = await r.json(); } catch { /* prazno */ }
+    return { ok: r.ok, status: r.status, data };
+  }
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    lozinka = $<HTMLInputElement>('[data-pass]').value;
+    say(loginMsg, 'Proveravam…');
+    try {
+      const r = await api('GET');
+      if (r.ok && Array.isArray(r.data.boje)) {
+        boje = r.data.boje;
+      } else if (r.status === 401) { say(loginMsg, 'Pogrešna lozinka.', 'err'); return; }
+      else {
+        say(msg, (r.data.greska || `Server je vratio ${r.status}.`) + ' Izmene možete da preuzmete kao boje.json.', 'err');
+      }
+    } catch {
+      say(msg, 'Server za čuvanje nije dostupan. Izmene možete da preuzmete kao boje.json.', 'err');
+    }
+    loginForm.hidden = true;
+    editor.hidden = false;
+    render();
+  });
+
+  $('[data-save]').addEventListener('click', async () => {
+    const lista = zaSlanje();
+    if (typeof lista === 'string') { say(msg, lista, 'err'); return; }
+    const btn = $<HTMLButtonElement>('[data-save]');
+    btn.disabled = true; say(msg, 'Čuvam…');
+    try {
+      const r = await api('POST', { boje: lista });
+      if (r.ok) {
+        boje = lista.map((b) => ({ ...b }));
+        render();
+        say(msg, `Sačuvano${r.data.commit ? ` (izmena ${r.data.commit})` : ''}. Sajt se osvežava za oko 1 minut.`, 'ok');
+      } else say(msg, r.data.greska || `Greška ${r.status}.`, 'err');
+    } catch { say(msg, 'Server za čuvanje nije dostupan. Preuzmite boje.json i pošaljite ga.', 'err'); }
+    btn.disabled = false;
+  });
+
+  $('[data-download]').addEventListener('click', () => {
+    const lista = zaSlanje();
+    if (typeof lista === 'string') { say(msg, lista, 'err'); return; }
+    const txt = JSON.stringify({ napomena: 'Boje filamenta. Menja se iz admin panela (/admin/). dostupna: false = boja se ne nudi kupcima.', boje: lista }, null, 2) + '\n';
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([txt], { type: 'application/json' }));
+    a.download = 'boje.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  });
+</script>
+
+<style>
+  .adm { padding-top: 32px; padding-bottom: 96px; max-width: 880px; }
+  .adm-head { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; margin-bottom: 24px; }
+  .card-box { background: #F8F5F0; border-radius: var(--r-lg); padding: 28px; box-shadow: var(--shadow); }
+  .login { display: flex; flex-direction: column; gap: 16px; max-width: 420px; }
+  [data-tone="err"] { color: var(--berry); font-weight: 700; }
+  [data-tone="ok"] { color: var(--leaf); font-weight: 700; }
+  .ed-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+  .preview { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; min-height: 26px; }
+  .preview :global(.pv) { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(49,32,24,.2); }
+  .rows { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .row { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto auto; gap: 14px; align-items: center; padding: 12px; border-radius: 18px; background: var(--surface-raised); transition: opacity .2s; }
+  .row.off { opacity: .6; }
+  .sw { position: relative; width: 52px; height: 52px; border-radius: 50%; border: 2px solid rgba(49,32,24,.25); cursor: pointer; overflow: hidden; }
+  .sw input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+  .sw:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .nm { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .nm .input { background: var(--surface-paper); }
+  .meta { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--ink-muted); }
+  .tag { display: inline-block; font-size: 11px; line-height: 16px; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--honey-soft); color: var(--ink); }
+  .tog { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 14px; white-space: nowrap; }
+  .tog input { position: absolute; opacity: 0; pointer-events: none; }
+  .tog-ui { flex: none; position: relative; width: 46px; height: 28px; border-radius: 999px; background: var(--line); transition: background .2s; }
+  .tog-ui::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: transform .25s cubic-bezier(.3,.9,.35,1.2); }
+  .tog input:checked + .tog-ui { background: var(--leaf); }
+  .tog input:checked + .tog-ui::after { transform: translateX(18px); }
+  .tog input:focus-visible + .tog-ui { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .acts { display: flex; gap: 6px; }
+  .icon-btn.sm { width: 38px; height: 38px; border-width: 1.5px; background: var(--surface-paper); }
+  .icon-btn.sm:disabled { opacity: .35; cursor: default; }
+  .icon-btn :global(.up) { transform: rotate(180deg); }
+  .del { color: var(--berry); }
+  .note { margin-top: 18px; }
+  .save-bar { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 22px -28px -28px; padding: 18px 28px; background: var(--surface-paper); border-top: 1px solid var(--line); border-radius: 0 0 var(--r-lg) var(--r-lg); }
+  .save-bar [data-msg] { flex-basis: 100%; }
+  @media (max-width: 640px) {
+    .card-box { padding: 20px 16px; }
+    .row { grid-template-columns: 44px minmax(0, 1fr) auto; grid-template-areas: "sw nm nm" "tog tog acts"; gap: 10px 12px; }
+    .sw { grid-area: sw; width: 44px; height: 44px; }
+    .nm { grid-area: nm; }
+    .tog { grid-area: tog; }
+    .acts { grid-area: acts; }
+    .save-bar { margin: 22px -16px -20px; padding: 14px 16px; }
+    .save-bar .btn { flex: 1 1 auto; }
+  }
+</style>

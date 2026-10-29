@@ -7,7 +7,52 @@ const { items, open = -1 } = Astro.props;
   {items.map((it, i) => (
     <details open={i === open}>
       <summary>{it.q}<Icon name="chev" class="chev" stroke={2.4} /></summary>
-      <div class="ans" set:html={it.a} />
+      <div class="ans-wrap"><div class="ans" set:html={it.a} /></div>
     </details>
   ))}
 </div>
+
+<script>
+  // Lagano otvaranje i zatvaranje odgovora (bez skoka). Bez JavaScript-a radi kao obično <details>.
+  type Wrap = HTMLElement & { _anim?: Animation | null };
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const EASE = 'cubic-bezier(.22,.8,.24,1)';
+  const trajanje = (px: number) => Math.round(Math.min(460, Math.max(240, 200 + Math.abs(px) * 0.7)));
+
+  document.addEventListener('click', (e) => {
+    const sum = (e.target as HTMLElement | null)?.closest?.('.acc summary');
+    if (!sum || reduce.matches) return;
+    const d = sum.parentElement as HTMLDetailsElement;
+    const wrap = d.querySelector<Wrap>(':scope > .ans-wrap');
+    if (!wrap || typeof wrap.animate !== 'function') return;
+    e.preventDefault();
+
+    const closing = d.classList.contains('closing');
+    const start = d.open ? wrap.getBoundingClientRect().height : 0; // trenutna visina, i usred animacije
+    wrap._anim?.cancel();
+    wrap._anim = null;
+
+    if (!d.open || closing) {
+      // otvaranje
+      d.classList.remove('closing');
+      d.open = true;
+      const end = wrap.scrollHeight;
+      const a = wrap.animate(
+        [{ height: `${start}px`, opacity: start ? 1 : 0 }, { height: `${end}px`, opacity: 1 }],
+        { duration: trajanje(end - start), easing: EASE },
+      );
+      wrap.querySelector('.ans')?.animate([{ transform: 'translateY(-8px)' }, { transform: 'none' }], { duration: trajanje(end - start), easing: EASE });
+      a.onfinish = () => { wrap._anim = null; };
+      wrap._anim = a;
+    } else {
+      // zatvaranje
+      d.classList.add('closing');
+      const a = wrap.animate(
+        [{ height: `${start}px`, opacity: 1 }, { height: '0px', opacity: 0 }],
+        { duration: trajanje(start), easing: EASE, fill: 'forwards' },
+      );
+      a.onfinish = () => { d.open = false; d.classList.remove('closing'); a.cancel(); wrap._anim = null; };
+      wrap._anim = a;
+    }
+  });
+</script>

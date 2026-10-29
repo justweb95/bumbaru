@@ -1,14 +1,21 @@
 ---
+import '@fontsource/lobster/400.css';
+import '@fontsource/grandstander/800.css';
+import '@fontsource/rubik/900-italic.css';
+import '@fontsource/pixelify-sans/700.css';
 import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
 import Icon from '../../components/Icon.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Accordion from '../../components/Accordion.astro';
+import ColorPicker from '../../components/ColorPicker.astro';
 import { PRODUCTS, productBySlug, productUrl, cardImg, type Product } from '../../data/products';
 import { categoryBySlug, catUrl } from '../../data/categories';
 import { SITE, din, messengerUrl } from '../../data/site';
-import { BOJE, MOTIVI } from '../../lib/ornament';
+import { MOTIVI } from '../../lib/ornament';
 import { ornamentG } from '../../lib/ornament-svg';
+import { BOJE_NA_STANJU, pick } from '../../lib/colors';
+import { STILOVI, stil, SLOJ_LABEL, PRIMERI } from '../../lib/keychain';
 
 export function getStaticPaths() {
   return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { p } }));
@@ -20,7 +27,9 @@ const showPrice = SITE.showPrices && p.price;
 const priceText = showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) : '';
 const isUkras = p.personal === 'ukras';
 const isSet = p.personal === 'set';
-const live = isUkras || isSet;
+const isKey = p.personal === 'privezak' && !!p.keychain;
+const orn = isUkras || isSet;
+const live = orn || isKey;
 const ngCustom = p.custom && p.categories.includes('nova-godina');
 const og = p.images[0] ? (p.images[0].src.startsWith('/img/p/') ? `/img/og/${p.slug}.jpg` : isSet ? '/img/og/ukras-set.jpg' : isUkras ? '/img/og/ukras-sofija.jpg' : '/img/og/bumbaru.jpg') : '/img/og/bumbaru.jpg';
 const ld: any = {
@@ -40,15 +49,24 @@ const S = 1.62, HY = 136;
 const setPos = (n: number) => n === 4
   ? { s: 0.92, pts: [[165, 36], [435, 36], [165, 312], [435, 312]] }
   : { s: 0.76, pts: [[108, 44], [300, 44], [492, 44], [204, 318], [396, 318]] };
-const SARENO = ['bela', 'crvena', 'zelena', 'zlatna', 'crvena'];
+// „Šareno” za porodični set: boje na stanju, prvo klasične boje ukrasa
+const naStanju = BOJE_NA_STANJU.map((b) => b.id);
+const sarenoUkrasi = [...['bela', 'crvena', 'zelena', 'zlatna'].filter((id) => naStanju.includes(id)), ...naStanju.filter((id) => !['bela', 'crvena', 'zelena', 'zlatna'].includes(id))];
+const SARENO = Array.from({ length: 5 }, (_, i) => sarenoUkrasi[i % Math.max(1, sarenoUkrasi.length)] || 'bela');
 const setNames = ['Marko', 'Jelena', 'Luka', 'Mila', 'Ana'];
-const nameFields = isSet ? 5 : p.personal === 'imena' ? 4 : 0;
+
+// Privezak sa imenom
+const kc = p.keychain;
+const kcStilovi = kc ? kc.stilovi.map((id) => stil(id)) : [];
+const kcPrvi = kcStilovi[0];
+const kcData = kc ? JSON.stringify({ ...kc, sarenoDefault: kc.startImena > 1 && !!kc.sareno }) : '';
+
 const askText = `Zdravo, imam pitanje o proizvodu: ${p.title} (šifra ${p.id})\n${SITE.url}${productUrl(p.slug)}`;
-const aboutTitle = live ? (isSet ? 'O setu' : 'O ukrasu') : 'O proizvodu';
+const aboutTitle = orn ? (isSet ? 'O setu' : 'O ukrasu') : 'O proizvodu';
 // Ikonice za karakteristike i „Dobro je da znate”
 const specIcon = (k: string) => {
   const s = k.toLowerCase();
-  if (s.startsWith('motiv') || s === 'oblik') return 'star';
+  if (s.startsWith('motiv') || s === 'oblik' || s.startsWith('stil')) return 'star';
   if (s.startsWith('boj')) return 'palette';
   if (s.startsWith('ime')) return 'pen';
   if (s.startsWith('materijal')) return 'layers';
@@ -72,7 +90,7 @@ const detailIcon = (q: string) => {
   return 'check';
 };
 ---
-<Base title={p.seoTitle} description={p.meta} image={og} imageAlt={p.images[0]?.alt || p.title} type="product" current={p.category} jsonld={[ld]} ornaments={live}>
+<Base title={p.seoTitle} description={p.meta} image={og} imageAlt={p.images[0]?.alt || p.title} type="product" current={p.category} jsonld={[ld]} ornaments={orn}>
   <div class="paper-zone pz">
     <div class="wrap">
       <Crumbs items={[{ label: cat.label, href: catUrl(cat.slug) }, { label: p.title }]} />
@@ -85,12 +103,12 @@ const detailIcon = (q: string) => {
             <div class="slide live" data-slide="live">
               <span class="badge live-badge"><i class="dotlive"></i>Pregled uživo</span>
               {isUkras && (
-                <svg viewBox="0 0 600 600" role="img" aria-label="Pregled ukrasa sa vašim imenom" data-preview="ukras">
-                  <g class="sway" style="transform-origin:300px 0px">
+                <div class="sway-box sway">
+                  <svg viewBox="0 0 600 600" role="img" aria-label="Pregled ukrasa sa vašim imenom" data-preview="ukras">
                     <line x1="300" y1="0" x2="300" y2={HY} stroke="#8E2A22" stroke-width="2.6" />
-                    <g transform={`translate(300 ${HY}) scale(${S}) translate(-120 -64)`} filter="url(#orn-sh)" data-tf set:html={ornamentG({ motif: 'zvezde', color: 'bela', nameColor: 'crvena', fallback: 'Mila', key: 'main' })} />
-                  </g>
-                </svg>
+                    <g transform={`translate(300 ${HY}) scale(${S}) translate(-120 -64)`} filter="url(#orn-sh)" data-tf set:html={ornamentG({ motif: 'zvezde', color: pick('bela'), nameColor: pick('crvena', 1), fallback: 'Mila', key: 'main' })} />
+                  </svg>
+                </div>
               )}
               {isSet && [4, 5].map((n) => {
                 const L = setPos(n);
@@ -102,6 +120,7 @@ const detailIcon = (q: string) => {
                   </svg>
                 );
               })}
+              {isKey && <svg class="kc-svg" viewBox="0 0 600 300" role="img" aria-label="Pregled privezaka sa vašim imenima" data-kc-svg></svg>}
             </div>
           )}
           {p.images.map((im, i) => (
@@ -133,14 +152,54 @@ const detailIcon = (q: string) => {
         {priceText && <p class="price">{priceText}</p>}
         <p class="lead" style="color:var(--ink)">{p.lead}</p>
 
-        <form class="order" id="poruci" data-order-form data-id={p.id} data-personal={p.personal || ''} novalidate>
-          {(isUkras || p.personal === 'ime') && (
+        <form class="order" id="poruci" data-order-form data-id={p.id} data-personal={p.personal || ''} data-kc={kcData || undefined} novalidate>
+          {isUkras && (
             <div class="field">
-              <label for="f-ime">{isUkras ? 'Ime na ukrasu' : 'Ime na privesku'}</label>
+              <label for="f-ime">Ime na ukrasu</label>
               <input id="f-ime" class="input" name="ime" maxlength="12" placeholder="npr. Mila ili Љубица" autocomplete="off" data-ime required />
               <p class="hint"><span data-err-ime>Latinicom ili ćirilicom. Štampamo tačno kako upišete.</span><span data-cnt>0/12</span></p>
             </div>
           )}
+
+          {isKey && kcStilovi.length > 1 && (
+            <fieldset class="field">
+              <legend class="flabel">Stil slova</legend>
+              <div class="style-grid">
+                {kcStilovi.map((st, i) => (
+                  <label class="style-tile">
+                    <input type="radio" name="stil" value={st.id} checked={i === 0} data-label={st.label} />
+                    <span class="style-sample" style={`font-family:${st.font};font-weight:${st.weight};font-style:${st.italic ? 'italic' : 'normal'}`}>{st.caps ? st.primer.toUpperCase() : st.primer}</span>
+                    <span class="style-name">{st.label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          {isKey && kc && (
+            <fieldset class="field">
+              <legend class="flabel">{kc.maxImena > 1 ? 'Imena (svako ime je jedan privezak)' : 'Ime'}</legend>
+              <div class="kc-names" data-kc-names>
+                {Array.from({ length: kc.startImena }, (_, i) => (
+                  <div class="kc-row" data-kc-row>
+                    <label class="sr-only" for={`kc-${i}`}>Ime {i + 1}</label>
+                    <input id={`kc-${i}`} class="input" maxlength="12" placeholder={`npr. ${PRIMERI[i % PRIMERI.length]}`} autocomplete="off" data-kc-name />
+                    <button type="button" class="icon-btn kc-del" aria-label={`Ukloni ime ${i + 1}`} data-kc-del hidden={i < kc.minImena}><Icon name="close" size={18} /></button>
+                  </div>
+                ))}
+              </div>
+              {kc.maxImena > 1 && <button type="button" class="btn btn-sm kc-add" data-kc-add><Icon name="plus" size={18} />Dodajte još jedno ime</button>}
+              <p class="hint"><span data-err-names>Do 12 slova po imenu, latinicom ili ćirilicom.</span></p>
+            </fieldset>
+          )}
+          {isKey && kcPrvi && (
+            <div class="kc-colors">
+              <ColorPicker name="slova" label={SLOJ_LABEL.slova} def={kcPrvi.def.slova} mix={kc!.sareno ? 'Šareno' : undefined} mixDefault={kc!.startImena > 1 && !!kc!.sareno} attrs={{ 'data-layer': 'slova' }} />
+              <ColorPicker name="okvir" label={SLOJ_LABEL.okvir} def={kcPrvi.def.okvir} attrs={{ 'data-layer': 'okvir', ...(kcPrvi.slojevi.includes('okvir') ? {} : { hidden: '' }) }} />
+              <ColorPicker name="osnova" label={SLOJ_LABEL.osnova} def={kcPrvi.def.osnova} attrs={{ 'data-layer': 'osnova' }} />
+              {kc!.sareno && <p class="hint">Šareno: svako ime u drugoj boji slova.</p>}
+            </div>
+          )}
+
           {isSet && (
             <fieldset class="field">
               <legend class="flabel">Broj ukrasa</legend>
@@ -150,21 +209,21 @@ const detailIcon = (q: string) => {
               </div>
             </fieldset>
           )}
-          {nameFields > 0 && (
+          {isSet && (
             <fieldset class="field">
               <legend class="flabel">Imena</legend>
               <div class="names">
-                {Array.from({ length: nameFields }, (_, i) => (
-                  <div class="name-row" data-name-row={i} hidden={isSet && i === 4}>
+                {Array.from({ length: 5 }, (_, i) => (
+                  <div class="name-row" data-name-row={i} hidden={i === 4}>
                     <label class="sr-only" for={`f-n${i}`}>Ime {i + 1}</label>
-                    <input id={`f-n${i}`} class="input" name={`ime${i}`} maxlength="12" placeholder={`Ime ${i + 1}${p.personal === 'imena' && i >= 2 ? ' (nije obavezno)' : ''}`} autocomplete="off" data-set-name={i} />
+                    <input id={`f-n${i}`} class="input" name={`ime${i}`} maxlength="12" placeholder={`Ime ${i + 1}`} autocomplete="off" data-set-name={i} />
                   </div>
                 ))}
               </div>
               <p class="hint"><span data-err-names>Do 12 slova po imenu, latinicom ili ćirilicom.</span></p>
             </fieldset>
           )}
-          {live && (
+          {orn && (
             <fieldset class="field">
               <legend class="flabel">{isSet ? 'Motiv za sve ukrase' : 'Motiv'}</legend>
               <div class="tile-grid">
@@ -178,30 +237,16 @@ const detailIcon = (q: string) => {
               </div>
             </fieldset>
           )}
-          {live && (
-            <fieldset class="field">
-              <legend class="flabel">Boja ukrasa</legend>
-              <div class="chips">
-                {isSet && <label class="chip"><input type="radio" name="boja" value="sareno" checked data-label="Šareno" /><span class="sw sw-mix" aria-hidden="true"></span>Šareno</label>}
-                {BOJE.map((b, i) => (
-                  <label class="chip"><input type="radio" name="boja" value={b.id} checked={!isSet && i === 0} data-label={b.label} /><span class="sw" style={`background:${b.face}`} aria-hidden="true"></span>{b.label}</label>
-                ))}
-              </div>
-              {isSet && <p class="hint">Šareno: svaki ukras u drugoj boji.</p>}
-            </fieldset>
+          {orn && <ColorPicker name="boja" label="Boja ukrasa" def="bela" mix={isSet ? 'Šareno' : undefined} mixDefault={isSet} />}
+          {orn && (
+            <div>
+              <ColorPicker name="bojaImena" label="Boja imena" def="crvena" extra={[{ value: 'ista', label: 'Kao ukras', css: 'linear-gradient(135deg, #EEEAE3 50%, #ADA498 50%)', checked: isSet }]} />
+              <p class="hint" style="margin-top:8px">Ime u drugoj boji štampamo u istom komadu, bez lepljenja.</p>
+            </div>
           )}
-          {live && (
-            <fieldset class="field">
-              <legend class="flabel">Boja imena</legend>
-              <div class="chips">
-                <label class="chip"><input type="radio" name="bojaImena" value="ista" checked={isSet} data-label="Kao ukras" /><span class="sw sw-same" aria-hidden="true"></span>Kao ukras</label>
-                {BOJE.map((b) => (
-                  <label class="chip"><input type="radio" name="bojaImena" value={b.id} checked={isUkras && b.id === 'crvena'} data-label={b.label} /><span class="sw" style={`background:${b.face}`} aria-hidden="true"></span>{b.label}</label>
-                ))}
-              </div>
-              <p class="hint">Ime u drugoj boji štampamo u istom komadu, bez lepljenja.</p>
-            </fieldset>
-          )}
+
+          {(p.colors || []).map((c) => <ColorPicker name={`c-${c.id}`} label={c.label} def={c.def} attrs={{ 'data-color-choice': c.label }} />)}
+
           {(p.options || []).map((o) => (
             o.values.length <= 4 ? (
               <fieldset class="field">
@@ -221,14 +266,16 @@ const detailIcon = (q: string) => {
           ))}
           <div class="field">
             <label for="f-nap">Napomena <span style="text-transform:none;letter-spacing:0;font-weight:400">(nije obavezno)</span></label>
-            <input id="f-nap" class="input" name="napomena" maxlength="160" placeholder={p.custom ? 'npr. poruka za karticu u paketu' : 'npr. boja, broj komada, rok'} autocomplete="off" />
+            <input id="f-nap" class="input" name="napomena" maxlength="160" placeholder={p.custom ? 'npr. poruka za karticu u paketu' : 'npr. broj komada, rok'} autocomplete="off" />
           </div>
           <div class="buy">
-            <div class="qty" role="group" aria-label="Količina">
-              <button type="button" data-dec aria-label="Smanji količinu">−</button>
-              <input type="number" name="kol" value="1" min="1" max="50" inputmode="numeric" aria-label="Količina" />
-              <button type="button" data-inc aria-label="Povećaj količinu">+</button>
-            </div>
+            {!isKey && (
+              <div class="qty" role="group" aria-label="Količina">
+                <button type="button" data-dec aria-label="Smanji količinu">−</button>
+                <input type="number" name="kol" value="1" min="1" max="50" inputmode="numeric" aria-label="Količina" />
+                <button type="button" data-inc aria-label="Povećaj količinu">+</button>
+              </div>
+            )}
             <button class="btn btn-primary btn-lg buy-btn" type="submit"><Icon name="messenger" />Poruči preko Messengera</button>
           </div>
           <ul class="notes small">
@@ -355,9 +402,10 @@ const detailIcon = (q: string) => {
     </div>
   </div>
 </Base>
-
 <script>
   import { fitName, boja, motiv } from '../../lib/ornament';
+  import { BOJE_NA_STANJU, SVE_BOJE } from '../../lib/colors';
+  import { stil, nacrtaj, ucitajFont, PRIMERI, type Sloj } from '../../lib/keychain';
   const form = document.querySelector<HTMLFormElement>('[data-order-form]')!;
   const personal = form.dataset.personal || '';
   const id = form.dataset.id || '';
@@ -365,21 +413,26 @@ const detailIcon = (q: string) => {
   // Galerija
   const gal = document.querySelector('[data-gallery]');
   gal?.querySelectorAll<HTMLButtonElement>('[data-thumb]').forEach((b) => b.addEventListener('click', () => {
+    const liveSkriven = (gal.querySelector<HTMLElement>('[data-slide="live"]')?.hidden) ?? false;
     gal.querySelectorAll<HTMLElement>('[data-slide]').forEach((s) => { s.hidden = s.dataset.slide !== b.dataset.thumb; });
     gal.querySelectorAll('[data-thumb]').forEach((t) => t.setAttribute('aria-pressed', String(t === b)));
+    // privezak se meri tek kad je vidljiv
+    if (b.dataset.thumb === 'live' && liveSkriven && kcCfg) drawKc();
   }));
   const showLive = () => (gal?.querySelector('[data-thumb="live"]') as HTMLButtonElement | null)?.click();
 
   // Količina
-  const kol = form.querySelector<HTMLInputElement>('input[name="kol"]')!;
+  const kol = form.querySelector<HTMLInputElement>('input[name="kol"]');
   const clamp = (v: number) => Math.max(1, Math.min(50, v || 1));
-  form.querySelector('[data-inc]')?.addEventListener('click', () => { kol.value = String(clamp(+kol.value + 1)); });
-  form.querySelector('[data-dec]')?.addEventListener('click', () => { kol.value = String(clamp(+kol.value - 1)); });
+  form.querySelector('[data-inc]')?.addEventListener('click', () => { if (kol) kol.value = String(clamp(+kol.value + 1)); });
+  form.querySelector('[data-dec]')?.addEventListener('click', () => { if (kol) kol.value = String(clamp(+kol.value - 1)); });
 
   const val = (name: string) => (form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value) || '';
   const lab = (name: string) => (form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.dataset.label) || '';
+  const hex = (cid: string) => (SVE_BOJE.find((b) => b.id === cid) || SVE_BOJE[0]).hex;
+  const naziv = (cid: string) => (SVE_BOJE.find((b) => b.id === cid) || { naziv: cid }).naziv;
 
-  // Pregled uživo
+  // ——— Ukras sa imenom i porodični set ———
   function paint(g: Element, o: { motif: string; color: string; nameColor: string; name: string; fallback: string }) {
     const M = motiv(o.motif), B = boja(o.color), N = o.nameColor === 'ista' ? B : boja(o.nameColor);
     const f = fitName(o.name, o.fallback);
@@ -394,9 +447,11 @@ const detailIcon = (q: string) => {
     g.querySelectorAll('.orn-rail').forEach((r) => { r.setAttribute('d', f.rails); r.setAttribute('stroke-width', f.railW); });
     return M;
   }
-  const SARENO = ['bela', 'crvena', 'zelena', 'zlatna', 'crvena'];
+  const naStanju = BOJE_NA_STANJU.map((b) => b.id);
+  const klasicne = ['bela', 'crvena', 'zelena', 'zlatna'];
+  const sarenoUkrasi = [...klasicne.filter((x) => naStanju.includes(x)), ...naStanju.filter((x) => !klasicne.includes(x))];
   const FALL = ['Marko', 'Jelena', 'Luka', 'Mila', 'Ana'];
-  function update() {
+  function updateOrn() {
     if (personal === 'ukras') {
       const g = document.querySelector('[data-orn="main"]');
       const ime = form.querySelector<HTMLInputElement>('[data-ime]')!;
@@ -404,6 +459,8 @@ const detailIcon = (q: string) => {
         const M = paint(g, { motif: val('motiv'), color: val('boja'), nameColor: val('bojaImena'), name: ime.value, fallback: 'Mila' });
         g.parentElement?.setAttribute('transform', `translate(300 136) scale(1.62) translate(-120 -${M.hy})`);
       }
+      const cnt = form.querySelector('[data-cnt]');
+      if (cnt) cnt.textContent = Array.from(ime.value.trim()).length + '/12';
     }
     if (personal === 'set') {
       const n = val('broj') === '5' ? 5 : 4;
@@ -412,65 +469,164 @@ const detailIcon = (q: string) => {
       const svg = document.querySelector(`[data-preview="set${n}"]`);
       svg?.querySelectorAll('[data-orn]').forEach((g, i) => {
         const inp = form.querySelector<HTMLInputElement>(`[data-set-name="${i}"]`);
-        paint(g, { motif: val('motiv'), color: val('boja') === 'sareno' ? SARENO[i] : val('boja'), nameColor: val('bojaImena'), name: inp?.value || '', fallback: FALL[i] });
+        paint(g, { motif: val('motiv'), color: val('boja') === 'sareno' ? sarenoUkrasi[i % sarenoUkrasi.length] : val('boja'), nameColor: val('bojaImena'), name: inp?.value || '', fallback: FALL[i] });
       });
     }
-    // boja motiva na pločicama
     if (personal === 'ukras' || personal === 'set') {
-      const c = val('boja') === 'sareno' || !val('boja') ? null : boja(val('boja'));
-      const col = c && c.id !== 'bela' ? c.face : '#7A6A5A';
+      const b = val('boja');
+      const col = !b || b === 'sareno' || b === 'bela' ? '#7A6A5A' : boja(b).face;
       form.querySelectorAll('.tile use').forEach((u) => { u.setAttribute('fill', col); u.setAttribute('stroke', col); });
     }
-    const ime = form.querySelector<HTMLInputElement>('[data-ime]');
-    const cnt = form.querySelector('[data-cnt]');
-    if (ime && cnt) cnt.textContent = Array.from(ime.value.trim()).length + '/12';
   }
+
+  // ——— Privezak sa imenom ———
+  const kcCfg = form.dataset.kc ? JSON.parse(form.dataset.kc) : null;
+  const kcSvg = document.querySelector<SVGSVGElement>('[data-kc-svg]');
+  const kcBox = form.querySelector<HTMLElement>('[data-kc-names]');
+  const kcAdd = form.querySelector<HTMLButtonElement>('[data-kc-add]');
+  const touched = new Set<string>();
+  const kcStil = () => stil(val('stil') || (kcCfg?.stilovi?.[0] ?? 'pisana'));
+  const kcRows = () => Array.from(form.querySelectorAll<HTMLInputElement>('[data-kc-name]'));
+  // šarene boje slova: boje na stanju osim boje osnove i okvira
+  const sarenoRed = ['roze', 'plava', 'svetlozelena', 'narandzasta', 'ljubicasta', 'crvena', 'tirkizna', 'zuta', 'zlatna', 'zelena', 'bela', 'siva', 'crna'];
+  function sarene(n: number, izuzmi: string[]) {
+    const lista = [...sarenoRed.filter((x) => naStanju.includes(x)), ...naStanju.filter((x) => !sarenoRed.includes(x))].filter((x) => !izuzmi.includes(x));
+    const l = lista.length ? lista : naStanju;
+    return Array.from({ length: n }, (_, i) => l[i % l.length]);
+  }
+  function kcRefreshRows() {
+    if (!kcCfg) return;
+    const rows = kcRows();
+    rows.forEach((inp, i) => {
+      const del = inp.parentElement?.querySelector<HTMLElement>('[data-kc-del]');
+      if (del) del.hidden = rows.length <= kcCfg.minImena;
+      inp.placeholder = 'npr. ' + PRIMERI[i % PRIMERI.length];
+      inp.id = 'kc-' + i;
+      const l = inp.parentElement?.querySelector('label'); if (l) { l.setAttribute('for', 'kc-' + i); l.textContent = 'Ime ' + (i + 1); }
+    });
+    if (kcAdd) kcAdd.hidden = rows.length >= kcCfg.maxImena;
+  }
+  function kcSetDefaults() {
+    const s = kcStil();
+    (['slova', 'okvir', 'osnova'] as Sloj[]).forEach((sl) => {
+      const fs = form.querySelector<HTMLElement>(`[data-layer="${sl}"]`);
+      if (!fs) return;
+      if (sl === 'okvir') fs.hidden = !s.slojevi.includes('okvir');
+      if (touched.has(sl)) return;
+      if (sl === 'slova' && val('slova') === 'sareno') return;
+      const inp = fs.querySelector<HTMLInputElement>(`input[value="${s.def[sl]}"]`) || fs.querySelector<HTMLInputElement>('input[data-hex]');
+      if (inp) { inp.checked = true; const nm = fs.querySelector('[data-cp-name]'); if (nm) nm.textContent = inp.dataset.label || ''; }
+    });
+  }
+  let kcJob = 0;
+  async function drawKc() {
+    if (!kcCfg || !kcSvg || kcSvg.closest('[hidden]')) return;
+    const s = kcStil();
+    const imena = kcRows().map((inp, i) => inp.value.trim() || PRIMERI[i % PRIMERI.length]);
+    const okvir = val('okvir') || s.def.okvir, osnova = val('osnova') || s.def.osnova;
+    const slova = val('slova') || s.def.slova;
+    const job = ++kcJob;
+    await ucitajFont(s, imena.join(''));
+    if (job !== kcJob || kcSvg.closest('[hidden]')) return;
+    nacrtaj(kcSvg, {
+      imena, stil: s,
+      boje: { slova: hex(slova === 'sareno' ? s.def.slova : slova), okvir: hex(okvir), osnova: hex(osnova) },
+      slovaPoImenu: slova === 'sareno' ? sarene(imena.length, [osnova, s.slojevi.includes('okvir') ? okvir : '']).map(hex) : undefined,
+    });
+  }
+  if (kcCfg) {
+    kcAdd?.addEventListener('click', () => {
+      const rows = kcRows(); if (rows.length >= kcCfg.maxImena) return;
+      const last = rows[rows.length - 1].parentElement!;
+      const row = last.cloneNode(true) as HTMLElement;
+      const inp = row.querySelector<HTMLInputElement>('[data-kc-name]')!; inp.value = '';
+      last.after(row); kcRefreshRows(); inp.focus(); showLive(); drawKc();
+    });
+    kcBox?.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest('[data-kc-del]');
+      if (!b || kcRows().length <= kcCfg.minImena) return;
+      b.parentElement?.remove(); kcRefreshRows(); showLive(); drawKc();
+    });
+    kcRefreshRows(); kcSetDefaults(); drawKc();
+    document.fonts?.ready.then(() => drawKc());
+  }
+
   form.addEventListener('input', (e) => {
-    update();
-    const t = e.target as HTMLElement;
+    const t = e.target as HTMLInputElement;
+    if (kcCfg) {
+      if (t.name === 'stil') kcSetDefaults();
+      if (['slova', 'okvir', 'osnova'].includes(t.name)) touched.add(t.name);
+      drawKc();
+      if (t.matches('[data-kc-name], input[name="stil"], input[name="slova"], input[name="okvir"], input[name="osnova"]')) showLive();
+      return;
+    }
+    updateOrn();
     if (t.matches('[data-ime], [data-set-name], input[name="motiv"], input[name="boja"], input[name="bojaImena"], input[name="broj"]')) showLive();
   });
   // ime iz adrese (?ime=Mila), npr. sa početne strane
   const qIme = new URLSearchParams(location.search).get('ime');
   const imeInp = form.querySelector<HTMLInputElement>('[data-ime]');
   if (qIme && imeInp) imeInp.value = qIme.slice(0, 12);
-  update();
+  updateOrn();
+
+  const greska = (el: HTMLElement | null, msg: string) => { if (el) { el.textContent = msg; el.style.color = 'var(--berry)'; } };
 
   // Slanje: složi poruku i otvori prozor za Messenger
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const lines: string[] = [];
-    const errIme = form.querySelector('[data-err-ime]');
-    if (personal === 'ukras' || personal === 'ime') {
+    let qty = kol ? clamp(+kol.value) : 1;
+    if (personal === 'ukras') {
       const v = imeInp?.value.trim() || '';
-      if (!v) { imeInp?.focus(); imeInp?.setAttribute('aria-invalid', 'true'); if (errIme) { errIme.textContent = 'Upišite ime koje štampamo.'; (errIme as HTMLElement).style.color = 'var(--berry)'; } return; }
+      if (!v) { imeInp?.focus(); imeInp?.setAttribute('aria-invalid', 'true'); greska(form.querySelector('[data-err-ime]'), 'Upišite ime koje štampamo.'); return; }
       imeInp?.removeAttribute('aria-invalid');
       lines.push('Ime: ' + v);
     }
-    if (personal === 'set' || personal === 'imena') {
-      const n = personal === 'set' ? (val('broj') === '5' ? 5 : 4) : 4;
+    if (personal === 'set') {
+      const n = val('broj') === '5' ? 5 : 4;
       const names = Array.from({ length: n }, (_, i) => form.querySelector<HTMLInputElement>(`[data-set-name="${i}"]`)?.value.trim() || '').filter(Boolean);
-      const need = personal === 'set' ? n : 2;
-      const err = form.querySelector<HTMLElement>('[data-err-names]');
-      if (names.length < need) {
-        if (err) { err.textContent = personal === 'set' ? (n === 4 ? 'Upišite sva 4 imena.' : 'Upišite svih 5 imena.') : 'Upišite najmanje 2 imena.'; err.style.color = 'var(--berry)'; }
+      if (names.length < n) {
+        greska(form.querySelector('[data-err-names]'), n === 4 ? 'Upišite sva 4 imena.' : 'Upišite svih 5 imena.');
         form.querySelector<HTMLInputElement>('[data-set-name]:placeholder-shown')?.focus();
         return;
       }
-      if (personal === 'set') lines.push('Broj ukrasa: ' + n);
-      lines.push('Imena: ' + names.join(', '));
+      lines.push('Broj ukrasa: ' + n, 'Imena: ' + names.join(', '));
     }
     if (personal === 'ukras' || personal === 'set') {
       lines.push('Motiv: ' + lab('motiv'), 'Boja ukrasa: ' + lab('boja'), 'Boja imena: ' + lab('bojaImena'));
     }
+    if (kcCfg) {
+      const rows = kcRows();
+      const names = rows.map((r) => r.value.trim()).filter(Boolean);
+      if (names.length < Math.max(1, kcCfg.minImena)) {
+        greska(form.querySelector('[data-err-names]'), kcCfg.minImena > 1 ? `Upišite najmanje ${kcCfg.minImena} imena.` : 'Upišite ime koje štampamo.');
+        rows.find((r) => !r.value.trim())?.focus();
+        return;
+      }
+      const s = kcStil();
+      const okvir = val('okvir'), osnova = val('osnova'), slova = val('slova');
+      lines.push('Stil slova: ' + s.label);
+      if (slova === 'sareno') {
+        const sar = sarene(names.length, [osnova, s.slojevi.includes('okvir') ? okvir : '']);
+        lines.push('Imena i boja slova: ' + names.map((n, i) => `${n} (${naziv(sar[i]).toLowerCase()})`).join(', '));
+      } else {
+        lines.push((names.length > 1 ? 'Imena: ' : 'Ime: ') + names.join(', '), 'Boja slova: ' + lab('slova'));
+      }
+      if (s.slojevi.includes('okvir')) lines.push('Boja okvira: ' + lab('okvir'));
+      lines.push('Boja osnove: ' + lab('osnova'));
+      qty = names.length;
+    }
+    form.querySelectorAll<HTMLElement>('[data-color-choice]').forEach((fs) => {
+      const inp = fs.querySelector<HTMLInputElement>('input:checked');
+      if (inp) lines.push(fs.dataset.colorChoice + ': ' + inp.dataset.label);
+    });
     form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-option]').forEach((el) => {
       if (el instanceof HTMLInputElement && !el.checked) return;
       lines.push(el.dataset.option + ': ' + el.value);
     });
     const nap = (form.querySelector<HTMLInputElement>('input[name="napomena"]')?.value || '').trim();
     if (nap) lines.push('Napomena: ' + nap);
-    const qty = personal === 'set' ? +kol.value : +kol.value;
-    (window as any).bumbaruOrder(id, lines, clamp(qty));
+    (window as any).bumbaruOrder(id, lines, qty);
   });
 </script>
 
@@ -531,18 +687,14 @@ const detailIcon = (q: string) => {
   .specs-title { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px; }
   .spec-grid { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .spec { position: relative; background: var(--tone); border-radius: 18px; padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 4px; transition: transform .35s var(--ease), box-shadow .35s ease; }
-  .spec:nth-child(odd):hover { transform: translateY(-4px) rotate(-1deg); box-shadow: var(--shadow); }
-  .spec:nth-child(even):hover { transform: translateY(-4px) rotate(1deg); box-shadow: var(--shadow); }
   .spec-ic { width: 38px; height: 38px; border-radius: 50%; background: var(--surface-paper); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 6px; }
   .spec-k { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
   .spec-v { font-size: 15px; line-height: 21px; font-weight: 600; }
 
   .know-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
   .know-card { background: var(--tone); border-radius: var(--r-lg); padding: 24px; display: flex; flex-direction: column; gap: 10px; transition: transform .35s var(--ease), box-shadow .35s ease; }
-  .know-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
   .know-card p { font-size: 15px; line-height: 22px; color: var(--ink-muted); }
   .know-ic { width: 52px; height: 52px; border-radius: 50%; background: var(--surface-paper); border: 2px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; transition: transform .45s cubic-bezier(.2,.9,.3,1.4); }
-  .know-card:hover .know-ic { transform: rotate(-12deg) scale(1.08); }
 
   .howto { position: relative; background: var(--honey); border-radius: var(--r-lg); padding: 40px; overflow: hidden; }
   .howto::before { content: ''; position: absolute; left: 40px; right: 40px; bottom: 26px; height: 6px; background-image: radial-gradient(circle, rgba(49,32,24,.35) 2.4px, transparent 2.9px); background-size: 12px 6px; background-repeat: repeat-x; }
@@ -550,7 +702,6 @@ const detailIcon = (q: string) => {
   .howto-head .label { display: block; margin-bottom: 6px; }
   .howto-steps { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-bottom: 20px; }
   .howto-steps li { background: var(--surface-paper); border-radius: 20px; padding: 20px; display: flex; gap: 14px; align-items: flex-start; transition: transform .35s var(--ease); }
-  .howto-steps li:hover { transform: translateY(-4px) rotate(-.6deg); }
   .howto-steps li > div { display: flex; flex-direction: column; gap: 4px; }
   .howto-steps p { color: var(--ink-muted); }
   .num { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--honey); border: 2px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; }
@@ -564,6 +715,37 @@ const detailIcon = (q: string) => {
   .faq-box :global(.acc details:last-child) { border-bottom: 0; }
   .rel-h { display: flex; gap: 16px; align-items: center; }
   .rel-h img { width: 64px; height: 64px; flex: none; }
+
+  /* Efekti na prelaz mišem samo na uređajima sa mišem (na telefonu ne smetaju skrolu) */
+  @media (hover: hover) {
+    .spec:nth-child(odd):hover { transform: translateY(-4px) rotate(-1deg); box-shadow: var(--shadow); }
+    .spec:nth-child(even):hover { transform: translateY(-4px) rotate(1deg); box-shadow: var(--shadow); }
+    .know-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .know-card:hover .know-ic { transform: rotate(-12deg) scale(1.08); }
+    .howto-steps li:hover { transform: translateY(-4px) rotate(-.6deg); }
+    .style-tile:hover { transform: translateY(-2px); }
+  }
+
+  /* Ukras se njiše kao HTML sloj (glatko i na telefonu) */
+  .sway-box { position: absolute; inset: 0; transform-origin: 50% 0; will-change: transform; }
+
+  /* Privezak: pregled uživo */
+  .slide.live svg.kc-svg { inset: 15% 9% 9%; width: 82%; height: 76%; filter: drop-shadow(0 10px 14px rgba(49,32,24,.22)); }
+  .style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+  .style-tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 10px 10px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface-paper); cursor: pointer; transition: transform .25s var(--ease), border-color .2s; }
+  .style-tile input { position: absolute; opacity: 0; pointer-events: none; }
+  .style-sample { font-size: 26px; line-height: 34px; white-space: nowrap; }
+  .style-name { font-size: 12px; line-height: 16px; font-weight: 700; color: var(--ink-muted); text-align: center; }
+  .style-tile:has(input:checked) { border-color: var(--ink); background: var(--honey-soft); }
+  .style-tile:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .kc-names { display: flex; flex-direction: column; gap: 10px; }
+  .kc-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+  .kc-row .kc-del[hidden] { display: none; }
+  .kc-del { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface-paper); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .kc-add { margin-top: 10px; align-self: flex-start; }
+  .kc-add[hidden] { display: none; }
+  .kc-colors { display: flex; flex-direction: column; gap: 18px; }
+  .kc-colors [hidden] { display: none; }
 
   @media (max-width: 960px) {
     .pd { grid-template-columns: 1fr; gap: 28px; }
