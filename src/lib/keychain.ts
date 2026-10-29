@@ -10,6 +10,7 @@ export interface KeyStyle {
   weight: number;
   italic?: boolean;
   caps?: boolean;
+  mala?: boolean; // sve malim slovima (font ima ista slova, a malo „a” je bez ukrasa)
   slojevi: Sloj[]; // koje boje kupac bira
   def: Record<Sloj, string>; // podrazumevane boje (id iz liste boja)
   osnovaW: number; // koliko osnova viri oko slova (deo veličine slova, ukupna debljina linije)
@@ -31,7 +32,7 @@ export const STILOVI: KeyStyle[] = [
   { id: 'pisana', label: 'Pisana slova', font: "'Playball', 'Lobster', cursive", weight: 400, slojevi: ['slova', 'osnova'], def: { slova: 'roze', okvir: 'bela', osnova: 'bela' }, osnovaW: 0.34, okvirW: 0, debljina: 0.035, join: 'round', usica: 'krug', primer: 'Milica' },
   { id: 'bajka', label: 'Bajkovita slova', font: "'Mogra', 'Lobster', cursive", weight: 400, slojevi: ['slova', 'okvir', 'osnova'], def: { slova: 'bela', okvir: 'plava', osnova: 'crna' }, osnovaW: 0.40, okvirW: 0.17, debljina: 0.02, join: 'round', usica: 'pilula', srca: true, sareno: 'okvir', primer: 'Dijana' },
   { id: 'kockice', label: 'Slova kao od kockica', font: "'Nunito', system-ui, sans-serif", weight: 900, italic: true, slojevi: ['slova', 'okvir', 'osnova'], def: { slova: 'bela', okvir: 'zuta', osnova: 'crvena' }, osnovaW: 0.46, okvirW: 0.23, ivica: { boja: '#1d1a17', w: 0.12 }, debljina: 0.02, join: 'round', usica: 'krug', usicaR: 0.3, primer: 'Jovan' },
-  { id: 'pikseli', label: 'Pikselasta slova', font: "'Bumbaru Piksel', monospace", weight: 900, caps: true, slojevi: ['slova', 'osnova'], def: { slova: 'svetlozelena', okvir: 'crna', osnova: 'crna' }, osnovaW: 0.2, okvirW: 0, join: 'miter', usica: 'krug', karika: '#2a2a2a', pukotine: true, primer: 'Miloš' },
+  { id: 'pikseli', label: 'Pikselasta slova', font: "'Bumbaru Mine', 'Bumbaru Piksel', monospace", weight: 400, mala: true, slojevi: ['slova', 'osnova'], def: { slova: 'svetlozelena', okvir: 'crna', osnova: 'crna' }, osnovaW: 0.22, okvirW: 0, join: 'miter', usica: 'krug', karika: '#2a2a2a', pukotine: true, primer: 'Miloš' },
   { id: 'stampana', label: 'Štampana slova', font: "'Montserrat', 'Geologica', system-ui, sans-serif", weight: 800, slojevi: ['slova', 'osnova'], def: { slova: 'crna', okvir: 'bela', osnova: 'bela' }, osnovaW: 0.36, okvirW: 0, join: 'round', usica: 'krug', karika: '#B9BEC4', primer: 'Milica' },
 ];
 export const stil = (id: string) => STILOVI.find((s) => s.id === id) || STILOVI[0];
@@ -142,7 +143,7 @@ export function nacrtaj(svg: SVGSVGElement, c: Crtez) {
   let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
 
   c.imena.forEach((ime, n) => {
-    const tekst = s.caps ? ime.toLocaleUpperCase('sr') : ime;
+    const tekst = s.caps ? ime.toLocaleUpperCase('sr') : s.mala ? ime.toLocaleLowerCase('sr') : ime;
     const sar = s.sareno || 'slova';
     const slova = (sar === 'slova' && c.poImenu?.[n]) || c.boje.slova;
     const okvir = (sar === 'okvir' && c.poImenu?.[n]) || c.boje.okvir;

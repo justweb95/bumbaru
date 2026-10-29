@@ -1,0 +1,11 @@
+Bumbaru Mine
+============
+Izmenjena verzija fonta "MineCrafter 2.0", autor asherz08 (2011).
+Original: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
+https://creativecommons.org/licenses/by-sa/3.0/
+
+Izmene (Bumbaru, 2026): dodata slova Č č Ć ć Š š Ž ž Đ đ, promenjeno ime fonta,
+font je smanjen na latinicu za veb. Izmenjena verzija se deli pod istom licencom
+(CC BY-SA 3.0).
+
+Font nije povezan sa kompanijama Mojang ni Microsoft niti ga one podržavaju.

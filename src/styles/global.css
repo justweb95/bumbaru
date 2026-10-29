@@ -1,3 +1,7 @@
+/* Pikselasta slova za privezke: „Bumbaru Mine” = MineCrafter 2.0 (asherz08, CC BY-SA 3.0) sa dodatim ČĆŠŽĐ;
+   ćirilica iz fonta Monocraft (Idrees Hassan, SIL OFL 1.1). Licence: /fonts/*-LICENSE.txt */
+@font-face { font-family: 'Bumbaru Mine'; src: url('/fonts/bumbaru-mine.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Bumbaru Piksel'; src: url('/fonts/bumbaru-piksel.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; unicode-range: U+0400-045F; }
 /* Bumbaru — stilovi sajta. Boje, slova i razmaci iz dizajn sistema Bumbaru. */
 :root {
   --surface: #C0B8AD;

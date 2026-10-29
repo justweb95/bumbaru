@@ -1,4 +1,10 @@
 ---
+// fontovi za privezke sa imenom (učitavaju se samo slova koja se koriste)
+import '@fontsource/playball/400.css';
+import '@fontsource/lobster/400.css';
+import '@fontsource/mogra/400.css';
+import '@fontsource/nunito/900-italic.css';
+import '@fontsource/montserrat/800.css';
 import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
 import Icon from '../../components/Icon.astro';
@@ -25,7 +31,7 @@ const isUkras = p.personal === 'ukras';
 const isSet = p.personal === 'set';
 const isKey = p.personal === 'privezak' && !!p.keychain;
 const orn = isUkras || isSet;
-const live = orn; // pregled uživo samo za ukrase; privesci prikazuju fotografije
+const live = orn || isKey;
 const ngCustom = p.custom && p.categories.includes('nova-godina');
 const og = p.images[0] ? (p.images[0].src.startsWith('/img/p/') ? `/img/og/${p.slug}.jpg` : isSet ? '/img/og/ukras-set.jpg' : isUkras ? '/img/og/ukras-sofija.jpg' : '/img/og/bumbaru.jpg') : '/img/og/bumbaru.jpg';
 const ld: any = {
@@ -97,7 +103,7 @@ const detailIcon = (q: string) => {
         <div class="stage">
           {live && (
             <div class="slide live" data-slide="live">
-              <span class="badge live-badge"><i class="dotlive"></i>Pregled uživo</span>
+              <span class="badge live-badge"><i class="dotlive"></i>{isKey ? 'Okvirni pregled' : 'Pregled uživo'}</span>
               {isUkras && (
                 <div class="sway-box sway">
                   <svg viewBox="0 0 600 600" role="img" aria-label="Pregled ukrasa sa vašim imenom" data-preview="ukras">
@@ -116,6 +122,7 @@ const detailIcon = (q: string) => {
                   </svg>
                 );
               })}
+              {isKey && <svg class="kc-svg" viewBox="0 0 600 300" role="img" aria-label="Pregled privezaka sa vašim imenima" data-kc-svg></svg>}
             </div>
           )}
           {p.images.map((im, i) => (
@@ -135,6 +142,9 @@ const detailIcon = (q: string) => {
               <button type="button" class="thumb" data-thumb={`i${i}`} aria-pressed={!live && i === 0 ? 'true' : 'false'} aria-label={`Fotografija ${i + 1}: ${im.alt}`}><img src={cardImg(im)} alt="" width="120" height="120" loading="lazy" /></button>
             ))}
           </div>
+        )}
+        {isKey && (
+          <p class="kc-note" role="note"><Icon name="camera" size={20} /><span><strong>Pregled je okviran.</strong> Pokazuje vaša imena i izabrane boje, a pravi izgled priveska vidi se na fotografijama. Oblik slova, debljina i ivice na gotovom privesku mogu da odudaraju od pregleda.</span></p>
         )}
       </div>
 
@@ -162,7 +172,7 @@ const detailIcon = (q: string) => {
               <div class="style-grid">
                 {kcStilovi.map((st, i) => (
                   <label class="style-tile">
-                    <input type="radio" name="stil" value={st.id} checked={i === 0} data-label={st.label} data-slide={kc?.slike?.[st.id] !== undefined ? `i${kc.slike[st.id]}` : undefined} />
+                    <input type="radio" name="stil" value={st.id} checked={i === 0} data-label={st.label} />
                     <img class="style-img" src={`/img/stil/${st.id}.webp`} alt="" width="360" height="180" loading="lazy" />
                     <span class="style-name">{st.label}</span>
                   </label>
@@ -275,6 +285,7 @@ const detailIcon = (q: string) => {
           </div>
           <ul class="notes small">
             {ngCustom && <li><Icon name="calendar" size={18} />Poručite do 16. 12. i stiže pre Nove godine.</li>}
+            {isKey && <li><Icon name="camera" size={18} />Pregled je okviran, a pravi izgled priveska je na fotografijama.</li>}
             <li><Icon name="cash" size={18} />Plaćate kuriru kad paket stigne. Cenu i dostavu javljamo u odgovoru.</li>
             <li><Icon name="messenger" size={18} />Poruka se složi sama: naziv, šifra {p.id}, vaš izbor i link proizvoda.</li>
           </ul>
@@ -353,7 +364,7 @@ const detailIcon = (q: string) => {
             <a class="btn btn-paper btn-lg" href="#poruci"><Icon name="messenger" />Poruči preko Messengera</a>
           </div>
           <ol class="howto-steps">
-            <li class="reveal" style="--d:1"><span class="num">1</span><div><strong>{p.personal ? 'Upišite ime i izaberite boje' : p.options ? 'Izaberite šta vam treba' : 'Izaberite količinu'}</strong><p class="small">{orn ? 'Pregled odmah pokazuje kako će izgledati.' : 'Napomenu možete dodati pre slanja poruke.'}</p></div></li>
+            <li class="reveal" style="--d:1"><span class="num">1</span><div><strong>{p.personal ? 'Upišite ime i izaberite boje' : p.options ? 'Izaberite šta vam treba' : 'Izaberite količinu'}</strong><p class="small">{orn ? 'Pregled odmah pokazuje kako će izgledati.' : isKey ? 'Okvirni pregled pokazuje vaša imena i boje.' : 'Napomenu možete dodati pre slanja poruke.'}</p></div></li>
             <li class="reveal" style="--d:2"><span class="num">2</span><div><strong>Pošaljite poruku</strong><p class="small">Naziv, šifra {p.id} i link proizvoda su već u poruci.</p></div></li>
             <li class="reveal" style="--d:3"><span class="num">3</span><div><strong>Plaćate kuriru</strong><p class="small">Javljamo cenu i rok, a paket stiže kurirom širom Srbije.</p></div></li>
           </ol>
@@ -400,7 +411,7 @@ const detailIcon = (q: string) => {
 <script>
   import { fitName, boja, motiv } from '../../lib/ornament';
   import { BOJE_NA_STANJU, SVE_BOJE } from '../../lib/colors';
-  import { stil, PRIMERI, type Sloj } from '../../lib/keychain';
+  import { stil, nacrtaj, ucitajFont, PRIMERI, type Sloj } from '../../lib/keychain';
   const form = document.querySelector<HTMLFormElement>('[data-order-form]')!;
   const personal = form.dataset.personal || '';
   const id = form.dataset.id || '';
@@ -408,8 +419,11 @@ const detailIcon = (q: string) => {
   // Galerija
   const gal = document.querySelector('[data-gallery]');
   gal?.querySelectorAll<HTMLButtonElement>('[data-thumb]').forEach((b) => b.addEventListener('click', () => {
+    const liveSkriven = (gal.querySelector<HTMLElement>('[data-slide="live"]')?.hidden) ?? false;
     gal.querySelectorAll<HTMLElement>('[data-slide]').forEach((s) => { s.hidden = s.dataset.slide !== b.dataset.thumb; });
     gal.querySelectorAll('[data-thumb]').forEach((t) => t.setAttribute('aria-pressed', String(t === b)));
+    // privezak se meri tek kad je vidljiv
+    if (b.dataset.thumb === 'live' && liveSkriven && kcCfg) drawKc();
   }));
   const showLive = () => (gal?.querySelector('[data-thumb="live"]') as HTMLButtonElement | null)?.click();
 
@@ -421,6 +435,7 @@ const detailIcon = (q: string) => {
 
   const val = (name: string) => (form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value) || '';
   const lab = (name: string) => (form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.dataset.label) || '';
+  const hex = (cid: string) => (SVE_BOJE.find((b) => b.id === cid) || SVE_BOJE[0]).hex;
   const naziv = (cid: string) => (SVE_BOJE.find((b) => b.id === cid) || { naziv: cid }).naziv;
 
   // ——— Ukras sa imenom i porodični set ———
@@ -472,6 +487,7 @@ const detailIcon = (q: string) => {
 
   // ——— Privezak sa imenom ———
   const kcCfg = form.dataset.kc ? JSON.parse(form.dataset.kc) : null;
+  const kcSvg = document.querySelector<SVGSVGElement>('[data-kc-svg]');
   const kcBox = form.querySelector<HTMLElement>('[data-kc-names]');
   const kcAdd = form.querySelector<HTMLButtonElement>('[data-kc-add]');
   const touched = new Set<string>();
@@ -526,10 +542,22 @@ const detailIcon = (q: string) => {
       if (inp) { inp.checked = true; const nm = fs.querySelector('[data-cp-name]'); if (nm) nm.textContent = inp.dataset.label || ''; }
     });
   }
-  // izabrani stil: prikaži njegovu fotografiju u galeriji
-  function pokaziStil() {
-    const slide = form.querySelector<HTMLInputElement>('input[name="stil"]:checked')?.dataset.slide;
-    if (slide) (gal?.querySelector(`[data-thumb="${slide}"]`) as HTMLButtonElement | null)?.click();
+  let kcJob = 0;
+  async function drawKc() {
+    if (!kcCfg || !kcSvg || kcSvg.closest('[hidden]')) return;
+    const s = kcStil();
+    const imena = kcRows().map((inp, i) => inp.value.trim() || PRIMERI[i % PRIMERI.length]);
+    const okvir = val('okvir') || s.def.okvir, osnova = val('osnova') || s.def.osnova;
+    const slova = val('slova') || s.def.slova;
+    const jeSareno = (sarSloj(s) === 'okvir' ? okvir : slova) === 'sareno';
+    const job = ++kcJob;
+    await ucitajFont(s, imena.join(''));
+    if (job !== kcJob || kcSvg.closest('[hidden]')) return;
+    nacrtaj(kcSvg, {
+      imena, stil: s,
+      boje: { slova: hex(slova === 'sareno' ? s.def.slova : slova), okvir: hex(okvir === 'sareno' ? s.def.okvir : okvir), osnova: hex(osnova) },
+      poImenu: jeSareno ? sarene(imena.length, izuzmi(s)).map(hex) : undefined,
+    });
   }
   if (kcCfg) {
     kcAdd?.addEventListener('click', () => {
@@ -537,14 +565,15 @@ const detailIcon = (q: string) => {
       const last = rows[rows.length - 1].parentElement!;
       const row = last.cloneNode(true) as HTMLElement;
       const inp = row.querySelector<HTMLInputElement>('[data-kc-name]')!; inp.value = '';
-      last.after(row); kcRefreshRows(); inp.focus();
+      last.after(row); kcRefreshRows(); inp.focus(); showLive(); drawKc();
     });
     kcBox?.addEventListener('click', (e) => {
       const b = (e.target as HTMLElement).closest('[data-kc-del]');
       if (!b || kcRows().length <= kcCfg.minImena) return;
-      b.parentElement?.remove(); kcRefreshRows();
+      b.parentElement?.remove(); kcRefreshRows(); showLive(); drawKc();
     });
-    kcRefreshRows(); kcSetDefaults(); pokaziStil();
+    kcRefreshRows(); kcSetDefaults(); drawKc();
+    document.fonts?.ready.then(() => drawKc());
   }
 
   form.addEventListener('input', (e) => {
@@ -552,7 +581,8 @@ const detailIcon = (q: string) => {
     if (kcCfg) {
       if (t.name === 'stil') kcSetDefaults();
       if (['slova', 'okvir', 'osnova'].includes(t.name)) touched.add(t.name);
-      if (t.name === 'stil') pokaziStil();
+      drawKc();
+      if (t.matches('[data-kc-name], input[name="stil"], input[name="slova"], input[name="okvir"], input[name="osnova"]')) showLive();
       return;
     }
     updateOrn();
@@ -726,11 +756,14 @@ const detailIcon = (q: string) => {
   /* Ukras se njiše kao HTML sloj (glatko i na telefonu) */
   .sway-box { position: absolute; inset: 0; transform-origin: 50% 0; will-change: transform; }
 
-  /* Privezak: izbor stila i imena */
+  /* Privezak: pregled uživo */
+  .slide.live svg.kc-svg { inset: 15% 9% 9%; width: 82%; height: 76%; filter: drop-shadow(0 10px 14px rgba(49,32,24,.22)); }
   .style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
   .style-tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 6px 8px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface-paper); cursor: pointer; transition: transform .25s var(--ease), border-color .2s; }
   .style-tile input { position: absolute; opacity: 0; pointer-events: none; }
   .style-img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; border-radius: 10px; }
+  .kc-note { display: flex; gap: 10px; align-items: flex-start; margin: 2px 0 0; padding: 12px 14px; border-radius: 14px; background: var(--honey-soft); font-size: 14px; line-height: 20px; color: var(--ink); }
+  .kc-note :global(svg) { flex: none; margin-top: 1px; }
   .style-name { font-size: 12px; line-height: 16px; font-weight: 700; color: var(--ink-muted); text-align: center; }
   .style-tile:has(input:checked) { border-color: var(--ink); background: var(--honey-soft); }
   .style-tile:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }

@@ -87,9 +87,13 @@ stavi u `src/data/boje.json`.
   koristi se samo isečena, bez zaštićenog lika.
 - Privesci sa imenom: stilovi slova imaju opisne nazive (pisana, bajkovita, kao od kockica, pikselasta,
   štampana), bez imena tuđih brendova i likova. Na fotografiji „kockice” figurica i kocke su isečene.
-- Privesci sa imenom prikazuju samo vaše fotografije (izbor stila preko sličica iz `public/img/stil/`), bez
-  crtanog pregleda, da se ne bi prikazivao izgled koji ne odgovara proizvodu. Kupac upisuje imena i bira boje,
-  a sve to stiže u poruci.
+- Privesci sa imenom imaju okvirni pregled (crtež sa imenima i bojama) uz jasno upozorenje da je pravi
+  izgled na fotografijama i da gotov privezak može da odudara od pregleda. Stil se bira preko sličica
+  isečenih iz fotografija (`public/img/stil/`).
+- Fontovi u pregledu: Playball (pisana), Mogra + srca na i/j (bajkovita), Nunito Black Italic (kockice),
+  Montserrat ExtraBold (štampana) — svi SIL OFL; pikselasta slova: „Bumbaru Mine” = MineCrafter 2.0
+  (autor asherz08, CC BY-SA 3.0) sa dodatim ČĆŠŽĐ, ćirilica iz fonta Monocraft (SIL OFL). Licence su u
+  `public/fonts/`. Waltograph („Disney” font) nije na sajtu jer mu licenca zabranjuje komercijalnu upotrebu.
 
 ## Šta je namerno izostavljeno u prvoj verziji
 - Korpa, plaćanje i nalog (porudžbine idu preko Messengera).
