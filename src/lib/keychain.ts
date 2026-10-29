@@ -16,6 +16,7 @@ export interface KeyStyle {
   okvirW: number; // isto za okvir (0 = nema okvira)
   ivica?: { boja: string; w: number }; // tanka tamna linija odmah oko slova (stil „kockice”)
   debljina?: number; // podebljanje slova (za tanja slova)
+  razmak?: number; // dodatni razmak između slova (deo veličine slova)
   join: 'round' | 'miter';
   usica: 'krug' | 'pilula';
   usicaR?: number; // poluprečnik okrugle ušice (deo veličine slova)
@@ -75,7 +76,9 @@ interface Mera { left: number; right: number; top: number; bottom: number; redov
 // crta tekst na platnu i za svaki red piksela pamti gde počinje mastilo (za spajanje ušice)
 function izmeri(s: KeyStyle, tekst: string): Mera {
   const c = ctx2d();
+  const ls = `${(s.razmak || 0) * FS}px`;
   c.font = fontCss(s);
+  (c as any).letterSpacing = ls;
   const m = c.measureText(tekst);
   const pad = 20;
   const w = Math.ceil(m.actualBoundingBoxLeft + m.actualBoundingBoxRight) + pad * 2;
@@ -83,6 +86,7 @@ function izmeri(s: KeyStyle, tekst: string): Mera {
   const cv = c.canvas;
   cv.width = Math.max(1, w); cv.height = Math.max(1, h);
   c.font = fontCss(s);
+  (c as any).letterSpacing = ls;
   c.fillStyle = '#000';
   const ox = pad + m.actualBoundingBoxLeft, oy = pad + m.actualBoundingBoxAscent;
   c.fillText(tekst, ox, oy);
@@ -103,7 +107,7 @@ function tacka(s: KeyStyle, slovo: string) {
   if (tackeKes.has(key)) return tackeKes.get(key)!;
   const c = ctx2d();
   const cv = c.canvas; cv.width = 200; cv.height = 220;
-  c.font = fontCss(s); c.fillStyle = '#000';
+  c.font = fontCss(s); (c as any).letterSpacing = '0px'; c.fillStyle = '#000';
   const ox = 60, oy = 160;
   c.fillText(slovo, ox, oy);
   const d = c.getImageData(0, 0, cv.width, cv.height).data;
@@ -181,7 +185,7 @@ export function nacrtaj(svg: SVGSVGElement, c: Crtez) {
 
     // Tekst kao sloj: obris debljine w u boji col
     const txt = (col: string, w: number, fill = col) => {
-      const t = el('text', { x: 0, y: 0, 'font-size': FS, 'font-family': s.font, 'font-weight': s.weight, 'font-style': s.italic ? 'italic' : 'normal', fill, stroke: w ? col : 'none', 'stroke-width': w, 'stroke-linejoin': s.join, 'stroke-linecap': s.join === 'round' ? 'round' : 'square', 'stroke-miterlimit': 2, 'paint-order': 'stroke' });
+      const t = el('text', { x: 0, y: 0, 'font-size': FS, 'font-family': s.font, 'font-weight': s.weight, 'font-style': s.italic ? 'italic' : 'normal', fill, stroke: w ? col : 'none', 'stroke-width': w, 'stroke-linejoin': s.join, 'stroke-linecap': s.join === 'round' ? 'round' : 'square', 'stroke-miterlimit': 2, 'paint-order': 'stroke', 'letter-spacing': (s.razmak || 0) * FS });
       t.textContent = tekst;
       return t;
     };
@@ -195,7 +199,7 @@ export function nacrtaj(svg: SVGSVGElement, c: Crtez) {
         const d = tacka(s, ch);
         if (!d) return;
         const p = t.getStartPositionOfChar(i);
-        const r = Math.max(d.w, d.h) * 0.62;
+        const r = Math.min(Math.max(d.w, d.h) * 0.62, d.h * 0.95);
         srca.push({ x: p.x + d.cx, y: d.cy - r * 0.05, r, tw: d.w, th: d.h, tx: p.x + d.cx, ty: d.cy });
       });
     };
@@ -233,14 +237,7 @@ export function nacrtaj(svg: SVGSVGElement, c: Crtez) {
       g.appendChild(b.gg);
       if (i === 0) pripremiSrca(b.t);
       if (s.srca && srca.length) {
-        if (L.vrsta === 'slova') {
-          // sakrij tačke i nacrtaj srca
-          const mk = el('mask', { id: `${id}-t${n}`, maskUnits: 'userSpaceOnUse', x: -2000, y: -2000, width: 6000, height: 4000 });
-          mk.appendChild(el('rect', { x: -2000, y: -2000, width: 6000, height: 4000, fill: '#fff' }));
-          srca.forEach((h) => mk.appendChild(el('rect', { x: h.tx - h.tw * 0.75, y: h.ty - h.th * 0.75, width: h.tw * 1.5, height: h.th * 1.5, fill: '#000' })));
-          defs.appendChild(mk);
-          [a, b].forEach((o) => o.t.setAttribute('mask', `url(#${id}-t${n})`));
-        }
+        // srce je veće od tačke i iste boje, pa je potpuno pokrije
         a.gg.appendChild(srce(zid(L.col), L.w));
         b.gg.appendChild(srce(L.col, L.w));
       }
