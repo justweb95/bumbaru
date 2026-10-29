@@ -55,6 +55,7 @@ const shown = mixDefault ? mix : extraChecked ? extraChecked.label : BOJE_NA_STA
   .cp-name { text-transform: none; letter-spacing: 0; font-weight: 700; color: var(--ink-muted); }
   .cp-list { display: flex; flex-wrap: wrap; gap: 8px; }
   .cp-sw { position: relative; display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; }
+  .cp-sw[hidden] { display: none; }
   .cp-sw input { position: absolute; opacity: 0; pointer-events: none; }
   .cp-dot { width: 34px; height: 34px; border-radius: 50%; border: 2px solid rgba(49,32,24,.18); transition: transform .2s var(--ease); }
   .cp-light { border-color: rgba(49,32,24,.35); }

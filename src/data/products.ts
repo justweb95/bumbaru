@@ -54,8 +54,15 @@ const PRIVEZAK_FAQ: Faq[] = [
 const IME_FAQ: Faq[] = [
   { q: 'Mogu li ime ćirilicom?', a: 'Možete. Štampamo tačno kako upišete, latinicom ili ćirilicom.' },
   { q: 'Mogu li više privezaka sa različitim imenima?', a: 'Možete. Kliknite „Dodajte još jedno ime”: svako ime je poseban privezak, a sva stižu u istom paketu.' },
-  { q: 'Mogu li da biram boje?', a: 'Možete. Birate boju slova, okvira i osnove od boja koje trenutno imamo, a pregled odmah pokazuje kako će izgledati.' },
+  { q: 'Mogu li da biram boje?', a: 'Možete. Birate boju slova i osnove (a kod stilova sa okvirom i boju okvira) od boja koje trenutno imamo, a pregled odmah pokazuje kako će izgledati.' },
   { q: 'Da li je privezak igračka?', a: 'Nije. Sitni delovi i karika nisu za decu mlađu od 3 godine.' },
+];
+const PRIVEZAK_SPECS_BEZ_OKVIRA: [string, string][] = [
+  ['Ime', 'do 12 slova, latinica ili ćirilica'],
+  ['Boje', 'slova i osnova, po izboru'],
+  ['Karika', 'metalna karika za ključeve'],
+  ['Materijal', 'PLA plastika'],
+  ['Rok', 'izrada 3–5 radnih dana'],
 ];
 const PRIVEZAK_IME_SPECS: [string, string][] = [
   ['Ime', 'do 12 slova, latinica ili ćirilica'],
@@ -445,7 +452,7 @@ export const PRODUCTS: Product[] = [
     specs: [
       ['U setu', '2–8 privezaka, svaki sa jednim imenom'],
       ['Stil slova', 'pisana, bajkovita, kao od kockica, pikselasta ili štampana'],
-      ['Boje', 'slova (iste ili šarene), okvir i osnova, po izboru'],
+      ['Boje', 'slova, osnova i okvir (kod stilova sa okvirom); svako ime može u drugoj boji'],
       ['Karika', 'metalna karika za svaki privezak'],
       ['Materijal', 'PLA plastika'],
       ['Rok', 'izrada 3–5 radnih dana'],
@@ -464,7 +471,7 @@ export const PRODUCTS: Product[] = [
     categories: ['privesci', 'pokloni-sa-imenom'],
     tags: ['ime', 'privesci'],
     short: 'Pisana ili štampana slova, boje birate sami.',
-    lead: 'Privezak sa imenom, pisanim ili štampanim slovima. Slova, okvir i osnova su u bojama koje izaberete, a pregled odmah pokazuje kako će izgledati.',
+    lead: 'Privezak sa imenom, pisanim ili štampanim slovima. Slova i osnova su u bojama koje izaberete, a pregled odmah pokazuje kako će izgledati.',
     custom: true,
     images: [
       p('privezak-sa-imenom', 1, 1024, 1024, 'Privesci sa imenima pisanim slovima u više boja: Milica, Tijana, Đurđa, Dunja, Sofija, Anđa, Mia, Slađa, Maša, Nikolina'),
@@ -473,15 +480,15 @@ export const PRODUCTS: Product[] = [
     personal: 'privezak',
     keychain: { stilovi: ['pisana', 'stampana'], startImena: 1, minImena: 1, maxImena: 6, sareno: true },
     about: [
-      'Birate pisana ili štampana slova i boje za slova, okvir i osnovu. Ime pišete latinicom ili ćirilicom i štampamo ga tačno kako ga upišete.',
+      'Birate pisana ili štampana slova i boje za slova i osnovu. Ime pišete latinicom ili ćirilicom i štampamo ga tačno kako ga upišete.',
       'Za više imena dodajte još redova: svako ime je poseban privezak. Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
     ],
-    specs: PRIVEZAK_IME_SPECS,
+    specs: PRIVEZAK_SPECS_BEZ_OKVIRA,
     details: PRIVEZAK_IME_DETAILS,
     faq: IME_FAQ,
     related: ['privezak-sa-imenom-bajkovita-slova', 'privezak-sa-imenom-kockice', 'pikselasti-privezak-sa-imenom', 'porodicni-privezak-sa-imenima'],
     seoTitle: 'Privezak sa imenom, boje po izboru | Bumbaru',
-    meta: 'Privezak za ključeve sa imenom, pisanim ili štampanim slovima. Boje slova, okvira i osnove birate sami, pregled uživo. Izrada 3–5 radnih dana.',
+    meta: 'Privezak za ključeve sa imenom, pisanim ili štampanim slovima. Boje slova i osnove birate sami, pregled uživo. Izrada 3–5 radnih dana.',
   },
   {
     id: 'PR-04',
@@ -491,7 +498,7 @@ export const PRODUCTS: Product[] = [
     categories: ['privesci', 'pokloni-sa-imenom'],
     tags: ['ime', 'privesci'],
     short: 'Razigrana slova kao iz crtanog filma. Boje birate sami.',
-    lead: 'Privezak sa imenom ispisanim razigranim slovima, kao sa naslovne strane slikovnice. Najlepše izgleda u jarkim bojama, sa belim okvirom i tamnom osnovom.',
+    lead: 'Privezak sa imenom ispisanim razigranim slovima, kao sa naslovne strane slikovnice: bela slova, okvir u jarkoj boji i crna osnova, a tačke na i i j su mala srca.',
     custom: true,
     images: [p('privezak-sa-imenom-bajkovita-slova', 1, 1200, 1200, 'Privesci sa imenima Dijana, Mateo, Luka, Sofija, Ema, Noa, Olivia i Gabrijel u bajkovitim slovima')],
     personal: 'privezak',

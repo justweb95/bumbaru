@@ -87,6 +87,10 @@ stavi u `src/data/boje.json`.
   koristi se samo isečena, bez zaštićenog lika.
 - Privesci sa imenom: stilovi slova imaju opisne nazive (pisana, bajkovita, kao od kockica, pikselasta,
   štampana), bez imena tuđih brendova i likova. Na fotografiji „kockice” figurica i kocke su isečene.
+- Fontovi u pregledu privezaka (svi SIL OFL, slobodni i za komercijalnu upotrebu): Playball (pisana),
+  Mogra + srca na i/j (bajkovita), Nunito Black Italic (kockice), Monocraft Black sa dodatim Đ/đ
+  (`public/fonts/bumbaru-piksel.woff2`, pikselasta) i Montserrat ExtraBold (štampana). Izgled i debljine
+  slojeva podešavaju se u `src/lib/keychain.ts`.
 
 ## Šta je namerno izostavljeno u prvoj verziji
 - Korpa, plaćanje i nalog (porudžbine idu preko Messengera).

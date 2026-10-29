@@ -1,8 +1,10 @@
 ---
+// fontovi za privezke sa imenom (učitavaju se samo slova koja se koriste)
+import '@fontsource/playball/400.css';
 import '@fontsource/lobster/400.css';
-import '@fontsource/grandstander/800.css';
-import '@fontsource/rubik/900-italic.css';
-import '@fontsource/pixelify-sans/700.css';
+import '@fontsource/mogra/400.css';
+import '@fontsource/nunito/900-italic.css';
+import '@fontsource/montserrat/800.css';
 import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
 import Icon from '../../components/Icon.astro';
@@ -194,9 +196,9 @@ const detailIcon = (q: string) => {
           {isKey && kcPrvi && (
             <div class="kc-colors">
               <ColorPicker name="slova" label={SLOJ_LABEL.slova} def={kcPrvi.def.slova} mix={kc!.sareno ? 'Šareno' : undefined} mixDefault={kc!.startImena > 1 && !!kc!.sareno} attrs={{ 'data-layer': 'slova' }} />
-              <ColorPicker name="okvir" label={SLOJ_LABEL.okvir} def={kcPrvi.def.okvir} attrs={{ 'data-layer': 'okvir', ...(kcPrvi.slojevi.includes('okvir') ? {} : { hidden: '' }) }} />
+              <ColorPicker name="okvir" label={SLOJ_LABEL.okvir} def={kcPrvi.def.okvir} mix={kc!.sareno ? 'Šareno' : undefined} attrs={{ 'data-layer': 'okvir', ...(kcPrvi.slojevi.includes('okvir') ? {} : { hidden: '' }) }} />
               <ColorPicker name="osnova" label={SLOJ_LABEL.osnova} def={kcPrvi.def.osnova} attrs={{ 'data-layer': 'osnova' }} />
-              {kc!.sareno && <p class="hint">Šareno: svako ime u drugoj boji slova.</p>}
+              {kc!.sareno && <p class="hint">Šareno: svako ime u drugoj boji.</p>}
             </div>
           )}
 
@@ -506,14 +508,32 @@ const detailIcon = (q: string) => {
     });
     if (kcAdd) kcAdd.hidden = rows.length >= kcCfg.maxImena;
   }
+  const sarSloj = (s: { sareno?: Sloj }) => s.sareno || 'slova';
+  const izuzmi = (s: ReturnType<typeof kcStil>) => {
+    const v = (sl: Sloj) => val(sl) || s.def[sl];
+    return sarSloj(s) === 'okvir' ? [v('osnova'), v('slova')] : [v('osnova'), s.slojevi.includes('okvir') ? v('okvir') : ''];
+  };
   function kcSetDefaults() {
     const s = kcStil();
+    // „Šareno” je na sloju koji stil menja (slova ili okvir)
+    const sar = sarSloj(s), drugi: Sloj = sar === 'slova' ? 'okvir' : 'slova';
+    const mixSkriven = form.querySelector<HTMLInputElement>(`[data-layer="${drugi}"] input[value="sareno"]`);
+    const mixVidljiv = form.querySelector<HTMLInputElement>(`[data-layer="${sar}"] input[value="sareno"]`);
+    if (mixVidljiv) (mixVidljiv.closest('label') as HTMLElement).hidden = false;
+    if (mixSkriven) {
+      (mixSkriven.closest('label') as HTMLElement).hidden = true;
+      if (mixSkriven.checked) {
+        mixSkriven.checked = false;
+        touched.delete(drugi);
+        if (mixVidljiv) { mixVidljiv.checked = true; const nm = mixVidljiv.closest('[data-cp]')?.querySelector('[data-cp-name]'); if (nm) nm.textContent = mixVidljiv.dataset.label || ''; touched.delete(sar); }
+      }
+    }
     (['slova', 'okvir', 'osnova'] as Sloj[]).forEach((sl) => {
       const fs = form.querySelector<HTMLElement>(`[data-layer="${sl}"]`);
       if (!fs) return;
       if (sl === 'okvir') fs.hidden = !s.slojevi.includes('okvir');
-      if (touched.has(sl)) return;
-      if (sl === 'slova' && val('slova') === 'sareno') return;
+      const izabrano = val(sl);
+      if (izabrano === 'sareno' || (izabrano && touched.has(sl))) return;
       const inp = fs.querySelector<HTMLInputElement>(`input[value="${s.def[sl]}"]`) || fs.querySelector<HTMLInputElement>('input[data-hex]');
       if (inp) { inp.checked = true; const nm = fs.querySelector('[data-cp-name]'); if (nm) nm.textContent = inp.dataset.label || ''; }
     });
@@ -525,13 +545,14 @@ const detailIcon = (q: string) => {
     const imena = kcRows().map((inp, i) => inp.value.trim() || PRIMERI[i % PRIMERI.length]);
     const okvir = val('okvir') || s.def.okvir, osnova = val('osnova') || s.def.osnova;
     const slova = val('slova') || s.def.slova;
+    const jeSareno = (sarSloj(s) === 'okvir' ? okvir : slova) === 'sareno';
     const job = ++kcJob;
     await ucitajFont(s, imena.join(''));
     if (job !== kcJob || kcSvg.closest('[hidden]')) return;
     nacrtaj(kcSvg, {
       imena, stil: s,
-      boje: { slova: hex(slova === 'sareno' ? s.def.slova : slova), okvir: hex(okvir), osnova: hex(osnova) },
-      slovaPoImenu: slova === 'sareno' ? sarene(imena.length, [osnova, s.slojevi.includes('okvir') ? okvir : '']).map(hex) : undefined,
+      boje: { slova: hex(slova === 'sareno' ? s.def.slova : slova), okvir: hex(okvir === 'sareno' ? s.def.okvir : okvir), osnova: hex(osnova) },
+      poImenu: jeSareno ? sarene(imena.length, izuzmi(s)).map(hex) : undefined,
     });
   }
   if (kcCfg) {
@@ -604,15 +625,17 @@ const detailIcon = (q: string) => {
         return;
       }
       const s = kcStil();
-      const okvir = val('okvir'), osnova = val('osnova'), slova = val('slova');
+      const sl = sarSloj(s);
+      const jeSareno = val(sl) === 'sareno';
       lines.push('Stil slova: ' + s.label);
-      if (slova === 'sareno') {
-        const sar = sarene(names.length, [osnova, s.slojevi.includes('okvir') ? okvir : '']);
-        lines.push('Imena i boja slova: ' + names.map((n, i) => `${n} (${naziv(sar[i]).toLowerCase()})`).join(', '));
+      if (jeSareno) {
+        const sar = sarene(names.length, izuzmi(s));
+        lines.push(`Imena i boja ${sl === 'okvir' ? 'okvira' : 'slova'}: ` + names.map((n, i) => `${n} (${naziv(sar[i]).toLowerCase()})`).join(', '));
       } else {
-        lines.push((names.length > 1 ? 'Imena: ' : 'Ime: ') + names.join(', '), 'Boja slova: ' + lab('slova'));
+        lines.push((names.length > 1 ? 'Imena: ' : 'Ime: ') + names.join(', '));
       }
-      if (s.slojevi.includes('okvir')) lines.push('Boja okvira: ' + lab('okvir'));
+      if (!(jeSareno && sl === 'slova')) lines.push('Boja slova: ' + lab('slova'));
+      if (s.slojevi.includes('okvir') && !(jeSareno && sl === 'okvir')) lines.push('Boja okvira: ' + lab('okvir'));
       lines.push('Boja osnove: ' + lab('osnova'));
       qty = names.length;
     }
