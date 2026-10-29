@@ -11,7 +11,7 @@ export type Personal = 'ukras' | 'set' | 'privezak';
 // Izbor boje iz liste boja filamenta (admin panel); def = id podrazumevane boje
 export interface ColorChoice { id: string; label: string; def: string }
 // Privezak sa imenom: stilovi slova (src/lib/keychain.ts) i broj imena (svako ime je jedan privezak)
-export interface KeychainCfg { stilovi: string[]; startImena: number; minImena: number; maxImena: number; sareno?: boolean }
+export interface KeychainCfg { stilovi: string[]; startImena: number; minImena: number; maxImena: number; sareno?: boolean; slike?: Record<string, number> } // slike: koja fotografija prikazuje koji stil
 
 export interface Product {
   id: string; // šifra koja ide u poruku
@@ -54,7 +54,7 @@ const PRIVEZAK_FAQ: Faq[] = [
 const IME_FAQ: Faq[] = [
   { q: 'Mogu li ime ćirilicom?', a: 'Možete. Štampamo tačno kako upišete, latinicom ili ćirilicom.' },
   { q: 'Mogu li više privezaka sa različitim imenima?', a: 'Možete. Kliknite „Dodajte još jedno ime”: svako ime je poseban privezak, a sva stižu u istom paketu.' },
-  { q: 'Mogu li da biram boje?', a: 'Možete. Birate boju slova i osnove (a kod stilova sa okvirom i boju okvira) od boja koje trenutno imamo, a pregled odmah pokazuje kako će izgledati.' },
+  { q: 'Mogu li da biram boje?', a: 'Možete. Birate boju slova i osnove (a kod stilova sa okvirom i boju okvira) od boja koje trenutno imamo.' },
   { q: 'Da li je privezak igračka?', a: 'Nije. Sitni delovi i karika nisu za decu mlađu od 3 godine.' },
 ];
 const PRIVEZAK_SPECS_BEZ_OKVIRA: [string, string][] = [
@@ -444,7 +444,7 @@ export const PRODUCTS: Product[] = [
       p('porodicni-privezak-sa-imenima', 4, 1024, 1024, 'Pikselasti privesci sa imenima Branko, Željko, Miloš i Vukašin'),
     ],
     personal: 'privezak',
-    keychain: { stilovi: ['pisana', 'bajka', 'kockice', 'pikseli', 'stampana'], startImena: 3, minImena: 2, maxImena: 8, sareno: true },
+    keychain: { stilovi: ['pisana', 'bajka', 'kockice', 'pikseli', 'stampana'], startImena: 3, minImena: 2, maxImena: 8, sareno: true, slike: { bajka: 0, pisana: 1, kockice: 2, pikseli: 3 } },
     about: [
       'Svako ime je poseban privezak, a svi stižu zajedno u jednom paketu. Stil slova je isti za ceo set, a boje slova mogu biti šarene, svako ime u drugoj boji.',
       'Imena pišete latinicom ili ćirilicom i štampamo ih tačno kako ih upišete. Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
@@ -471,14 +471,14 @@ export const PRODUCTS: Product[] = [
     categories: ['privesci', 'pokloni-sa-imenom'],
     tags: ['ime', 'privesci'],
     short: 'Pisana ili štampana slova, boje birate sami.',
-    lead: 'Privezak sa imenom, pisanim ili štampanim slovima. Slova i osnova su u bojama koje izaberete, a pregled odmah pokazuje kako će izgledati.',
+    lead: 'Privezak sa imenom, pisanim ili štampanim slovima. Slova i osnova su u bojama koje izaberete.',
     custom: true,
     images: [
       p('privezak-sa-imenom', 1, 1024, 1024, 'Privesci sa imenima pisanim slovima u više boja: Milica, Tijana, Đurđa, Dunja, Sofija, Anđa, Mia, Slađa, Maša, Nikolina'),
       p('privezak-sa-imenom', 2, 1024, 1024, 'Beli privezak sa imenom štampanim crnim slovima, pored privezaka sa pisanim slovima'),
     ],
     personal: 'privezak',
-    keychain: { stilovi: ['pisana', 'stampana'], startImena: 1, minImena: 1, maxImena: 6, sareno: true },
+    keychain: { stilovi: ['pisana', 'stampana'], startImena: 1, minImena: 1, maxImena: 6, sareno: true, slike: { pisana: 0, stampana: 1 } },
     about: [
       'Birate pisana ili štampana slova i boje za slova i osnovu. Ime pišete latinicom ili ćirilicom i štampamo ga tačno kako ga upišete.',
       'Za više imena dodajte još redova: svako ime je poseban privezak. Izrada traje 3–5 radnih dana, a plaćate pouzećem.',
@@ -488,7 +488,7 @@ export const PRODUCTS: Product[] = [
     faq: IME_FAQ,
     related: ['privezak-sa-imenom-bajkovita-slova', 'privezak-sa-imenom-kockice', 'pikselasti-privezak-sa-imenom', 'porodicni-privezak-sa-imenima'],
     seoTitle: 'Privezak sa imenom, boje po izboru | Bumbaru',
-    meta: 'Privezak za ključeve sa imenom, pisanim ili štampanim slovima. Boje slova i osnove birate sami, pregled uživo. Izrada 3–5 radnih dana.',
+    meta: 'Privezak za ključeve sa imenom, pisanim ili štampanim slovima. Boje slova i osnove birate sami. Izrada 3–5 radnih dana.',
   },
   {
     id: 'PR-04',
@@ -512,7 +512,7 @@ export const PRODUCTS: Product[] = [
     faq: IME_FAQ,
     related: ['privezak-sa-imenom', 'privezak-sa-imenom-kockice', 'pikselasti-privezak-sa-imenom', 'porodicni-privezak-sa-imenima'],
     seoTitle: 'Privezak sa imenom, bajkovita slova | Bumbaru',
-    meta: 'Privezak za ključeve sa imenom u razigranim slovima kao iz crtanog filma. Boje po izboru, pregled uživo. Izrada 3–5 radnih dana.',
+    meta: 'Privezak za ključeve sa imenom u razigranim slovima kao iz crtanog filma. Boje po izboru. Izrada 3–5 radnih dana.',
   },
   {
     id: 'PR-05',
@@ -566,7 +566,7 @@ export const PRODUCTS: Product[] = [
     faq: IME_FAQ,
     related: ['privezak-sa-imenom-kockice', 'privezak-sa-imenom-bajkovita-slova', 'privezak-sa-imenom', 'porodicni-privezak-sa-imenima'],
     seoTitle: 'Pikselasti privezak sa imenom za decu | Bumbaru',
-    meta: 'Privezak sa imenom u pikselastim slovima kao u video igrici. Boje po izboru, pregled uživo. Za ranac ili ključeve, izrada 3–5 radnih dana.',
+    meta: 'Privezak sa imenom u pikselastim slovima kao u video igrici. Boje po izboru. Za ranac ili ključeve, izrada 3–5 radnih dana.',
   },
   {
     id: 'PR-03',
