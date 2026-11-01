@@ -1,10 +1,11 @@
 // Admin API za boje filamenta.
-// GET  /api/boje/ (zaglavlje x-admin-password) -> trenutni src/data/boje.json sa GitHub-a
-// POST /api/boje/ (zaglavlje x-admin-password, telo { boje: [...] }) -> upisuje boje.json u repozitorijum,
+// GET  /api/boje/ (zaglavlja x-admin-user i x-admin-password) -> trenutni src/data/boje.json sa GitHub-a
+// POST /api/boje/ (ista zaglavlja, telo { boje: [...] }) -> upisuje boje.json u repozitorijum,
 //                 a Vercel posle toga sam ponovo objavi sajt (oko 1 minut).
-// Potrebne promenljive na Vercel-u: ADMIN_PASSWORD i GITHUB_TOKEN (fine-grained, Contents: Read and write, samo ovaj repo).
+// Prijava: src/lib/admin-auth.ts (otisak imena i lozinke; Vercel promenljiva ADMIN_HASH ima prednost).
+// Potrebna promenljiva na Vercel-u: GITHUB_TOKEN (fine-grained, Contents: Read and write, samo ovaj repo).
 import type { APIRoute } from 'astro';
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { proveriPrijavu } from '../../lib/admin-auth';
 
 export const prerender = false;
 
@@ -13,20 +14,25 @@ const REPO = () => env('GITHUB_REPO') || 'justweb95/bumbaru';
 const BRANCH = () => env('GITHUB_BRANCH') || 'main';
 const API = () => env('GITHUB_API_URL') || 'https://api.github.com';
 const PATH = 'src/data/boje.json';
-const NAPOMENA = 'Boje filamenta. Menja se iz admin panela (/admin/). dostupna: false = boja se ne nudi kupcima.';
+const NAPOMENA = 'Boje filamenta. Menja se iz admin panela. dostupna: false = boja se ne nudi kupcima.';
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-const digest = (s: string) => createHash('sha256').update(s, 'utf8').digest();
+// zaglavlja stižu kodirana (encodeURIComponent), da rade i slova kao č, ć, š
+const zaglavlje = (request: Request, ime: string) => {
+  const v = request.headers.get(ime) || '';
+  try { return decodeURIComponent(v); } catch { return v; }
+};
 
 async function proveri(request: Request) {
-  const pass = env('ADMIN_PASSWORD');
-  if (!pass) return json({ greska: 'ADMIN_PASSWORD nije podešen na Vercel-u.' }, 503);
-  const dato = request.headers.get('x-admin-password') || '';
-  if (!timingSafeEqual(digest(dato), digest(pass))) {
+  const korisnik = zaglavlje(request, 'x-admin-user').trim();
+  const lozinka = zaglavlje(request, 'x-admin-password');
+  let ok = false;
+  try { ok = !!korisnik && !!lozinka && (await proveriPrijavu(korisnik, lozinka, env('ADMIN_HASH'))); } catch { ok = false; }
+  if (!ok) {
     await sleep(700); // usporava pogađanje lozinke
-    return json({ greska: 'Pogrešna lozinka.' }, 401);
+    return json({ greska: 'Pogrešno korisničko ime ili lozinka.' }, 401);
   }
   if (!env('GITHUB_TOKEN')) return json({ greska: 'GITHUB_TOKEN nije podešen na Vercel-u.' }, 503);
   return null;

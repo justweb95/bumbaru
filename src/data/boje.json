@@ -1,5 +1,5 @@
 {
-  "napomena": "Boje filamenta. Menja se iz admin panela (/admin/). dostupna: false = boja se ne nudi kupcima.",
+  "napomena": "Boje filamenta. Menja se iz admin panela. dostupna: false = boja se ne nudi kupcima.",
   "boje": [
     { "id": "bela", "naziv": "Bela", "hex": "#F3EEE5", "dostupna": true },
     { "id": "crna", "naziv": "Crna", "hex": "#2B2622", "dostupna": true },

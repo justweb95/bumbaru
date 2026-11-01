@@ -1,6 +1,7 @@
 ---
 // Admin: boje filamenta koje kupci mogu da biraju na svim proizvodima.
-// Čuvanje ide preko /api/boje (lozinka ADMIN_PASSWORD na Vercel-u), a sajt se posle toga sam objavi ponovo.
+// Adresa namerno nije /admin/ i ne piše se u robots.txt ni u mapi sajta.
+// Čuvanje ide preko /api/boje (prijava: src/lib/admin-auth.ts), a sajt se posle toga sam objavi ponovo.
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import podaci from '../../data/boje.json';
@@ -24,6 +25,10 @@ const koriste = new Set<string>([
     </div>
 
     <form class="card-box login" data-login>
+      <div class="field">
+        <label for="adm-user">Korisničko ime</label>
+        <input id="adm-user" class="input" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required data-user />
+      </div>
       <div class="field">
         <label for="adm-pass">Lozinka</label>
         <input id="adm-pass" class="input" type="password" autocomplete="current-password" required data-pass />
@@ -78,6 +83,7 @@ const koriste = new Set<string>([
   const init = JSON.parse(document.getElementById('adm-data')!.textContent || '{}');
   const koriste = new Set<string>(init.koriste || []);
   let boje: Boja[] = (init.boje || []).map((b: Boja) => ({ ...b }));
+  let korisnik = '';
   let lozinka = '';
 
   const $ = <T extends Element = HTMLElement>(s: string) => document.querySelector<T>(s)!;
@@ -167,7 +173,11 @@ const koriste = new Set<string>([
   }
 
   async function api(method: 'GET' | 'POST', body?: unknown) {
-    const r = await fetch('/api/boje/', { method, headers: { 'x-admin-password': lozinka, ...(body ? { 'Content-Type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined });
+    const r = await fetch('/api/boje/', {
+      method,
+      headers: { 'x-admin-user': encodeURIComponent(korisnik), 'x-admin-password': encodeURIComponent(lozinka), ...(body ? { 'Content-Type': 'application/json' } : {}) },
+      body: body ? JSON.stringify(body) : undefined,
+    });
     let data: any = {};
     try { data = await r.json(); } catch { /* prazno */ }
     return { ok: r.ok, status: r.status, data };
@@ -175,13 +185,14 @@ const koriste = new Set<string>([
 
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    korisnik = $<HTMLInputElement>('[data-user]').value.trim();
     lozinka = $<HTMLInputElement>('[data-pass]').value;
     say(loginMsg, 'Proveravam…');
     try {
       const r = await api('GET');
       if (r.ok && Array.isArray(r.data.boje)) {
         boje = r.data.boje;
-      } else if (r.status === 401) { say(loginMsg, 'Pogrešna lozinka.', 'err'); return; }
+      } else if (r.status === 401) { say(loginMsg, 'Pogrešno korisničko ime ili lozinka.', 'err'); return; }
       else {
         say(msg, (r.data.greska || `Server je vratio ${r.status}.`) + ' Izmene možete da preuzmete kao boje.json.', 'err');
       }
@@ -212,7 +223,7 @@ const koriste = new Set<string>([
   $('[data-download]').addEventListener('click', () => {
     const lista = zaSlanje();
     if (typeof lista === 'string') { say(msg, lista, 'err'); return; }
-    const txt = JSON.stringify({ napomena: 'Boje filamenta. Menja se iz admin panela (/admin/). dostupna: false = boja se ne nudi kupcima.', boje: lista }, null, 2) + '\n';
+    const txt = JSON.stringify({ napomena: 'Boje filamenta. Menja se iz admin panela. dostupna: false = boja se ne nudi kupcima.', boje: lista }, null, 2) + '\n';
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([txt], { type: 'application/json' }));
     a.download = 'boje.json';

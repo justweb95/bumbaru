@@ -44,7 +44,11 @@ Svaki `git push` na granu `main` posle toga sam objavljuje novu verziju.
 
 ## Admin panel: boje filamenta
 
-Adresa: `/admin/` (nije u pretrazi ni u mapi sajta). Tu se upisuju boje koje imate, uključuje i isključuje
+Adresa: `/anycubic/` (nije u pretrazi, mapi sajta ni u robots.txt; stara adresa `/admin/` više ne postoji).
+Prijava je korisničkim imenom i lozinkom. U kodu (`src/lib/admin-auth.ts`) je samo njihov otisak, ne i
+sama lozinka; nova prijava se pravi sa `node scripts/admin-lozinka.mjs <korisnicko-ime> <lozinka>`, a
+ispisani red ide u `ADMIN_HASH` u tom fajlu ili u istoimenu promenljivu na Vercel-u (ona ima prednost).
+Tu se upisuju boje koje imate, uključuje i isključuje
 „na stanju” i menja redosled. Boje na stanju kupci vide i biraju na svim proizvodima (ukrasi, privesci,
 držači…). Posle „Sačuvaj i objavi” izmena se upiše u `src/data/boje.json` na GitHub-u, a Vercel za oko
 minut objavi novu verziju sajta.
@@ -53,10 +57,12 @@ Jednom treba podesiti na Vercel-u (Project → Settings → Environment Variable
 
 | Promenljiva | Vrednost |
 | --- | --- |
-| `ADMIN_PASSWORD` | lozinka za admin panel (dugačka, samo vi je znate) |
 | `GITHUB_TOKEN` | GitHub fine-grained token: Repository access → samo `justweb95/bumbaru`, Permissions → Contents: Read and write |
+| `ADMIN_HASH` (nije obavezno) | druga prijava bez menjanja koda (red iz `scripts/admin-lozinka.mjs`) |
 
-Bez ovih promenljivih admin i dalje radi, ali umesto čuvanja ponudi „Preuzmi boje.json”, koji se onda ručno
+Stara promenljiva `ADMIN_PASSWORD` se više ne koristi i može da se obriše.
+
+Bez `GITHUB_TOKEN` admin i dalje radi, ali umesto čuvanja ponudi „Preuzmi boje.json”, koji se onda ručno
 stavi u `src/data/boje.json`.
 
 ## Gde se šta menja
