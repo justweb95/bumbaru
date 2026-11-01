@@ -1129,6 +1129,570 @@
       "meta": "Modlice za medenjake sa novogodišnjim motivima: Deda Mraz, irvas, sneško, jelka, zvona i još 8. Izaberite motive, od 4 komada popust do 30%."
     },
     {
+      "id": "NG-11",
+      "slug": "irvas-lutkica-pleteni-izgled",
+      "title": "Irvas lutkica (pleteni izgled)",
+      "category": "nova-godina",
+      "categories": [
+        "nova-godina",
+        "privesci"
+      ],
+      "tags": [
+        "privesci",
+        "sto"
+      ],
+      "short": "Izgleda kao pleten. Figura u 3 veličine ili privezak.",
+      "lead": "Irvas koji izgleda kao pleten od vune, a štampan je u 3D od PLA plastike. Izaberite malu, srednju ili veliku figuru za sto, policu ili prozor, ili ga uzmite kao privezak za ključeve.",
+      "price": 590,
+      "images": [
+        {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/ud70341549",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Irvas u pletenom izgledu pored jelke sa kuglama i poklonima",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/ud70341549-og.jpg"
+        },
+        {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/uf59348aca",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Irvas u pletenom izgledu sa crvenom mašnom i poklonima",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/uf59348aca-og.jpg"
+        },
+        {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/u1030d8bbe",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Irvas u pletenom izgledu na snegu, pored jelke",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/u1030d8bbe-og.jpg"
+        },
+        {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/ub21aebf77",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Irvas u crnoj poklon kutiji Bumbaru sa karticom",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/ub21aebf77-og.jpg"
+        }
+      ],
+      "options": [
+        {
+          "id": "velicina",
+          "label": "Veličina",
+          "values": [
+            "Mali",
+            "Srednji",
+            "Veliki",
+            "Privezak"
+          ],
+          "cene": [
+            590,
+            890,
+            1290,
+            450
+          ]
+        }
+      ],
+      "poziv": {
+        "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
+        "dugme": "Pošaljite mi celu kolekciju",
+        "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
+      },
+      "about": [
+        "Površina ima šaru pletiva, pa ga ljudi na prvi pogled pipnu da vide da li je od vune. Štampan je od PLA plastike, pa je lagan, čvrst i lako se briše.",
+        "Izaberite veličinu: mali, srednji ili veliki za dekoraciju, ili privezak sa karikom za ključeve, ranac ili torbu. Cena se menja prema izboru.",
+        "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu. Pišite nam na Messenger-u i šaljemo vam celu ponudu."
+      ],
+      "specs": [
+        [
+          "Izgled",
+          "tekstura pletiva"
+        ],
+        [
+          "Veličina",
+          "mali, srednji ili veliki, ili privezak"
+        ],
+        [
+          "Boje",
+          "braon, crveni nos i crne oči, kao na fotografiji"
+        ],
+        [
+          "Karika",
+          "metalna karika (kod priveska)"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ],
+        [
+          "Pakovanje",
+          "poklon kutija sa karticom"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Da li je irvas pleten od vune?",
+          "a": "Nije. Izgleda kao pletivo, a štampan je u 3D od PLA plastike, pa je čvrst i lako se briše."
+        },
+        {
+          "q": "Koje su mere?",
+          "a": "Mere za svaku veličinu javljamo u odgovoru na vašu poruku."
+        },
+        {
+          "q": "Imate li još modela?",
+          "a": "Imamo još mnogo lutkica u pletenom izgledu. Pišite nam na Messenger-u i šaljemo vam celu kolekciju."
+        },
+        {
+          "q": "Da li je igračka?",
+          "a": "Nije. Figure i privesci imaju sitne delove i nisu za decu mlađu od 3 godine."
+        }
+      ],
+      "related": [
+        "snesko-lutkica-pleteni-izgled",
+        "jelkica-pleteni-izgled",
+        "deda-mraz-lutkica-pleteni-izgled",
+        "privezak-deda-mraz"
+      ],
+      "seoTitle": "Irvas u pletenom izgledu, figura ili privezak | Bumbaru",
+      "meta": "Irvas koji izgleda kao pleten: mala, srednja ili velika figura za dekoraciju, ili privezak za ključeve. 3D štampa, poručivanje preko Messengera."
+    },
+    {
+      "id": "NG-12",
+      "slug": "snesko-lutkica-pleteni-izgled",
+      "title": "Sneško lutkica (pleteni izgled)",
+      "category": "nova-godina",
+      "categories": [
+        "nova-godina",
+        "privesci"
+      ],
+      "tags": [
+        "privesci",
+        "sto"
+      ],
+      "short": "Izgleda kao pleten. Figura u 3 veličine ili privezak.",
+      "lead": "Sneško koji izgleda kao pleten od vune, a štampan je u 3D od PLA plastike. Izaberite malu, srednju ili veliku figuru za sto, policu ili prozor, ili ga uzmite kao privezak za ključeve.",
+      "price": 590,
+      "images": [
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/uf9871bde7",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Sneško u pletenom izgledu sa crvenom kapom i šalom, pored jelke",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/uf9871bde7-og.jpg"
+        },
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/u480f87c7b",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Sneško u pletenom izgledu sa crvenom kapom, šalom i mašnom",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/u480f87c7b-og.jpg"
+        },
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/u862ce339b",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Sneško u pletenom izgledu na snegu",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/u862ce339b-og.jpg"
+        },
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/uc5e5a18ac",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Sneško privezak u crnoj poklon kutiji Bumbaru sa karticom",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/uc5e5a18ac-og.jpg"
+        }
+      ],
+      "options": [
+        {
+          "id": "velicina",
+          "label": "Veličina",
+          "values": [
+            "Mali",
+            "Srednji",
+            "Veliki",
+            "Privezak"
+          ],
+          "cene": [
+            590,
+            890,
+            1290,
+            450
+          ]
+        }
+      ],
+      "poziv": {
+        "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
+        "dugme": "Pošaljite mi celu kolekciju",
+        "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
+      },
+      "about": [
+        "Površina ima šaru pletiva, pa ga ljudi na prvi pogled pipnu da vide da li je od vune. Štampan je od PLA plastike, pa je lagan, čvrst i lako se briše.",
+        "Izaberite veličinu: mali, srednji ili veliki za dekoraciju, ili privezak sa karikom za ključeve, ranac ili torbu. Cena se menja prema izboru.",
+        "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu. Pišite nam na Messenger-u i šaljemo vam celu ponudu."
+      ],
+      "specs": [
+        [
+          "Izgled",
+          "tekstura pletiva"
+        ],
+        [
+          "Veličina",
+          "mali, srednji ili veliki, ili privezak"
+        ],
+        [
+          "Boje",
+          "bela, crvena kapa i šal, narandžast nos, kao na fotografiji"
+        ],
+        [
+          "Karika",
+          "metalna karika (kod priveska)"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ],
+        [
+          "Pakovanje",
+          "poklon kutija sa karticom"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Da li je sneško pleten od vune?",
+          "a": "Nije. Izgleda kao pletivo, a štampan je u 3D od PLA plastike, pa je čvrst i lako se briše."
+        },
+        {
+          "q": "Koje su mere?",
+          "a": "Mere za svaku veličinu javljamo u odgovoru na vašu poruku."
+        },
+        {
+          "q": "Imate li još modela?",
+          "a": "Imamo još mnogo lutkica u pletenom izgledu. Pišite nam na Messenger-u i šaljemo vam celu kolekciju."
+        },
+        {
+          "q": "Da li je igračka?",
+          "a": "Nije. Figure i privesci imaju sitne delove i nisu za decu mlađu od 3 godine."
+        }
+      ],
+      "related": [
+        "irvas-lutkica-pleteni-izgled",
+        "jelkica-pleteni-izgled",
+        "deda-mraz-lutkica-pleteni-izgled",
+        "privezak-deda-mraz"
+      ],
+      "seoTitle": "Sneško u pletenom izgledu, figura ili privezak | Bumbaru",
+      "meta": "Sneško koji izgleda kao pleten: mala, srednja ili velika figura za dekoraciju, ili privezak za ključeve. 3D štampa, poručivanje preko Messengera."
+    },
+    {
+      "id": "NG-13",
+      "slug": "jelkica-pleteni-izgled",
+      "title": "Jelkica (pleteni izgled)",
+      "category": "nova-godina",
+      "categories": [
+        "nova-godina",
+        "privesci"
+      ],
+      "tags": [
+        "privesci",
+        "sto"
+      ],
+      "short": "Izgleda kao pletena. Figura u 3 veličine ili privezak.",
+      "lead": "Jelkica koja izgleda kao pletena od vune, a štampana je u 3D od PLA plastike. Izaberite malu, srednju ili veliku figuru za sto, policu ili prozor, ili je uzmite kao privezak za ključeve.",
+      "price": 590,
+      "images": [
+        {
+          "src": "/img/p/jelkica-pleteni-izgled/ue11ef5c57",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Zelena jelkica u pletenom izgledu sa zlatnom zvezdom, na drvenom stolu",
+          "og": "/img/p/jelkica-pleteni-izgled/ue11ef5c57-og.jpg"
+        },
+        {
+          "src": "/img/p/jelkica-pleteni-izgled/u4ad42a196",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Zelena jelkica u pletenom izgledu sa zlatnom zvezdom, među poklonima",
+          "og": "/img/p/jelkica-pleteni-izgled/u4ad42a196-og.jpg"
+        },
+        {
+          "src": "/img/p/jelkica-pleteni-izgled/u2cb276f66",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Zelena jelkica u pletenom izgledu na snegu, pored jelke",
+          "og": "/img/p/jelkica-pleteni-izgled/u2cb276f66-og.jpg"
+        },
+        {
+          "src": "/img/p/jelkica-pleteni-izgled/u7172483af",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Jelkica privezak u crnoj poklon kutiji Bumbaru sa karticom",
+          "og": "/img/p/jelkica-pleteni-izgled/u7172483af-og.jpg"
+        }
+      ],
+      "options": [
+        {
+          "id": "velicina",
+          "label": "Veličina",
+          "values": [
+            "Mali",
+            "Srednji",
+            "Veliki",
+            "Privezak"
+          ],
+          "cene": [
+            590,
+            890,
+            1290,
+            450
+          ]
+        }
+      ],
+      "poziv": {
+        "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
+        "dugme": "Pošaljite mi celu kolekciju",
+        "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
+      },
+      "about": [
+        "Površina ima šaru pletiva, pa je ljudi na prvi pogled pipnu da vide da li je od vune. Štampana je od PLA plastike, pa je lagana, čvrsta i lako se briše.",
+        "Izaberite veličinu: mali, srednji ili veliki za dekoraciju, ili privezak sa karikom za ključeve, ranac ili torbu. Cena se menja prema izboru.",
+        "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu. Pišite nam na Messenger-u i šaljemo vam celu ponudu."
+      ],
+      "specs": [
+        [
+          "Izgled",
+          "tekstura pletiva"
+        ],
+        [
+          "Veličina",
+          "mali, srednji ili veliki, ili privezak"
+        ],
+        [
+          "Boje",
+          "zelena sa zlatnom zvezdom, kao na fotografiji"
+        ],
+        [
+          "Karika",
+          "metalna karika (kod priveska)"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ],
+        [
+          "Pakovanje",
+          "poklon kutija sa karticom"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Da li je jelkica pletena od vune?",
+          "a": "Nije. Izgleda kao pletivo, a štampana je u 3D od PLA plastike, pa je čvrsta i lako se briše."
+        },
+        {
+          "q": "Koje su mere?",
+          "a": "Mere za svaku veličinu javljamo u odgovoru na vašu poruku."
+        },
+        {
+          "q": "Imate li još modela?",
+          "a": "Imamo još mnogo lutkica u pletenom izgledu. Pišite nam na Messenger-u i šaljemo vam celu kolekciju."
+        },
+        {
+          "q": "Da li je igračka?",
+          "a": "Nije. Figure i privesci imaju sitne delove i nisu za decu mlađu od 3 godine."
+        }
+      ],
+      "related": [
+        "irvas-lutkica-pleteni-izgled",
+        "snesko-lutkica-pleteni-izgled",
+        "deda-mraz-lutkica-pleteni-izgled",
+        "privezak-deda-mraz"
+      ],
+      "seoTitle": "Jelkica u pletenom izgledu, figura ili privezak | Bumbaru",
+      "meta": "Jelkica koja izgleda kao pletena: mala, srednja ili velika figura za dekoraciju, ili privezak za ključeve. 3D štampa, poručivanje preko Messengera."
+    },
+    {
+      "id": "NG-14",
+      "slug": "deda-mraz-lutkica-pleteni-izgled",
+      "title": "Deda Mraz lutkica (pleteni izgled)",
+      "category": "nova-godina",
+      "categories": [
+        "nova-godina",
+        "privesci"
+      ],
+      "tags": [
+        "privesci",
+        "sto"
+      ],
+      "short": "Izgleda kao pleten. Figura u 3 veličine ili privezak.",
+      "lead": "Deda Mraz koji izgleda kao pleten od vune, a štampan je u 3D od PLA plastike. Izaberite malu, srednju ili veliku figuru za sto, policu ili prozor, ili ga uzmite kao privezak za ključeve.",
+      "price": 590,
+      "images": [
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a79d15a5",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Deda Mraz u pletenom izgledu sa poklonom, pored kamina",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a79d15a5-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u5c08cef7e",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Deda Mraz u pletenom izgledu na snegu, pored jelke",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u5c08cef7e-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a73762eb",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Deda Mraz u pletenom izgledu među poklonima, pored kamina",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a73762eb-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u8dd993231",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Deda Mraz privezak u crnoj poklon kutiji Bumbaru sa karticom",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u8dd993231-og.jpg"
+        }
+      ],
+      "options": [
+        {
+          "id": "velicina",
+          "label": "Veličina",
+          "values": [
+            "Mali",
+            "Srednji",
+            "Veliki",
+            "Privezak"
+          ],
+          "cene": [
+            590,
+            890,
+            1290,
+            450
+          ]
+        }
+      ],
+      "poziv": {
+        "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
+        "dugme": "Pošaljite mi celu kolekciju",
+        "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
+      },
+      "about": [
+        "Površina ima šaru pletiva, pa ga ljudi na prvi pogled pipnu da vide da li je od vune. Štampan je od PLA plastike, pa je lagan, čvrst i lako se briše.",
+        "Izaberite veličinu: mali, srednji ili veliki za dekoraciju, ili privezak sa karikom za ključeve, ranac ili torbu. Cena se menja prema izboru.",
+        "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu. Pišite nam na Messenger-u i šaljemo vam celu ponudu."
+      ],
+      "specs": [
+        [
+          "Izgled",
+          "tekstura pletiva"
+        ],
+        [
+          "Veličina",
+          "mali, srednji ili veliki, ili privezak"
+        ],
+        [
+          "Boje",
+          "crvena, bela i crna, kao na fotografiji"
+        ],
+        [
+          "Karika",
+          "metalna karika (kod priveska)"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ],
+        [
+          "Pakovanje",
+          "poklon kutija sa karticom"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Da li je Deda Mraz pleten od vune?",
+          "a": "Nije. Izgleda kao pletivo, a štampan je u 3D od PLA plastike, pa je čvrst i lako se briše."
+        },
+        {
+          "q": "Koje su mere?",
+          "a": "Mere za svaku veličinu javljamo u odgovoru na vašu poruku."
+        },
+        {
+          "q": "Imate li još modela?",
+          "a": "Imamo još mnogo lutkica u pletenom izgledu. Pišite nam na Messenger-u i šaljemo vam celu kolekciju."
+        },
+        {
+          "q": "Da li je igračka?",
+          "a": "Nije. Figure i privesci imaju sitne delove i nisu za decu mlađu od 3 godine."
+        }
+      ],
+      "related": [
+        "irvas-lutkica-pleteni-izgled",
+        "snesko-lutkica-pleteni-izgled",
+        "jelkica-pleteni-izgled",
+        "privezak-deda-mraz"
+      ],
+      "seoTitle": "Deda Mraz u pletenom izgledu, figura ili privezak | Bumbaru",
+      "meta": "Deda Mraz koji izgleda kao pleten: mala, srednja ili velika figura za dekoraciju, ili privezak za ključeve. 3D štampa, poručivanje preko Messengera."
+    },
+    {
       "id": "PK-01",
       "slug": "porodicni-privezak-sa-imenima",
       "title": "Porodični set privezaka sa imenima",

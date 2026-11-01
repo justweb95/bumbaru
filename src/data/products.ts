@@ -9,7 +9,10 @@ import type { Faq } from './categories';
 import data from './proizvodi.json';
 
 export interface Img { src: string; w: number; h: number; alt: string; og?: string }
-export interface Option { id: string; label: string; values: string[] }
+// cene: cena za svaku vrednost (isti redosled kao values); 0 = važi osnovna cena proizvoda
+export interface Option { id: string; label: string; values: string[]; cene?: number[] }
+// Istaknut poziv na Messenger (npr. „pišite nam za celu kolekciju”)
+export interface Poziv { tekst: string; dugme: string; poruka?: string }
 export type Personal = 'ukras' | 'set' | 'privezak';
 // Izbor boje iz liste boja filamenta (admin panel); def = id podrazumevane boje
 export interface ColorChoice { id: string; label: string; def: string }
@@ -38,6 +41,7 @@ export interface Product {
   personal?: Personal;
   keychain?: KeychainCfg;
   motivi?: MotiviCfg;
+  poziv?: Poziv;
   about: string[];
   specs: [string, string][];
   details: Faq[];
@@ -62,3 +66,10 @@ export const cardImg = (i: Img) => (i.src.startsWith('/img/p/') ? `${i.src}-sq.w
 // Izbor motiva: popust za dati broj komada (0 ako nema) i ukupna cena zaokružena na 10 din
 export const popustZa = (m: MotiviCfg, n: number) => m.popusti.filter((x) => n >= x.od).reduce((a, x) => Math.max(a, x.procenat), 0);
 export const cenaMotiva = (cena: number, m: MotiviCfg, n: number) => Math.round((n * cena * (1 - popustZa(m, n) / 100)) / 10) * 10;
+
+// Cene po opcijama: sve cene koje kupac može da dobije (za „od … din” i Google)
+export const sveCene = (x: Product) => {
+  const opc = (x.options || []).find((o) => o.cene?.some((c) => c > 0));
+  if (!opc) return x.price ? [x.price] : [];
+  return opc.values.map((_, i) => opc.cene![i] || x.price || 0).filter((c) => c > 0);
+};

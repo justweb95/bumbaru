@@ -11,7 +11,7 @@ import Icon from '../../components/Icon.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Accordion from '../../components/Accordion.astro';
 import ColorPicker from '../../components/ColorPicker.astro';
-import { PRODUCTS, productBySlug, productUrl, cardImg, type Product } from '../../data/products';
+import { PRODUCTS, productBySlug, productUrl, cardImg, sveCene, type Product } from '../../data/products';
 import { categoryBySlug, catUrl } from '../../data/categories';
 import { SITE, din, messengerUrl } from '../../data/site';
 import { MOTIVI } from '../../lib/ornament';
@@ -26,7 +26,11 @@ const { p } = Astro.props as { p: Product };
 const cat = categoryBySlug(p.category);
 const related = p.related.map((s) => productBySlug(s)).filter(Boolean) as Product[];
 const showPrice = SITE.showPrices && p.price;
-const priceText = showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) + (p.motivi?.lista.length ? ' po komadu' : '') : '';
+// Cena po opciji (npr. veličina): prikazuje se cena izabrane vrednosti i menja se sa izborom
+const opcCena = (p.options || []).find((o) => o.cene?.some((c) => c > 0));
+const cenaOpc = (i: number) => (opcCena?.cene?.[i] || p.price || 0);
+const showVar = SITE.showPrices && !!opcCena && cenaOpc(0) > 0;
+const priceText = showVar ? din(cenaOpc(0)) : showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) + (p.motivi?.lista.length ? ' po komadu' : '') : '';
 const isUkras = p.personal === 'ukras';
 const isSet = p.personal === 'set';
 const isKey = p.personal === 'privezak' && !!p.keychain;
@@ -45,7 +49,8 @@ const ld: any = {
   image: p.images.map((i) => SITE.url + i.src + '-lg.webp'),
   url: SITE.url + productUrl(p.slug),
 };
-if (showPrice) ld.offers = { '@type': 'Offer', priceCurrency: 'RSD', price: p.price, availability: 'https://schema.org/InStock', url: SITE.url + productUrl(p.slug) };
+if (showVar) { const c = sveCene(p); ld.offers = { '@type': 'AggregateOffer', priceCurrency: 'RSD', lowPrice: Math.min(...c), highPrice: Math.max(...c), offerCount: c.length, availability: 'https://schema.org/InStock', url: SITE.url + productUrl(p.slug) }; }
+else if (showPrice) ld.offers = { '@type': 'Offer', priceCurrency: 'RSD', price: p.price, availability: 'https://schema.org/InStock', url: SITE.url + productUrl(p.slug) };
 
 // Pregled ukrasa
 const S = 1.62, HY = 136;
@@ -169,7 +174,7 @@ const detailIcon = (q: string) => {
           {p.custom ? <><span class="badge badge-custom">Po meri</span><span class="badge">Izrada 3–5 radnih dana</span></> : <span class="badge">{cat.label}</span>}
         </div>
         <h1 class="h1">{p.title}</h1>
-        {priceText && <p class="price">{priceText}</p>}
+        {priceText && <p class="price" data-price-el>{priceText}</p>}
         <p class="lead" style="color:var(--ink)">{p.lead}</p>
 
         <form class="order" id="poruci" data-order-form data-id={p.id} data-personal={p.personal || ''} data-kc={kcData || undefined} novalidate>
@@ -309,14 +314,14 @@ const detailIcon = (q: string) => {
               <fieldset class="field">
                 <legend class="flabel">{o.label}</legend>
                 <div class="chips">
-                  {o.values.map((v, i) => <label class="chip"><input type="radio" name={`o-${o.id}`} value={v} checked={i === 0} data-option={o.label} />{v}</label>)}
+                  {o.values.map((v, i) => <label class="chip"><input type="radio" name={`o-${o.id}`} value={v} checked={i === 0} data-option={o.label} data-cena={o === opcCena && showVar ? cenaOpc(i) : undefined} />{v}{o === opcCena && showVar && <small class="chip-cena">{din(cenaOpc(i))}</small>}</label>)}
                 </div>
               </fieldset>
             ) : (
               <div class="field">
                 <label for={`o-${o.id}`}>{o.label}</label>
                 <select id={`o-${o.id}`} class="select" name={`o-${o.id}`} data-option={o.label}>
-                  {o.values.map((v) => <option>{v}</option>)}
+                  {o.values.map((v, i) => <option value={v} data-cena={o === opcCena && showVar ? cenaOpc(i) : undefined}>{o === opcCena && showVar ? `${v} – ${din(cenaOpc(i))}` : v}</option>)}
                 </select>
               </div>
             )
@@ -343,6 +348,13 @@ const detailIcon = (q: string) => {
           </ul>
         </form>
 
+        {p.poziv && (
+          <div class="poziv">
+            <img class="poziv-bee fx-float" src="/img/brand/pcelica.webp" alt="" width="72" height="72" loading="lazy" />
+            <p>{p.poziv.tekst}</p>
+            <a class="btn btn-primary" href={messengerUrl(p.poziv.poruka || `Zdravo! ${p.poziv.dugme} (${p.title}).`, p.id)} target="_blank" rel="noopener"><Icon name="messenger" />{p.poziv.dugme}</a>
+          </div>
+        )}
         <div class="trail" aria-hidden="true"></div>
         <ul class="perks">
           <li><span class="ti"><Icon name="cash" /></span><span><strong>Plaćanje pouzećem</strong><span class="small muted">Plaćate kuriru kad paket stigne.</span></span></li>
@@ -635,6 +647,23 @@ const detailIcon = (q: string) => {
     document.fonts?.ready.then(() => drawKc());
   }
 
+  // Cena po opciji (npr. veličina)
+  const cenaEl = document.querySelector<HTMLElement>('[data-price-el]');
+  const dinar2 = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' din';
+  const izabranaCena = () => {
+    const r = form.querySelector<HTMLInputElement>('input[data-cena]:checked');
+    if (r) return Number(r.dataset.cena) || 0;
+    const sel = form.querySelector<HTMLSelectElement>('select[data-option]');
+    const o = sel?.selectedOptions[0];
+    return o?.dataset.cena ? Number(o.dataset.cena) : 0;
+  };
+  const osveziCenu = () => {
+    const c = izabranaCena();
+    if (!c || !cenaEl) return;
+    if (cenaEl.textContent !== dinar2(c)) { cenaEl.textContent = dinar2(c); cenaEl.classList.remove('pop'); void cenaEl.offsetWidth; cenaEl.classList.add('pop'); }
+  };
+  form.addEventListener('change', osveziCenu);
+
   form.addEventListener('input', (e) => {
     const t = e.target as HTMLInputElement;
     if (kcCfg) {
@@ -794,6 +823,8 @@ const detailIcon = (q: string) => {
       if (el instanceof HTMLInputElement && !el.checked) return;
       lines.push(el.dataset.option + ': ' + el.value);
     });
+    const cenaIzbora = izabranaCena();
+    if (cenaIzbora && cenaEl) lines.push('Cena: ' + dinar2(cenaIzbora) + (qty > 1 ? ' po komadu' : ''));
     const nap = (form.querySelector<HTMLInputElement>('input[name="napomena"]')?.value || '').trim();
     if (nap) lines.push('Napomena: ' + nap);
     (window as any).bumbaruOrder(id, lines, qty);
@@ -918,6 +949,15 @@ const detailIcon = (q: string) => {
   .kc-add[hidden] { display: none; }
   .kc-colors { display: flex; flex-direction: column; gap: 18px; }
   .kc-colors [hidden] { display: none; }
+
+  /* Cena po opciji i poziv za celu kolekciju */
+  .chip-cena { font-size: 12px; font-weight: 700; color: var(--ink-muted); margin-left: 2px; }
+  .chip:has(input:checked) .chip-cena { color: var(--ink); }
+  .price.pop { animation: mot-pop .5s cubic-bezier(.3,1.7,.5,1); transform-origin: left center; }
+  .poziv { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 22px 22px 22px 108px; border-radius: var(--r-lg); background: var(--honey-soft); border: 2px dashed var(--ink); }
+  .poziv p { font-weight: 600; font-size: 16px; line-height: 23px; margin: 0; }
+  .poziv-bee { position: absolute; left: 20px; top: 20px; width: 72px; height: auto; }
+  @media (max-width: 520px) { .poziv { padding: 20px; } .poziv-bee { position: static; width: 56px; } }
 
   /* Izbor motiva: pločice, brojač i traka popusta sa pčelicom */
   .mot-slide-name { position: absolute; left: 16px; top: 16px; z-index: 2; background: var(--surface-paper); border: 2px solid var(--ink); }

@@ -161,6 +161,12 @@ try { pozadine = readdirSync('public/img/bg').filter((f) => /\.(webp|jpg|png)$/.
   :global(.adm .inl) { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
   :global(.adm .inl .input) { width: 90px; }
 
+  /* vrednosti opcije sa cenom */
+  :global(.adm .vals) { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  :global(.adm .val) { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto auto; gap: 6px; align-items: center; }
+  :global(.adm .val .inl .input) { width: 110px; }
+  @media (max-width: 700px) { :global(.adm .val) { grid-template-columns: minmax(0, 1fr) auto; } }
+
   /* boje */
   :global(.adm .preview) { display: flex; flex-wrap: wrap; gap: 6px; min-height: 26px; }
   :global(.adm .pv) { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(49,32,24,.2); }

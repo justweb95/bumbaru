@@ -65,6 +65,11 @@ U adminu se menja:
   komada (npr. od 4 kom 17%, od 6 kom 24%, od 8 kom 30%). Na strani proizvoda kupac klikne motive (i broj
   komada svakog), traka sa pčelicom pokazuje koliko fali do sledećeg popusta, a poruka nosi motive, popust
   i cenu (cena = broj × cena po komadu − popust, zaokruženo na 10 din).
+- **Cena po opciji** (npr. Veličina: Mali / Srednji / Veliki / Privezak): uz svaku vrednost opcije može da
+  se upiše cena; na sajtu se cena menja sa izborom, kartica u katalogu pokazuje „od … din”, a poruka nosi
+  izabranu cenu. Prazna cena = osnovna cena proizvoda.
+- **Poziv na Messenger** (npr. „Pošaljite mi celu kolekciju”): istaknuta kartica ispod dugmeta za
+  porudžbinu, sa tekstom, natpisom dugmeta i porukom koja se otvori u Messenger-u.
 - **Boje filamenta** i **prikaz cena** na celom sajtu.
 
 Konfiguratori (ukras, porodični set i privezak sa imenom: pregled uživo) ostaju u kodu (`src/lib`).

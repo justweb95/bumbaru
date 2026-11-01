@@ -1,7 +1,7 @@
 // Provera i čišćenje podataka iz admin panela (proizvodi, kategorije, boje, podešavanja).
 // Koristi ga i server (/api/cms/) i admin u pregledaču, pa ovde nema ničeg specifičnog za Node.
 // Svaka funkcija vraća čist objekat (samo poznata polja, u stalnom redosledu) ili baca CmsGreska.
-import type { Product, Img, Option, ColorChoice, KeychainCfg, Personal, MotiviCfg } from '../data/products';
+import type { Product, Img, Option, ColorChoice, KeychainCfg, Personal, MotiviCfg, Poziv } from '../data/products';
 import type { Category, Faq } from '../data/categories';
 
 export class CmsGreska extends Error {}
@@ -181,8 +181,13 @@ function opcije(v: unknown, gde: string): Option[] {
   return niz<Option>(v, `${gde}: opcije`, 6)
     .map((o, i) => {
       const label = red(o?.label, `${gde}: opcija ${i + 1} (naziv)`, 40);
-      const values = niz<string>(o?.values, `${gde}: opcija „${label}”`, 30).map((x) => red(x, `${gde}: opcija „${label}”`, 60)).filter(Boolean);
-      return { id: String(o?.id ?? '').trim(), label, values };
+      const sirove = niz<string>(o?.values, `${gde}: opcija „${label}”`, 30).map((x) => red(x, `${gde}: opcija „${label}”`, 60));
+      const cene0 = Array.isArray(o?.cene) ? o.cene : [];
+      // prazne vrednosti se izbacuju zajedno sa svojom cenom
+      const parovi = sirove.map((x, j) => [x, cene0[j]] as [string, unknown]).filter(([x]) => x);
+      const values = parovi.map(([x]) => x);
+      const cene = parovi.map(([x, c]) => (c === undefined || c === null || c === '' ? 0 : ceo(c, `${gde}: cena za „${x}”`, 0, 10_000_000)));
+      return { id: String(o?.id ?? '').trim(), label, values, cene };
     })
     .filter((o) => o.label || o.values.length)
     .map((o) => {
@@ -191,9 +196,21 @@ function opcije(v: unknown, gde: string): Option[] {
       let id = SLUG.test(o.id) ? o.id : slugify(o.label, 30) || 'opcija';
       for (let n = 2; ids.has(id); n++) id = `${slugify(o.label, 26) || 'opcija'}-${n}`;
       ids.add(id);
-      return { id, label: o.label, values: o.values };
+      return { id, label: o.label, values: o.values, ...(o.cene.some((c) => c > 0) ? { cene: o.cene } : {}) };
     });
 }
+
+function poziv(v: unknown, gde: string): Poziv | undefined {
+  if (v == null) return undefined;
+  const x = v as Poziv;
+  const tekst = tekst_(x.tekst, `${gde}: poziv (tekst)`, 300);
+  const dugme = red(x.dugme, `${gde}: poziv (dugme)`, 50);
+  const poruka = tekst_(x.poruka, `${gde}: poziv (poruka)`, 300);
+  if (!tekst && !dugme && !poruka) return undefined;
+  if (!tekst || !dugme) greska(`${gde}: poziv za Messenger mora da ima tekst i natpis na dugmetu.`);
+  return { tekst, dugme, ...(poruka ? { poruka } : {}) };
+}
+const tekst_ = (v: unknown, gde: string, max: number) => tekst(v, gde, max);
 
 function izborBoja(v: unknown, gde: string): ColorChoice[] {
   const ids = new Set<string>();
@@ -275,6 +292,7 @@ export function ocistiProizvode(ulaz: unknown, kategorije: Category[]): Product[
       ...(personal ? { personal } : {}),
       ...(keychain ? { keychain } : {}),
       ...(() => { const x = motivi(p?.motivi, gde); return x ? { motivi: x } : {}; })(),
+      ...(() => { const x = poziv(p?.poziv, gde); return x ? { poziv: x } : {}; })(),
       about: pasusi(p?.about, `${gde}: opis`),
       specs,
       details: pitanja(p?.details, `${gde}: detalji`, 12),

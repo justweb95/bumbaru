@@ -313,6 +313,7 @@ function editorProizvoda(p: Product) {
     sekcija('Česta pitanja', listaPitanja(p.faq, 'Pitanje', 'Odgovor', 'Dodaj pitanje')),
     sekcija('Izbor za kupca', izborSekcija(p)),
     sekcija('Izbor motiva (npr. modlice)', motiviSekcija(p)),
+    sekcija('Poziv za celu kolekciju (Messenger)', pozivSekcija(p)),
     sekcija('Povezani proizvodi', povezaniSekcija(p)),
 
     sekcija('Google (SEO)',
@@ -467,11 +468,11 @@ function izborSekcija(p: Product) {
         izbor(bojeOpcije(), c.def, (v) => (c.def = v), { 'aria-label': 'Početna boja' })),
         () => ({ id: '', label: p.colors!.length ? `Boja ${p.colors!.length + 1}` : 'Boja', def: P.boje.find((b) => b.dostupna)?.id || 'bela' }), 'Dodaj izbor boje', 4)),
     h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Ostale opcije'),
-      h('p', { class: 'hint' }, 'Npr. Motiv, Oblik, Brend baterije. Svaka vrednost u novom redu.'),
-      lista<Option>(p.options!, (o) => h('div', { class: 'pair' },
-        ulaz(o.label, (v) => (o.label = v), { placeholder: 'Naziv (npr. Motiv)', 'aria-label': 'Naziv opcije', maxlength: 40 }),
-        oblast(o.values.join('\n'), (v) => (o.values = v.split('\n').map((x) => x.trim()).filter(Boolean)), { rows: 3, placeholder: 'Vrednosti, svaka u novom redu', 'aria-label': 'Vrednosti' })),
-        () => ({ id: '', label: '', values: [] }), 'Dodaj opciju', 6)),
+      h('p', { class: 'hint' }, 'Npr. Veličina, Motiv, Oblik. Uz vrednost možete upisati i njenu cenu (npr. Mali 590, Veliki 1290): na sajtu se cena menja sa izborom. Prazna cena = osnovna cena proizvoda.'),
+      lista<Option>(p.options!, (o) => h('div', { class: 'stack' },
+        ulaz(o.label, (v) => (o.label = v), { placeholder: 'Naziv opcije (npr. Veličina)', 'aria-label': 'Naziv opcije', maxlength: 40 }),
+        vrednostiOpcije(o)),
+        () => ({ id: '', label: '', values: [''] }), 'Dodaj opciju', 6)),
   );
 }
 
@@ -562,6 +563,42 @@ function motiviSekcija(p: Product) {
     );
     osveziCenovnik();
   };
+  crtaj();
+  return box;
+}
+
+// Vrednosti opcije sa cenom (cene idu u isti redosled kao vrednosti)
+function vrednostiOpcije(o: Option) {
+  const box = h('div', { class: 'vals' });
+  const cene = () => (o.cene ||= o.values.map(() => 0));
+  const zameni = (i: number, j: number) => { [o.values[i], o.values[j]] = [o.values[j], o.values[i]]; if (o.cene) [o.cene[i], o.cene[j]] = [o.cene[j], o.cene[i]]; };
+  const crtaj = (fokus = false) => {
+    box.replaceChildren(
+      ...o.values.map((v, i) => h('div', { class: 'val' },
+        ulaz(v, (x) => (o.values[i] = x), { placeholder: `Vrednost ${i + 1} (npr. Mali)`, 'aria-label': `Vrednost ${i + 1}`, maxlength: 60 }),
+        h('label', { class: 'inl' }, ulaz(o.cene?.[i] ? String(o.cene[i]) : '', (x) => { const n = Math.round(Number(x)); cene()[i] = Number.isFinite(n) && n > 0 ? n : 0; }, { type: 'number', min: 0, step: 10, inputmode: 'numeric', placeholder: 'cena', 'aria-label': `Cena za vrednost ${i + 1}` }), 'din'),
+        dugmeIkona('up', 'Pomeri gore', () => { zameni(i, i - 1); crtaj(); izmena(); }, { disabled: i === 0 }),
+        dugmeIkona('down', 'Pomeri dole', () => { zameni(i, i + 1); crtaj(); izmena(); }, { disabled: i === o.values.length - 1 }),
+        dugmeIkona('close', 'Obriši vrednost', () => { o.values.splice(i, 1); o.cene?.splice(i, 1); crtaj(); izmena(); }, { class: 'del' }))),
+      ...(o.values.length < 30 ? [h('button', { type: 'button', class: 'btn btn-sm', onclick: () => { o.values.push(''); o.cene?.push(0); crtaj(true); izmena(); } }, ikona('plus'), 'Dodaj vrednost')] : []),
+    );
+    if (fokus) box.querySelector<HTMLInputElement>('.val:last-of-type input')?.focus();
+  };
+  crtaj();
+  return box;
+}
+
+function pozivSekcija(p: Product) {
+  const box = h('div', { class: 'stack' });
+  const crtaj = () => box.replaceChildren(
+    prekidac(!!p.poziv, (v) => { if (v) p.poziv = { tekst: 'Ovo je samo deo kolekcije. Pišite nam na Messenger-u i šaljemo vam celu ponudu.', dugme: 'Pošaljite mi celu kolekciju' }; else delete p.poziv; }, 'Prikaži poziv na Messenger ispod dugmeta za porudžbinu', crtaj),
+    ...(p.poziv ? [
+      polje('Tekst', oblast(p.poziv.tekst, (v) => (p.poziv!.tekst = v), { rows: 2, maxlength: 300 })),
+      grid(
+        polje('Natpis na dugmetu', ulaz(p.poziv.dugme, (v) => (p.poziv!.dugme = v), { maxlength: 50 })),
+        polje('Poruka koja se otvori u Messenger-u (nije obavezno)', ulaz(p.poziv.poruka || '', (v) => { if (v.trim()) p.poziv!.poruka = v; else delete p.poziv!.poruka; }, { maxlength: 300, placeholder: `Zdravo! ${p.poziv.dugme} (${p.title}).` }))),
+    ] : []),
+  );
   crtaj();
   return box;
 }

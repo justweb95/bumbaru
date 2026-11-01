@@ -1,13 +1,15 @@
 ---
 import Icon from './Icon.astro';
 import type { Product } from '../data/products';
-import { productUrl, cardImg } from '../data/products';
+import { productUrl, cardImg, sveCene } from '../data/products';
 import { SITE, din } from '../data/site';
 interface Props { p: Product; eager?: boolean; tags?: boolean }
 const { p, eager = false, tags = false } = Astro.props;
 const img = p.images[0] || p.motivi?.lista.find((m) => m.slika)?.slika;
 const showPrice = SITE.showPrices && p.price;
-const price = showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) + (p.motivi?.lista.length ? ' / kom' : '') : '';
+const cene = sveCene(p);
+const raspon = SITE.showPrices && cene.length > 1 && Math.min(...cene) !== Math.max(...cene);
+const price = raspon ? 'od ' + din(Math.min(...cene)) : SITE.showPrices && cene.length ? (p.priceFrom ? 'od ' : '') + din(cene[0]) + (p.motivi?.lista.length ? ' / kom' : '') : '';
 const url = productUrl(p.slug);
 const popustDo = p.motivi?.popusti.length ? Math.max(...p.motivi.popusti.map((x) => x.procenat)) : 0;
 ---
