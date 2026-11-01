@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import ProductCard from '../components/ProductCard.astro';
 import Accordion from '../components/Accordion.astro';
-import { productBySlug, productUrl } from '../data/products';
+import { productBySlug, productUrl, type Product } from '../data/products';
 import { SITE, messengerUrl } from '../data/site';
 import { ornamentG } from '../lib/ornament-svg';
 
@@ -11,7 +11,7 @@ const ng = [
   'privezak-deda-mraz', 'patuljak-sa-led-svecicom', 'mini-jelka-za-sto',
   'prstenovi-za-salvete-set-od-6', 'zlatna-jelka-za-sklapanje', 'ukras-za-jelku-sa-imenom',
   'privezak-irvas', 'jelkica-za-punjenje', 'porodicni-set-ukrasa-sa-imenima',
-].map((s) => productBySlug(s)!);
+].map((s) => productBySlug(s)).filter((x): x is Product => !!x); // sakriveni ili obrisani iz admina se preskaču
 
 const hang = [
   { x: 110, hy: 180, rot: -3, s: 0.84, motif: 'planine', color: 'zelena', nameColor: 'ista', fb: 'Luka', key: 'a', cls: 'sway sway-1' },
@@ -37,7 +37,8 @@ const faq = [
 ];
 const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') } })) };
 
-const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
+// Kartica u vrhu strane: fotografija je stalna (stare fotografije admin ne briše), link vodi na proizvod ako je na sajtu.
+const patuljak = productBySlug('patuljak-sa-led-svecicom');
 ---
 <Base
   title="Ukrasi za jelku sa imenom i pokloni po meri | Bumbaru"
@@ -62,8 +63,8 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom')!;
             <path d="M8 232 C40 130 120 160 160 100 S 250 30 292 40" fill="none" stroke="#312018" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 12" mask="url(#trailMask)" />
           </svg>
           <span class="hero-bee fx-bee"><img class="fx-float" src="/img/brand/pcelica.webp" alt="" width="320" height="320" /></span>
-          <a class="float-card fx-drop" style="--d:0;--r:-3deg" href={productUrl(patuljak.slug)}>
-            <span class="fc-img" style="aspect-ratio:5/6"><img src={`${patuljak.images[0].src}-sm.webp`} alt={patuljak.images[0].alt} width="640" height="768" /></span>
+          <a class="float-card fx-drop" style="--d:0;--r:-3deg" href={patuljak ? productUrl(patuljak.slug) : '/katalog/nova-godina/'}>
+            <span class="fc-img" style="aspect-ratio:5/6"><img src="/img/p/patuljak-sa-led-svecicom/1-sm.webp" alt="Beli patuljak sa zvezdicama na kapi i upaljenom LED svećicom, pored jelke" width="640" height="768" /></span>
             <span class="fc-label">Patuljak sa LED svećicom</span>
           </a>
           <a class="float-card fc-2 fx-drop" style="--d:1;--r:3deg" href="/katalog/nova-godina/?filter=privesci">

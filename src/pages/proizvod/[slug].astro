@@ -33,7 +33,8 @@ const isKey = p.personal === 'privezak' && !!p.keychain;
 const orn = isUkras || isSet;
 const live = orn || isKey;
 const ngCustom = p.custom && p.categories.includes('nova-godina');
-const og = p.images[0] ? (p.images[0].src.startsWith('/img/p/') ? `/img/og/${p.slug}.jpg` : isSet ? '/img/og/ukras-set.jpg' : isUkras ? '/img/og/ukras-sofija.jpg' : '/img/og/bumbaru.jpg') : '/img/og/bumbaru.jpg';
+// Slika za deljenje (Messenger, Facebook): og prve fotografije, inače opšta slika brenda
+const og = p.images[0]?.og || '/img/og/bumbaru.jpg';
 const ld: any = {
   '@context': 'https://schema.org',
   '@type': 'Product',

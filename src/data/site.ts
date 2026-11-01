@@ -1,4 +1,6 @@
 // Osnovna podešavanja sajta. Sve što se često menja je ovde.
+// Prikaz cena se uključuje u admin panelu (src/data/podesavanja.json).
+import podesavanja from './podesavanja.json';
 
 export const SITE = {
   name: 'Bumbaru',
@@ -16,9 +18,8 @@ export const SITE = {
   // Instagram: upisati punu adresu kad nalog bude spreman, npr. 'https://www.instagram.com/bumbaru.rs/'
   instagramUrl: '',
 
-  // Cene: dok nema firme i potvrđenih cena, cene se ne prikazuju.
-  // Kad budu spremne, upišite cene u src/data/products.ts i ovde stavite true.
-  showPrices: false,
+  // Cene: dok nema firme i potvrđenih cena, cene se ne prikazuju (prekidač je u admin panelu → Podešavanja).
+  showPrices: podesavanja.prikaziCene === true,
 
   // Sezona na početnoj strani: 'nova-godina' ili 'stalna'
   season: 'nova-godina' as 'nova-godina' | 'stalna',

@@ -19,7 +19,7 @@ Potreban je Node.js 20 ili noviji.
 
 ## Objavljivanje (deploy)
 
-Sajt je statički, osim jedne male serverske funkcije za admin panel boja (`/api/boje/`), koja radi na Vercel-u
+Sajt je statički, osim jedne male serverske funkcije za admin panel (`/api/cms/`), koja radi na Vercel-u
 (adapter `@astrojs/vercel`, izlaz u `.vercel/output/`).
 
 **Vercel**
@@ -42,52 +42,60 @@ i `url` u `src/data/site.ts`.
 
 Svaki `git push` na granu `main` posle toga sam objavljuje novu verziju.
 
-## Admin panel: boje filamenta
+## Admin panel (proizvodi, kategorije, boje, podešavanja)
 
 Adresa: `/anycubic/` (nije u pretrazi, mapi sajta ni u robots.txt; stara adresa `/admin/` više ne postoji).
 Prijava je korisničkim imenom i lozinkom. U kodu (`src/lib/admin-auth.ts`) je samo njihov otisak, ne i
 sama lozinka; nova prijava se pravi sa `node scripts/admin-lozinka.mjs <korisnicko-ime> <lozinka>`, a
 ispisani red ide u `ADMIN_HASH` u tom fajlu ili u istoimenu promenljivu na Vercel-u (ona ima prednost).
-Tu se upisuju boje koje imate, uključuje i isključuje
-„na stanju” i menja redosled. Boje na stanju kupci vide i biraju na svim proizvodima (ukrasi, privesci,
-držači…). Posle „Sačuvaj i objavi” izmena se upiše u `src/data/boje.json` na GitHub-u, a Vercel za oko
-minut objavi novu verziju sajta.
+
+U adminu se menja:
+- **Proizvodi**: naziv, šifra, adresa, kategorije i filteri, cena („od”), oznaka „Po meri”, fotografije,
+  kratak opis, uvod, opis, specifikacije, detalji, česta pitanja, izbor boje i ostale opcije, povezani
+  proizvodi, SEO. Proizvod može da se sakrije, kopira, obriše ili doda nov. Redosled u listi je redosled u katalogu.
+- **Fotografije**: biraju se fajlovi, a pregledač sam napravi verzije (`-lg` do 1200 px, `-sm` 640 px,
+  `-sq` kvadrat 900 × 900, `-og.jpg` 1200 × 630 za deljenje) i na svaku stavi logo dole levo (tamni ili
+  svetli, prema svetlini tog dela fotografije). Fajlovi idu u `public/img/p/<adresa>/u…`. Fotografije
+  otpremljene iz admina se brišu iz repozitorijuma kad ih nijedan proizvod više ne koristi; stare (ručno
+  dodate) fotografije se nikad ne brišu automatski.
+- **Kategorije**: naziv, naslov, uvod, „Uskoro”, tekst ispod proizvoda, česta pitanja, filteri, ikonica,
+  pozadina, SEO, redosled u meniju. Adresa postojeće kategorije se ne menja.
+- **Boje filamenta** i **prikaz cena** na celom sajtu.
+
+Konfiguratori (ukras, porodični set i privezak sa imenom: pregled uživo) ostaju u kodu (`src/lib`).
+
+Podaci su u `src/data/proizvodi.json`, `kategorije.json`, `boje.json` i `podesavanja.json`. Posle
+„Sačuvaj i objavi” sve izmene (i nove fotografije) idu na GitHub u jednom commit-u, a Vercel za oko minut
+objavi sajt. Ako objava ne uspe, sajt ostaje na prethodnoj verziji. Admin proverava podatke pre čuvanja
+(`src/lib/cms-model.ts`), isto i server.
 
 Jednom treba podesiti na Vercel-u (Project → Settings → Environment Variables), pa uraditi Redeploy:
 
 | Promenljiva | Vrednost |
 | --- | --- |
-| `GITHUB_TOKEN` | GitHub fine-grained token: Repository access → samo `justweb95/bumbaru`, Permissions → Contents: Read and write |
+| `GITHUB_TOKEN` | GitHub fine-grained token: Repository access → samo `justweb95/bumbaru`, Permissions → Contents: Read and write (po želji i Commit statuses: Read-only, da admin pokaže kad je objava gotova) |
 | `ADMIN_HASH` (nije obavezno) | druga prijava bez menjanja koda (red iz `scripts/admin-lozinka.mjs`) |
 
-Stara promenljiva `ADMIN_PASSWORD` se više ne koristi i može da se obriše.
-
-Bez `GITHUB_TOKEN` admin i dalje radi, ali umesto čuvanja ponudi „Preuzmi boje.json”, koji se onda ručno
-stavi u `src/data/boje.json`.
+Stara promenljiva `ADMIN_PASSWORD` se više ne koristi i može da se obriše. Bez `GITHUB_TOKEN` admin
+prikazuje podatke iz poslednje objave, ali izmene i fotografije ne mogu da se sačuvaju.
 
 ## Gde se šta menja
 
 | Šta | Fajl |
 | --- | --- |
 | Messenger stranica, Facebook, Instagram, adresa sajta, traka na vrhu, sezona | `src/data/site.ts` |
-| Prikaz cena (sada isključen) | `src/data/site.ts` → `showPrices: true` |
-| Proizvodi: nazivi, tekstovi, šifre, cene, opcije, slike | `src/data/products.ts` |
-| Boje filamenta (najlakše iz admin panela) | `src/data/boje.json` |
+| Proizvodi, kategorije, boje, prikaz cena | admin panel `/anycubic/` (podaci u `src/data/*.json`) |
 | Stilovi slova za priveske sa imenom | `src/lib/keychain.ts` |
-| Kategorije i njihovi tekstovi i pitanja | `src/data/categories.ts` |
 | Početna strana | `src/pages/index.astro` |
 | Pomoć, Po meri, Politika privatnosti | `src/pages/*.astro` |
 | Boje, slova, dugmad | `src/styles/global.css` |
 
 ### Novi proizvod
-1. Slike u `public/img/p/<naziv-proizvoda>/`: `1-lg.webp` (cela fotografija, do 1200 px), `1-sq.webp` (kvadrat
-   900 × 900 za kartice), po želji `2-lg.webp`, `2-sq.webp`… Prva slika je sa žigom.
-2. Slika za deljenje linka `public/img/og/<naziv-proizvoda>.jpg` (1200 × 630).
-3. Novi objekat u `src/data/products.ts` (kopirajte postojeći proizvod i promenite polja).
+U adminu: Proizvodi → Novi proizvod (ili „Napravi kopiju” postojećeg), pa „Sačuvaj i objavi”.
 
 ### Slike i žig
-- Kartice i prva fotografija proizvoda: verzija sa logom (vidljiva mesta).
-- Ostale fotografije u galeriji: verzija bez loga.
+- Stare fotografije: kartice i prva fotografija proizvoda imaju logo, ostale u galeriji su bez loga.
+- Fotografije dodate iz admina imaju logo na svim verzijama.
 - Proizvodi bez fotografije prikazuju „Fotografija uskoro”.
 - Modlice za medenjake nisu na sajtu (nema deklaracije za kontakt sa hranom). Zbirna fotografija privezaka
   koristi se samo isečena, bez zaštićenog lika.
@@ -104,4 +112,4 @@ stavi u `src/data/boje.json`.
 ## Šta je namerno izostavljeno u prvoj verziji
 - Korpa, plaćanje i nalog (porudžbine idu preko Messengera).
 - Uslovi kupovine i podaci o prodavcu (PIB, matični broj): dodaju se kad se otvori firma.
-- Cene: upisane su za proizvode gde postoje, ali se ne prikazuju dok `showPrices` nije `true`.
+- Cene: upisane su za proizvode gde postoje, ali se ne prikazuju dok se u adminu (Podešavanja) ne uključi „Prikaži cene na sajtu”.
