@@ -873,6 +873,262 @@
       "meta": "Ukras za jelku u obliku jelkice koji punite sitnim poklonima ili umotanim bombonama. Tirkizna ili crvena. Poručivanje preko Messengera."
     },
     {
+      "id": "NG-10",
+      "slug": "novogodisnje-modlice-za-medenjake",
+      "title": "Novogodišnje modlice za medenjake",
+      "category": "nova-godina",
+      "categories": [
+        "nova-godina"
+      ],
+      "short": "13 novogodišnjih motiva, izaberite one koje volite. Od 4 modlice popust.",
+      "lead": "Modlice za medenjake i keks sa novogodišnjim motivima: Deda Mraz, irvas, sneško, jelka, zvona i još osam. Svaka modlica iseče oblik i utisne crtež, pa medenjak odmah ima šaru.",
+      "price": 300,
+      "images": [
+        {
+          "src": "/img/p/novogodisnje-modlice-za-medenjake/u33081fa7e",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Devet novogodišnjih modlica za medenjake sa medenjacima: Deda Mraz, irvas, sneško, jelka, kugla, zvona, štap od bombone, venac i Baka Mraz",
+          "og": "/img/p/novogodisnje-modlice-za-medenjake/u33081fa7e-og.jpg"
+        }
+      ],
+      "colors": [
+        {
+          "id": "boja",
+          "label": "Boja",
+          "def": "crvena"
+        }
+      ],
+      "motivi": {
+        "lista": [
+          {
+            "id": "deda-mraz",
+            "naziv": "Deda Mraz",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/u9e3f7b492",
+              "w": 944,
+              "h": 1110,
+              "alt": "Modlica za medenjake Deda Mraz i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/u9e3f7b492-og.jpg"
+            }
+          },
+          {
+            "id": "irvas",
+            "naziv": "Irvas",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/u296913ddf",
+              "w": 960,
+              "h": 1115,
+              "alt": "Modlica za medenjake Irvas i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/u296913ddf-og.jpg"
+            }
+          },
+          {
+            "id": "snesko-belic",
+            "naziv": "Sneško Belić",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/u5d88602d4",
+              "w": 716,
+              "h": 716,
+              "alt": "Modlica za medenjake Sneško Belić i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/u5d88602d4-og.jpg"
+            }
+          },
+          {
+            "id": "jelka-sa-poklonima",
+            "naziv": "Jelka sa poklonima",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/u564381cf3",
+              "w": 928,
+              "h": 1140,
+              "alt": "Modlica za medenjake Jelka sa poklonima i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/u564381cf3-og.jpg"
+            }
+          },
+          {
+            "id": "novogodisnja-kugla",
+            "naziv": "Novogodišnja kugla",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/ud65d7924d",
+              "w": 864,
+              "h": 1200,
+              "alt": "Modlica za medenjake Novogodišnja kugla i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/ud65d7924d-og.jpg"
+            }
+          },
+          {
+            "id": "zvona",
+            "naziv": "Zvona",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/ueb34c498d",
+              "w": 716,
+              "h": 716,
+              "alt": "Modlica za medenjake Zvona i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/ueb34c498d-og.jpg"
+            }
+          },
+          {
+            "id": "stap-od-bombone",
+            "naziv": "Štap od bombone",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/uc023a4d2a",
+              "w": 716,
+              "h": 716,
+              "alt": "Modlica za medenjake Štap od bombone i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/uc023a4d2a-og.jpg"
+            }
+          },
+          {
+            "id": "novogodisnji-venac",
+            "naziv": "Novogodišnji venac",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/udaf9440b2",
+              "w": 716,
+              "h": 716,
+              "alt": "Modlica za medenjake Novogodišnji venac i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/udaf9440b2-og.jpg"
+            }
+          },
+          {
+            "id": "baka-mraz",
+            "naziv": "Baka Mraz",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/u6c21e862b",
+              "w": 928,
+              "h": 1145,
+              "alt": "Modlica za medenjake Baka Mraz i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/u6c21e862b-og.jpg"
+            }
+          },
+          {
+            "id": "deda-mraz-u-dimnjaku",
+            "naziv": "Deda Mraz u dimnjaku",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/u9c48e91cf",
+              "w": 716,
+              "h": 716,
+              "alt": "Modlica za medenjake Deda Mraz u dimnjaku i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/u9c48e91cf-og.jpg"
+            }
+          },
+          {
+            "id": "jelka-sa-masnom",
+            "naziv": "Jelka sa mašnom",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/ue111eb502",
+              "w": 716,
+              "h": 716,
+              "alt": "Modlica za medenjake Jelka sa mašnom i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/ue111eb502-og.jpg"
+            }
+          },
+          {
+            "id": "medenjak-devojcica",
+            "naziv": "Medenjak devojčica",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/ua5682fdef",
+              "w": 716,
+              "h": 716,
+              "alt": "Modlica za medenjake Medenjak devojčica i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/ua5682fdef-og.jpg"
+            }
+          },
+          {
+            "id": "lutkica-sa-masnom",
+            "naziv": "Lutkica sa mašnom",
+            "slika": {
+              "src": "/img/p/novogodisnje-modlice-za-medenjake/u580708534",
+              "w": 716,
+              "h": 716,
+              "alt": "Modlica za medenjake Lutkica sa mašnom i medenjak sa utisnutim crtežom",
+              "og": "/img/p/novogodisnje-modlice-za-medenjake/u580708534-og.jpg"
+            }
+          }
+        ],
+        "popusti": [
+          {
+            "od": 4,
+            "procenat": 17
+          },
+          {
+            "od": 6,
+            "procenat": 24
+          },
+          {
+            "od": 8,
+            "procenat": 30
+          }
+        ]
+      },
+      "about": [
+        "Izaberite motive koje volite, a od svakog možete uzeti i više komada. Što više modlica uzmete, veći je popust: od 4 komada 17%, od 6 komada 24%, a od 8 komada 30%.",
+        "Modlica ima dva dela u jednom: ivica seče testo, a crtež unutra se utisne u medenjak. Testo razvaljajte, utisnite modlicu, podignite je i medenjak je spreman za pečenje.",
+        "Štampamo ih od PLA plastike u boji koju izaberete. Perite ih ručno u mlakoj vodi, a ne u mašini za sudove."
+      ],
+      "specs": [
+        [
+          "Motivi",
+          "13 novogodišnjih motiva, birate koje želite"
+        ],
+        [
+          "Vrsta",
+          "modlica sa utiskivačem: seče oblik i utiskuje crtež"
+        ],
+        [
+          "Popust",
+          "od 4 kom 17%, od 6 kom 24%, od 8 kom 30%"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ],
+        [
+          "Pranje",
+          "ručno, u mlakoj vodi"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Perite ručno u mlakoj vodi i ostavite da se osuši. Ne perite u mašini za sudove i ne potapajte u vrelu vodu (preko oko 40 °C), jer PLA omekšava na toploti."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Mogu li više komada istog motiva?",
+          "a": "Možete. Kliknite motiv, pa dugmetom + ispod njega dodajte još komada."
+        },
+        {
+          "q": "Kako se računa popust?",
+          "a": "Prema ukupnom broju modlica u porudžbini: od 4 komada 17%, od 6 komada 24%, od 8 komada 30%. Motivi mogu biti različiti."
+        },
+        {
+          "q": "Mogu li u mašinu za sudove?",
+          "a": "Ne. Perite ih ručno u mlakoj vodi, jer plastika omekšava na toploti."
+        },
+        {
+          "q": "Mogu li u drugoj boji?",
+          "a": "Možete. Izaberite boju pre slanja poruke, od boja koje trenutno imamo."
+        }
+      ],
+      "related": [
+        "ukras-za-jelku-sa-imenom",
+        "mini-jelka-za-sto",
+        "jelkica-za-punjenje",
+        "prstenovi-za-salvete-set-od-6"
+      ],
+      "seoTitle": "Novogodišnje modlice za medenjake, 13 motiva | Bumbaru",
+      "meta": "Modlice za medenjake sa novogodišnjim motivima: Deda Mraz, irvas, sneško, jelka, zvona i još 8. Izaberite motive, od 4 komada popust do 30%."
+    },
+    {
       "id": "PK-01",
       "slug": "porodicni-privezak-sa-imenima",
       "title": "Porodični set privezaka sa imenima",
