@@ -60,6 +60,11 @@ U adminu se menja:
   dodate) fotografije se nikad ne brišu automatski.
 - **Kategorije**: naziv, naslov, uvod, „Uskoro”, tekst ispod proizvoda, česta pitanja, filteri, ikonica,
   pozadina, SEO, redosled u meniju. Adresa postojeće kategorije se ne menja.
+- **Izbor motiva** (npr. modlice): u proizvodu se uključi „Kupac bira motive”, doda se lista motiva sa
+  fotografijom i nazivom (ili više odjednom iz fotografija, naziv od imena fajla) i popusti prema broju
+  komada (npr. od 4 kom 17%, od 6 kom 24%, od 8 kom 30%). Na strani proizvoda kupac klikne motive (i broj
+  komada svakog), traka sa pčelicom pokazuje koliko fali do sledećeg popusta, a poruka nosi motive, popust
+  i cenu (cena = broj × cena po komadu − popust, zaokruženo na 10 din).
 - **Boje filamenta** i **prikaz cena** na celom sajtu.
 
 Konfiguratori (ukras, porodični set i privezak sa imenom: pregled uživo) ostaju u kodu (`src/lib`).

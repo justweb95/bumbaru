@@ -14,6 +14,10 @@ export type Personal = 'ukras' | 'set' | 'privezak';
 // Izbor boje iz liste boja filamenta (admin panel); def = id podrazumevane boje
 export interface ColorChoice { id: string; label: string; def: string }
 // Privezak sa imenom: stilovi slova (src/lib/keychain.ts) i broj imena (svako ime je jedan privezak)
+// Izbor motiva (npr. modlice): kupac klikne motive koje želi, može i više komada istog;
+// popust zavisi od ukupnog broja komada (od: najmanje komada, procenat: popust na cenu po komadu).
+export interface Motiv { id: string; naziv: string; slika?: Img }
+export interface MotiviCfg { lista: Motiv[]; popusti: { od: number; procenat: number }[] }
 export interface KeychainCfg { stilovi: string[]; startImena: number; minImena: number; maxImena: number; sareno?: boolean; slike?: Record<string, number> } // slike: koja fotografija prikazuje koji stil
 
 export interface Product {
@@ -33,6 +37,7 @@ export interface Product {
   colors?: ColorChoice[];
   personal?: Personal;
   keychain?: KeychainCfg;
+  motivi?: MotiviCfg;
   about: string[];
   specs: [string, string][];
   details: Faq[];
@@ -50,6 +55,10 @@ export const PRODUCTS: Product[] = SVI_PROIZVODI.filter((x) => !x.skriven);
 export const productBySlug = (slug: string) => PRODUCTS.find((x) => x.slug === slug);
 export const productUrl = (slug: string) => `/proizvod/${slug}/`;
 export const inCategory = (cat: string) => PRODUCTS.filter((x) => x.categories.includes(cat));
-export const hasPhoto = (x: Product) => x.images.length > 0;
+export const hasPhoto = (x: Product) => x.images.length > 0 || !!x.motivi?.lista.some((m) => m.slika);
 // Kvadratna slika za kartice (fotografije imaju posebnu kvadratnu verziju sa žigom, crteži su već kvadratni)
 export const cardImg = (i: Img) => (i.src.startsWith('/img/p/') ? `${i.src}-sq.webp` : `${i.src}-sm.webp`);
+
+// Izbor motiva: popust za dati broj komada (0 ako nema) i ukupna cena zaokružena na 10 din
+export const popustZa = (m: MotiviCfg, n: number) => m.popusti.filter((x) => n >= x.od).reduce((a, x) => Math.max(a, x.procenat), 0);
+export const cenaMotiva = (cena: number, m: MotiviCfg, n: number) => Math.round((n * cena * (1 - popustZa(m, n) / 100)) / 10) * 10;

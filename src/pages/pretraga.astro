@@ -20,7 +20,7 @@ const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,
     <p class="muted" data-info style="margin:20px 0 24px"></p>
     <div class="grid" data-results>
       {list.map((p) => (
-        <div data-hay={norm([p.title, p.short, p.id, categoryBySlug(p.category).label, ...(p.options || []).flatMap((o) => o.values)].join(' '))}>
+        <div data-hay={norm([p.title, p.short, p.id, categoryBySlug(p.category).label, ...(p.options || []).flatMap((o) => o.values), ...(p.motivi?.lista.map((m) => m.naziv) || [])].join(' '))}>
           <ProductCard p={p} />
         </div>
       ))}

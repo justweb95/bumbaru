@@ -4,7 +4,7 @@
 import { h, ikona, dugmeIkona, din } from './dom';
 import { obradi, uBase64 } from './slike';
 import { ocistiSve, slugify, CmsGreska, IKONA_PODRAZUMEVANA, type CmsPodaci, type Boja } from '../lib/cms-model';
-import type { Product, Img, Option, ColorChoice } from '../data/products';
+import type { Product, Img, Option, ColorChoice, Motiv, MotiviCfg } from '../data/products';
 import type { Category, Faq } from '../data/categories';
 import { STILOVI } from '../lib/keychain';
 
@@ -312,6 +312,7 @@ function editorProizvoda(p: Product) {
     sekcija('Detalji (harmonika ispod opisa)', listaPitanja(p.details, 'Naslov (npr. Rok i dostava)', 'Tekst', 'Dodaj detalj')),
     sekcija('Česta pitanja', listaPitanja(p.faq, 'Pitanje', 'Odgovor', 'Dodaj pitanje')),
     sekcija('Izbor za kupca', izborSekcija(p)),
+    sekcija('Izbor motiva (npr. modlice)', motiviSekcija(p)),
     sekcija('Povezani proizvodi', povezaniSekcija(p)),
 
     sekcija('Google (SEO)',
@@ -353,6 +354,22 @@ function kopija(p: Product) {
   otvoriP(k);
 }
 
+// Jedna fotografija: obrada u pregledaču (logo, verzije), otpremanje, vraća sliku za podatke
+async function otpremiFotografiju(p: Product, f: File, alt: string): Promise<Img> {
+  const o = await obradi(f);
+  const [lg, sm, sq, og] = await Promise.all([uBase64(o.lg), uBase64(o.sm), uBase64(o.sq), uBase64(o.og)]);
+  const r = await api('POST', { akcija: 'slika', slug: p.slug, w: o.w, h: o.h, lg, sm, sq, og });
+  if (!r.ok) throw new Error(r.data.greska || `Greška ${r.status}.`);
+  for (const s of r.data.slike) nove.set(s.path, s.sha);
+  pregledi.set(r.data.src, o.pregled);
+  return { src: r.data.src, w: o.w, h: o.h, alt, og: r.data.og };
+}
+const mozeOtpremanje = (p: Product, status: HTMLElement) => {
+  if (!mozeCuvanje) { status.textContent = 'Fotografije ne mogu da se otpreme dok čuvanje ne radi (GITHUB_TOKEN).'; status.dataset.tone = 'err'; return false; }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.slug)) { status.textContent = 'Prvo upišite naziv proizvoda (od njega se pravi adresa), pa dodajte fotografije.'; status.dataset.tone = 'err'; return false; }
+  return true;
+};
+
 // Fotografije: biraju se fajlovi, logo i verzije se prave sami
 function slikeSekcija(p: Product) {
   const box = h('div', { class: 'imgs' });
@@ -377,9 +394,7 @@ function slikeSekcija(p: Product) {
   };
 
   async function dodaj(fajlovi: File[]) {
-    if (rad || !fajlovi.length) return;
-    if (!mozeCuvanje) { status.textContent = 'Fotografije ne mogu da se otpreme dok čuvanje ne radi (GITHUB_TOKEN).'; status.dataset.tone = 'err'; return; }
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.slug)) { status.textContent = 'Prvo upišite naziv proizvoda (od njega se pravi adresa), pa dodajte fotografije.'; status.dataset.tone = 'err'; return; }
+    if (rad || !fajlovi.length || !mozeOtpremanje(p, status)) return;
     rad = true; crtaj();
     const slobodno = 12 - p.images.length;
     const lista = fajlovi.slice(0, slobodno);
@@ -388,15 +403,8 @@ function slikeSekcija(p: Product) {
       for (const [n, f] of lista.entries()) {
         status.dataset.tone = '';
         status.textContent = `Fotografija ${n + 1} od ${lista.length}: obrađujem i dodajem logo…`;
-        const o = await obradi(f);
-        status.textContent = `Fotografija ${n + 1} od ${lista.length}: otpremam…`;
-        const [lg, sm, sq, og] = await Promise.all([uBase64(o.lg), uBase64(o.sm), uBase64(o.sq), uBase64(o.og)]);
-        const r = await api('POST', { akcija: 'slika', slug: p.slug, w: o.w, h: o.h, lg, sm, sq, og });
-        if (!r.ok) throw new Error(r.data.greska || `Greška ${r.status}.`);
-        for (const s of r.data.slike) nove.set(s.path, s.sha);
-        pregledi.set(r.data.src, o.pregled);
         const br = p.images.length;
-        p.images.push({ src: r.data.src, w: o.w, h: o.h, alt: br === 0 ? p.title : `${p.title}, fotografija ${br + 1}`, og: r.data.og });
+        p.images.push(await otpremiFotografiju(p, f, br === 0 ? p.title : `${p.title}, fotografija ${br + 1}`));
         gotovo++;
         crtaj(); izmena();
       }
@@ -465,6 +473,97 @@ function izborSekcija(p: Product) {
         oblast(o.values.join('\n'), (v) => (o.values = v.split('\n').map((x) => x.trim()).filter(Boolean)), { rows: 3, placeholder: 'Vrednosti, svaka u novom redu', 'aria-label': 'Vrednosti' })),
         () => ({ id: '', label: '', values: [] }), 'Dodaj opciju', 6)),
   );
+}
+
+// Izbor motiva: kupac na sajtu klikne motive (i broj komada), popust raste sa brojem komada
+const PODRAZUMEVANI_POPUSTI = [{ od: 4, procenat: 17 }, { od: 6, procenat: 24 }, { od: 8, procenat: 30 }];
+const nazivIzFajla = (ime: string, n: number) => {
+  const s = ime.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!s || /^(img|dsc|pxl|photo|image|whatsapp|screenshot|snimak)\b/i.test(s) || /^\d+$/.test(s)) return `Motiv ${n}`;
+  return (s.charAt(0).toUpperCase() + s.slice(1)).slice(0, 40);
+};
+function motiviSekcija(p: Product) {
+  const box = h('div', { class: 'stack' });
+  const status = h('p', { class: 'small', role: 'status', 'aria-live': 'polite' });
+  const fajlVise = h('input', { type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: () => { const f = [...(fajlVise.files || [])]; fajlVise.value = ''; dodajVise(f); } });
+  let sacuvani: MotiviCfg | undefined;
+  let rad = false;
+
+  async function dodajVise(fajlovi: File[]) {
+    if (rad || !fajlovi.length || !p.motivi || !mozeOtpremanje(p, status)) return;
+    rad = true; crtaj();
+    let gotovo = 0;
+    try {
+      for (const [i, f] of fajlovi.slice(0, 40 - p.motivi.lista.length).entries()) {
+        status.dataset.tone = '';
+        status.textContent = `Motiv ${i + 1} od ${fajlovi.length}: obrađujem i otpremam…`;
+        const naziv = nazivIzFajla(f.name, p.motivi.lista.length + 1);
+        const slika = await otpremiFotografiju(p, f, `${p.title}: ${naziv}`);
+        p.motivi.lista.push({ id: '', naziv, slika });
+        gotovo++; crtaj(); izmena();
+      }
+      status.textContent = `Dodato motiva: ${gotovo}. Proverite nazive (prave se od imena fajlova).`; status.dataset.tone = 'ok';
+    } catch (e) {
+      status.textContent = (gotovo ? `Dodato: ${gotovo}. ` : '') + ((e as Error).message || 'Greška pri obradi fotografije.'); status.dataset.tone = 'err';
+    } finally { rad = false; crtaj(); }
+  }
+
+  async function zameniSliku(m: Motiv, f: File) {
+    if (rad || !mozeOtpremanje(p, status)) return;
+    rad = true; crtaj();
+    try {
+      status.dataset.tone = ''; status.textContent = `„${m.naziv || 'Motiv'}”: obrađujem i otpremam…`;
+      m.slika = await otpremiFotografiju(p, f, `${p.title}: ${m.naziv}`);
+      status.textContent = 'Fotografija motiva je dodata.'; status.dataset.tone = 'ok';
+      izmena();
+    } catch (e) { status.textContent = (e as Error).message; status.dataset.tone = 'err'; }
+    finally { rad = false; crtaj(); }
+  }
+
+  const cenovnik = h('p', { class: 'hint' });
+  const osveziCenovnik = () => {
+    if (!p.motivi) return;
+    const P = [...p.motivi.popusti].filter((x) => x.od > 1 && x.procenat > 0).sort((a, b) => a.od - b.od);
+    if (!p.price) { cenovnik.textContent = 'Upišite cenu po komadu (sekcija Cena), pa ovde vidite cene paketa.'; return; }
+    const c = (n: number) => { const pct = P.filter((x) => n >= x.od).reduce((a, x) => Math.max(a, x.procenat), 0); return Math.round((n * p.price! * (1 - pct / 100)) / 10) * 10; };
+    cenovnik.textContent = 'Cene: ' + [1, ...P.map((x) => x.od)].map((n) => `${n} kom = ${din(c(n))}`).join(' · ') + ' (zaokruženo na 10 din).';
+  };
+
+  const crtaj = () => {
+    const ukljuceno = !!p.motivi;
+    box.replaceChildren(
+      prekidac(ukljuceno, (v) => {
+        if (v) p.motivi = sacuvani || { lista: [], popusti: structuredClone(PODRAZUMEVANI_POPUSTI) };
+        else { sacuvani = p.motivi; delete p.motivi; }
+      }, 'Kupac bira motive (umesto obične količine)', crtaj),
+      h('p', { class: 'hint' }, 'Na strani proizvoda kupac klikne motive koje želi, može i više komada istog. Traka sa pčelicom pokazuje koliko mu fali do sledećeg popusta.'),
+      ...(ukljuceno ? [
+        h('div', { class: 'field' }, h('span', { class: 'flabel' }, `Motivi (${p.motivi!.lista.length})`),
+          lista<Motiv>(p.motivi!.lista, (m, i) => {
+            const fajl = h('input', { type: 'file', accept: 'image/*', hidden: true, onchange: () => { const f = fajl.files?.[0]; fajl.value = ''; if (f) zameniSliku(m, f); } });
+            return h('div', { class: 'mrow' },
+              h('button', { type: 'button', class: 'mthumb', disabled: rad, title: m.slika ? 'Zameni fotografiju' : 'Dodaj fotografiju', 'aria-label': m.slika ? `Zameni fotografiju: ${m.naziv}` : `Dodaj fotografiju: ${m.naziv}`, onclick: () => fajl.click() },
+                m.slika ? h('img', { src: slikaUrl(m.slika), alt: '', onerror: (e: Event) => ((e.target as HTMLImageElement).style.opacity = '0') }) : ikona('camera', 22)),
+              ulaz(m.naziv, (v) => { m.naziv = v; if (m.slika) m.slika.alt = `${p.title}: ${v}`; }, { placeholder: `Naziv motiva (npr. Jelka)`, 'aria-label': `Naziv motiva ${i + 1}`, maxlength: 40 }),
+              fajl);
+          }, () => ({ id: '', naziv: '' }), 'Dodaj motiv', 40),
+          h('div', { class: 'tog-row' },
+            h('button', { type: 'button', class: 'btn btn-sm btn-primary', disabled: rad, onclick: () => fajlVise.click() }, ikona('camera'), rad ? 'Obrađujem…' : 'Dodaj više motiva iz fotografija'),
+            h('span', { class: 'hint' }, 'Izaberite fotografije svih motiva odjednom: za svaku se pravi motiv, a naziv od imena fajla.')),
+          status),
+        h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Popust prema broju komada'),
+          lista(p.motivi!.popusti, (x) => h('div', { class: 'pair' },
+            h('label', { class: 'inl' }, 'Od', ulaz(String(x.od), (v) => { x.od = Math.round(Number(v)) || 0; osveziCenovnik(); }, { type: 'number', min: 2, max: 100, inputmode: 'numeric', 'aria-label': 'Od komada' }), 'kom'),
+            h('label', { class: 'inl' }, 'popust', ulaz(String(x.procenat), (v) => { x.procenat = Math.round(Number(v)) || 0; osveziCenovnik(); }, { type: 'number', min: 1, max: 90, inputmode: 'numeric', 'aria-label': 'Procenat popusta' }), '%')),
+            () => { const L = p.motivi!.popusti; const z = L[L.length - 1]; return { od: z ? z.od + 2 : 4, procenat: z ? Math.min(90, z.procenat + 5) : 10 }; }, 'Dodaj popust', 8),
+          cenovnik),
+      ] : []),
+      fajlVise,
+    );
+    osveziCenovnik();
+  };
+  crtaj();
+  return box;
 }
 
 function povezaniSekcija(p: Product) {

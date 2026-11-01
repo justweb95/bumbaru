@@ -11,7 +11,7 @@
 import type { APIRoute } from 'astro';
 import { randomBytes } from 'node:crypto';
 import { proveriPrijavu } from '../../lib/admin-auth';
-import { ocistiSve, fajlovi, fajloviSlike, PUTANJE, ADMIN_SLIKA, CmsGreska, type CmsPodaci } from '../../lib/cms-model';
+import { ocistiSve, fajlovi, fajloviSlike, fotografije, PUTANJE, ADMIN_SLIKA, CmsGreska, type CmsPodaci } from '../../lib/cms-model';
 
 export const prerender = false;
 
@@ -131,7 +131,7 @@ async function sacuvaj(telo: any) {
   const tekstovi = fajlovi(podaci);
 
   // fotografije koje podaci koriste
-  const koristiSrc = new Set(podaci.proizvodi.flatMap((p) => p.images.map((im) => im.src)));
+  const koristiSrc = new Set(podaci.proizvodi.flatMap((p) => fotografije(p).map((im) => im.src)));
   const NOVA = /^public(\/img\/p\/[a-z0-9-]+\/u[0-9a-f]{9})-(lg|sm|sq|og)\.(webp|jpg)$/;
 
   const nove = new Map<string, string>(); // path -> sha (tek otpremljene, samo one koje se koriste)
@@ -150,7 +150,7 @@ async function sacuvaj(telo: any) {
 
     // svaka fotografija iz podataka mora da postoji (u repozitorijumu ili među tek otpremljenim)
     if (!stablo.truncated) {
-      for (const p of podaci.proizvodi) for (const im of p.images) {
+      for (const p of podaci.proizvodi) for (const im of fotografije(p)) {
         const nema = fajloviSlike(im.src, im.og).filter((f) => !postoji.has(f) && !nove.has(f));
         if (nema.length) throw new CmsGreska(`„${p.title}”: fotografija ${im.src} nije otpremljena do kraja. Obrišite je i dodajte ponovo.`);
       }

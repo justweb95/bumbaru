@@ -5,10 +5,11 @@ import { productUrl, cardImg } from '../data/products';
 import { SITE, din } from '../data/site';
 interface Props { p: Product; eager?: boolean; tags?: boolean }
 const { p, eager = false, tags = false } = Astro.props;
-const img = p.images[0];
+const img = p.images[0] || p.motivi?.lista.find((m) => m.slika)?.slika;
 const showPrice = SITE.showPrices && p.price;
-const price = showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) : '';
+const price = showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) + (p.motivi?.lista.length ? ' / kom' : '') : '';
 const url = productUrl(p.slug);
+const popustDo = p.motivi?.popusti.length ? Math.max(...p.motivi.popusti.map((x) => x.procenat)) : 0;
 ---
 <article class="card" data-tags={tags ? (p.tags || []).join(' ') : undefined}>
   <div class="media">
@@ -19,9 +20,9 @@ const url = productUrl(p.slug);
         <div class="soon-photo"><img src="/img/brand/pcelica.webp" alt="" width="320" height="320" loading="lazy" /><span>Fotografija uskoro</span></div>
       )}
     </a>
-    {p.custom && <span class="badge badge-custom">Po meri · 3–5 dana</span>}
-    {p.personal ? (
-      <a class="quick" href={url} aria-label={`Poruči sa imenom: ${p.title}`}><Icon name="plus" size={22} stroke={2.4} /></a>
+    {popustDo ? <span class="badge badge-custom">Popust do {popustDo}%</span> : p.custom && <span class="badge badge-custom">Po meri · 3–5 dana</span>}
+    {p.personal || p.motivi ? (
+      <a class="quick" href={url} aria-label={p.motivi ? `Izaberite motive: ${p.title}` : `Poruči sa imenom: ${p.title}`}><Icon name="plus" size={22} stroke={2.4} /></a>
     ) : (
       <button class="quick" type="button" data-order={p.id} aria-label={`Poruči preko Messengera: ${p.title}`}><Icon name="plus" size={22} stroke={2.4} /></button>
     )}

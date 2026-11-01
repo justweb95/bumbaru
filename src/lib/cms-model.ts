@@ -1,7 +1,7 @@
 // Provera i čišćenje podataka iz admin panela (proizvodi, kategorije, boje, podešavanja).
 // Koristi ga i server (/api/cms/) i admin u pregledaču, pa ovde nema ničeg specifičnog za Node.
 // Svaka funkcija vraća čist objekat (samo poznata polja, u stalnom redosledu) ili baca CmsGreska.
-import type { Product, Img, Option, ColorChoice, KeychainCfg, Personal } from '../data/products';
+import type { Product, Img, Option, ColorChoice, KeychainCfg, Personal, MotiviCfg } from '../data/products';
 import type { Category, Faq } from '../data/categories';
 
 export class CmsGreska extends Error {}
@@ -139,20 +139,41 @@ export const IKONA_PODRAZUMEVANA = 'M3 7.5L12 3l9 4.5v9L12 21l-9-4.5zM3 7.5l9 4.
 // ——— proizvodi ———
 const PERSONAL: Personal[] = ['ukras', 'set', 'privezak'];
 
-function slike(v: unknown, gde: string): Img[] {
-  return niz<Img>(v, `${gde}: slike`, 12).map((im, i) => {
-    const src = String(im?.src ?? '').trim();
-    if (!/^\/img\/(p|c)\/[a-z0-9-]{1,80}(\/[a-z0-9-]{1,40})?$/.test(src)) greska(`${gde}: slika ${i + 1} ima neispravnu putanju.`);
-    const og = String(im?.og ?? '').trim();
-    if (og && !/^\/img\/[a-z0-9/_-]{1,160}\.jpg$/.test(og)) greska(`${gde}: slika ${i + 1} ima neispravnu sliku za deljenje.`);
-    return {
-      src,
-      w: ceo(im?.w, `${gde}: širina slike ${i + 1}`, 1, 10000),
-      h: ceo(im?.h, `${gde}: visina slike ${i + 1}`, 1, 10000),
-      alt: red(im?.alt, `${gde}: opis slike ${i + 1}`, 200),
-      ...(og ? { og } : {}),
-    };
+function slika(im: Img, gde: string): Img {
+  const src = String(im?.src ?? '').trim();
+  if (!/^\/img\/(p|c)\/[a-z0-9-]{1,80}(\/[a-z0-9-]{1,40})?$/.test(src)) greska(`${gde} ima neispravnu putanju.`);
+  const og = String(im?.og ?? '').trim();
+  if (og && !/^\/img\/[a-z0-9/_-]{1,160}\.jpg$/.test(og)) greska(`${gde} ima neispravnu sliku za deljenje.`);
+  return {
+    src,
+    w: ceo(im?.w, `${gde}: širina`, 1, 10000),
+    h: ceo(im?.h, `${gde}: visina`, 1, 10000),
+    alt: red(im?.alt, `${gde}: opis`, 200),
+    ...(og ? { og } : {}),
+  };
+}
+const slike = (v: unknown, gde: string): Img[] => niz<Img>(v, `${gde}: slike`, 12).map((im, i) => slika(im, `${gde}: slika ${i + 1}`));
+
+function motivi(v: unknown, gde: string): MotiviCfg | undefined {
+  if (v == null) return undefined;
+  const m = v as MotiviCfg;
+  const ids = new Set<string>();
+  const lista = niz<MotiviCfg['lista'][number]>(m.lista, `${gde}: motivi`, 40).map((x, i) => {
+    const naziv = red(x?.naziv, `${gde}: motiv ${i + 1} (naziv)`, 40, true);
+    const base = SLUG.test(String(x?.id ?? '')) ? String(x.id) : slugify(naziv, 30) || 'motiv';
+    let id = base;
+    for (let n = 2; ids.has(id); n++) id = `${base.slice(0, 26)}-${n}`;
+    ids.add(id);
+    return { id, naziv, ...(x?.slika ? { slika: slika(x.slika, `${gde}: fotografija motiva „${naziv}”`) } : {}) };
   });
+  if (!lista.length) greska(`${gde}: izbor motiva je uključen, a nema nijednog motiva.`);
+  const od = new Set<number>();
+  const popusti = niz<{ od: number; procenat: number }>(m.popusti, `${gde}: popusti`, 8)
+    .map((x, i) => ({ od: ceo(x?.od, `${gde}: popust ${i + 1} (od komada)`, 2, 100), procenat: ceo(x?.procenat, `${gde}: popust ${i + 1} (procenat)`, 1, 90) }))
+    .sort((a, b) => a.od - b.od)
+    .map((x) => (od.has(x.od) ? greska(`${gde}: dva popusta od ${x.od} komada.`) : (od.add(x.od), x)));
+  for (let i = 1; i < popusti.length; i++) if (popusti[i].procenat <= popusti[i - 1].procenat) greska(`${gde}: popust od ${popusti[i].od} komada mora biti veći nego od ${popusti[i - 1].od}.`);
+  return { lista, popusti };
 }
 
 function opcije(v: unknown, gde: string): Option[] {
@@ -253,6 +274,7 @@ export function ocistiProizvode(ulaz: unknown, kategorije: Category[]): Product[
       ...(() => { const x = izborBoja(p?.colors, gde); return x.length ? { colors: x } : {}; })(),
       ...(personal ? { personal } : {}),
       ...(keychain ? { keychain } : {}),
+      ...(() => { const x = motivi(p?.motivi, gde); return x ? { motivi: x } : {}; })(),
       about: pasusi(p?.about, `${gde}: opis`),
       specs,
       details: pitanja(p?.details, `${gde}: detalji`, 12),
@@ -293,6 +315,9 @@ export function fajlovi(d: CmsPodaci): Record<keyof typeof PUTANJE, string> {
     podesavanja: JSON.stringify({ napomena: NAPOMENE.podesavanja, ...d.podesavanja }, null, 2) + '\n',
   };
 }
+
+// Sve fotografije proizvoda: galerija i fotografije motiva
+export const fotografije = (p: Product): Img[] => [...p.images, ...(p.motivi?.lista.flatMap((m) => (m.slika ? [m.slika] : [])) || [])];
 
 // Verzije fotografije koje sajt koristi (moraju da postoje u repozitorijumu):
 // fotografije /img/p/: -lg (galerija) i -sq (kartice); crteži /img/c/: -lg i -sm; plus slika za deljenje

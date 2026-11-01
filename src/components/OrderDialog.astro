@@ -4,7 +4,8 @@
 import Icon from './Icon.astro';
 import { PRODUCTS, productUrl, cardImg } from '../data/products';
 import { SITE } from '../data/site';
-const map = Object.fromEntries(PRODUCTS.map((p) => [p.id, { t: p.title, u: SITE.url + productUrl(p.slug), i: p.images[0] ? cardImg(p.images[0]) : '' }]));
+const prva = (p: (typeof PRODUCTS)[number]) => p.images[0] || p.motivi?.lista.find((m) => m.slika)?.slika;
+const map = Object.fromEntries(PRODUCTS.map((p) => { const im = prva(p); return [p.id, { t: p.title, u: SITE.url + productUrl(p.slug), i: im ? cardImg(im) : '' }]; }));
 ---
 <dialog class="order-dialog" id="order-dialog" aria-labelledby="od-title">
   <form method="dialog" class="od-inner">
