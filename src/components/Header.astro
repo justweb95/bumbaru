@@ -42,9 +42,9 @@ const ribbon = SITE.ribbon[SITE.season];
       </picture>
     </a>
     <nav class="nav" aria-label="Glavni meni">
-      <button class={`nav-kat${katAktivan ? ' is-current' : ''}`} type="button" aria-expanded="false" aria-controls="mega" data-mega-btn>
+      <a class={`nav-kat${katAktivan ? ' is-current' : ''}`} href="/katalog/" aria-haspopup="true" aria-expanded="false" aria-controls="mega" data-mega-btn>
         <Icon name="menu" size={18} />Katalog<Icon name="chev" size={16} />
-      </button>
+      </a>
       {AKCIJA && <a href="/akcija/" class="nav-ak ak-on" aria-current={current === 'akcija' ? 'page' : undefined}><Icon name="gift" size={17} />Akcija −{AKCIJA.procenat}%</a>}
       <a href="/nadji-poklon/" class="nav-kviz" aria-current={current === 'kviz' ? 'page' : undefined}><Icon name="sparkle" size={17} />Nađi poklon</a>
       <a href="/po-meri/" aria-current={current === 'po-meri' ? 'page' : undefined}>Po meri</a>
@@ -134,8 +134,9 @@ const ribbon = SITE.ribbon[SITE.season];
   const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 40);
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-  // Padajući meni „Katalog”: otvara se klikom, a mišem i prelaskom preko dugmeta
-  const btn = document.querySelector<HTMLButtonElement>('[data-mega-btn]');
+  // Padajući meni „Katalog”: mišem se otvara samo prelaskom (klik vodi na ceo katalog),
+  // na ekranu na dodir dodirom, a sa tastature strelicom nadole ili razmakom
+  const btn = document.querySelector<HTMLAnchorElement>('[data-mega-btn]');
   const mega = document.querySelector<HTMLElement>('[data-mega]');
   const bg = document.querySelector<HTMLElement>('[data-mega-bg]');
   let t = 0;
@@ -147,12 +148,16 @@ const ribbon = SITE.ribbon[SITE.season];
     if (v) { mega.classList.remove('in'); void mega.offsetWidth; mega.classList.add('in'); }
   };
   const mis = matchMedia('(hover: hover) and (pointer: fine)');
-  btn?.addEventListener('click', (e) => {
-    clearTimeout(t); postavi(!otvoren());
-    // sa tastature (Enter/razmak) fokus ide na prvu kategoriju
-    if (otvoren() && e.detail === 0) mega?.querySelector<HTMLElement>('a')?.focus();
-  });
   if (btn && mega) {
+    btn.addEventListener('click', (e) => {
+      if (mis.matches || e.detail === 0) return; // miš i Enter: obična veza na /katalog/
+      e.preventDefault(); clearTimeout(t); postavi(!otvoren());
+    });
+    btn.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowDown' && e.key !== ' ') return;
+      e.preventDefault(); clearTimeout(t); postavi(true);
+      mega.querySelector<HTMLElement>('a')?.focus();
+    });
     btn.addEventListener('mouseenter', () => { if (!mis.matches) return; clearTimeout(t); t = window.setTimeout(() => postavi(true), 110); });
     [btn, mega].forEach((el) => el.addEventListener('mouseleave', () => { if (!mis.matches) return; clearTimeout(t); t = window.setTimeout(() => postavi(false), 260); }));
     mega.addEventListener('mouseenter', () => clearTimeout(t));

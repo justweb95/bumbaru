@@ -148,7 +148,7 @@ const brojKat = CATEGORIES.filter((c) => !c.soon).length;
   .k-stats span { font-size: 12px; font-weight: 700; color: var(--ink-muted); text-align: center; }
   .k-hero-art { position: relative; height: 340px; }
   .k-trail { position: absolute; inset: 10% 0 0 0; width: 100%; height: 80%; opacity: .6; }
-  .k-pol { position: absolute; width: 31%; padding: 7px 7px 9px; background: var(--surface-paper); border-radius: 10px; box-shadow: var(--shadow); transform: rotate(var(--r)); text-decoration: none; display: flex; flex-direction: column; gap: 5px; transition: transform .35s var(--ease); animation: k-drop .6s cubic-bezier(.3,1.4,.5,1) both; animation-delay: calc(var(--d) * 90ms + 150ms); }
+  .k-pol { position: absolute; width: 31%; padding: 7px 7px 9px; background: var(--surface-paper); border-radius: 10px; box-shadow: var(--shadow); transform: rotate(var(--r)); text-decoration: none; display: flex; flex-direction: column; gap: 5px; animation: k-drop .6s cubic-bezier(.3,1.4,.5,1) both; animation-delay: calc(var(--d) * 90ms + 150ms); }
   .k-pol::before { content: ''; position: absolute; left: 50%; top: -9px; width: 48px; height: 18px; margin-left: -24px; background: rgba(245,193,55,.75); transform: rotate(-3deg); }
   .k-pol img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; }
   .k-pol span { font-size: 11px; line-height: 14px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -194,7 +194,6 @@ const brojKat = CATEGORIES.filter((c) => !c.soon).length;
   @media (hover: hover) {
     .k-tile:hover { transform: translateY(-5px) rotate(var(--r)); box-shadow: var(--shadow); border-color: var(--ink); }
     .k-tile:hover .k-img img { transform: scale(1.06); }
-    .k-pol:hover { transform: rotate(0) translateY(-6px) scale(1.04); z-index: 2; }
     .k-cta-card:hover { transform: translateY(-4px) rotate(-.6deg); }
   }
   @media (max-width: 1000px) {
@@ -221,5 +220,5 @@ const brojKat = CATEGORIES.filter((c) => !c.soon).length;
     .kicon { width: 38px; height: 38px; }
     .k-sec-t { gap: 10px; }
   }
-  @media (prefers-reduced-motion: reduce) { .k-pol { animation: none; } .k-tile, .k-img img, .k-pol, .k-cta-card { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .k-pol { animation: none; } .k-tile, .k-img img, .k-cta-card { transition: none; } }
 </style>
