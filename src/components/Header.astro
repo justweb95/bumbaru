@@ -49,11 +49,6 @@ const ribbon = SITE.ribbon[SITE.season];
       <a href="/nadji-poklon/" class="nav-kviz" aria-current={current === 'kviz' ? 'page' : undefined}><Icon name="sparkle" size={17} />Nađi poklon</a>
       <a href="/po-meri/" aria-current={current === 'po-meri' ? 'page' : undefined}>Po meri</a>
     </nav>
-    <form class="search" action="/pretraga/" method="get" role="search">
-      <label class="sr-only" for="q-desk">Pretraga</label>
-      <Icon name="search" size={18} />
-      <input id="q-desk" name="q" type="search" placeholder="Pretražite proizvode" autocomplete="off" />
-    </form>
     <div class="h-act">
       <button class="icon-btn korpa-btn" type="button" data-korpa-open aria-label="Korpa"><Icon name="bag" size={22} /><span class="korpa-n" data-korpa-n hidden>0</span></button>
       <a class="msg-btn" href={messengerUrl()} target="_blank" rel="noopener" aria-label="Pišite nam na Messenger-u" title="Pišite nam na Messenger-u">

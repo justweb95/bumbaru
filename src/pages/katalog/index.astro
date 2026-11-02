@@ -3,12 +3,17 @@ import Base from '../../layouts/Base.astro';
 import Crumbs from '../../components/Crumbs.astro';
 import Icon from '../../components/Icon.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import PretragaPolje from '../../components/PretragaPolje.astro';
 import { CATEGORIES, catUrl } from '../../data/categories';
 import { inCategory, hasPhoto, cardImg } from '../../data/products';
 
+// slika kategorije: prva prava fotografija iz kategorije, različita za svaku kategoriju
+const iskorisceno = new Set<string>();
 const kat = CATEGORIES.map((c) => {
   const list = inCategory(c.slug).sort((a, b) => Number(hasPhoto(b)) - Number(hasPhoto(a)));
-  const p = list.find((x) => x.images[0]);
+  const sa = list.filter((x) => x.images[0]);
+  const p = sa.find((x) => x.images[0].src.startsWith('/img/p/') && !iskorisceno.has(x.slug)) || sa.find((x) => !iskorisceno.has(x.slug));
+  if (p) iskorisceno.add(p.slug);
   return { c, list, slika: p ? cardImg(p.images[0]) : c.bg };
 });
 const plural = (n: number) => (n % 10 === 1 && n % 100 !== 11 ? 'proizvod' : 'proizvoda');
@@ -21,7 +26,7 @@ const plural = (n: number) => (n % 10 === 1 && n % 100 !== 11 ? 'proizvod' : 'pr
         <h1 class="h1">Katalog</h1>
         <p class="lead" style="margin-top:10px;max-width:680px">Sve što štampamo, po kategorijama. Kliknite na proizvod, izaberite šta vam treba i pošaljite poruku preko Messengera.</p>
       </div>
-      <a class="btn" href="/pretraga/"><Icon name="search" />Pretražite katalog</a>
+      <PretragaPolje />
     </div>
 
     <nav class="k-tiles" aria-label="Kategorije">
@@ -75,7 +80,6 @@ const plural = (n: number) => (n % 10 === 1 && n % 100 !== 11 ? 'proizvod' : 'pr
     .k-tiles { display: flex; overflow-x: auto; margin: 24px -16px 0; padding: 4px 16px 10px; gap: 12px; scroll-snap-type: x mandatory; scrollbar-width: none; }
     .k-tiles::-webkit-scrollbar { display: none; }
     .k-tile { flex: none; width: 140px; scroll-snap-align: start; }
-    .k-head .btn { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { .k-tile, .k-img img { transition: none; } }
 </style>

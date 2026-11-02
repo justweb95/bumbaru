@@ -120,10 +120,13 @@ ul, ol { margin: 0; padding: 0; }
 /* Zaglavlje */
 .header { position: sticky; top: 0; z-index: 40; background: var(--surface-paper); border-bottom: 1px solid transparent; transition: box-shadow .2s ease; }
 .header.scrolled { box-shadow: 0 1px 0 var(--line), 0 6px 18px rgba(49,32,24,.06); }
-.header .wrap { display: flex; align-items: center; gap: 20px; min-height: 76px; }
-.logo { display: block; flex: none; }
-.logo img { height: 40px; width: auto; }
-.nav { display: flex; align-items: center; gap: 10px; flex: none; }
+/* logo levo, meni na sredini, korpa i „Pišite nam” desno */
+.header .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px; min-height: 76px; }
+.logo { display: block; justify-self: start; }
+.logo img { height: 36px; width: auto; }
+/* tekst „Bumbaru” je u donjem delu slike (gore je pčelica), pa logo ide malo naviše da tekst bude u osi sa menijem */
+.header .logo { transform: translateY(-8px); }
+.nav { display: flex; align-items: center; gap: 10px; justify-self: center; }
 .nav a, .nav-kat { display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 14px; border: 2px solid transparent; border-radius: 999px; font: inherit; font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; background: none; cursor: pointer; transition: background-color .2s, border-color .2s, transform .25s var(--ease); }
 .nav a svg, .nav-kat svg { flex: none; }
 .nav a:hover, .nav a[aria-current="page"] { background: var(--surface-raised); }
@@ -138,12 +141,7 @@ ul, ol { margin: 0; padding: 0; }
 .nav .nav-kviz { border: 2px dashed var(--ink); background: var(--honey-soft); }
 .nav .nav-kviz:hover, .nav .nav-kviz[aria-current="page"] { background: var(--honey); transform: rotate(-2deg); }
 .nav-kat:focus-visible, .nav a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.search { position: relative; flex: 1; min-width: 150px; max-width: 340px; margin-left: auto; }
-.search input { width: 100%; height: 44px; padding: 0 16px 0 42px; border: 2px solid var(--ink); border-radius: var(--r-pill); background: var(--surface-paper); font-size: 15px; color: var(--ink); }
-.search input::placeholder { color: var(--ink-muted); }
-.search input:focus { outline: 2px solid var(--ink); outline-offset: 2px; }
-.search svg { position: absolute; left: 15px; top: 13px; pointer-events: none; }
-.h-act { display: flex; align-items: center; gap: 10px; flex: none; }
+.h-act { display: flex; align-items: center; gap: 10px; justify-self: end; }
 .korpa-btn { position: relative; }
 .korpa-btn.pop { animation: kp-pop .5s cubic-bezier(.3,1.7,.5,1); }
 .korpa-n { position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--berry); color: #fff; font-size: 12px; font-weight: 800; line-height: 22px; text-align: center; border: 2px solid var(--surface-paper); }
@@ -185,10 +183,11 @@ ul, ol { margin: 0; padding: 0; }
 @media (max-width: 1340px) { .header .wrap { gap: 14px; } .nav { gap: 6px; } .nav a, .nav-kat { padding: 0 11px; font-size: 14px; } .mega-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .header .mega-in { grid-template-columns: minmax(0, 1fr) 260px; } }
 @media (max-width: 1290px) { .msg-t { display: none; } .msg-btn { width: 44px; padding: 0; } }
 @media (max-width: 1200px) {
-  .nav, .search, .mega, .mega-bg { display: none !important; }
-  .header .menu-btn { display: inline-flex; }
-  .header .wrap { justify-content: space-between; min-height: 64px; gap: 12px; }
-  .logo img { height: 34px; }
+  .nav, .mega, .mega-bg { display: none !important; }
+  .header .menu-btn { display: inline-flex; justify-self: start; }
+  .header .wrap { min-height: 64px; gap: 12px; }
+  .header .logo { justify-self: center; transform: translateY(-5px); }
+  .logo img { height: 32px; }
   .msg-t { display: none; } .msg-btn { width: 44px; padding: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .mega.in, .mega-bg { animation: none; } .mega-kat, .mega-promo { transition: none; } }

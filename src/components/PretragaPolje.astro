@@ -1,0 +1,23 @@
+---
+// Polje za pretragu kataloga (strana Katalog i strane kategorija). U kategoriji traži samo u njoj.
+import Icon from './Icon.astro';
+interface Props { kategorija?: string; naziv?: string }
+const { kategorija, naziv } = Astro.props;
+const id = `q-${kategorija || 'katalog'}`;
+---
+<form class="kp-search" action="/pretraga/" method="get" role="search">
+  <label class="sr-only" for={id}>{naziv ? `Pretraga u kategoriji ${naziv}` : 'Pretraga kataloga'}</label>
+  <Icon name="search" size={18} />
+  <input id={id} name="q" type="search" size="10" placeholder={naziv ? `Pretražite: ${naziv}` : 'Pretražite ceo katalog'} autocomplete="off" enterkeyhint="search" />
+  {kategorija && <input type="hidden" name="kategorija" value={kategorija} />}
+  <button class="btn btn-primary" type="submit">Traži</button>
+</form>
+<style>
+  .kp-search { position: relative; display: flex; align-items: center; gap: 8px; width: 100%; max-width: 420px; min-width: 0; }
+  .kp-search input { flex: 1; min-width: 0; height: 48px; padding: 0 16px 0 44px; border: 2px solid var(--ink); border-radius: var(--r-pill); background: var(--surface-paper); font-size: 15px; color: var(--ink); }
+  .kp-search input::placeholder { color: var(--ink-muted); }
+  .kp-search input:focus { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .kp-search input::-webkit-search-cancel-button { display: none; }
+  .kp-search > :global(svg) { position: absolute; left: 16px; top: 15px; pointer-events: none; }
+  .kp-search .btn { min-height: 48px; padding: 0 20px; }
+</style>
