@@ -2,10 +2,16 @@
 // Prozor „Poruka za Bumbaru”: složi poruku sa nazivom, šifrom, izborom i linkom proizvoda,
 // kopira je i otvara Messenger stranice. Link proizvoda u poruci Messenger prikazuje sa slikom (og:image).
 import Icon from './Icon.astro';
-import { PRODUCTS, productUrl, cardImg } from '../data/products';
+import { PRODUCTS, productUrl, cardImg, sveCene, izborKomada } from '../data/products';
 import { SITE } from '../data/site';
+import { akcijaPct } from '../lib/cene';
 const prva = (p: (typeof PRODUCTS)[number]) => p.images[0] || p.motivi?.lista.find((m) => m.slika)?.slika;
-const map = Object.fromEntries(PRODUCTS.map((p) => { const im = prva(p); return [p.id, { t: p.title, u: SITE.url + productUrl(p.slug), i: im ? cardImg(im) : '' }]; }));
+// t naziv, u link, i slika; za „Nedavno ste gledali”: s adresa, c najmanja cena, a akcija %, o „od”, k „/ kom”
+const map = Object.fromEntries(PRODUCTS.map((p) => {
+  const im = prva(p); const c = SITE.showPrices ? sveCene(p) : [];
+  const n = c.length ? Math.min(...c) : 0;
+  return [p.id, { t: p.title, u: SITE.url + productUrl(p.slug), i: im ? cardImg(im) : '', s: p.slug, c: n, a: n ? akcijaPct(p) : 0, o: c.length > 1 && new Set(c).size > 1 || !!p.priceFrom ? 1 : 0, k: izborKomada(p) ? 1 : 0 }];
+}));
 ---
 <dialog class="order-dialog" id="order-dialog" aria-labelledby="od-title">
   <form method="dialog" class="od-inner">
@@ -35,6 +41,7 @@ const map = Object.fromEntries(PRODUCTS.map((p) => { const im = prva(p); return 
       <button class="btn btn-block" type="button" data-od-copy><Icon name="copy" />Samo kopiraj poruku</button>
     </div>
     <p class="od-status" role="status" aria-live="polite" data-od-status></p>
+    <button class="btn btn-block od-clear" type="button" data-od-clear hidden>Poslao sam poruku, isprazni korpu</button>
   </form>
 </dialog>
 <script type="application/json" id="bu-products" set:html={JSON.stringify(map)} />
@@ -60,7 +67,7 @@ const map = Object.fromEntries(PRODUCTS.map((p) => { const im = prva(p); return 
     };
     window.bumbaruOrder = function (id, lines, qty) {
       const p = P[id]; if (!p) return;
-      current = id;
+      current = id; korpa = false; $('[data-od-clear]').hidden = true;
       const text = ['Zdravo, želim da poručim:', p.t + ' (šifra ' + id + ')']
         .concat(lines || [])
         .concat(['Količina: ' + (qty || 1), '', p.u]).join('\n');
@@ -73,18 +80,28 @@ const map = Object.fromEntries(PRODUCTS.map((p) => { const im = prva(p); return 
       sync();
       if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
     };
-    window.bumbaruMessage = function (text, ref) {
+    let korpa = false;
+    window.bumbaruMessage = function (text, ref, opts) {
+      opts = opts || {};
       current = ref || '';
+      korpa = !!opts.korpa;
       ta.value = text;
-      $('[data-od-name]').textContent = 'Upit za izradu po meri';
-      $('[data-od-id]').textContent = ref || 'po meri';
-      $('[data-od-img]').hidden = true; $('[data-od-ph]').hidden = false;
+      $('[data-od-name]').textContent = opts.naslov || 'Upit za izradu po meri';
+      $('[data-od-id]').textContent = opts.sifra || ref || 'po meri';
+      const img = $('[data-od-img]'), ph = $('[data-od-ph]');
+      if (opts.slika) { img.src = opts.slika; img.hidden = false; ph.hidden = true; } else { img.hidden = true; ph.hidden = false; }
+      $('[data-od-clear]').hidden = true;
       status.textContent = '';
       sync();
       if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
     };
     ta.addEventListener('input', sync);
-    go.addEventListener('click', () => { copy(); status.textContent = 'Poruka je kopirana. Otvaramo Messenger…'; });
+    go.addEventListener('click', () => { copy(); status.textContent = 'Poruka je kopirana. Otvaramo Messenger…'; if (korpa) $('[data-od-clear]').hidden = false; });
+    $('[data-od-clear]').addEventListener('click', () => {
+      try { localStorage.setItem('bumbaru-korpa', '[]'); } catch (e) {}
+      window.dispatchEvent(new CustomEvent('korpa', { detail: [] }));
+      $('[data-od-clear]').hidden = true; status.textContent = 'Korpa je ispražnjena. Hvala!';
+    });
     $('[data-od-copy]').addEventListener('click', copy);
     dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
     document.addEventListener('click', (e) => {

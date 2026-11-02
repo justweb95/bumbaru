@@ -2,6 +2,15 @@
 // Prikaz cena se uključuje u admin panelu (src/data/podesavanja.json).
 import podesavanja from './podesavanja.json';
 
+// Akcija iz admina (Podešavanja): važi do kraja izabranog dana. Posle tog trenutka sajt sam sakrije akcijske cene
+// (u pregledaču, i bez nove objave), a pri sledećoj objavi akcija nestaje i iz koda strane.
+interface AkcijaPod { ukljucena: boolean; naziv: string; procenat: number; kategorija: string; do: string }
+const ak = (podesavanja as { akcija?: AkcijaPod }).akcija;
+const akKraj = ak ? `${ak.do}T23:59:59+01:00` : '';
+const AKCIJA = ak && ak.ukljucena && Date.now() <= Date.parse(akKraj)
+  ? { naziv: ak.naziv, procenat: ak.procenat, kategorija: ak.kategorija, do: ak.do, kraj: akKraj }
+  : null;
+
 export const SITE = {
   name: 'Bumbaru',
   url: 'https://bumbaru.sajt.net',
@@ -20,6 +29,7 @@ export const SITE = {
 
   // Cene: dok nema firme i potvrđenih cena, cene se ne prikazuju (prekidač je u admin panelu → Podešavanja).
   showPrices: podesavanja.prikaziCene === true,
+  akcija: podesavanja.prikaziCene === true ? AKCIJA : null,
 
   // Sezona na početnoj strani: 'nova-godina' ili 'stalna'
   season: 'nova-godina' as 'nova-godina' | 'stalna',
@@ -38,3 +48,6 @@ export const messengerUrl = (text?: string, ref?: string) => {
 };
 
 export const din = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' din';
+
+// „31. 12.” iz „2026-12-31”
+export const datumKratko = (iso: string) => { const [, m, d] = iso.split('-').map(Number); return `${d}. ${m}.`; };

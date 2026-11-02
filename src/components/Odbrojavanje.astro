@@ -1,0 +1,44 @@
+---
+// Odbrojavanje do kraja akcije (npr. „Novogodišnja akcija −10% · još 58 dana 6 sati”).
+import Icon from './Icon.astro';
+import { AKCIJA } from '../lib/cene';
+import { datumKratko } from '../data/site';
+interface Props { mali?: boolean }
+const { mali = false } = Astro.props;
+---
+{AKCIJA && (
+  <div class={`odb ak-on${mali ? ' odb-mali' : ''}`} data-odb={AKCIJA.kraj}>
+    <span class="odb-ic" aria-hidden="true"><Icon name="gift" size={mali ? 16 : 18} /></span>
+    <span class="odb-t"><b>{AKCIJA.naziv} −{AKCIJA.procenat}%</b><span class="odb-do">do {datumKratko(AKCIJA.do)}</span></span>
+    <span class="odb-sat" aria-label="Do kraja akcije" data-odb-sat>
+      <span><b data-d>–</b><small>dana</small></span><span><b data-h>–</b><small>sati</small></span><span><b data-m>–</b><small>min</small></span>
+    </span>
+  </div>
+)}
+<script>
+  const tik = () => {
+    document.querySelectorAll<HTMLElement>('[data-odb]').forEach((el) => {
+      const ms = Date.parse(el.dataset.odb || '') - Date.now();
+      if (!(ms > 0)) { document.documentElement.classList.add('akcija-kraj'); return; }
+      const d = Math.floor(ms / 864e5), h = Math.floor((ms % 864e5) / 36e5), m = Math.floor((ms % 36e5) / 6e4);
+      const set = (s: string, v: number) => { const b = el.querySelector(s); if (b) b.textContent = String(v).padStart(s === '[data-d]' ? 1 : 2, '0'); };
+      set('[data-d]', d); set('[data-h]', h); set('[data-m]', m);
+    });
+  };
+  tik(); setInterval(tik, 20000);
+</script>
+<style>
+  .odb { align-self: flex-start; max-width: 100%; display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding: 8px 10px 8px 8px; border-radius: 16px; background: var(--berry-soft); color: var(--berry); border: 2px dashed var(--berry); }
+  .odb-ic { width: 34px; height: 34px; border-radius: 50%; background: var(--berry); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .odb-t { display: flex; flex-direction: column; line-height: 18px; }
+  .odb-t b { font-size: 15px; font-weight: 800; }
+  .odb-do { font-size: 13px; font-weight: 600; color: var(--ink-muted); }
+  .odb-sat { display: inline-flex; gap: 6px; }
+  .odb-sat > span { display: inline-flex; flex-direction: column; align-items: center; min-width: 44px; padding: 4px 6px; border-radius: 10px; background: var(--surface-paper); color: var(--ink); line-height: 1; }
+  .odb-sat b { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .odb-sat small { font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-muted); margin-top: 3px; }
+  .odb-mali { padding: 6px 8px 6px 6px; gap: 6px 10px; }
+  .odb-mali .odb-ic { width: 28px; height: 28px; }
+  .odb-mali .odb-sat > span { min-width: 38px; padding: 3px 5px; }
+  .odb-mali .odb-sat b { font-size: 15px; }
+</style>

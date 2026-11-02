@@ -2,14 +2,20 @@
 import Icon from './Icon.astro';
 import type { Product } from '../data/products';
 import { productUrl, cardImg, sveCene, izborKomada } from '../data/products';
-import { SITE, din } from '../data/site';
+import { SITE } from '../data/site';
+import Cena from './Cena.astro';
+import { akcijaPct } from '../lib/cene';
 interface Props { p: Product; eager?: boolean; tags?: boolean }
 const { p, eager = false, tags = false } = Astro.props;
 const img = p.images[0] || p.motivi?.lista.find((m) => m.slika)?.slika;
 const showPrice = SITE.showPrices && p.price;
 const cene = sveCene(p);
 const raspon = SITE.showPrices && cene.length > 1 && Math.min(...cene) !== Math.max(...cene);
-const price = raspon ? 'od ' + din(Math.min(...cene)) : SITE.showPrices && cene.length ? (p.priceFrom ? 'od ' : '') + din(cene[0]) + (izborKomada(p) ? ' / kom' : '') : '';
+// cena na kartici: najmanja („od …”), po komadu kod izbora motiva/boja; sa akcijom precrtana redovna
+const cenaN = raspon ? Math.min(...cene) : SITE.showPrices && cene.length ? cene[0] : 0;
+const cenaPre = raspon || p.priceFrom ? 'od ' : '';
+const cenaPosle = !raspon && izborKomada(p) ? ' / kom' : '';
+const ak = cenaN ? akcijaPct(p) : 0;
 const url = productUrl(p.slug);
 const popustDo = izborKomada(p) && p.motivi!.popusti.length ? Math.max(...p.motivi!.popusti.map((x) => x.procenat)) : 0;
 ---
@@ -22,6 +28,7 @@ const popustDo = izborKomada(p) && p.motivi!.popusti.length ? Math.max(...p.moti
         <div class="soon-photo"><img src="/img/brand/pcelica.webp" alt="" width="320" height="320" loading="lazy" /><span>Fotografija uskoro</span></div>
       )}
     </a>
+    {ak > 0 && <span class="ak-sticker ak-on" aria-label={`Akcija −${ak}%`}>−{ak}%</span>}
     {popustDo ? <span class="badge badge-custom">Popust do {popustDo}%</span> : p.custom && <span class="badge badge-custom">Po meri · 3–5 dana</span>}
     {p.personal || izborKomada(p) ? (
       <a class="quick" href={url} aria-label={izborKomada(p) ? `${p.motivi!.vrsta === 'boje' ? 'Izaberite boje' : 'Izaberite motive'}: ${p.title}` : `Poruči sa imenom: ${p.title}`}><Icon name="plus" size={22} stroke={2.4} /></a>
@@ -32,7 +39,7 @@ const popustDo = izborKomada(p) && p.motivi!.popusti.length ? Math.max(...p.moti
   <div class="body">
     <div class="row">
       <h3><a href={url}>{p.title}</a></h3>
-      {price && <span class="price" style="font-size:18px">{price}</span>}
+      {cenaN > 0 && <span class="price" style="font-size:18px"><Cena n={cenaN} pct={ak} pre={cenaPre} posle={cenaPosle} /></span>}
     </div>
     <p class="note">{p.short}</p>
   </div>

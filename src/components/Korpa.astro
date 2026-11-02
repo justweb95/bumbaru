@@ -1,0 +1,160 @@
+---
+// Korpa: panel sa desne strane. Proizvodi se čuvaju u pregledaču (localStorage), a porudžbina ide
+// jednom porukom na Messenger, kroz isti prozor kao i do sada (OrderDialog).
+import Icon from './Icon.astro';
+---
+<dialog class="korpa" id="korpa" aria-labelledby="korpa-t">
+  <div class="kp-in">
+    <div class="kp-head">
+      <h2 id="korpa-t" class="h3"><Icon name="bag" size={22} />Korpa <span class="kp-cnt" data-kp-cnt></span></h2>
+      <button class="icon-btn" type="button" data-kp-close aria-label="Zatvori korpu"><Icon name="close" size={20} /></button>
+    </div>
+    <div class="kp-empty" data-kp-empty>
+      <span class="kp-empty-art" aria-hidden="true"><img class="fx-float" src="/img/brand/pcelica.webp" alt="" width="320" height="320" /></span>
+      <p class="h3">Korpa je prazna</p>
+      <p class="muted">Dodajte proizvode, pa ih pošaljite jednom porukom na Messenger. Korpa se pamti na ovom uređaju.</p>
+      <div class="kp-empty-act">
+        <a class="btn btn-primary" href="/katalog/">Pogledajte katalog</a>
+        <a class="btn" href="/nadji-poklon/"><Icon name="gift" />Nađi poklon</a>
+      </div>
+    </div>
+    <ul class="kp-list" data-kp-list></ul>
+    <div class="kp-foot" data-kp-foot hidden>
+      <div class="kp-total"><span>Ukupno</span><b data-kp-total></b></div>
+      <p class="small muted" data-kp-note>Dostavu i rok javljamo u odgovoru. Plaćate kuriru kad paket stigne.</p>
+      <label class="sr-only" for="kp-nap">Napomena uz porudžbinu</label>
+      <input id="kp-nap" class="input" maxlength="200" placeholder="Napomena (nije obavezno), npr. poruka za karticu" autocomplete="off" data-kp-nap />
+      <button class="btn btn-primary btn-lg kp-send" type="button" data-kp-send><Icon name="messenger" />Pošalji porudžbinu na Messenger</button>
+      <button class="kp-clear" type="button" data-kp-clear><Icon name="trash" size={16} />Isprazni korpu</button>
+    </div>
+  </div>
+</dialog>
+<div class="kp-toast" data-kp-toast role="status" aria-live="polite" hidden>
+  <img data-kp-toast-img alt="" width="48" height="48" />
+  <span><b>Dodato u korpu</b><span class="small" data-kp-toast-name></span></span>
+  <button type="button" class="btn btn-sm btn-primary" data-korpa-open>Korpa</button>
+</div>
+
+<script>
+  import { citaj, sacuvaj, din, ukupnoKomada, type Stavka } from '../lib/korpa';
+  const dlg = document.getElementById('korpa') as HTMLDialogElement;
+  const $ = <T extends HTMLElement>(s: string) => dlg.querySelector<T>(s)!;
+  const list = $('[data-kp-list]');
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  const cenaTxt = (x: Stavka) => (x.cena ? (x.od ? 'od ' : '') + din(x.cena) : 'cenu javljamo');
+
+  function crtaj() {
+    const l = citaj();
+    const n = ukupnoKomada(l);
+    document.querySelectorAll<HTMLElement>('[data-korpa-n]').forEach((b) => { b.textContent = String(n); b.hidden = n === 0; });
+    document.querySelectorAll('[data-korpa-open]').forEach((b) => { if (b.matches('.korpa-btn')) b.setAttribute('aria-label', n ? `Korpa, ${n} kom` : 'Korpa'); });
+    $('[data-kp-cnt]').textContent = n ? `(${n})` : '';
+    $('[data-kp-empty]').hidden = l.length > 0;
+    $('[data-kp-foot]').hidden = l.length === 0;
+    list.innerHTML = l.map((x, i) => `
+      <li class="kp-item">
+        <a class="kp-img" href="${esc(x.url)}">${x.slika ? `<img src="${esc(x.slika)}" alt="" width="72" height="72" loading="lazy" />` : '<img src="/img/brand/pcelica.webp" alt="" width="72" height="72" class="kp-ph" />'}</a>
+        <div class="kp-info">
+          <a class="kp-name" href="${esc(x.url)}">${esc(x.naziv)}</a>
+          ${x.linije.length ? `<ul class="kp-lines">${x.linije.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+          <div class="kp-row">
+            ${x.jed ? `<span class="kp-step"><button type="button" data-kp-dec="${i}" aria-label="Jedan manje">−</button><b>${x.kol}</b><button type="button" data-kp-inc="${i}" aria-label="Još jedan">+</button></span>` : `<span class="kp-kol">${x.kol} kom</span>`}
+            <b class="kp-cena">${cenaTxt(x)}</b>
+          </div>
+        </div>
+        <button type="button" class="kp-del" data-kp-del="${i}" aria-label="Ukloni: ${esc(x.naziv)}">×</button>
+      </li>`).join('');
+    const zbir = l.reduce((a, x) => a + x.cena, 0);
+    const nepoznato = l.some((x) => !x.cena);
+    $('[data-kp-total]').textContent = zbir ? (l.some((x) => x.od) ? 'od ' : '') + din(zbir) + (nepoznato ? ' +' : '') : 'javljamo u odgovoru';
+    $('[data-kp-note]').textContent = (nepoznato && zbir ? 'Za neke proizvode cenu javljamo u odgovoru. ' : '') + 'Dostavu i rok javljamo u odgovoru. Plaćate kuriru kad paket stigne.';
+  }
+
+  list.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest('button');
+    if (!b) return;
+    const l = citaj();
+    const i = Number(b.dataset.kpDel ?? b.dataset.kpInc ?? b.dataset.kpDec);
+    const x = l[i]; if (!x) return;
+    if (b.dataset.kpDel !== undefined) l.splice(i, 1);
+    else if (x.jed) { x.kol = Math.max(1, Math.min(99, x.kol + (b.dataset.kpInc !== undefined ? 1 : -1))); x.cena = x.jed * x.kol; }
+    sacuvaj(l);
+  });
+  const otvori = () => { crtaj(); if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', ''); };
+  const zatvori = () => dlg.close();
+  document.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest('[data-korpa-open]'); if (b) { e.preventDefault(); hideToast(); otvori(); } });
+  $('[data-kp-close]').addEventListener('click', zatvori);
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) zatvori(); });
+  $('[data-kp-clear]').addEventListener('click', () => { if (confirmClear()) sacuvaj([]); });
+  const confirmClear = () => { const b = $('[data-kp-clear]'); if (b.dataset.sure) { delete b.dataset.sure; b.lastChild!.textContent = 'Isprazni korpu'; return true; } b.dataset.sure = '1'; b.lastChild!.textContent = 'Kliknite još jednom da ispraznite'; setTimeout(() => { delete b.dataset.sure; b.lastChild!.textContent = 'Isprazni korpu'; }, 3500); return false; };
+  $('[data-kp-send]').addEventListener('click', () => {
+    const l = citaj(); if (!l.length) return;
+    const zbir = l.reduce((a, x) => a + x.cena, 0);
+    const delovi = l.map((x, i) => [`${i + 1}. ${x.naziv} (šifra ${x.id})`, ...x.linije.map((t) => '   ' + t), `   Količina: ${x.kol}`, `   Cena: ${cenaTxt(x)}`, `   ${x.url}`].join('\n'));
+    const nap = $<HTMLInputElement>('[data-kp-nap]').value.trim();
+    const text = ['Zdravo, želim da poručim (korpa sa sajta):', '', ...delovi, '', zbir ? `Ukupno: ${(l.some((x) => x.od) ? 'od ' : '') + din(zbir)}${l.some((x) => !x.cena) ? ' + proizvodi kojima cenu javljate' : ''} (bez dostave)` : '', nap ? 'Napomena: ' + nap : ''].filter((t, i, a) => t || a[i - 1]).join('\n').trim();
+    zatvori();
+    (window as any).bumbaruMessage(text, 'korpa', { naslov: `Porudžbina iz korpe (${ukupnoKomada(l)} kom)`, slika: l[0].slika, korpa: true });
+  });
+  window.addEventListener('korpa', crtaj);
+  window.addEventListener('storage', (e) => { if (e.key === 'bumbaru-korpa') crtaj(); });
+
+  // Obaveštenje „Dodato u korpu”
+  const toast = document.querySelector<HTMLElement>('[data-kp-toast]')!;
+  let tt = 0;
+  const hideToast = () => { toast.classList.remove('on'); clearTimeout(tt); tt = window.setTimeout(() => { toast.hidden = true; }, 250); };
+  window.addEventListener('korpa-dodato', (e) => {
+    const s = (e as CustomEvent).detail as Stavka;
+    (toast.querySelector('[data-kp-toast-img]') as HTMLImageElement).src = s.slika || '/img/brand/pcelica.webp';
+    toast.querySelector('[data-kp-toast-name]')!.textContent = s.naziv;
+    toast.hidden = false; requestAnimationFrame(() => toast.classList.add('on'));
+    document.querySelectorAll('.korpa-btn').forEach((b) => { b.classList.remove('pop'); void (b as HTMLElement).offsetWidth; b.classList.add('pop'); });
+    clearTimeout(tt); tt = window.setTimeout(hideToast, 3800);
+  });
+  crtaj();
+</script>
+
+<style>
+  .korpa { position: fixed; inset: 0 0 0 auto; margin: 0; width: min(440px, 100%); max-width: 100%; height: 100%; max-height: 100%; padding: 0; border: 0; background: var(--surface-paper); color: var(--ink); box-shadow: -12px 0 40px rgba(36,24,17,.25); }
+  .korpa[open] { animation: kp-in .32s var(--ease); }
+  .korpa::backdrop { background: rgba(36,24,17,.45); }
+  .kp-in { display: flex; flex-direction: column; height: 100%; }
+  .kp-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+  .kp-head h2 { display: inline-flex; align-items: center; gap: 10px; }
+  .kp-cnt { color: var(--ink-muted); font-weight: 600; }
+  .kp-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 12px; padding: 32px 28px; }
+  .kp-empty[hidden] { display: none; }
+  .kp-empty-art { width: 140px; height: 140px; border-radius: 50%; background: var(--honey-soft); display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+  .kp-empty-art img { width: 96px; height: auto; }
+  .kp-empty-act { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
+  .kp-list { list-style: none; flex: 1; overflow-y: auto; padding: 8px 20px; margin: 0; }
+  .kp-list :global(.kp-item) { position: relative; display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 14px; padding: 14px 32px 14px 0; border-bottom: 1px solid var(--line); }
+  .kp-list :global(.kp-img) { width: 72px; height: 72px; border-radius: 14px; overflow: hidden; background: var(--surface-raised); display: block; }
+  .kp-list :global(.kp-img img) { width: 100%; height: 100%; object-fit: cover; }
+  .kp-list :global(.kp-img .kp-ph) { object-fit: contain; padding: 12px; }
+  .kp-list :global(.kp-info) { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .kp-list :global(.kp-name) { font-weight: 700; text-decoration: none; line-height: 20px; }
+  .kp-list :global(.kp-lines) { list-style: none; margin: 0; padding: 0; font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+  .kp-list :global(.kp-row) { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; }
+  .kp-list :global(.kp-step) { display: inline-flex; align-items: center; border: 2px solid var(--ink); border-radius: 999px; height: 34px; }
+  .kp-list :global(.kp-step button) { width: 32px; height: 30px; border: 0; background: none; font-size: 18px; font-weight: 700; cursor: pointer; color: var(--ink); border-radius: 999px; }
+  .kp-list :global(.kp-step b) { min-width: 22px; text-align: center; }
+  .kp-list :global(.kp-kol) { font-size: 14px; font-weight: 600; color: var(--ink-muted); }
+  .kp-list :global(.kp-cena) { white-space: nowrap; }
+  .kp-list :global(.kp-del) { position: absolute; right: 0; top: 12px; width: 30px; height: 30px; border: 0; border-radius: 50%; background: var(--surface-raised); font-size: 18px; line-height: 1; cursor: pointer; color: var(--ink); }
+  .kp-list :global(.kp-del:hover) { background: var(--berry-soft); color: var(--berry); }
+  .kp-foot { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px 20px; border-top: 1px solid var(--line); background: var(--surface-raised); }
+  .kp-foot[hidden] { display: none; }
+  .kp-total { display: flex; justify-content: space-between; align-items: baseline; font-size: 18px; }
+  .kp-total b { font-size: 22px; font-weight: 800; }
+  .kp-send { width: 100%; }
+  .kp-clear { align-self: center; display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; font: inherit; font-size: 14px; font-weight: 600; color: var(--ink-muted); text-decoration: underline; cursor: pointer; padding: 6px; }
+  .kp-clear[data-sure] { color: var(--berry); }
+  .kp-toast { position: fixed; left: 50%; bottom: 20px; z-index: 70; display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 10px; border-radius: 18px; background: var(--dark); color: var(--cream); box-shadow: 0 12px 30px rgba(36,24,17,.35); transform: translate(-50%, 140%); transition: transform .35s cubic-bezier(.3,1.4,.5,1); max-width: calc(100% - 24px); }
+  .kp-toast.on { transform: translate(-50%, 0); }
+  .kp-toast img { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; background: var(--surface-paper); flex: none; }
+  .kp-toast > span { display: flex; flex-direction: column; line-height: 18px; min-width: 0; }
+  .kp-toast > span .small { color: var(--cream-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+  @keyframes kp-in { from { transform: translateX(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .korpa[open] { animation: none; } .kp-toast { transition: none; } }
+</style>

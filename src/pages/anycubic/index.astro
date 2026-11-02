@@ -10,7 +10,7 @@ import boje from '../../data/boje.json';
 import podesavanja from '../../data/podesavanja.json';
 
 // Podaci iz ove objave: prikazuju se ako server za čuvanje ne radi
-const podaci = { proizvodi: proizvodi.proizvodi, kategorije: kategorije.kategorije, boje: boje.boje, podesavanja: { prikaziCene: podesavanja.prikaziCene === true } };
+const podaci = { proizvodi: proizvodi.proizvodi, kategorije: kategorije.kategorije, boje: boje.boje, podesavanja: { prikaziCene: podesavanja.prikaziCene === true, ...((podesavanja as any).akcija ? { akcija: (podesavanja as any).akcija } : {}) } };
 let pozadine: string[] = [];
 try { pozadine = readdirSync('public/img/bg').filter((f) => /\.(webp|jpg|png)$/.test(f) && !/-tel\./.test(f)).map((f) => `/img/bg/${f}`); } catch { pozadine = ['/img/bg/kraft.webp']; }
 ---

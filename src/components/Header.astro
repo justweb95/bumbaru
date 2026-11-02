@@ -1,10 +1,11 @@
 ---
 import Icon from './Icon.astro';
-import { SITE, messengerUrl } from '../data/site';
+import { SITE, messengerUrl, datumKratko } from '../data/site';
+import { AKCIJA } from '../lib/cene';
 interface Props { current?: string }
 const { current = '' } = Astro.props;
 const links = [
-  { href: '/katalog/nova-godina/', label: 'Novogodišnji katalog', key: 'nova-godina', season: true },
+  { href: '/katalog/nova-godina/', label: 'Nova godina', key: 'nova-godina', season: true },
   { href: '/katalog/radionica/', label: 'Radionica', key: 'radionica' },
   { href: '/katalog/auto-i-moto/', label: 'Auto i moto', key: 'auto-i-moto' },
   { href: '/katalog/pokloni-sa-imenom/', label: 'Pokloni sa imenom', key: 'pokloni-sa-imenom' },
@@ -18,13 +19,13 @@ const mobileExtra = [
 ];
 const ribbon = SITE.ribbon[SITE.season];
 ---
-<div class="ribbon">
+<div class={`ribbon${AKCIJA ? ' rib-ak' : ''}`}>
   <div class="wrap">
-    <span><Icon name="clock" size={16} />{ribbon}</span>
+    {AKCIJA && <><a class="rib-akcija ak-on" href={`/katalog/${AKCIJA.kategorija}/`}><Icon name="gift" size={16} />{AKCIJA.naziv} −{AKCIJA.procenat}% do {datumKratko(AKCIJA.do)}</a><i class="dot opt ak-on" aria-hidden="true"></i></>}
+    <span class="rib-rok"><Icon name="clock" size={16} />{ribbon}</span>
     <i class="dot opt" aria-hidden="true"></i>
-    <span class="opt">Poručivanje preko Messengera</span>
-    <i class="dot opt" aria-hidden="true"></i>
-    <span class="opt">Dostava kurirom širom Srbije</span>
+    <span class="opt">{AKCIJA ? 'Dostava širom Srbije' : 'Poručivanje preko Messengera'}</span>
+    {!AKCIJA && <><i class="dot opt" aria-hidden="true"></i><span class="opt">Dostava kurirom širom Srbije</span></>}
   </div>
 </div>
 <header class="header" id="top">
@@ -42,18 +43,19 @@ const ribbon = SITE.ribbon[SITE.season];
       {links.map((l) => (
         <a href={l.href} class={l.season ? 'season' : undefined} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a>
       ))}
+      <a href="/nadji-poklon/" class="nav-kviz" aria-current={current === 'kviz' ? 'page' : undefined}><Icon name="gift" size={18} />Nađi poklon</a>
     </nav>
     <form class="search" action="/pretraga/" method="get" role="search">
       <label class="sr-only" for="q-desk">Pretraga</label>
       <Icon name="search" size={18} />
       <input id="q-desk" name="q" type="search" placeholder="Pretraga" autocomplete="off" />
     </form>
-    <a class="btn btn-primary header-msg" href={messengerUrl()} target="_blank" rel="noopener">
-      <Icon name="messenger" />Pišite nam
-    </a>
-    <a class="icon-btn msg-icon" href={messengerUrl()} target="_blank" rel="noopener" aria-label="Pišite nam na Messenger-u">
-      <Icon name="messenger" size={22} />
-    </a>
+    <div class="h-act">
+      <button class="icon-btn korpa-btn" type="button" data-korpa-open aria-label="Korpa"><Icon name="bag" size={22} /><span class="korpa-n" data-korpa-n hidden>0</span></button>
+      <a class="icon-btn msg-btn" href={messengerUrl()} target="_blank" rel="noopener" aria-label="Pišite nam na Messenger-u" title="Pišite nam na Messenger-u">
+        <Icon name="messenger" size={22} />
+      </a>
+    </div>
   </div>
 </header>
 <div class="mobile-menu" id="mobile-menu" data-menu>
@@ -67,8 +69,9 @@ const ribbon = SITE.ribbon[SITE.season];
       <Icon name="search" size={18} />
       <input id="q-mob" name="q" type="search" placeholder="Pretraga proizvoda" autocomplete="off" />
     </form>
+    <a class="m-kviz" href="/nadji-poklon/"><Icon name="gift" size={22} /><span><strong>Nađi poklon</strong><span class="small">Kviz od 20 sekundi</span></span></a>
     <nav aria-label="Meni na telefonu">
-      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      {links.map((l) => <a href={l.href}>{l.label === 'Nova godina' ? 'Novogodišnji katalog' : l.label}</a>)}
       {mobileExtra.map((l) => <a href={l.href}>{l.label}</a>)}
     </nav>
     <a class="btn btn-primary btn-lg" href={messengerUrl()} target="_blank" rel="noopener"><Icon name="messenger" />Pišite nam na Messenger-u</a>

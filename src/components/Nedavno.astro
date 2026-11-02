@@ -1,0 +1,54 @@
+---
+// „Nedavno ste gledali”: proizvodi koje je kupac otvarao, zapamćeni u pregledaču (localStorage, bez naloga).
+// Podaci o proizvodima (naziv, slika, cena) su u #bu-products (OrderDialog.astro).
+import Icon from './Icon.astro';
+interface Props { ovaj?: string; naslov?: string }
+const { ovaj = '', naslov = 'Nedavno ste gledali' } = Astro.props;
+---
+<section class="ned section" data-ned data-ovaj={ovaj || undefined} hidden aria-labelledby="ned-t">
+  <div class="sec-head">
+    <div class="ned-h"><span class="ned-ic" aria-hidden="true"><Icon name="clock" size={20} /></span><h2 id="ned-t" class="h2">{naslov}</h2></div>
+    <button type="button" class="ned-clear" data-ned-clear>Obriši listu</button>
+  </div>
+  <div class="ned-rail" data-ned-list></div>
+</section>
+<script>
+  const K = 'bumbaru-gledano';
+  const citaj = (): string[] => { try { const l = JSON.parse(localStorage.getItem(K) || '[]'); return Array.isArray(l) ? l : []; } catch { return []; } };
+  const P = JSON.parse(document.getElementById('bu-products')?.textContent || '{}') as Record<string, { t: string; u: string; i: string; s: string; c: number; a: number; o: number; k: number }>;
+  const kraj = () => document.documentElement.classList.contains('akcija-kraj');
+  const din = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' din';
+  const snizi = (n: number, pct: number) => (pct ? Math.round((n * (1 - pct / 100)) / 10) * 10 : n);
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  document.querySelectorAll<HTMLElement>('[data-ned]').forEach((sec) => {
+    const ovaj = sec.dataset.ovaj || '';
+    let l = citaj().filter((id) => P[id]);
+    if (ovaj && P[ovaj]) { l = [ovaj, ...l.filter((x) => x !== ovaj)].slice(0, 12); try { localStorage.setItem(K, JSON.stringify(l)); } catch { /* bez pamćenja */ } }
+    const prikaz = l.filter((x) => x !== ovaj).slice(0, 8);
+    if (!prikaz.length) return;
+    sec.querySelector('[data-ned-list]')!.innerHTML = prikaz.map((id) => {
+      const p = P[id];
+      const a = kraj() ? 0 : p.a;
+      const cena = p.c ? `${p.o ? 'od ' : ''}${a ? `<s>${din(p.c)}</s> <b class="ak-n">${din(snizi(p.c, a))}</b>` : `<b>${din(p.c)}</b>`}${p.k ? ' / kom' : ''}` : '';
+      const url = new URL(p.u).pathname;
+      return `<a class="ned-card" href="${esc(url)}"><span class="ned-img">${p.i ? `<img src="${esc(p.i)}" alt="" width="160" height="160" loading="lazy" />` : '<img src="/img/brand/pcelica.webp" alt="" width="160" height="160" class="ned-ph" />'}${a ? `<i class="ned-ak">−${a}%</i>` : ''}</span><span class="ned-t">${esc(p.t)}</span>${cena ? `<span class="ned-c">${cena}</span>` : ''}</a>`;
+    }).join('');
+    sec.hidden = false;
+    sec.querySelector('[data-ned-clear]')!.addEventListener('click', () => { try { localStorage.setItem(K, JSON.stringify(ovaj ? [ovaj] : [])); } catch { /* */ } sec.hidden = true; });
+  });
+</script>
+<style>
+  .ned-h { display: flex; align-items: center; gap: 12px; }
+  .ned-ic { width: 40px; height: 40px; border-radius: 50%; background: var(--wing); display: inline-flex; align-items: center; justify-content: center; }
+  .ned-clear { border: 0; background: none; font: inherit; font-size: 14px; font-weight: 600; color: var(--ink-muted); text-decoration: underline; cursor: pointer; padding: 8px; }
+  .ned-rail { display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 10px; scroll-snap-type: x proximity; scrollbar-width: thin; }
+  .ned-rail :global(.ned-card) { flex: none; width: 168px; display: flex; flex-direction: column; gap: 6px; padding: 8px 8px 12px; border-radius: 20px; background: var(--surface-raised); text-decoration: none; color: var(--ink); scroll-snap-align: start; transition: transform .3s var(--ease); }
+  .ned-rail :global(.ned-img) { position: relative; display: block; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: var(--surface-paper); }
+  .ned-rail :global(.ned-img img) { width: 100%; height: 100%; object-fit: cover; }
+  .ned-rail :global(.ned-img .ned-ph) { object-fit: contain; padding: 22%; }
+  .ned-rail :global(.ned-ak) { position: absolute; right: 6px; top: 6px; font-style: normal; font-size: 12px; font-weight: 800; color: #fff; background: var(--berry); border-radius: 999px; padding: 2px 8px; }
+  .ned-rail :global(.ned-t) { font-size: 14px; line-height: 18px; font-weight: 700; padding: 0 4px; }
+  .ned-rail :global(.ned-c) { font-size: 13px; padding: 0 4px; }
+  .ned-rail :global(.ned-c s) { color: var(--ink-muted); }
+  @media (hover: hover) { .ned-rail :global(.ned-card:hover) { transform: translateY(-4px) rotate(-1deg); } }
+</style>

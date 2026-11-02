@@ -1,0 +1,203 @@
+---
+// Kviz „Nađi poklon”: 4 pitanja (za koga, povod, šta voli, budžet), pa predlozi iz kataloga.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { PRODUCTS, productBySlug, cardImg, sveCene, izborKomada, hasPhoto, popustZa } from '../data/products';
+import { SITE, messengerUrl } from '../data/site';
+import { PITANJA, profil, grupa } from '../lib/kviz';
+import { akcijaPct, snizi } from '../lib/cene';
+
+const slikaZa = (slug?: string) => { const p = slug ? productBySlug(slug) : undefined; const im = p?.images[0] || p?.motivi?.lista.find((m) => m.slika)?.slika; return im ? cardImg(im) : ''; };
+// Cena za budžet: najmanja cena; kod izbora komada cena prvog paketa sa popustom (npr. 4 klipa)
+const cenaZa = (p: (typeof PRODUCTS)[number]) => {
+  const c = SITE.showPrices ? sveCene(p) : [];
+  if (!c.length) return 0;
+  const n = Math.min(...c), ak = akcijaPct(p);
+  if (izborKomada(p) && p.motivi!.popusti.length) { const k = p.motivi!.popusti[0].od; return Math.round((k * snizi(n, ak) * (1 - popustZa(p.motivi!, k) / 100)) / 10) * 10; }
+  return snizi(n, ak);
+};
+const lista = PRODUCTS.map((p, i) => ({ p, i, pr: profil(p), cena: cenaZa(p), foto: hasPhoto(p), g: grupa(p) }));
+---
+<Base title="Nađi poklon za 20 sekundi | Bumbaru" description="Četiri brza pitanja, pa vam predlažemo poklone iz Bumbaru kataloga: za dete, za nju, za njega, za kolege ili za dom." current="kviz">
+  <div class="paper-zone">
+    <div class="wrap kv-wrap">
+      <section class="kv" data-kviz aria-live="polite">
+        <div class="kv-top">
+          <button type="button" class="kv-back" data-back hidden><Icon name="arrow" size={18} />Nazad</button>
+          <span class="kv-step" data-step>Pitanje 1 od {PITANJA.length}</span>
+        </div>
+        <div class="kv-track" aria-hidden="true">
+          <div class="kv-fill" data-fill></div>
+          {PITANJA.map((_, i) => <i class="kv-dot" style={`--x:${((i + 1) / PITANJA.length) * 100}%`}></i>)}
+          <img class="kv-bee" data-bee src="/img/brand/pcelica.webp" alt="" width="52" height="52" />
+        </div>
+
+        {PITANJA.map((q, qi) => (
+          <div class="kv-q" data-q={q.id} hidden={qi > 0}>
+            <h1 class="h1 kv-title">{q.naslov}</h1>
+            {qi === 0 && <p class="lead kv-lead">Četiri brza pitanja, pa vam predlažemo poklone iz našeg kataloga.</p>}
+            <div class={`kv-opts${q.odgovori.some((o) => o.slika) ? '' : ' kv-opts-mali'}`}>
+              {q.odgovori.map((o, oi) => {
+                const sl = slikaZa(o.slika);
+                return (
+                  <button type="button" class="kv-opt" data-a={o.id} style={`--r:${oi % 2 ? 1.5 : -1.5}deg`}>
+                    {sl ? <span class="kv-img"><img src={sl} alt="" width="300" height="300" loading={qi === 0 ? 'eager' : 'lazy'} /></span> : <span class="kv-ic"><Icon name={o.ikonica} size={28} /></span>}
+                    <span class="kv-lab">{o.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+
+        <div class="kv-res" data-res hidden>
+          <div class="kv-res-head">
+            <img class="kv-res-bee fx-float" src="/img/brand/pcelica.webp" alt="" width="96" height="96" />
+            <div>
+              <span class="badge badge-honey">Vaš Bumbaru izbor</span>
+              <h2 class="h1" data-res-title>Evo šta predlažemo</h2>
+              <p class="muted" data-res-sub></p>
+            </div>
+          </div>
+          <div class="grid kv-grid" data-grid>
+            {lista.map(({ p, i, pr, cena, foto, g }) => (
+              <div class="kv-item" hidden data-i={i} data-za={pr.za.join(' ')} data-povod={pr.povod.join(' ')} data-stil={pr.stil.join(' ')} data-cena={cena} data-foto={foto ? '1' : '0'} data-g={g}>
+                <ProductCard p={p} />
+              </div>
+            ))}
+          </div>
+          <div class="kv-res-act">
+            <button type="button" class="btn btn-lg" data-again><Icon name="sparkle" />Ponovi kviz</button>
+            <a class="btn btn-primary btn-lg" data-ask href={messengerUrl('Zdravo! Tražim poklon, možete li da mi predložite nešto?', 'kviz')} target="_blank" rel="noopener"><Icon name="messenger" />Pošaljite mi još predloga</a>
+            <a class="link-arrow" href="/katalog/">Ceo katalog<Icon name="arrow" /></a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</Base>
+<script define:vars={{ pitanja: PITANJA.map((q) => ({ id: q.id, odgovori: q.odgovori.map((o) => ({ id: o.id, label: o.label })) })) }}>
+  window.__kviz = pitanja;
+</script>
+<script>
+  import { messengerUrl } from '../data/site';
+  type Q = { id: string; odgovori: { id: string; label: string }[] };
+  const pitanja = (window as any).__kviz as Q[];
+  const root = document.querySelector<HTMLElement>('[data-kviz]')!;
+  const qs = Array.from(root.querySelectorAll<HTMLElement>('[data-q]'));
+  const res = root.querySelector<HTMLElement>('[data-res]')!;
+  const back = root.querySelector<HTMLButtonElement>('[data-back]')!;
+  const step = root.querySelector<HTMLElement>('[data-step]')!;
+  const fill = root.querySelector<HTMLElement>('[data-fill]')!;
+  const bee = root.querySelector<HTMLElement>('[data-bee]')!;
+  const odg: Record<string, string> = {};
+  let k = 0;
+  const lab = (qid: string) => pitanja.find((q) => q.id === qid)?.odgovori.find((o) => o.id === odg[qid])?.label || '';
+
+  function prikazi(i: number) {
+    k = i;
+    const kraj = i >= qs.length;
+    qs.forEach((q, j) => { q.hidden = j !== i; if (j === i) { q.classList.remove('in'); void q.offsetWidth; q.classList.add('in'); } });
+    res.hidden = !kraj;
+    back.hidden = i === 0;
+    step.textContent = kraj ? 'Gotovo!' : `Pitanje ${i + 1} od ${qs.length}`;
+    const x = Math.min(i, qs.length) / qs.length;
+    fill.style.width = `${x * 100}%`;
+    bee.style.left = `${x * 100}%`;
+    bee.classList.remove('hop'); void bee.offsetWidth; bee.classList.add('hop');
+    if (kraj) rezultat();
+    if (i > 0) root.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  function rezultat() {
+    const za = odg.za, povod = odg.povod, stil = odg.stil, b = odg.budzet;
+    const items = Array.from(res.querySelectorAll<HTMLElement>('.kv-item'));
+    const ima = (el: HTMLElement, a: string, v: string) => (el.dataset[a] || '').split(' ').includes(v);
+    const skor = (el: HTMLElement) => {
+      let s = 0;
+      if (ima(el, 'za', za)) s += 3; else s -= 2;
+      if (ima(el, 'povod', povod)) s += 2; else s -= 2;
+      if (ima(el, 'stil', stil)) s += 2;
+      const c = Number(el.dataset.cena || 0);
+      if (c && b !== 'svejedno') {
+        const ok = b === 'do-500' ? c <= 550 : b === 'do-1500' ? c >= 400 && c <= 1600 : c >= 1300;
+        s += ok ? 2 : -3;
+      } else if (!c) s -= 0.5;
+      if (el.dataset.foto === '1') s += 1; else s -= 2;
+      return s;
+    };
+    const rang = items.map((el) => ({ el, s: skor(el) })).sort((a, b2) => b2.s - a.s || Number(a.el.dataset.i) - Number(b2.el.dataset.i));
+    // najviše dva iz iste grupe (npr. lutkice), pa najbolji do 6 predloga
+    const brojG: Record<string, number> = {};
+    const raznovrsno = rang.filter((x) => { const g = x.el.dataset.g || ''; brojG[g] = (brojG[g] || 0) + 1; return brojG[g] <= 2; });
+    let izbor = raznovrsno.filter((x) => x.s >= 5).slice(0, 6);
+    if (izbor.length < 3) izbor = raznovrsno.slice(0, 3);
+    items.forEach((el) => { el.hidden = true; });
+    izbor.forEach((x, j) => { x.el.hidden = false; x.el.style.setProperty('--d', String(j)); x.el.classList.remove('in'); void x.el.offsetWidth; x.el.classList.add('in'); res.querySelector('[data-grid]')!.append(x.el); });
+    res.querySelector('[data-res-sub]')!.textContent = [lab('za'), lab('povod'), lab('stil'), lab('budzet')].filter(Boolean).join(' · ');
+    const a = res.querySelector<HTMLAnchorElement>('[data-ask]')!;
+    a.href = messengerUrl(`Zdravo! Tražim poklon: ${[lab('za'), lab('povod'), lab('stil'), 'budžet ' + lab('budzet').toLowerCase()].join(', ')}. Šta biste mi predložili?`, 'kviz');
+  }
+
+  root.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-a]');
+    if (!b) return;
+    const q = b.closest<HTMLElement>('[data-q]')!;
+    odg[q.dataset.q!] = b.dataset.a!;
+    q.querySelectorAll('[data-a]').forEach((x) => x.classList.toggle('on', x === b));
+    setTimeout(() => prikazi(k + 1), 260);
+  });
+  back.addEventListener('click', () => prikazi(Math.max(0, k - 1)));
+  root.querySelector('[data-again]')!.addEventListener('click', () => { Object.keys(odg).forEach((x) => delete odg[x]); root.querySelectorAll('.kv-opt.on').forEach((x) => x.classList.remove('on')); prikazi(0); });
+  prikazi(0);
+</script>
+<style>
+  .kv-wrap { padding-top: 28px; }
+  .kv { position: relative; max-width: 980px; margin: 0 auto; padding: 32px 40px 40px; border-radius: var(--r-lg); background: var(--honey-soft); overflow: hidden; overflow: clip; scroll-margin-top: 90px; }
+  .kv::before { content: ''; position: absolute; right: -90px; top: -110px; width: 300px; height: 300px; border-radius: 50%; background: var(--honey); opacity: .5; }
+  .kv > * { position: relative; }
+  .kv-top { display: flex; align-items: center; justify-content: space-between; min-height: 40px; }
+  .kv-back { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; font: inherit; font-weight: 700; cursor: pointer; color: var(--ink); padding: 8px 0; }
+  .kv-back :global(svg) { transform: rotate(180deg); }
+  .kv-step { margin-left: auto; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .kv-track { position: relative; height: 10px; margin: 30px 14px 30px; border-radius: 999px; background: var(--surface-paper); box-shadow: inset 0 0 0 2px var(--line); }
+  .kv-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--honey), #E9A92A); transition: width .5s cubic-bezier(.3,1.3,.5,1); }
+  .kv-dot { position: absolute; left: var(--x); top: 50%; width: 16px; height: 16px; border-radius: 50%; background: var(--surface-paper); border: 2px solid var(--line-strong); transform: translate(-50%, -50%); }
+  .kv-bee { position: absolute; left: 0; top: 50%; width: 52px; height: auto; transform: translate(-50%, -88%); transition: left .55s cubic-bezier(.3,1.3,.5,1); filter: drop-shadow(0 4px 4px rgba(49,32,24,.18)); }
+  .kv-bee.hop { animation: kv-hop .6s ease; }
+  .kv-title { margin-top: 6px; }
+  .kv-lead { margin-top: 6px; }
+  .kv-q.in { animation: kv-in .4s cubic-bezier(.3,1.3,.5,1); }
+  .kv-opts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+  .kv-opts-mali { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kv-opt { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 10px 10px 16px; border: 2px solid transparent; border-radius: 22px; background: var(--surface-paper); font: inherit; color: var(--ink); cursor: pointer; box-shadow: 0 3px 0 rgba(49,32,24,.1); transition: transform .3s cubic-bezier(.3,1.5,.5,1), border-color .2s, background-color .2s; }
+  .kv-opt:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .kv-img { display: block; width: 100%; aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden; background: var(--surface-raised); }
+  .kv-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+  .kv-ic { width: 60px; height: 60px; border-radius: 50%; background: var(--honey); border: 2px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; margin-top: 8px; }
+  .kv-opts-mali .kv-opt { flex-direction: row; justify-content: flex-start; padding: 12px 16px; gap: 14px; }
+  .kv-opts-mali .kv-ic { margin: 0; width: 48px; height: 48px; flex: none; }
+  .kv-lab { font-weight: 800; font-size: 17px; line-height: 22px; text-align: center; }
+  .kv-opt.on { border-color: var(--ink); background: var(--honey); transform: scale(.97) rotate(var(--r)); }
+  .kv-res { padding-top: 4px; }
+  .kv-res-head { display: flex; align-items: center; gap: 20px; margin-bottom: 28px; }
+  .kv-res-head .h1 { margin: 8px 0 4px; }
+  .kv-res-bee { width: 96px; height: auto; flex: none; }
+  .kv-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .kv-item.in { animation: kv-in .45s cubic-bezier(.3,1.3,.5,1) both; animation-delay: calc(var(--d) * 70ms); }
+  .kv-res-act { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 32px; }
+  @keyframes kv-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes kv-hop { 0%, 100% { transform: translate(-50%, -88%) rotate(0); } 40% { transform: translate(-50%, -140%) rotate(-12deg); } 70% { transform: translate(-50%, -100%) rotate(8deg); } }
+  @media (hover: hover) { .kv-opt:not(.on):hover { transform: translateY(-5px) rotate(var(--r)); border-color: var(--line-strong); } .kv-opt:hover .kv-img img { transform: scale(1.06); } }
+  @media (max-width: 760px) {
+    .kv { padding: 20px 16px 28px; border-radius: 24px; }
+    .kv-opts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .kv-opts-mali { grid-template-columns: 1fr; }
+    .kv-lab { font-size: 15px; line-height: 20px; }
+    .kv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kv-res-head { gap: 12px; }
+    .kv-res-bee { width: 64px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .kv-q.in, .kv-item.in, .kv-bee.hop { animation: none; } .kv-fill, .kv-bee, .kv-opt { transition: none; } }
+</style>

@@ -23,6 +23,10 @@ export interface ColorChoice { id: string; label: string; def: string }
 // silueta = crtež proizvoda koji se oboji u svaku boju (src/lib/siluete.ts), bez nje se prikazuje krug boje.
 export interface Motiv { id: string; naziv: string; slika?: Img }
 export interface MotiviCfg { lista: Motiv[]; popusti: { od: number; procenat: number }[]; vrsta?: 'boje'; silueta?: string }
+// Komplet „Uz ovo često uzimaju”: drugi proizvodi (adrese) i popust na ukupnu cenu kompleta
+export interface Komplet { uz: string[]; popust: number }
+// Popusti za firme (velike količine): od koliko komada i procenat; tekst se prikazuje u kartici
+export interface Firme { popusti: { od: number; procenat: number }[]; tekst?: string }
 export interface KeychainCfg { stilovi: string[]; startImena: number; minImena: number; maxImena: number; sareno?: boolean; slike?: Record<string, number> } // slike: koja fotografija prikazuje koji stil
 
 export interface Product {
@@ -44,6 +48,9 @@ export interface Product {
   keychain?: KeychainCfg;
   motivi?: MotiviCfg;
   poziv?: Poziv;
+  komplet?: Komplet;
+  firme?: Firme;
+  crtez?: string; // crtež u izabranim bojama (src/lib/crtezi.ts); delovi se boje redom izbora boja
   about: string[];
   specs: [string, string][];
   details: Faq[];

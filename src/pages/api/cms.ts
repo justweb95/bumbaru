@@ -70,7 +70,7 @@ async function procitajSve(): Promise<{ podaci: CmsPodaci; commit: string }> {
     return JSON.parse(Buffer.from(f.content, 'base64').toString('utf8'));
   };
   const [p, k, b, s] = await Promise.all([citaj(PUTANJE.proizvodi), citaj(PUTANJE.kategorije), citaj(PUTANJE.boje), citaj(PUTANJE.podesavanja)]);
-  return { commit, podaci: { proizvodi: p.proizvodi, kategorije: k.kategorije, boje: b.boje, podesavanja: { prikaziCene: s.prikaziCene === true } } };
+  return { commit, podaci: { proizvodi: p.proizvodi, kategorije: k.kategorije, boje: b.boje, podesavanja: { prikaziCene: s.prikaziCene === true, ...(s.akcija ? { akcija: s.akcija } : {}) } } };
 }
 
 export const GET: APIRoute = async ({ request, url }) => {

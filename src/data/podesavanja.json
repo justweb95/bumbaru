@@ -1,4 +1,11 @@
 {
   "napomena": "Podešavanja sajta koja se menjaju iz admin panela.",
-  "prikaziCene": true
+  "prikaziCene": true,
+  "akcija": {
+    "ukljucena": true,
+    "naziv": "Novogodišnja akcija",
+    "procenat": 10,
+    "kategorija": "nova-godina",
+    "do": "2026-12-31"
+  }
 }

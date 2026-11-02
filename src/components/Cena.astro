@@ -1,0 +1,13 @@
+---
+// Cena sa akcijom: precrtana redovna i akcijska cena. Kad akcija istekne, pregledač prikaže samo redovnu
+// (klasa akcija-kraj na <html>, vidi Base.astro), pa ne čeka novu objavu sajta.
+import { din } from '../data/site';
+import { snizi } from '../lib/cene';
+interface Props { n: number; pct?: number; pre?: string; posle?: string }
+const { n, pct = 0, pre = '', posle = '' } = Astro.props;
+---
+{pct ? (
+  <>{pre}<span class="ak-on"><s class="ak-s">{din(n)}</s> <span class="ak-n">{din(snizi(n, pct))}</span></span><span class="ak-off">{din(n)}</span>{posle}</>
+) : (
+  <>{pre}{din(n)}{posle}</>
+)}

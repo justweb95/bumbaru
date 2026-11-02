@@ -4,6 +4,8 @@ import Crumbs from '../../components/Crumbs.astro';
 import Icon from '../../components/Icon.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Accordion from '../../components/Accordion.astro';
+import Odbrojavanje from '../../components/Odbrojavanje.astro';
+import { AKCIJA } from '../../lib/cene';
 import { CATEGORIES, catUrl, type Category } from '../../data/categories';
 import { inCategory, hasPhoto, productUrl } from '../../data/products';
 import { SITE, messengerUrl } from '../../data/site';
@@ -39,6 +41,7 @@ const og = c.slug === 'nova-godina' || c.slug === 'pokloni-sa-imenom' ? '/img/og
         <span class="badge badge-honey">{c.label}</span>
         <h1 id="cat-title" class="h1">{c.title}</h1>
         <p class="muted">{c.text}</p>
+        {AKCIJA && AKCIJA.kategorija === c.slug && <Odbrojavanje />}
       </div>
     </section>
 

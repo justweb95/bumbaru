@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import ProductCard from '../components/ProductCard.astro';
 import Accordion from '../components/Accordion.astro';
+import Nedavno from '../components/Nedavno.astro';
+import Odbrojavanje from '../components/Odbrojavanje.astro';
 import { productBySlug, productUrl, type Product } from '../data/products';
 import { SITE, messengerUrl } from '../data/site';
 import { ornamentG } from '../lib/ornament-svg';
@@ -98,6 +100,7 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom');
         <div>
           <h2 id="ng-title" class="h2">Novogodišnji katalog</h2>
           <p>Ukrasi, privesci i dekoracija za praznični sto.</p>
+          <div style="margin-top:12px"><Odbrojavanje /></div>
         </div>
         <a class="link-arrow" href="/katalog/nova-godina/">Ceo novogodišnji katalog<Icon name="arrow" /></a>
       </div>
@@ -105,6 +108,7 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom');
         {ng.map((p, i) => <ProductCard p={p} eager={i < 3} />)}
       </div>
     </section>
+    <div class="wrap"><Nedavno /></div>
 
     <!-- Vaše ime na ukrasu -->
     <section class="wrap section reveal" aria-labelledby="ukras-title">

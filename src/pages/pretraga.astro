@@ -168,7 +168,7 @@ const predlozi = [...prvi, ...list.filter((p) => hasPhoto(p) && !prvi.includes(p
   primeni(false);
 </script>
 <style>
-  .s-hero { position: relative; margin-top: 8px; display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; align-items: center; padding: 40px 48px; border-radius: var(--r-lg); background: var(--honey-soft); overflow: hidden; }
+  .s-hero { position: relative; margin-top: 8px; display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; align-items: center; padding: 40px 48px; border-radius: var(--r-lg); background: var(--honey-soft); overflow: hidden; overflow: clip; }
   .s-hero::after { content: ''; position: absolute; right: -80px; top: -90px; width: 320px; height: 320px; border-radius: 50%; background: var(--honey); opacity: .55; }
   .s-hero-text { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; min-width: 0; }
   .s-hero .h1 { overflow-wrap: anywhere; }

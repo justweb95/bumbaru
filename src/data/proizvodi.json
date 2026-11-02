@@ -1197,6 +1197,12 @@
         "dugme": "Pošaljite mi celu kolekciju",
         "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
       },
+      "komplet": {
+        "uz": [
+          "snesko-lutkica-pleteni-izgled"
+        ],
+        "popust": 10
+      },
       "about": [
         "Površina ima šaru pletiva, pa ga ljudi na prvi pogled pipnu da vide da li je od vune. Štampan je od PLA plastike, pa je lagan, čvrst i lako se briše.",
         "Izaberite veličinu: mali, srednji ili veliki za dekoraciju, ili privezak sa karikom za ključeve, ranac ili torbu. Cena se menja prema izboru.",
@@ -1337,6 +1343,12 @@
         "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
         "dugme": "Pošaljite mi celu kolekciju",
         "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
+      },
+      "komplet": {
+        "uz": [
+          "irvas-lutkica-pleteni-izgled"
+        ],
+        "popust": 10
       },
       "about": [
         "Površina ima šaru pletiva, pa ga ljudi na prvi pogled pipnu da vide da li je od vune. Štampan je od PLA plastike, pa je lagan, čvrst i lako se briše.",
@@ -1479,6 +1491,12 @@
         "dugme": "Pošaljite mi celu kolekciju",
         "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
       },
+      "komplet": {
+        "uz": [
+          "deda-mraz-lutkica-pleteni-izgled"
+        ],
+        "popust": 10
+      },
       "about": [
         "Površina ima šaru pletiva, pa je ljudi na prvi pogled pipnu da vide da li je od vune. Štampana je od PLA plastike, pa je lagana, čvrsta i lako se briše.",
         "Izaberite veličinu: mali, srednji ili veliki za dekoraciju, ili privezak sa karikom za ključeve, ranac ili torbu. Cena se menja prema izboru.",
@@ -1620,6 +1638,12 @@
         "dugme": "Pošaljite mi celu kolekciju",
         "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
       },
+      "komplet": {
+        "uz": [
+          "jelkica-pleteni-izgled"
+        ],
+        "popust": 10
+      },
       "about": [
         "Površina ima šaru pletiva, pa ga ljudi na prvi pogled pipnu da vide da li je od vune. Štampan je od PLA plastike, pa je lagan, čvrst i lako se briše.",
         "Izaberite veličinu: mali, srednji ili veliki za dekoraciju, ili privezak sa karikom za ključeve, ranac ili torbu. Cena se menja prema izboru.",
@@ -1739,6 +1763,12 @@
           ]
         }
       ],
+      "komplet": {
+        "uz": [
+          "spiralna-jelka-sa-zvezdom"
+        ],
+        "popust": 10
+      },
       "about": [
         "Kućica je štampana u dve boje: crveni zidovi, a bela streha sa snegom, prozori, jelkice i sneško ispred vrata. Krov je u obliku cigli, a na zabatu je srce.",
         "Može da stigne sklopljena, ili kao ploča sa delovima koje sklapate sami ili sa decom. To je mala praznična radionica za jedno veče.",
@@ -1868,6 +1898,13 @@
           "def": "zlatna"
         }
       ],
+      "komplet": {
+        "uz": [
+          "novogodisnja-kucica-sa-led-svecicom"
+        ],
+        "popust": 10
+      },
+      "crtez": "jelka",
       "about": [
         "Slojevi se uvijaju oko jelke kao spirala, pa svetlo pada drugačije sa svake strane. Zvezda na vrhu je u drugoj boji.",
         "Izaberite malu, veliku ili par. Par lepo stoji jedna pored druge, na stolu, komodi ili prozoru.",
@@ -2530,6 +2567,23 @@
         "vrsta": "boje",
         "silueta": "stalak"
       },
+      "firme": {
+        "popusti": [
+          {
+            "od": 25,
+            "procenat": 35
+          },
+          {
+            "od": 50,
+            "procenat": 40
+          },
+          {
+            "od": 100,
+            "procenat": 45
+          }
+        ],
+        "tekst": "Poklon za zaposlene, klijente ili tim. Na privezak možemo da stavimo ime ili logo firme: pošaljite logo u poruci, pa javljamo cenu i rok."
+      },
       "about": [
         "Sklopljen je mali, ravan privezak koji stoji na ključevima kao svaki drugi. Kad vam zatreba, rasklopite ga i telefon stoji na stolu, za video, recept ili video poziv.",
         "Na kraju ima zarez kojim se lako podigne jezičak na limenci, bez lomljenja noktiju.",
@@ -3114,6 +3168,23 @@
         "vrsta": "boje",
         "silueta": "klip"
       },
+      "firme": {
+        "popusti": [
+          {
+            "od": 25,
+            "procenat": 35
+          },
+          {
+            "od": 50,
+            "procenat": 40
+          },
+          {
+            "od": 100,
+            "procenat": 45
+          }
+        ],
+        "tekst": "Za kafiće, prodavnice i promocije, u bojama vaše firme."
+      },
       "about": [
         "Presavijte vrh kese i navucite klip preko pregiba. Nazubljena vilica drži kesu čvrsto, a rebrasti krajevi se lako uhvate prstima kad hoćete da je otvorite.",
         "Klip se stavlja spolja na kesu i ne dodiruje hranu. Dobar je za čips, kafu, brašno, šećer, suvo voće i hranu za ljubimce.",
@@ -3238,6 +3309,13 @@
           "def": "bela"
         }
       ],
+      "komplet": {
+        "uz": [
+          "podmetaci-monstera-sa-saksijom"
+        ],
+        "popust": 10
+      },
+      "crtez": "vaza",
       "about": [
         "Rebra na vazi i svećnjaku hvataju svetlo, pa set izgleda kao od keramike ili gipsa. Štampan je od PLA plastike, pa je lagan i ne lomi se ako padne.",
         "Vaza je za suvo i veštačko cveće ili grančice. Za sveže cveće unutra stavite čašu ili teglicu sa vodom.",
@@ -3367,6 +3445,13 @@
           "def": "narandzasta"
         }
       ],
+      "komplet": {
+        "uz": [
+          "rebrasta-vaza-sa-tacnom-i-svecnjakom"
+        ],
+        "popust": 10
+      },
+      "crtez": "monstera",
       "about": [
         "Svaki list je podmetač za šolju ili čašu. Dok ih ne koristite, stoje u saksiji, pa na stolu, pultu ili polici izgledaju kao mala monstera koju ne treba zalivati.",
         "Listovi su ravni s donje strane, pa šolja stoji sigurno, a žilice na licu daju im izgled pravog lista.",

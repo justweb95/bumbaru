@@ -1,15 +1,18 @@
 // Provera i čišćenje podataka iz admin panela (proizvodi, kategorije, boje, podešavanja).
 // Koristi ga i server (/api/cms/) i admin u pregledaču, pa ovde nema ničeg specifičnog za Node.
 // Svaka funkcija vraća čist objekat (samo poznata polja, u stalnom redosledu) ili baca CmsGreska.
-import type { Product, Img, Option, ColorChoice, KeychainCfg, Personal, MotiviCfg, Poziv } from '../data/products';
+import type { Product, Img, Option, ColorChoice, KeychainCfg, Personal, MotiviCfg, Poziv, Komplet, Firme } from '../data/products';
 import type { Category, Faq } from '../data/categories';
 import { SILUETE } from './siluete';
+import { CRTEZI } from './crtezi';
 
 export class CmsGreska extends Error {}
 const greska = (msg: string): never => { throw new CmsGreska(msg); };
 
 export interface Boja { id: string; naziv: string; hex: string; dostupna: boolean }
-export interface Podesavanja { prikaziCene: boolean }
+// Akcija (npr. novogodišnja): procenat popusta na proizvode iz jedne kategorije, do datuma (uključujući taj dan)
+export interface Akcija { ukljucena: boolean; naziv: string; procenat: number; kategorija: string; do: string }
+export interface Podesavanja { prikaziCene: boolean; akcija?: Akcija }
 export interface CmsPodaci { proizvodi: Product[]; kategorije: Category[]; boje: Boja[]; podesavanja: Podesavanja }
 
 export const PUTANJE = {
@@ -41,6 +44,7 @@ const tekst = (v: unknown, gde: string, max: number, obavezno = false) => {
   if (s.length > max) greska(`${gde}: najviše ${max} znakova (sada ${s.length}).`);
   return s;
 };
+const tekst_ = (v: unknown, gde: string, max: number) => tekst(v, gde, max);
 const red = (v: unknown, gde: string, max: number, obavezno = false) => tekst(v, gde, max, obavezno).replace(/\s+/g, ' ');
 const niz = <T>(v: unknown, gde: string, max: number): T[] => {
   if (v == null) return [];
@@ -88,7 +92,23 @@ export function ocistiBoje(ulaz: unknown): Boja[] {
 }
 
 // ——— podešavanja ———
-export const ocistiPodesavanja = (v: unknown): Podesavanja => ({ prikaziCene: (v as Podesavanja)?.prikaziCene === true });
+export function ocistiPodesavanja(v: unknown): Podesavanja {
+  const s = v as Podesavanja;
+  const out: Podesavanja = { prikaziCene: s?.prikaziCene === true };
+  const a = s?.akcija;
+  if (a) {
+    const datum = String(a.do ?? '').trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(datum) || Number.isNaN(Date.parse(datum))) greska('Akcija: datum završetka upišite kao 2026-12-31.');
+    out.akcija = {
+      ukljucena: a.ukljucena === true,
+      naziv: red(a.naziv, 'Akcija: naziv', 40) || 'Akcija',
+      procenat: ceo(a.procenat, 'Akcija: procenat', 1, 90),
+      kategorija: SLUG.test(String(a.kategorija ?? '')) ? String(a.kategorija) : greska('Akcija: izaberite kategoriju.'),
+      do: datum,
+    };
+  }
+  return out;
+}
 
 // ——— kategorije ———
 export function ocistiKategorije(ulaz: unknown): Category[] {
@@ -179,6 +199,31 @@ function motivi(v: unknown, gde: string): MotiviCfg | undefined {
   return { lista, popusti, ...(boje ? { vrsta: 'boje' as const } : {}), ...(sil ? { silueta: sil } : {}) };
 }
 
+function komplet(v: unknown, gde: string): Komplet | undefined {
+  if (v == null) return undefined;
+  const k = v as Komplet;
+  const uz = [...new Set(niz<string>(k.uz, `${gde}: komplet`, 3).map((x) => String(x).trim()).filter((x) => SLUG.test(x)))];
+  if (!uz.length) return undefined;
+  return { uz, popust: ceo(k.popust, `${gde}: popust za komplet`, 1, 50) };
+}
+function stepenice(v: unknown, gde: string, min: number, max: number) {
+  const od = new Set<number>();
+  const l = niz<{ od: number; procenat: number }>(v, gde, 8)
+    .map((x, i) => ({ od: ceo(x?.od, `${gde} ${i + 1} (od komada)`, min, max), procenat: ceo(x?.procenat, `${gde} ${i + 1} (procenat)`, 1, 90) }))
+    .sort((a, b) => a.od - b.od)
+    .map((x) => (od.has(x.od) ? greska(`${gde}: dva popusta od ${x.od} komada.`) : (od.add(x.od), x)));
+  for (let i = 1; i < l.length; i++) if (l[i].procenat <= l[i - 1].procenat) greska(`${gde}: popust od ${l[i].od} komada mora biti veći nego od ${l[i - 1].od}.`);
+  return l;
+}
+function firme(v: unknown, gde: string): Firme | undefined {
+  if (v == null) return undefined;
+  const f = v as Firme;
+  const popusti = stepenice(f.popusti, `${gde}: popust za firme`, 2, 100000);
+  if (!popusti.length) return undefined;
+  const t = tekst(f.tekst, `${gde}: tekst za firme`, 300);
+  return { popusti, ...(t ? { tekst: t } : {}) };
+}
+
 function opcije(v: unknown, gde: string): Option[] {
   const ids = new Set<string>();
   return niz<Option>(v, `${gde}: opcije`, 6)
@@ -213,7 +258,6 @@ function poziv(v: unknown, gde: string): Poziv | undefined {
   if (!tekst || !dugme) greska(`${gde}: poziv za Messenger mora da ima tekst i natpis na dugmetu.`);
   return { tekst, dugme, ...(poruka ? { poruka } : {}) };
 }
-const tekst_ = (v: unknown, gde: string, max: number) => tekst(v, gde, max);
 
 function izborBoja(v: unknown, gde: string): ColorChoice[] {
   const ids = new Set<string>();
@@ -296,6 +340,9 @@ export function ocistiProizvode(ulaz: unknown, kategorije: Category[]): Product[
       ...(keychain ? { keychain } : {}),
       ...(() => { const x = motivi(p?.motivi, gde); return x ? { motivi: x } : {}; })(),
       ...(() => { const x = poziv(p?.poziv, gde); return x ? { poziv: x } : {}; })(),
+      ...(() => { const x = komplet(p?.komplet, gde); return x ? { komplet: x } : {}; })(),
+      ...(() => { const x = firme(p?.firme, gde); return x ? { firme: x } : {}; })(),
+      ...(CRTEZI.some((c) => c.id === p?.crtez) ? { crtez: p.crtez } : {}),
       about: pasusi(p?.about, `${gde}: opis`),
       specs,
       details: pitanja(p?.details, `${gde}: detalji`, 12),
@@ -309,6 +356,8 @@ export function ocistiProizvode(ulaz: unknown, kategorije: Category[]): Product[
   });
   // povezani: samo postojeći, bez samog sebe, bez ponavljanja
   for (const p of out) p.related = [...new Set(p.related.filter((s) => s !== p.slug && slugs.has(s)))];
+  // komplet: samo postojeći proizvodi, bez samog sebe
+  for (const p of out) if (p.komplet) { p.komplet.uz = p.komplet.uz.filter((s) => s !== p.slug && slugs.has(s)); if (!p.komplet.uz.length) delete p.komplet; }
   return out;
 }
 

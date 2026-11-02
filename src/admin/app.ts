@@ -6,6 +6,7 @@ import { obradi, uBase64 } from './slike';
 import { ocistiSve, slugify, CmsGreska, IKONA_PODRAZUMEVANA, type CmsPodaci, type Boja } from '../lib/cms-model';
 import type { Product, Img, Option, ColorChoice, Motiv, MotiviCfg } from '../data/products';
 import { SILUETE } from '../lib/siluete';
+import { CRTEZI } from '../lib/crtezi';
 import type { Category, Faq } from '../data/categories';
 import { STILOVI } from '../lib/keychain';
 
@@ -315,6 +316,8 @@ function editorProizvoda(p: Product) {
     sekcija('Izbor za kupca', izborSekcija(p)),
     sekcija('Izbor motiva ili boja sa popustom (npr. modlice, klipovi)', motiviSekcija(p)),
     sekcija('Poziv za celu kolekciju (Messenger)', pozivSekcija(p)),
+    sekcija('Komplet „Uz ovo često uzimaju” (popust za set)', kompletSekcija(p)),
+    sekcija('Popusti za firme (velike količine)', firmeSekcija(p)),
     sekcija('Povezani proizvodi', povezaniSekcija(p)),
 
     sekcija('Google (SEO)',
@@ -467,7 +470,9 @@ function izborSekcija(p: Product) {
       lista<ColorChoice>(p.colors!, (c) => h('div', { class: 'pair' },
         ulaz(c.label, (v) => (c.label = v), { placeholder: 'Naziv (npr. Boja)', 'aria-label': 'Naziv izbora boje', maxlength: 30 }),
         izbor(bojeOpcije(), c.def, (v) => (c.def = v), { 'aria-label': 'Početna boja' })),
-        () => ({ id: '', label: p.colors!.length ? `Boja ${p.colors!.length + 1}` : 'Boja', def: P.boje.find((b) => b.dostupna)?.id || 'bela' }), 'Dodaj izbor boje', 4)),
+        () => ({ id: '', label: p.colors!.length ? `Boja ${p.colors!.length + 1}` : 'Boja', def: P.boje.find((b) => b.dostupna)?.id || 'bela' }), 'Dodaj izbor boje', 4),
+      polje('Crtež u izabranim bojama (galerija)', izbor([['', '— bez crteža —'], ...CRTEZI.map((c): [string, string] => [c.id, `${c.label} (boje: ${c.delovi.map((d, i) => `${i + 1}. izbor boje = ${d}`).join(', ')})`])], p.crtez || '', (v) => { if (v) p.crtez = v; else delete p.crtez; }),
+        'Kad kupac promeni boju, u galeriji se pojavi crtež proizvoda u izabranim bojama. Za novi crtež pišite programeru.')),
     h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Ostale opcije'),
       h('p', { class: 'hint' }, 'Npr. Veličina, Motiv, Oblik. Uz vrednost možete upisati i njenu cenu (npr. Mali 590, Veliki 1290): na sajtu se cena menja sa izborom. Prazna cena = osnovna cena proizvoda.'),
       lista<Option>(p.options!, (o) => h('div', { class: 'stack' },
@@ -617,6 +622,39 @@ function pozivSekcija(p: Product) {
   return box;
 }
 
+function kompletSekcija(p: Product) {
+  const box = h('div', { class: 'stack' });
+  const ostali: [string, string][] = [['', '— nijedan —'], ...P.proizvodi.filter((x) => x !== p && x.slug && !x.personal).map((x) => [x.slug, `${x.title}${x.skriven ? ' (sakriven)' : ''}`] as [string, string])];
+  const crtaj = () => box.replaceChildren(
+    prekidac(!!p.komplet, (v) => { if (v) p.komplet = { uz: [], popust: 10 }; else delete p.komplet; }, 'Prikaži komplet sa popustom ispod dugmeta za porudžbinu', crtaj),
+    h('p', { class: 'hint' }, 'Kupac jednim klikom doda u korpu ovaj proizvod i izabrane proizvode, sa popustom na ukupnu cenu. Ne prikazuje se za proizvode sa imenom ili izborom komada, ni kad neki proizvod nema cenu.'),
+    ...(p.komplet ? [
+      grid(...[0, 1].map((i) => polje(`Proizvod ${i + 1} u kompletu`, izbor(ostali, p.komplet!.uz[i] || '', (v) => { const u = [...p.komplet!.uz]; u[i] = v; p.komplet!.uz = [...new Set(u.filter(Boolean))]; crtaj(); })))),
+      polje('Popust za komplet (%)', ulaz(String(p.komplet.popust), (v) => { p.komplet!.popust = Math.round(Number(v)) || 0; }, { type: 'number', min: 1, max: 50, inputmode: 'numeric' })),
+    ] : []),
+  );
+  crtaj();
+  return box;
+}
+
+function firmeSekcija(p: Product) {
+  const box = h('div', { class: 'stack' });
+  const crtaj = () => box.replaceChildren(
+    prekidac(!!p.firme, (v) => { if (v) p.firme = { popusti: [{ od: 25, procenat: 35 }, { od: 50, procenat: 40 }, { od: 100, procenat: 45 }] }; else delete p.firme; }, 'Prikaži kalkulator i upit za firme', crtaj),
+    h('p', { class: 'hint' }, 'Kartica „Za firme i veće količine” na strani proizvoda: kupac upiše količinu, vidi cenu po komadu i ukupno, i pošalje upit na Messenger. Računa se od osnovne cene proizvoda.'),
+    ...(p.firme ? [
+      h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Popust prema broju komada'),
+        lista(p.firme.popusti, (x) => h('div', { class: 'pair' },
+          h('label', { class: 'inl' }, 'Od', ulaz(String(x.od), (v) => { x.od = Math.round(Number(v)) || 0; }, { type: 'number', min: 2, inputmode: 'numeric', 'aria-label': 'Od komada' }), 'kom'),
+          h('label', { class: 'inl' }, 'popust', ulaz(String(x.procenat), (v) => { x.procenat = Math.round(Number(v)) || 0; }, { type: 'number', min: 1, max: 90, inputmode: 'numeric', 'aria-label': 'Procenat popusta' }), '%')),
+          () => { const L = p.firme!.popusti; const z = L[L.length - 1]; return { od: z ? z.od * 2 : 25, procenat: z ? Math.min(90, z.procenat + 5) : 30 }; }, 'Dodaj popust', 8)),
+      polje('Tekst na kartici (nije obavezno)', oblast(p.firme.tekst || '', (v) => { if (v.trim()) p.firme!.tekst = v; else delete p.firme!.tekst; }, { rows: 2, maxlength: 300, placeholder: 'npr. Na privezak možemo da stavimo logo firme.' })),
+    ] : []),
+  );
+  crtaj();
+  return box;
+}
+
 function povezaniSekcija(p: Product) {
   const ostali: [string, string][] = [['', '— nijedan —'], ...P.proizvodi.filter((x) => x !== p && x.slug).map((x) => [x.slug, `${x.title}${x.skriven ? ' (sakriven)' : ''}`] as [string, string])];
   const box = h('div', { class: 'grid2' });
@@ -754,10 +792,33 @@ function slobodanIdBoje(naziv: string, ja: Boja) {
 
 // ——— PODEŠAVANJA ———
 function panelPodesavanja() {
-  return h('div', { class: 'card-box sec' },
-    h('h3', { class: 'h3' }, 'Cene'),
-    prekidac(P.podesavanja.prikaziCene, (v) => (P.podesavanja.prikaziCene = v), 'Prikaži cene na sajtu'),
-    h('p', { class: 'hint' }, 'Dok je isključeno, cene se ne vide nigde na sajtu (ni u Google rezultatima). Upisane cene se čuvaju u proizvodima. Proizvod bez upisane cene ni tada nema cenu.'));
+  const akBox = h('div', { class: 'stack' });
+  const katOpc = (): [string, string][] => P.kategorije.map((c) => [c.slug, c.label]);
+  const crtajAk = () => {
+    const a = P.podesavanja.akcija;
+    akBox.replaceChildren(
+      prekidac(!!a?.ukljucena, (v) => {
+        if (!P.podesavanja.akcija) P.podesavanja.akcija = { ukljucena: v, naziv: 'Novogodišnja akcija', procenat: 10, kategorija: 'nova-godina', do: `${new Date().getFullYear()}-12-31` };
+        else P.podesavanja.akcija.ukljucena = v;
+      }, 'Akcija je uključena', crtajAk),
+      h('p', { class: 'hint' }, 'Proizvodi iz izabrane kategorije dobijaju popust: na sajtu se vidi precrtana redovna cena, nova cena, nalepnica „−X%” i odbrojavanje do kraja akcije. Posle izabranog dana akcija sama nestaje sa sajta.'),
+      ...(a ? [
+        grid(
+          polje('Naziv akcije', ulaz(a.naziv, (v) => (a.naziv = v), { maxlength: 40 })),
+          polje('Popust (%)', ulaz(String(a.procenat), (v) => (a.procenat = Math.round(Number(v)) || 0), { type: 'number', min: 1, max: 90, inputmode: 'numeric' }))),
+        grid(
+          polje('Kategorija', izbor(katOpc(), a.kategorija, (v) => (a.kategorija = v))),
+          polje('Traje do (uključujući taj dan)', ulaz(a.do, (v) => (a.do = v), { type: 'date' }))),
+      ] : []),
+    );
+  };
+  crtajAk();
+  return h('div', { class: 'stack' },
+    h('div', { class: 'card-box sec' },
+      h('h3', { class: 'h3' }, 'Cene'),
+      prekidac(P.podesavanja.prikaziCene, (v) => (P.podesavanja.prikaziCene = v), 'Prikaži cene na sajtu'),
+      h('p', { class: 'hint' }, 'Dok je isključeno, cene se ne vide nigde na sajtu (ni u Google rezultatima). Upisane cene se čuvaju u proizvodima. Proizvod bez upisane cene ni tada nema cenu.')),
+    h('div', { class: 'card-box sec' }, h('h3', { class: 'h3' }, 'Akcija'), akBox));
 }
 
 // ——— prijava i pokretanje ———
