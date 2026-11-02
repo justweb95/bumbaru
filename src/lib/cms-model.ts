@@ -3,6 +3,7 @@
 // Svaka funkcija vraća čist objekat (samo poznata polja, u stalnom redosledu) ili baca CmsGreska.
 import type { Product, Img, Option, ColorChoice, KeychainCfg, Personal, MotiviCfg, Poziv } from '../data/products';
 import type { Category, Faq } from '../data/categories';
+import { SILUETE } from './siluete';
 
 export class CmsGreska extends Error {}
 const greska = (msg: string): never => { throw new CmsGreska(msg); };
@@ -166,14 +167,16 @@ function motivi(v: unknown, gde: string): MotiviCfg | undefined {
     ids.add(id);
     return { id, naziv, ...(x?.slika ? { slika: slika(x.slika, `${gde}: fotografija motiva „${naziv}”`) } : {}) };
   });
-  if (!lista.length) greska(`${gde}: izbor motiva je uključen, a nema nijednog motiva.`);
+  const boje = m.vrsta === 'boje';
+  if (!lista.length && !boje) greska(`${gde}: izbor motiva je uključen, a nema nijednog motiva.`);
+  const sil = boje && SILUETE.some((s) => s.id === m.silueta) ? m.silueta : undefined;
   const od = new Set<number>();
   const popusti = niz<{ od: number; procenat: number }>(m.popusti, `${gde}: popusti`, 8)
     .map((x, i) => ({ od: ceo(x?.od, `${gde}: popust ${i + 1} (od komada)`, 2, 100), procenat: ceo(x?.procenat, `${gde}: popust ${i + 1} (procenat)`, 1, 90) }))
     .sort((a, b) => a.od - b.od)
     .map((x) => (od.has(x.od) ? greska(`${gde}: dva popusta od ${x.od} komada.`) : (od.add(x.od), x)));
   for (let i = 1; i < popusti.length; i++) if (popusti[i].procenat <= popusti[i - 1].procenat) greska(`${gde}: popust od ${popusti[i].od} komada mora biti veći nego od ${popusti[i - 1].od}.`);
-  return { lista, popusti };
+  return { lista, popusti, ...(boje ? { vrsta: 'boje' as const } : {}), ...(sil ? { silueta: sil } : {}) };
 }
 
 function opcije(v: unknown, gde: string): Option[] {

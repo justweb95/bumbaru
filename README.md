@@ -65,6 +65,10 @@ U adminu se menja:
   komada (npr. od 4 kom 17%, od 6 kom 24%, od 8 kom 30%). Na strani proizvoda kupac klikne motive (i broj
   komada svakog), traka sa pčelicom pokazuje koliko fali do sledećeg popusta, a poruka nosi motive, popust
   i cenu (cena = broj × cena po komadu − popust, zaokruženo na 10 din).
+- **Izbor boja sa popustom** (npr. klipovi za kesice, privezak-stalak): u istoj sekciji „Kupac bira” → „Boje
+  filamenta”. Pločice su sve boje koje su na stanju (kartica Boje), a na svakoj je crtež proizvoda obojen u tu boju
+  (crteži su u `src/lib/siluete.ts`; bez crteža se prikazuje krug boje). U galeriji se pojavi „Vaš izbor” sa
+  izabranim bojama i brojem komada, a dugmad „Šareni miks” jednim klikom slože set za svaki prag popusta.
 - **Cena po opciji** (npr. Veličina: Mali / Srednji / Veliki / Privezak): uz svaku vrednost opcije može da
   se upiše cena; na sajtu se cena menja sa izborom, kartica u katalogu pokazuje „od … din”, a poruka nosi
   izabranu cenu. Prazna cena = osnovna cena proizvoda.
@@ -96,6 +100,7 @@ prikazuje podatke iz poslednje objave, ali izmene i fotografije ne mogu da se sa
 | Messenger stranica, Facebook, Instagram, adresa sajta, traka na vrhu, sezona | `src/data/site.ts` |
 | Proizvodi, kategorije, boje, prikaz cena | admin panel `/anycubic/` (podaci u `src/data/*.json`) |
 | Stilovi slova za priveske sa imenom | `src/lib/keychain.ts` |
+| Crteži proizvoda za izbor boja (klip, privezak-stalak) | `src/lib/siluete.ts` |
 | Početna strana | `src/pages/index.astro` |
 | Pomoć, Po meri, Politika privatnosti | `src/pages/*.astro` |
 | Boje, slova, dugmad | `src/styles/global.css` |

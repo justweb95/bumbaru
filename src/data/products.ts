@@ -19,8 +19,10 @@ export interface ColorChoice { id: string; label: string; def: string }
 // Privezak sa imenom: stilovi slova (src/lib/keychain.ts) i broj imena (svako ime je jedan privezak)
 // Izbor motiva (npr. modlice): kupac klikne motive koje želi, može i više komada istog;
 // popust zavisi od ukupnog broja komada (od: najmanje komada, procenat: popust na cenu po komadu).
+// vrsta 'boje': kupac bira boje filamenta (sve boje na stanju) i broj komada svake, umesto motiva;
+// silueta = crtež proizvoda koji se oboji u svaku boju (src/lib/siluete.ts), bez nje se prikazuje krug boje.
 export interface Motiv { id: string; naziv: string; slika?: Img }
-export interface MotiviCfg { lista: Motiv[]; popusti: { od: number; procenat: number }[] }
+export interface MotiviCfg { lista: Motiv[]; popusti: { od: number; procenat: number }[]; vrsta?: 'boje'; silueta?: string }
 export interface KeychainCfg { stilovi: string[]; startImena: number; minImena: number; maxImena: number; sareno?: boolean; slike?: Record<string, number> } // slike: koja fotografija prikazuje koji stil
 
 export interface Product {
@@ -59,6 +61,8 @@ export const PRODUCTS: Product[] = SVI_PROIZVODI.filter((x) => !x.skriven);
 export const productBySlug = (slug: string) => PRODUCTS.find((x) => x.slug === slug);
 export const productUrl = (slug: string) => `/proizvod/${slug}/`;
 export const inCategory = (cat: string) => PRODUCTS.filter((x) => x.categories.includes(cat));
+// Kupac bira komade (motive ili boje) sa popustom po broju komada
+export const izborKomada = (x: Product) => !!x.motivi && (x.motivi.vrsta === 'boje' || x.motivi.lista.length > 0);
 export const hasPhoto = (x: Product) => x.images.length > 0 || !!x.motivi?.lista.some((m) => m.slika);
 // Kvadratna slika za kartice (fotografije imaju posebnu kvadratnu verziju sa žigom, crteži su već kvadratni)
 export const cardImg = (i: Img) => (i.src.startsWith('/img/p/') ? `${i.src}-sq.webp` : `${i.src}-sm.webp`);

@@ -180,6 +180,52 @@
       ]
     },
     {
+      "slug": "dom-i-kuhinja",
+      "label": "Dom i kuhinja",
+      "title": "Dekoracija za dom i sitnice za kuhinju",
+      "text": "Rebrasta vaza sa tacnom i svećnjakom, podmetači u obliku monstere i klipovi za kesice u bojama koje birate sami.",
+      "seoTitle": "Dekoracija za dom i sitnice za kuhinju | Bumbaru",
+      "meta": "Rebrasta vaza sa tacnom i svećnjakom, podmetači za čaše u obliku monstere i klipovi za kesice. 3D štampa, poručivanje preko Messengera.",
+      "bg": "/img/bg/dom.webp",
+      "bgPos": "center 60%",
+      "icon": "M3 11l9-7 9 7M5 9.5V20h14V9.5M10 20v-6h4v6",
+      "filters": [
+        {
+          "id": "sve",
+          "label": "Sve"
+        },
+        {
+          "id": "kuhinja",
+          "label": "Za kuhinju"
+        },
+        {
+          "id": "dekoracija",
+          "label": "Dekoracija"
+        }
+      ],
+      "about": {
+        "h2": "Sitnice koje se koriste svaki dan",
+        "p": [
+          "Ovde su stvari koje stoje na polici, stolu i kuhinjskom pultu: vaza sa tacnom i svećnjakom koja izgleda kao keramika, podmetači koji se slože u saksiju kao biljka i klipovi koji drže kesu zatvorenom.",
+          "Sve štampamo od PLA plastike, u bojama koje imamo na stanju. Kod klipova birate više boja odjednom, a što više komada uzmete, veći je popust."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Da li proizvodi dodiruju hranu?",
+          "a": "Ne. Klipovi se stavljaju spolja na kesu, a podmetači su za šolje i čaše."
+        },
+        {
+          "q": "Mogu li da biram boju?",
+          "a": "Možete, od boja koje trenutno imamo. Boju birate na strani proizvoda pre slanja poruke."
+        },
+        {
+          "q": "Mogu li nešto što nije u katalogu?",
+          "a": "Pošaljite nam ideju, meru ili fotografiju na strani 3D štampa po meri, pa vam javljamo cenu."
+        }
+      ]
+    },
+    {
       "slug": "igracke-za-decu",
       "label": "Igračke za decu",
       "title": "Igračke za decu",

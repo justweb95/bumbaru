@@ -3,55 +3,220 @@ import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
 import ProductCard from '../components/ProductCard.astro';
 import Icon from '../components/Icon.astro';
-import { PRODUCTS, hasPhoto } from '../data/products';
-import { categoryBySlug } from '../data/categories';
+import { PRODUCTS, hasPhoto, inCategory } from '../data/products';
+import { CATEGORIES, categoryBySlug } from '../data/categories';
+import { messengerUrl } from '../data/site';
+import { BOJE_NA_STANJU } from '../lib/colors';
+
 const list = [...PRODUCTS].sort((a, b) => Number(hasPhoto(b)) - Number(hasPhoto(a)));
-const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'dj');
+const norm = (s: string) => s.toLowerCase().replace(/đ/g, 'dj').normalize('NFD').replace(/[̀-ͯ]/g, '');
+// Tekst po kome se traži: naziv, opis, šifra, kategorije, opcije, motivi (i boje kod izbora boja)
+const hay = (p: (typeof PRODUCTS)[number]) => norm([
+  p.title, p.short, p.lead, p.id, ...p.categories.map((c) => categoryBySlug(c)?.label || ''),
+  ...(p.options || []).flatMap((o) => o.values), ...(p.motivi?.lista.map((m) => m.naziv) || []),
+  ...(p.motivi?.vrsta === 'boje' ? BOJE_NA_STANJU.map((b) => b.naziv) : []),
+].join(' '));
+const kategorije = CATEGORIES.filter((c) => !c.soon && inCategory(c.slug).length > 0);
+// Često traženo: kratke reči koje uvek nešto nađu
+const popularno = ['Ukras sa imenom', 'Privezak', 'Jelka', 'LED svećica', 'Klipovi', 'Vaza', 'Podmetači', 'Modlice'].filter((q) => {
+  const w = norm(q).split(/\s+/);
+  return list.some((p) => w.every((x) => hay(p).includes(x.slice(0, Math.max(4, x.length - 2)))));
+});
+// Predlozi kad ništa nije nađeno: prvi proizvod sa fotografijom iz svake kategorije
+const prvi = kategorije.map((c) => inCategory(c.slug).find(hasPhoto)).filter((p, i, a) => p && a.indexOf(p) === i) as typeof PRODUCTS;
+const predlozi = [...prvi, ...list.filter((p) => hasPhoto(p) && !prvi.includes(p))].slice(0, 4);
 ---
 <Base title="Pretraga | Bumbaru" description="Pretraga Bumbaru kataloga." noindex>
-  <div class="wrap">
-    <Crumbs items={[{ label: 'Pretraga' }]} />
-    <h1 class="h1" data-title>Pretraga</h1>
-    <form class="sform" action="/pretraga/" method="get" role="search">
-      <label class="sr-only" for="q-page">Šta tražite?</label>
-      <input id="q-page" class="input" name="q" type="search" placeholder="npr. ukras, privezak, tablica" data-q />
-      <button class="btn btn-primary" type="submit"><Icon name="search" />Traži</button>
-    </form>
-    <p class="muted" data-info style="margin:20px 0 24px"></p>
-    <div class="grid" data-results>
-      {list.map((p) => (
-        <div data-hay={norm([p.title, p.short, p.id, categoryBySlug(p.category).label, ...(p.options || []).flatMap((o) => o.values), ...(p.motivi?.lista.map((m) => m.naziv) || [])].join(' '))}>
-          <ProductCard p={p} />
+  <div class="paper-zone">
+    <div class="wrap">
+      <Crumbs items={[{ label: 'Pretraga' }]} />
+
+      <section class="s-hero" aria-labelledby="s-title">
+        <div class="s-hero-text">
+          <span class="badge badge-honey">Pretraga</span>
+          <h1 id="s-title" class="h1" data-title>Šta tražite?</h1>
+          <form class="s-form" action="/pretraga/" method="get" role="search" data-form>
+            <label class="sr-only" for="q-page">Šta tražite?</label>
+            <span class="s-ic" aria-hidden="true"><Icon name="search" size={22} /></span>
+            <input id="q-page" name="q" type="search" placeholder="npr. ukras sa imenom, privezak, vaza" autocomplete="off" enterkeyhint="search" data-q />
+            <button class="s-clear" type="button" aria-label="Obriši pretragu" data-clear hidden><Icon name="close" size={18} /></button>
+          </form>
+          {popularno.length > 0 && (
+            <div class="s-pop">
+              <span class="s-pop-lab">Često traženo:</span>
+              {popularno.map((q) => <button type="button" class="s-pill" data-pop={q}>{q}</button>)}
+            </div>
+          )}
         </div>
-      ))}
+        <div class="s-hero-art" aria-hidden="true">
+          <svg class="s-trail" viewBox="0 0 220 160"><path d="M10 150 C 40 90, 110 140, 120 90 S 70 30, 120 30 S 200 60, 205 20" fill="none" stroke="#312018" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="0 10" /></svg>
+          <img class="s-bee fx-float" src="/img/brand/pcelica.webp" alt="" width="320" height="320" />
+          <span class="s-glass"><Icon name="search" size={40} stroke={2.4} /></span>
+        </div>
+      </section>
+
+      <div class="s-bar">
+        <div class="chips" role="group" aria-label="Kategorije" data-cats>
+          <button class="chip" type="button" data-cat="" aria-pressed="true">Sve <span class="cnt" data-cnt=""></span></button>
+          {kategorije.map((c) => (
+            <button class="chip" type="button" data-cat={c.slug} aria-pressed="false">{c.slug === 'nova-godina' ? 'Nova godina' : c.label} <span class="cnt" data-cnt={c.slug}></span></button>
+          ))}
+        </div>
+        <p class="s-count" data-info aria-live="polite"></p>
+      </div>
+
+      <div class="grid" data-results>
+        {list.map((p, i) => (
+          <div class="s-item" data-hay={hay(p)} data-title={norm(p.title)} data-cats={p.categories.join(' ')} data-i={i}>
+            <ProductCard p={p} />
+          </div>
+        ))}
+      </div>
+
+      <section class="s-empty" data-empty hidden aria-labelledby="s-empty-t">
+        <div class="s-empty-card">
+          <div class="s-empty-art" aria-hidden="true">
+            <img class="fx-float" src="/img/brand/pcelica.webp" alt="" width="320" height="320" />
+            <span class="s-q">?</span>
+          </div>
+          <div>
+            <h2 id="s-empty-t" class="h2" data-empty-title>Nismo našli taj proizvod</h2>
+            <p class="muted">Proverite kako je napisano ili probajte kraću reč. Možda ga pravimo po meri: pošaljite nam ideju, meru ili fotografiju.</p>
+            <div class="s-empty-actions">
+              <a class="btn btn-primary btn-lg" href="/po-meri/"><Icon name="sparkle" />Pošaljite upit po meri</a>
+              <a class="btn btn-lg" href={messengerUrl('Zdravo, tražim proizvod koji nisam našao na sajtu:', 'pretraga')} target="_blank" rel="noopener" data-ask><Icon name="messenger" />Pitajte na Messenger-u</a>
+            </div>
+          </div>
+        </div>
+        {predlozi.length > 0 && (
+          <>
+            <h2 class="h2 s-sug-t">Možda vam se dopadne</h2>
+            <div class="grid rail-mobile">{predlozi.map((p) => <ProductCard p={p} />)}</div>
+          </>
+        )}
+      </section>
     </div>
-    <section class="empty panel" data-empty hidden>
-      <h2 class="h2">Nismo našli taj proizvod</h2>
-      <p class="muted">Možda ga pravimo po meri. Pošaljite nam ideju, meru ili fotografiju.</p>
-      <a class="btn btn-primary btn-lg" href="/po-meri/">Pošaljite upit</a>
-    </section>
   </div>
 </Base>
 <script>
-  const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'dj');
-  const q = new URLSearchParams(location.search).get('q') || '';
+  import { messengerUrl } from '../data/site';
+  const norm = (s: string) => s.toLowerCase().replace(/đ/g, 'dj').normalize('NFD').replace(/[̀-ͯ]/g, '');
+  // Reč iz pretrage se poredi po korenu (privesci → priv…, jelke → jelk…), da padeži i množina ne smetaju
+  const koren = (w: string) => (w.length > 4 ? w.slice(0, Math.max(4, w.length - 2)) : w);
   const input = document.querySelector<HTMLInputElement>('[data-q]')!;
-  input.value = q;
-  const words = norm(q).split(/\s+/).filter(Boolean);
-  let n = 0;
-  document.querySelectorAll<HTMLElement>('[data-hay]').forEach((el) => {
-    const ok = words.every((w) => (el.dataset.hay || '').includes(w));
-    el.hidden = !ok; if (ok) n++;
-  });
-  const info = document.querySelector('[data-info]')!;
-  if (q) {
-    document.querySelector('[data-title]')!.textContent = `Pretraga: ${q}`;
-    info.textContent = n ? `Pronađeno: ${n}` : '';
-  } else info.textContent = 'Svi proizvodi';
-  document.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
+  const clear = document.querySelector<HTMLButtonElement>('[data-clear]')!;
+  const title = document.querySelector<HTMLElement>('[data-title]')!;
+  const info = document.querySelector<HTMLElement>('[data-info]')!;
+  const box = document.querySelector<HTMLElement>('[data-results]')!;
+  const empty = document.querySelector<HTMLElement>('[data-empty]')!;
+  const items = Array.from(document.querySelectorAll<HTMLElement>('.s-item'));
+  const catBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-cat]'));
+  const params = new URLSearchParams(location.search);
+  let kat = params.get('kategorija') || '';
+  if (!catBtns.some((b) => b.dataset.cat === kat)) kat = '';
+  input.value = params.get('q') || '';
+
+  const plural = (n: number) => (n % 10 === 1 && n % 100 !== 11 ? 'proizvod' : 'proizvoda');
+  function primeni(azurirajAdresu = true) {
+    const q = input.value.trim();
+    const words = norm(q).split(/\s+/).filter(Boolean).map(koren);
+    const pogodak = (el: HTMLElement) => words.every((w) => (el.dataset.hay || '').includes(w));
+    const nadjeni = items.filter(pogodak);
+    // broj po kategorijama (za čipove)
+    catBtns.forEach((b) => {
+      const c = b.dataset.cat || '';
+      const n = c ? nadjeni.filter((el) => (el.dataset.cats || '').split(' ').includes(c)).length : nadjeni.length;
+      const cnt = b.querySelector('[data-cnt]'); if (cnt) cnt.textContent = String(n);
+      b.classList.toggle('zero', n === 0 && c !== kat);
+      b.setAttribute('aria-pressed', String(c === kat));
+    });
+    const vidljivi = nadjeni.filter((el) => !kat || (el.dataset.cats || '').split(' ').includes(kat));
+    // redosled: prvo oni kojima se reč nalazi u nazivu
+    const skor = (el: HTMLElement) => (words.length && words.every((w) => (el.dataset.title || '').includes(w)) ? 0 : 1);
+    items.forEach((el) => { el.hidden = !vidljivi.includes(el); });
+    [...vidljivi].sort((a, b) => skor(a) - skor(b) || Number(a.dataset.i) - Number(b.dataset.i)).forEach((el) => box.append(el));
+    const n = vidljivi.length;
+    title.textContent = q ? `Pretraga: ${q}` : 'Šta tražite?';
+    info.innerHTML = '';
+    if (n) {
+      const b = document.createElement('b'); b.textContent = `${n} ${plural(n)}`;
+      info.append(b, q || kat ? ' odgovara pretrazi' : ' u katalogu');
+    }
+    clear.hidden = !q;
+    empty.hidden = n > 0;
+    box.hidden = n === 0;
+    if (!n) {
+      const t = empty.querySelector('[data-empty-title]'); if (t) t.textContent = q ? `Nismo našli „${q}”` : 'Nema proizvoda u ovoj kategoriji';
+      const ask = empty.querySelector<HTMLAnchorElement>('[data-ask]'); if (ask) ask.href = messengerUrl(`Zdravo, tražim: ${q || 'proizvod'}. Da li to možete da napravite?`, 'pretraga');
+    }
+    if (azurirajAdresu) {
+      const u = new URL(location.href);
+      if (q) u.searchParams.set('q', q); else u.searchParams.delete('q');
+      if (kat) u.searchParams.set('kategorija', kat); else u.searchParams.delete('kategorija');
+      history.replaceState(null, '', u);
+    }
+  }
+  let t = 0;
+  input.addEventListener('input', () => { clearTimeout(t); t = window.setTimeout(primeni, 120); });
+  document.querySelector('[data-form]')!.addEventListener('submit', (e) => { e.preventDefault(); primeni(); input.blur(); });
+  clear.addEventListener('click', () => { input.value = ''; primeni(); input.focus(); });
+  catBtns.forEach((b) => b.addEventListener('click', () => { kat = b.dataset.cat || ''; primeni(); }));
+  document.querySelectorAll<HTMLButtonElement>('[data-pop]').forEach((b) => b.addEventListener('click', () => {
+    input.value = b.dataset.pop || ''; kat = ''; primeni();
+    document.querySelector('.s-bar')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }));
+  primeni(false);
 </script>
 <style>
-  .sform { display: flex; gap: 12px; margin-top: 20px; max-width: 640px; }
-  .sform .input { border-radius: var(--r-pill); }
-  .empty { padding: 32px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .s-hero { position: relative; margin-top: 8px; display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; align-items: center; padding: 40px 48px; border-radius: var(--r-lg); background: var(--honey-soft); overflow: hidden; }
+  .s-hero::after { content: ''; position: absolute; right: -80px; top: -90px; width: 320px; height: 320px; border-radius: 50%; background: var(--honey); opacity: .55; }
+  .s-hero-text { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; min-width: 0; }
+  .s-hero .h1 { overflow-wrap: anywhere; }
+  .s-form { position: relative; width: 100%; max-width: 640px; }
+  .s-form input { width: 100%; height: 60px; padding: 0 56px 0 58px; border: 2px solid var(--ink); border-radius: var(--r-pill); background: var(--surface-paper); font-size: 18px; color: var(--ink); box-shadow: 0 4px 0 rgba(49,32,24,.12); }
+  .s-form input::placeholder { color: var(--ink-muted); opacity: .8; }
+  .s-form input:focus { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .s-form input::-webkit-search-cancel-button { display: none; }
+  .s-ic { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); display: inline-flex; pointer-events: none; }
+  .s-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--surface-raised); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .s-clear:hover { background: var(--honey); }
+  .s-pop { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .s-pop-lab { font-size: 14px; font-weight: 700; margin-right: 2px; }
+  .s-pill { min-height: 40px; padding: 0 14px; border: 2px solid var(--ink); border-radius: var(--r-pill); background: var(--surface-paper); font: inherit; font-size: 14px; font-weight: 600; color: var(--ink); cursor: pointer; transition: transform .25s var(--ease), background-color .2s; }
+  .s-pill:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .s-hero-art { position: relative; z-index: 1; height: 220px; }
+  .s-trail { position: absolute; left: 0; top: 20px; width: 220px; height: 160px; }
+  .s-bee { position: absolute; right: 6px; top: 0; width: 120px; height: auto; }
+  .s-glass { position: absolute; left: 24px; bottom: 6px; width: 84px; height: 84px; border-radius: 50%; background: var(--surface-paper); border: 3px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; transform: rotate(-12deg); box-shadow: var(--shadow); }
+  .s-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; margin: 32px 0 28px; scroll-margin-top: 96px; }
+  .s-bar .chip .cnt { display: inline-flex; min-width: 22px; height: 22px; padding: 0 6px; align-items: center; justify-content: center; border-radius: var(--r-pill); background: var(--surface-paper); font-size: 12px; }
+  .s-bar .chip.zero { opacity: .45; }
+  .s-count { margin: 0; color: var(--ink-muted); }
+  .s-count b { color: var(--ink); }
+  .s-empty-card { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 32px; align-items: center; padding: 36px 40px; border-radius: var(--r-lg); background: var(--surface-raised); border: 2px dashed var(--line-strong); }
+  .s-empty-card .muted { margin: 10px 0 20px; max-width: 60ch; }
+  .s-empty-art { position: relative; width: 160px; height: 160px; border-radius: 50%; background: var(--honey-soft); display: flex; align-items: center; justify-content: center; }
+  .s-empty-art img { width: 110px; height: auto; }
+  .s-q { position: absolute; right: 6px; top: 4px; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: var(--honey); font-weight: 800; font-size: 26px; display: inline-flex; align-items: center; justify-content: center; transform: rotate(10deg); }
+  .s-empty-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .s-sug-t { margin: 56px 0 24px; }
+  @media (hover: hover) { .s-pill:hover { background: var(--honey); transform: translateY(-2px); } }
+  @media (max-width: 860px) {
+    .s-hero { grid-template-columns: 1fr; padding: 28px 24px; }
+    .s-hero-art { display: none; }
+    .s-hero::after { width: 200px; height: 200px; right: -70px; top: -80px; }
+    .s-empty-card { grid-template-columns: 1fr; justify-items: start; padding: 28px 22px; gap: 18px; }
+    .s-empty-art { width: 120px; height: 120px; }
+    .s-empty-art img { width: 84px; }
+  }
+  @media (max-width: 520px) {
+    .s-form input { height: 54px; font-size: 16px; padding-left: 50px; }
+    .s-ic { left: 18px; }
+    .s-bar .chips { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 6px; scrollbar-width: none; width: calc(100% + 32px); }
+    .s-bar .chips::-webkit-scrollbar { display: none; }
+    .s-bar .chip { flex: none; }
+    .s-pop { flex-wrap: nowrap; overflow-x: auto; margin: 0 -24px; padding: 2px 24px 6px; width: calc(100% + 48px); scrollbar-width: none; }
+    .s-pop::-webkit-scrollbar { display: none; }
+    .s-pill, .s-pop-lab { flex: none; }
+  }
 </style>

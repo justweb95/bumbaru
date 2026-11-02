@@ -8,8 +8,9 @@ import { SITE, messengerUrl } from '../data/site';
 import { ornamentG } from '../lib/ornament-svg';
 
 const ng = [
-  'privezak-deda-mraz', 'patuljak-sa-led-svecicom', 'mini-jelka-za-sto',
-  'prstenovi-za-salvete-set-od-6', 'zlatna-jelka-za-sklapanje', 'ukras-za-jelku-sa-imenom',
+  'novogodisnja-kucica-sa-led-svecicom', 'privezak-deda-mraz', 'patuljak-sa-led-svecicom',
+  'spiralna-jelka-sa-zvezdom', 'ukras-za-jelku-sa-imenom', 'irvas-lutkica-pleteni-izgled',
+  'prstenovi-za-salvete-set-od-6', 'zlatna-jelka-za-sklapanje', 'mini-jelka-za-sto',
   'privezak-irvas', 'jelkica-za-punjenje', 'porodicni-set-ukrasa-sa-imenima',
 ].map((s) => productBySlug(s)).filter((x): x is Product => !!x); // sakriveni ili obrisani iz admina se preskaču
 
@@ -150,7 +151,7 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom');
     <div class="sec-head">
       <div>
         <h2 id="stalna-title" class="h1">Stalna ponuda</h2>
-        <p>Pravimo ih cele godine: poklone i priveske sa imenom po vašem imenu, a delove za radionicu i auto po vašem alatu i meri.</p>
+        <p>Pravimo ih cele godine: poklone i priveske sa imenom po vašem imenu, dekoraciju i sitnice za dom, a delove za radionicu i auto po vašem alatu i meri.</p>
       </div>
       <a class="link-arrow" href="/katalog/">Ceo katalog<Icon name="arrow" /></a>
     </div>
@@ -233,6 +234,26 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom');
           <p class="small muted">Prve igračke od 3D štampe stižu uskoro. Javite nam šta vaše dete voli, pa vam pišemo kad krenu.</p>
           <a class="btn" href={messengerUrl('Zdravo, javite mi kad stignu igračke za decu.', 'igracke')} target="_blank" rel="noopener"><Icon name="messenger" />Javite mi na Messenger-u</a>
           <a class="link-arrow" href="/katalog/pokloni-sa-imenom/">Do tada: pokloni sa imenom<Icon name="arrow" /></a>
+        </div>
+      </article>
+
+      <article class="cat cat-wide">
+        <div class="cat-media cat-pol cat-home">
+          <span class="cat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7M5 9.5V20h14V9.5M10 20v-6h4v6" /></svg></span>
+          <a class="polaroid ph1" style="--r:-5deg" href="/proizvod/rebrasta-vaza-sa-tacnom-i-svecnjakom/"><img src="/img/p/rebrasta-vaza-sa-tacnom-i-svecnjakom/uf531c53bc-sq.webp" alt="" width="900" height="900" loading="lazy" /><span>Vaza sa svećnjakom</span></a>
+          <a class="polaroid ph2" style="--r:3deg" href="/proizvod/podmetaci-monstera-sa-saksijom/"><img src="/img/p/podmetaci-monstera-sa-saksijom/u04b4ea74e-sq.webp" alt="" width="900" height="900" loading="lazy" /><span>Podmetači Monstera</span></a>
+          <a class="polaroid ph3" style="--r:-2deg" href="/proizvod/klipovi-za-kesice/"><img src="/img/p/klipovi-za-kesice/u62ad62a03-sq.webp" alt="" width="900" height="900" loading="lazy" /><span>Klipovi u bojama</span></a>
+        </div>
+        <div class="cat-body">
+          <span class="badge badge-leaf">Novo u katalogu</span>
+          <h3 class="h3">Dom i kuhinja</h3>
+          <p class="small muted">Dekoracija koja izgleda kao keramika, podmetači koji stoje u saksiji kao biljka i klipovi za kese u bojama koje birate sami.</p>
+          <ul class="cat-list">
+            <li><a href="/proizvod/rebrasta-vaza-sa-tacnom-i-svecnjakom/"><span><strong>Rebrasta vaza sa tacnom i svećnjakom</strong><span class="small muted">LED svećica u kompletu</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/podmetaci-monstera-sa-saksijom/"><span><strong>Podmetači Monstera sa saksijom</strong><span class="small muted">Boje listova i saksije po izboru</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/klipovi-za-kesice/"><span><strong>Klipovi za kesice</strong><span class="small muted">Birate boje, od 4 komada popust</span></span><Icon name="arrow" /></a></li>
+          </ul>
+          <a class="link-arrow" href="/katalog/dom-i-kuhinja/">Sve za dom i kuhinju<Icon name="arrow" /></a>
         </div>
       </article>
     </div>
@@ -430,6 +451,13 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom');
   .cat-honey .cat-media { background: #F4E2AA; display: flex; align-items: center; justify-content: center; }
   .cat-toys img { width: auto; max-width: 80%; max-height: 88%; object-fit: contain; }
   .cat-media { overflow: hidden; }
+  .cat-wide { grid-column: 1 / -1; min-height: 340px; }
+  .cat-wide .cat-media { flex: 0 0 52%; }
+  .cat-home { background: radial-gradient(circle at 30% 30%, #F7EEDB, #E9DCC4 70%); }
+  .cat-home .polaroid { width: 30%; }
+  .ph1 { left: 8%; top: 16%; }
+  .ph2 { left: 36%; top: 28%; }
+  .ph3 { left: 64%; top: 12%; }
   @media (max-width: 1000px) { .cats { grid-template-columns: 1fr; } .cat-big { grid-row: auto; } }
   @media (max-width: 620px) {
     .cat-row { flex-direction: column; }
@@ -440,6 +468,8 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom');
     .pa { left: 12%; top: 16%; }
     .pb { left: 54%; top: 12%; }
     .cat-row .cat-pol { height: 240px; }
+    .cat-wide { flex-direction: column; }
+    .cat-wide .cat-media { flex: none; height: 250px; }
   }
 
   .pomeri { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 24px; border-radius: var(--r-lg); background: var(--dark); color: var(--cream); align-items: center; }

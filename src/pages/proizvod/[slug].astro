@@ -11,13 +11,14 @@ import Icon from '../../components/Icon.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Accordion from '../../components/Accordion.astro';
 import ColorPicker from '../../components/ColorPicker.astro';
-import { PRODUCTS, productBySlug, productUrl, cardImg, sveCene, type Product } from '../../data/products';
+import { PRODUCTS, productBySlug, productUrl, cardImg, sveCene, izborKomada, type Product } from '../../data/products';
 import { categoryBySlug, catUrl } from '../../data/categories';
 import { SITE, din, messengerUrl } from '../../data/site';
 import { MOTIVI } from '../../lib/ornament';
 import { ornamentG } from '../../lib/ornament-svg';
 import { BOJE_NA_STANJU, pick } from '../../lib/colors';
 import { STILOVI, stil, SLOJ_LABEL, PRIMERI } from '../../lib/keychain';
+import { SILUETE_DEFS, silueta } from '../../lib/siluete';
 
 export function getStaticPaths() {
   return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { p } }));
@@ -30,7 +31,7 @@ const showPrice = SITE.showPrices && p.price;
 const opcCena = (p.options || []).find((o) => o.cene?.some((c) => c > 0));
 const cenaOpc = (i: number) => (opcCena?.cene?.[i] || p.price || 0);
 const showVar = SITE.showPrices && !!opcCena && cenaOpc(0) > 0;
-const priceText = showVar ? din(cenaOpc(0)) : showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) + (p.motivi?.lista.length ? ' po komadu' : '') : '';
+const priceText = showVar ? din(cenaOpc(0)) : showPrice ? (p.priceFrom ? 'od ' : '') + din(p.price!) + (izborKomada(p) ? ' po komadu' : '') : '';
 const isUkras = p.personal === 'ukras';
 const isSet = p.personal === 'set';
 const isKey = p.personal === 'privezak' && !!p.keychain;
@@ -69,11 +70,16 @@ const kcStilovi = kc ? kc.stilovi.map((id) => stil(id)) : [];
 const kcPrvi = kcStilovi[0];
 const kcData = kc ? JSON.stringify({ ...kc, sarenoDefault: kc.startImena > 1 && !!kc.sareno }) : '';
 
-// Izbor motiva (npr. modlice): kupac bira motive i broj komada, popust raste sa brojem komada
-const mot = p.motivi && p.motivi.lista.length ? p.motivi : null;
-const motSlike = mot ? mot.lista.filter((m) => m.slika) : [];
+// Izbor motiva (npr. modlice): kupac bira motive i broj komada, popust raste sa brojem komada.
+// Izbor boja (vrsta 'boje', npr. klipovi): isto, ali pločice su boje na stanju sa obojenim crtežom proizvoda.
+const mot = izborKomada(p) ? p.motivi! : null;
+const motBoje = mot?.vrsta === 'boje';
+const sil = motBoje ? silueta(mot!.silueta) : undefined;
+const motSlike = mot && !motBoje ? mot.lista.filter((m) => m.slika) : [];
 const motMax = mot && mot.popusti.length ? mot.popusti[mot.popusti.length - 1].od : 0;
-const motData = mot ? JSON.stringify({ lista: mot.lista.map((m) => ({ id: m.id, naziv: m.naziv, slika: !!m.slika })), popusti: mot.popusti, cena: showPrice ? p.price : 0 }) : '';
+const motStavke = motBoje ? BOJE_NA_STANJU.map((b) => ({ id: b.id, naziv: b.naziv, hex: b.hex })) : (mot?.lista || []).map((m) => ({ id: m.id, naziv: m.naziv, hex: '' }));
+const motData = mot ? JSON.stringify({ boje: motBoje, sil: sil?.id || '', vb: sil?.viewBox || '', lista: motStavke.map((m) => ({ id: m.id, naziv: m.naziv, hex: m.hex })), popusti: mot.popusti, cena: showPrice ? p.price : 0 }) : '';
+const rec = motBoje ? { jedan: 'boju', mn: 'boje', Mn: 'Boje' } : { jedan: 'motiv', mn: 'motive', Mn: 'Motivi' };
 const prvaMotiv = !live && p.images.length === 0 ? motSlike[0] : undefined; // bez galerije: prva fotografija motiva
 
 const askText = `Zdravo, imam pitanje o proizvodu: ${p.title} (šifra ${p.id})\n${SITE.url}${productUrl(p.slug)}`;
@@ -138,6 +144,13 @@ const detailIcon = (q: string) => {
               {isKey && <svg class="kc-svg" viewBox="0 0 600 300" role="img" aria-label="Pregled privezaka sa vašim imenima" data-kc-svg></svg>}
             </div>
           )}
+          {motBoje && (
+            <div class="slide mix" data-slide="mix" hidden>
+              <span class="badge live-badge"><i class="dotlive"></i>Vaš izbor<b data-mix-n></b></span>
+              <div class="mix-grid" data-mix-grid></div>
+              <p class="mix-hint">Boje na crtežu su okvirne, a pravi izgled je na fotografijama.</p>
+            </div>
+          )}
           {p.images.map((im, i) => (
             <div class="slide" data-slide={`i${i}`} hidden={live || i > 0}>
               {im.w !== im.h && <img class="backdrop" src={cardImg(im)} alt="" width="900" height="900" loading="lazy" aria-hidden="true" />}
@@ -155,9 +168,10 @@ const detailIcon = (q: string) => {
             <div class="slide"><div class="soon-photo"><img src="/img/brand/pcelica.webp" alt="" width="320" height="320" /><span>Fotografija uskoro</span></div></div>
           )}
         </div>
-        {(live ? p.images.length > 0 : p.images.length > 1) && (
+        {(live || motBoje ? p.images.length > 0 : p.images.length > 1) && (
           <div class="thumbs" role="group" aria-label="Fotografije">
             {live && <button type="button" class="thumb thumb-live" data-thumb="live" aria-pressed="true" aria-label="Pregled sa vašim imenom"><Icon name="star" size={22} /><span>Pregled</span></button>}
+            {motBoje && <button type="button" class="thumb thumb-live" data-thumb="mix" aria-pressed="false" aria-label="Vaš izbor boja" hidden><Icon name="palette" size={22} /><span>Vaš izbor</span></button>}
             {p.images.map((im, i) => (
               <button type="button" class="thumb" data-thumb={`i${i}`} aria-pressed={!live && i === 0 ? 'true' : 'false'} aria-label={`Fotografija ${i + 1}: ${im.alt}`}><img src={cardImg(im)} alt="" width="120" height="120" loading="lazy" /></button>
             ))}
@@ -271,14 +285,23 @@ const detailIcon = (q: string) => {
           )}
 
           {mot && (
-            <fieldset class="field mot" data-motivi={motData}>
-              <legend class="flabel">Izaberite motive</legend>
-              <p class="hint mot-hint">Kliknite one koji vam se sviđaju. Može i više komada istog motiva.</p>
-              <div class="mot-grid" data-mot-grid>
-                {mot.lista.map((m) => (
+            <fieldset class="field mot" data-motivi={motData} data-boje={motBoje ? '' : undefined}>
+              <legend class="flabel">{motBoje ? 'Izaberite boje i broj komada' : 'Izaberite motive'}</legend>
+              <p class="hint mot-hint">{motBoje ? 'Kliknite boju koju želite, pa sa + i − podesite broj komada. Možete uzeti i više boja zajedno.' : 'Kliknite one koji vam se sviđaju. Može i više komada istog motiva.'}</p>
+              {motBoje && (
+                <svg width="0" height="0" class="sil-sprite" aria-hidden="true"><defs set:html={SILUETE_DEFS} />{sil && <symbol id={`sil-${sil.id}`} viewBox={sil.viewBox} set:html={sil.symbol} />}</svg>
+              )}
+              <div class={`mot-grid${motBoje ? ` mot-grid-boje${motStavke.length > 6 ? ' mot-grid-4' : ''}` : ''}`} data-mot-grid>
+                {motStavke.map((m) => {
+                  const slika = !motBoje ? mot.lista.find((x) => x.id === m.id)?.slika : undefined;
+                  return (
                   <div class="mot-tile" data-mot={m.id}>
                     <button type="button" class="mot-pick" aria-pressed="false" data-mot-pick aria-label={m.naziv}>
-                      <span class="mot-img">{m.slika ? <img src={cardImg(m.slika)} alt="" width="300" height="300" loading="lazy" /> : <img class="mot-ph" src="/img/brand/pcelica.webp" alt="" width="160" height="160" loading="lazy" />}</span>
+                      {motBoje ? (
+                        <span class="mot-img mot-boja" style={`--c:${m.hex}`}>{sil ? <svg class="sil" viewBox={sil.viewBox} aria-hidden="true"><use href={`#sil-${sil.id}`} /></svg> : <i class="mot-krug"></i>}</span>
+                      ) : (
+                        <span class="mot-img">{slika ? <img src={cardImg(slika)} alt="" width="300" height="300" loading="lazy" /> : <img class="mot-ph" src="/img/brand/pcelica.webp" alt="" width="160" height="160" loading="lazy" />}</span>
+                      )}
                       <span class="mot-name">{m.naziv}</span>
                       <span class="mot-check" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
                     </button>
@@ -288,8 +311,15 @@ const detailIcon = (q: string) => {
                       <button type="button" data-mot-inc aria-label={`Još jedan: ${m.naziv}`}>+</button>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
+              {motBoje && mot.popusti.length > 0 && motStavke.length > 1 && (
+                <div class="mot-quick">
+                  <span class="mot-quick-lab"><Icon name="sparkle" size={16} />Šareni miks:</span>
+                  {mot.popusti.map((x) => <button type="button" class="mq" data-mot-set={x.od}>{x.od} kom<small>−{x.procenat}%</small></button>)}
+                </div>
+              )}
               {mot.popusti.length > 0 && (
                 <div class="mm" aria-hidden="true">
                   <div class="mm-track">
@@ -301,7 +331,7 @@ const detailIcon = (q: string) => {
                   </div>
                 </div>
               )}
-              <p class="mm-msg" aria-live="polite"><span class="mm-count" data-mm-count>0 kom</span><span class="mm-badge" data-mm-badge hidden></span><span data-mm-text>{mot.popusti[0] ? `Od ${mot.popusti[0].od} komada dobijate popust ${mot.popusti[0].procenat}%.` : 'Kliknite motive koje želite.'}</span></p>
+              <p class="mm-msg" aria-live="polite"><span class="mm-count" data-mm-count>0 kom</span><span class="mm-badge" data-mm-badge hidden></span><span data-mm-text>{mot.popusti[0] ? `Od ${mot.popusti[0].od} komada dobijate popust ${mot.popusti[0].procenat}%.` : `Kliknite ${rec.mn} koje želite.`}</span></p>
               {showPrice && <p class="mm-total" data-mm-total hidden></p>}
               <p class="hint mot-err" data-err-mot role="alert"></p>
             </fieldset>
@@ -428,7 +458,7 @@ const detailIcon = (q: string) => {
             <a class="btn btn-paper btn-lg" href="#poruci"><Icon name="messenger" />Poruči preko Messengera</a>
           </div>
           <ol class="howto-steps">
-            <li class="reveal" style="--d:1"><span class="num">1</span><div><strong>{p.personal ? 'Upišite ime i izaberite boje' : mot ? 'Izaberite motive' : p.options ? 'Izaberite šta vam treba' : 'Izaberite količinu'}</strong><p class="small">{orn ? 'Pregled odmah pokazuje kako će izgledati.' : isKey ? 'Okvirni pregled pokazuje vaša imena i boje.' : 'Napomenu možete dodati pre slanja poruke.'}</p></div></li>
+            <li class="reveal" style="--d:1"><span class="num">1</span><div><strong>{p.personal ? 'Upišite ime i izaberite boje' : motBoje ? 'Izaberite boje i količinu' : mot ? 'Izaberite motive' : p.options ? 'Izaberite šta vam treba' : 'Izaberite količinu'}</strong><p class="small">{orn ? 'Pregled odmah pokazuje kako će izgledati.' : isKey ? 'Okvirni pregled pokazuje vaša imena i boje.' : 'Napomenu možete dodati pre slanja poruke.'}</p></div></li>
             <li class="reveal" style="--d:2"><span class="num">2</span><div><strong>Pošaljite poruku</strong><p class="small">Naziv, šifra {p.id} i link proizvoda su već u poruci.</p></div></li>
             <li class="reveal" style="--d:3"><span class="num">3</span><div><strong>Plaćate kuriru</strong><p class="small">Javljamo cenu i rok, a paket stiže kurirom širom Srbije.</p></div></li>
           </ol>
@@ -684,7 +714,7 @@ const detailIcon = (q: string) => {
 
   // ——— Izbor motiva (npr. modlice) ———
   const motEl = form.querySelector<HTMLElement>('[data-motivi]');
-  const motCfg = motEl ? (JSON.parse(motEl.dataset.motivi || '{}') as { lista: { id: string; naziv: string; slika: boolean }[]; popusti: { od: number; procenat: number }[]; cena: number }) : null;
+  const motCfg = motEl ? (JSON.parse(motEl.dataset.motivi || '{}') as { boje: boolean; sil: string; vb: string; lista: { id: string; naziv: string; hex: string }[]; popusti: { od: number; procenat: number }[]; cena: number }) : null;
   const motN = new Map<string, number>();
   const motUkupno = () => [...motN.values()].reduce((a, b) => a + b, 0);
   const motPopust = (n: number) => (motCfg ? motCfg.popusti.filter((x) => n >= x.od).reduce((a, x) => Math.max(a, x.procenat), 0) : 0);
@@ -734,8 +764,50 @@ const detailIcon = (q: string) => {
       tot.innerHTML = n ? `Ukupno <strong>${dinar(motCena(n))}</strong>${pct ? ` <s>${dinar(n * motCfg.cena)}</s>` : ''}` : '';
     }
     if (n > 0) motEl.querySelector('[data-err-mot]')!.textContent = '';
+    if (motCfg.boje) mixCrtaj(n);
     motPrethodni = n;
   }
+
+  // ——— Izbor boja: „Vaš izbor” u galeriji (obojeni crteži, broj komada svake boje) ———
+  const mixGrid = document.querySelector<HTMLElement>('[data-mix-grid]');
+  const mixThumb = document.querySelector<HTMLElement>('[data-thumb="mix"]');
+  const mixEl = new Map<string, HTMLElement>();
+  const svgNS = 'http://www.w3.org/2000/svg';
+  function crtez(hex: string) {
+    if (!motCfg?.sil) { const i = document.createElement('i'); i.className = 'mot-krug'; i.style.setProperty('--c', hex); return i; }
+    const s = document.createElementNS(svgNS, 'svg'); s.setAttribute('viewBox', motCfg.vb); s.setAttribute('class', 'sil'); s.setAttribute('aria-hidden', 'true'); s.style.color = hex;
+    const u = document.createElementNS(svgNS, 'use'); u.setAttribute('href', '#sil-' + motCfg.sil); s.append(u);
+    return s;
+  }
+  function mixCrtaj(n: number) {
+    if (!motCfg || !mixGrid) return;
+    const b = mixGrid.closest('[data-slide]')?.querySelector('[data-mix-n]');
+    if (b) b.textContent = n ? ` · ${n} kom` : '';
+    if (mixThumb) mixThumb.hidden = n === 0;
+    const grupe = motCfg.lista.filter((m) => (motN.get(m.id) || 0) > 0);
+    mixGrid.dataset.n = String(Math.min(grupe.length, 5));
+    for (const [id, el] of mixEl) if (!motN.get(id)) { el.remove(); mixEl.delete(id); }
+    grupe.forEach((m) => {
+      const k = motN.get(m.id) || 0;
+      let el = mixEl.get(m.id);
+      if (!el) {
+        el = document.createElement('div'); el.className = 'mix-g'; el.dataset.k = '0';
+        el.innerHTML = '<span class="mix-stack"></span><span class="mix-k"></span><span class="mix-name"></span>';
+        el.querySelector('.mix-name')!.textContent = m.naziv;
+        mixEl.set(m.id, el);
+      }
+      if (el.dataset.k !== String(k)) {
+        const st = el.querySelector<HTMLElement>('.mix-stack')!;
+        st.style.setProperty('--k', String(Math.min(k, 4)));
+        st.replaceChildren(...Array.from({ length: Math.min(k, 4) }, (_, i) => { const c = crtez(m.hex); (c as HTMLElement).style.setProperty('--i', String(i)); return c; }));
+        el.querySelector('.mix-k')!.textContent = '×' + k;
+        el.dataset.k = String(k);
+        pop(el.querySelector('.mix-k'));
+      }
+      mixGrid.append(el); // redosled kao u listi boja
+    });
+  }
+  const showMix = () => { showSlide('mix'); mixThumb?.setAttribute('aria-pressed', 'true'); };
   if (motCfg && motEl) {
     motEl.addEventListener('click', (e) => {
       const t = (e.target as HTMLElement).closest<HTMLElement>('[data-mot]');
@@ -746,9 +818,18 @@ const detailIcon = (q: string) => {
       if (b.matches('[data-mot-pick]')) motN.set(mid, k > 0 ? 0 : 1);
       else if (b.matches('[data-mot-inc]')) motN.set(mid, Math.min(20, k + 1));
       else if (b.matches('[data-mot-dec]')) motN.set(mid, Math.max(0, k - 1));
-      if ((motN.get(mid) || 0) > 0 && b.matches('[data-mot-pick], [data-mot-inc]')) showSlide(`m-${mid}`);
+      if ((motN.get(mid) || 0) > 0 && b.matches('[data-mot-pick], [data-mot-inc]')) { if (motCfg.boje) showMix(); else showSlide(`m-${mid}`); }
       motCrtaj();
     });
+    // Šareni miks: N komada raspoređenih na boje nasumičnim redom (svaki klik drugačiji)
+    motEl.querySelectorAll<HTMLButtonElement>('[data-mot-set]').forEach((b) => b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const n = Number(b.dataset.motSet) || 0;
+      const red = motCfg.lista.map((m) => m.id).sort(() => Math.random() - 0.5);
+      motN.clear();
+      for (let i = 0; i < n; i++) { const id = red[i % red.length]; motN.set(id, (motN.get(id) || 0) + 1); }
+      motCrtaj(); showMix(); pop(b);
+    }));
     motCrtaj();
   }
 
@@ -781,12 +862,12 @@ const detailIcon = (q: string) => {
     if (motCfg && motEl) {
       const n = motUkupno();
       if (!n) {
-        greska(motEl.querySelector('[data-err-mot]'), 'Izaberite bar jedan motiv.');
+        greska(motEl.querySelector('[data-err-mot]'), motCfg.boje ? 'Izaberite bar jednu boju.' : 'Izaberite bar jedan motiv.');
         const g = motEl.querySelector('[data-mot-grid]'); pop(g);
         motEl.querySelector<HTMLButtonElement>('[data-mot-pick]')?.focus();
         return;
       }
-      lines.push('Motivi: ' + motCfg.lista.filter((m) => motN.get(m.id)).map((m) => m.naziv + ((motN.get(m.id) || 0) > 1 ? ' ×' + motN.get(m.id) : '')).join(', '));
+      lines.push((motCfg.boje ? 'Boje: ' : 'Motivi: ') + motCfg.lista.filter((m) => motN.get(m.id)).map((m) => m.naziv + ((motN.get(m.id) || 0) > 1 ? ' ×' + motN.get(m.id) : '')).join(', '));
       const pct = motPopust(n);
       if (pct) lines.push('Popust: ' + pct + '%');
       if (motCfg.cena) lines.push('Cena: ' + dinar(motCena(n)) + (pct ? ' (umesto ' + dinar(n * motCfg.cena) + ')' : ''));
@@ -1006,6 +1087,41 @@ const detailIcon = (q: string) => {
   @keyframes mot-hop { 0%, 100% { transform: translate(-50%, -100%) rotate(0); } 35% { transform: translate(-50%, -145%) rotate(-12deg); } 65% { transform: translate(-50%, -110%) rotate(8deg); } }
   @keyframes mot-shake { 0%, 100% { transform: none; } 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-3px); } }
   @media (hover: hover) { .mot-tile:not(.on) .mot-pick:hover { transform: translateY(-3px); border-color: var(--line-strong); } }
+
+  /* Izbor boja: proizvod obojen u svaku boju, šareni miks i „Vaš izbor” u galeriji */
+  .sil-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .mot-grid-boje { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mot-grid-boje.mot-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  @media (max-width: 520px) { .mot-grid-boje.mot-grid-4 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .mot-boja { background: radial-gradient(circle at 50% 44%, #F7F3EC, var(--surface-raised) 74%); }
+  .mot-boja .sil { color: var(--c); height: 80%; width: auto; overflow: visible; filter: drop-shadow(0 4px 3px rgba(49,32,24,.22)); transition: transform .4s cubic-bezier(.3,1.6,.5,1); }
+  .mot-tile.on .mot-boja .sil { transform: translateY(-3px) rotate(-7deg) scale(1.05); }
+  .mot-tile.on:nth-child(even) .mot-boja .sil { transform: translateY(-3px) rotate(7deg) scale(1.05); }
+  .mot-krug { display: block; width: 58%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 34% 30%, rgba(255,255,255,.6), transparent 46%), var(--c); box-shadow: inset 0 -6px 10px rgba(0,0,0,.2), 0 4px 8px rgba(49,32,24,.2); }
+  .mot-quick { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+  .mot-quick-lab { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; margin-right: 2px; }
+  .mq { display: inline-flex; align-items: center; gap: 6px; min-height: 42px; padding: 0 16px; border-radius: 999px; border: 2px dashed var(--ink); background: var(--surface-paper); font: inherit; font-weight: 700; font-size: 14px; color: var(--ink); cursor: pointer; transition: background-color .2s, transform .25s var(--ease); }
+  .mq small { font-size: 12px; font-weight: 800; color: var(--leaf); }
+  .mq:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .mq.pop { animation: mot-pop .5s cubic-bezier(.3,1.7,.5,1); }
+  @media (hover: hover) { .mq:hover { background: var(--honey-soft); transform: translateY(-2px); } }
+  .slide.mix { background: radial-gradient(circle at 50% 40%, #F7F3EC, #E4DDD2 75%); }
+  .slide.mix .live-badge b { font-weight: 800; }
+  .mix-grid { position: absolute; inset: 66px 18px 52px; container-type: size; display: flex; flex-wrap: wrap; align-items: center; align-content: center; justify-content: center; gap: 2cqh 4cqw; --h: 64; }
+  .mix-grid[data-n="2"] { --h: 56; }
+  .mix-grid[data-n="3"] { --h: 40; }
+  .mix-grid[data-n="4"] { --h: 34; }
+  .mix-grid[data-n="5"] { --h: 30; }
+  .mix-grid :global(.mix-g) { position: relative; display: flex; flex-direction: column; align-items: center; gap: 1.5cqh; animation: mot-in .35s cubic-bezier(.3,1.5,.5,1); }
+  .mix-grid :global(.mix-stack) { position: relative; display: block; padding-right: calc((var(--k, 1) - 1) * var(--h) * .13cqh); }
+  .mix-grid :global(.mix-stack > *) { display: block; height: calc(var(--h) * 1cqh); width: auto; overflow: visible; color: var(--c); filter: drop-shadow(0 6px 6px rgba(49,32,24,.22)); }
+  .mix-grid :global(.mix-stack > .mot-krug) { width: calc(var(--h) * .7cqh); height: calc(var(--h) * .7cqh); margin: calc(var(--h) * .15cqh) 0; }
+  .mix-grid :global(.mix-stack > :not(:first-child)) { position: absolute; left: 0; top: 0; transform: translate(calc(var(--i) * var(--h) * .13cqh), calc(var(--i) * var(--h) * -.025cqh)) rotate(calc(var(--i) * 5deg)); transform-origin: 50% 90%; }
+  .mix-grid :global(.mix-k) { position: absolute; top: -6px; right: -14px; min-width: 40px; height: 30px; padding: 0 10px; border-radius: 999px; background: var(--ink); color: var(--surface-paper); font-weight: 800; font-size: 15px; display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--surface-paper); z-index: 2; }
+  .mix-grid :global(.mix-k.pop) { animation: mot-pop .5s cubic-bezier(.3,1.7,.5,1); }
+  .mix-grid :global(.mix-name) { font-size: 14px; line-height: 18px; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: rgba(238,234,227,.85); white-space: nowrap; }
+  .mix-hint { position: absolute; left: 16px; right: 16px; bottom: 14px; margin: 0; text-align: center; font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+  @media (prefers-reduced-motion: reduce) { .mot-boja .sil, .mq { transition: none; } .mix-grid :global(.mix-g), .mix-grid :global(.mix-k.pop), .mq.pop { animation: none; } }
   @media (prefers-reduced-motion: reduce) {
     .mot-pick, .mot-check, .mm-fill, .mm-bee { transition: none; }
     .mot-step, .mm-bee.pop, .mm-badge.pop, .mm-stop.pop i, .mot-grid.pop { animation: none; }

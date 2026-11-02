@@ -7,10 +7,17 @@ import Icon from '../components/Icon.astro';
     <section class="nf panel">
       <img src="/img/brand/pcelica.webp" alt="" width="320" height="320" />
       <h1 class="h1">Ova stranica ne postoji</h1>
-      <p class="lead">Možda je adresa promenjena ili ste je pogrešno upisali. Evo gde ljudi najčešće idu:</p>
+      <p class="lead">Možda je adresa promenjena ili ste je pogrešno upisali. Probajte pretragu ili idite tamo gde ljudi najčešće idu:</p>
+      <form class="nf-form" action="/pretraga/" method="get" role="search">
+        <label class="sr-only" for="q-404">Pretraga</label>
+        <Icon name="search" size={20} />
+        <input id="q-404" class="input" name="q" type="search" placeholder="npr. ukras sa imenom, privezak" autocomplete="off" />
+        <button class="btn btn-primary" type="submit">Traži</button>
+      </form>
       <ul>
         <li><a class="link-arrow" href="/proizvod/ukras-za-jelku-sa-imenom/">Ukras za jelku sa imenom<Icon name="arrow" /></a></li>
         <li><a class="link-arrow" href="/katalog/nova-godina/">Novogodišnji katalog<Icon name="arrow" /></a></li>
+        <li><a class="link-arrow" href="/katalog/dom-i-kuhinja/">Dom i kuhinja<Icon name="arrow" /></a></li>
         <li><a class="link-arrow" href="/katalog/radionica/">Držači za aku alat<Icon name="arrow" /></a></li>
         <li><a class="link-arrow" href="/pomoc/">Pomoć<Icon name="arrow" /></a></li>
       </ul>
@@ -22,5 +29,9 @@ import Icon from '../components/Icon.astro';
   .nf { max-width: 760px; margin: 48px auto 0; padding: 48px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; }
   .nf img { width: 120px; height: 120px; }
   .nf ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .nf-form { position: relative; display: flex; gap: 10px; width: 100%; max-width: 520px; }
+  .nf-form .input { border-radius: var(--r-pill); padding-left: 46px; min-height: 52px; border-color: var(--ink); }
+  .nf-form > :global(svg) { position: absolute; left: 18px; top: 16px; pointer-events: none; }
+  .nf-form .btn { min-height: 52px; }
   @media (max-width: 760px) { .nf { padding: 28px 20px; } }
 </style>

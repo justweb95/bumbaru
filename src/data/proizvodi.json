@@ -1693,6 +1693,234 @@
       "meta": "Deda Mraz koji izgleda kao pleten: mala, srednja ili velika figura za dekoraciju, ili privezak za ključeve. 3D štampa, poručivanje preko Messengera."
     },
     {
+      "id": "NG-15",
+      "slug": "novogodisnja-kucica-sa-led-svecicom",
+      "title": "Novogodišnja kućica sa LED svećicom",
+      "category": "nova-godina",
+      "categories": [
+        "nova-godina"
+      ],
+      "tags": [
+        "sto"
+      ],
+      "short": "Crveno-bela kućica sa srcem na krovu. Svetli kroz prozore, LED svećica u kompletu.",
+      "lead": "Novogodišnja kućica sa krovom od cigli, snegom na strehi i srcem na zabatu. Unutra stavite LED svećicu i svetlo izlazi kroz prozore i vrata, pa praznično veče odmah izgleda toplije. Stiže sklopljena ili kao set za sklapanje.",
+      "price": 1990,
+      "images": [
+        {
+          "src": "/img/p/novogodisnja-kucica-sa-led-svecicom/u3791772e4",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Crveno-bela novogodišnja kućica sa upaljenom svećicom u prozorima, među grančicama i lampicama",
+          "og": "/img/p/novogodisnja-kucica-sa-led-svecicom/u3791772e4-og.jpg"
+        },
+        {
+          "src": "/img/p/novogodisnja-kucica-sa-led-svecicom/u3ade0ab06",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Novogodišnja kućica sa srcem na krovu ispod okićene jelke",
+          "og": "/img/p/novogodisnja-kucica-sa-led-svecicom/u3ade0ab06-og.jpg"
+        },
+        {
+          "src": "/img/p/novogodisnja-kucica-sa-led-svecicom/u40afd5624",
+          "w": 1200,
+          "h": 738,
+          "alt": "Sklopljena kućica i ploča sa delovima za sklapanje: zidovi, krov od cigli, jelkice i sneško",
+          "og": "/img/p/novogodisnja-kucica-sa-led-svecicom/u40afd5624-og.jpg"
+        }
+      ],
+      "options": [
+        {
+          "id": "izrada",
+          "label": "Kako stiže",
+          "values": [
+            "Sklopljena",
+            "Set za sklapanje"
+          ]
+        }
+      ],
+      "about": [
+        "Kućica je štampana u dve boje: crveni zidovi, a bela streha sa snegom, prozori, jelkice i sneško ispred vrata. Krov je u obliku cigli, a na zabatu je srce.",
+        "Može da stigne sklopljena, ili kao ploča sa delovima koje sklapate sami ili sa decom. To je mala praznična radionica za jedno veče.",
+        "Kućica ide samo sa LED svećicom, koju dobijate u kompletu. Pravu sveću ne stavljajte: plastika omekšava na toploti."
+      ],
+      "specs": [
+        [
+          "Boje",
+          "crvena i bela, kao na fotografiji"
+        ],
+        [
+          "Svetlo",
+          "LED svećica u kompletu"
+        ],
+        [
+          "Sklapanje",
+          "stiže sklopljena ili kao set za sklapanje"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Samo LED svećica",
+          "a": "Plastika omekšava na oko 55–60 °C. Zato ide samo sa LED svećicom, koju dobijate u kompletu, nikad sa pravom svećom."
+        },
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Može li prava sveća?",
+          "a": "Ne. Prava sveća greje plastiku, pa kućica ide samo sa LED svećicom, koja je u kompletu."
+        },
+        {
+          "q": "Može li u drugim bojama?",
+          "a": "Može. Napišite željene boje u napomeni, pa vam javljamo da li ih imamo."
+        },
+        {
+          "q": "Da li je igračka?",
+          "a": "Nije. To je dekoracija sa sitnim delovima i nije za decu mlađu od 3 godine."
+        }
+      ],
+      "related": [
+        "patuljak-sa-led-svecicom",
+        "spiralna-jelka-sa-zvezdom",
+        "mini-jelka-za-sto",
+        "zlatna-jelka-za-sklapanje"
+      ],
+      "seoTitle": "Novogodišnja kućica sa LED svećicom, dekoracija | Bumbaru",
+      "meta": "Crveno-bela novogodišnja kućica koja svetli kroz prozore. LED svećica u kompletu, stiže sklopljena ili kao set za sklapanje. Poručivanje preko Messengera."
+    },
+    {
+      "id": "NG-16",
+      "slug": "spiralna-jelka-sa-zvezdom",
+      "title": "Spiralna jelka sa zvezdom",
+      "category": "nova-godina",
+      "categories": [
+        "nova-godina"
+      ],
+      "tags": [
+        "sto"
+      ],
+      "short": "Moderna jelka u spirali sa zvezdom na vrhu. Mala, velika ili par.",
+      "lead": "Jelka od slojeva koji se uvijaju u spiralu, sa zvezdom na vrhu. Mirna, moderna dekoracija za sto, komodu ili prozor, a par velike i male jelke izgleda najlepše.",
+      "price": 890,
+      "images": [
+        {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/u6936f26ea",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Dve zelene spiralne jelke, velika sa zvezdom i mala, na kamenom postolju",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/u6936f26ea-og.jpg"
+        },
+        {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/ubb978832c",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Spiralne jelke na stočiću u dnevnoj sobi, iza je okićena jelka",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/ubb978832c-og.jpg"
+        },
+        {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/u9934e1a90",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Spiralna jelka izbliza: slojevi u spirali i zvezda na vrhu",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/u9934e1a90-og.jpg"
+        }
+      ],
+      "options": [
+        {
+          "id": "velicina",
+          "label": "Veličina",
+          "values": [
+            "Mala",
+            "Velika",
+            "Par: mala i velika"
+          ],
+          "cene": [
+            890,
+            1490,
+            2190
+          ]
+        }
+      ],
+      "colors": [
+        {
+          "id": "boja",
+          "label": "Boja jelke",
+          "def": "zelena"
+        },
+        {
+          "id": "zvezda",
+          "label": "Boja zvezde",
+          "def": "zlatna"
+        }
+      ],
+      "about": [
+        "Slojevi se uvijaju oko jelke kao spirala, pa svetlo pada drugačije sa svake strane. Zvezda na vrhu je u drugoj boji.",
+        "Izaberite malu, veliku ili par. Par lepo stoji jedna pored druge, na stolu, komodi ili prozoru.",
+        "Ne treba joj ni voda ni struja, ne osipa se i svake godine izgleda isto."
+      ],
+      "specs": [
+        [
+          "Veličina",
+          "mala, velika ili par"
+        ],
+        [
+          "Boje",
+          "jelka i zvezda po izboru"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Koje su mere?",
+          "a": "Mere za obe veličine javljamo u odgovoru na vašu poruku."
+        },
+        {
+          "q": "Može li jelka u drugoj boji?",
+          "a": "Može. Izaberite boju jelke i zvezde pre slanja poruke, od boja koje trenutno imamo."
+        }
+      ],
+      "related": [
+        "mini-jelka-za-sto",
+        "novogodisnja-kucica-sa-led-svecicom",
+        "patuljak-sa-led-svecicom",
+        "zlatna-jelka-za-sklapanje"
+      ],
+      "seoTitle": "Spiralna jelka sa zvezdom, moderna novogodišnja dekoracija | Bumbaru",
+      "meta": "Jelka od slojeva u spirali sa zvezdom na vrhu. Mala, velika ili par, boje po izboru. Novogodišnja dekoracija za sto i komodu. Poručivanje preko Messengera."
+    },
+    {
       "id": "PK-01",
       "slug": "porodicni-privezak-sa-imenima",
       "title": "Porodični set privezaka sa imenima",
@@ -2257,20 +2485,77 @@
       "tags": [
         "privesci"
       ],
-      "short": "Rasklopi se i drži telefon na stolu.",
-      "lead": "Privezak za ključeve koji se rasklopi u stalak za telefon. Uvek je pri ruci kad gledate video ili imate video poziv.",
-      "images": [],
-      "colors": [
+      "short": "Sklopljen je privezak, rasklopljen stalak za telefon. Otvara i limenke. Od 3 komada popust.",
+      "lead": "Privezak za ključeve koji se za tren rasklopi u stalak za telefon, a usput podigne i jezičak na limenci. Izaberite boje i broj komada: od 3 komada dobijate popust, pa je dobar poklon za ekipu ili kolege.",
+      "price": 350,
+      "images": [
         {
-          "id": "boja",
-          "label": "Boja",
-          "def": "plava"
+          "src": "/img/p/privezak-i-stalak-za-telefon/u11ffb8e39",
+          "w": 1047,
+          "h": 1024,
+          "alt": "Privezak i stalak za telefon u četiri boje: jedan drži telefon, ostali su sklopljeni i rasklopljeni sa karikom",
+          "og": "/img/p/privezak-i-stalak-za-telefon/u11ffb8e39-og.jpg"
+        },
+        {
+          "src": "/img/p/privezak-i-stalak-za-telefon/u1d827f036",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Plavi privezak-stalak pored limenke: sklopljen u ruci i kao otvarač za limenku",
+          "og": "/img/p/privezak-i-stalak-za-telefon/u1d827f036-og.jpg"
+        },
+        {
+          "src": "/img/p/privezak-i-stalak-za-telefon/u6bcbf5339",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Sklopljen teget privezak-stalak za telefon sa metalnom karikom",
+          "og": "/img/p/privezak-i-stalak-za-telefon/u6bcbf5339-og.jpg"
         }
       ],
+      "motivi": {
+        "lista": [],
+        "popusti": [
+          {
+            "od": 3,
+            "procenat": 10
+          },
+          {
+            "od": 5,
+            "procenat": 20
+          },
+          {
+            "od": 10,
+            "procenat": 30
+          }
+        ],
+        "vrsta": "boje",
+        "silueta": "stalak"
+      },
       "about": [
-        "Sklopljen je mali privezak na ključevima, a rasklopljen drži telefon uspravno ili položeno na stolu."
+        "Sklopljen je mali, ravan privezak koji stoji na ključevima kao svaki drugi. Kad vam zatreba, rasklopite ga i telefon stoji na stolu, za video, recept ili video poziv.",
+        "Na kraju ima zarez kojim se lako podigne jezičak na limenci, bez lomljenja noktiju.",
+        "Izaberite boje i broj komada. Što više komada uzmete, veći je popust, a traka sa pčelicom pokazuje koliko vam fali do sledećeg."
       ],
       "specs": [
+        [
+          "Sklopljen",
+          "mali ravan privezak za ključeve"
+        ],
+        [
+          "Rasklopljen",
+          "stalak koji drži telefon na stolu"
+        ],
+        [
+          "Dodatno",
+          "podiže jezičak na limenci"
+        ],
+        [
+          "Boje",
+          "sve boje koje imamo, može i miks"
+        ],
+        [
+          "Karika",
+          "metalna karika za ključeve"
+        ],
         [
           "Materijal",
           "PLA plastika"
@@ -2284,26 +2569,38 @@
         {
           "q": "Povraćaj i reklamacije",
           "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
         }
       ],
       "faq": [
         {
-          "q": "Da li je privezak igračka?",
-          "a": "Nije. Sitni delovi i karika nisu za decu mlađu od 3 godine."
+          "q": "Da li drži svaki telefon?",
+          "a": "Drži većinu telefona. Ako imate veliki i težak telefon sa debelom maskom, pitajte nas pre porudžbine."
         },
         {
-          "q": "Mogu li više komada?",
-          "a": "Možete. Upišite količinu pre slanja poruke ili nam je napišite u Messenger-u."
+          "q": "Mogu li različite boje?",
+          "a": "Možete. Kliknite više boja i za svaku podesite broj komada. Popust se računa na ukupan broj privezaka."
+        },
+        {
+          "q": "Mogu li ime ili logo na privezak?",
+          "a": "Pišite nam na Messenger-u, pa vam javljamo da li može i koliko košta. Dobro je za poklone firmama i timovima."
+        },
+        {
+          "q": "Da li je privezak igračka?",
+          "a": "Nije. Sitni delovi i karika nisu za decu mlađu od 3 godine."
         }
       ],
       "related": [
+        "klipovi-za-kesice",
         "privezak-sa-imenom",
         "pikselasti-privezak-sa-imenom",
-        "privezak-deda-mraz",
-        "privezak-irvas"
+        "privezak-deda-mraz"
       ],
-      "seoTitle": "Privezak i stalak za telefon | Bumbaru",
-      "meta": "Privezak za ključeve koji se rasklopi u stalak za telefon. 3D štampa, poručivanje preko Messengera."
+      "seoTitle": "Privezak i stalak za telefon, popust za više komada | Bumbaru",
+      "meta": "Privezak za ključeve koji se rasklopi u stalak za telefon i otvara limenke. Izaberite boje i broj komada, od 3 komada popust. Poručivanje preko Messengera."
     },
     {
       "id": "RA-01",
@@ -2760,6 +3057,374 @@
       ],
       "seoTitle": "Nastavak za podmazivanje lanca motora | Bumbaru",
       "meta": "Nastavak za sprej za lanac: mazivo ide pravo na lanac motora. 3D štampa, poručivanje preko Messengera."
+    },
+    {
+      "id": "DM-01",
+      "slug": "klipovi-za-kesice",
+      "title": "Klipovi za kesice",
+      "category": "dom-i-kuhinja",
+      "categories": [
+        "dom-i-kuhinja"
+      ],
+      "tags": [
+        "kuhinja"
+      ],
+      "short": "Zatvaraju kesu čipsa, kafe ili brašna. Boje birate sami, od 4 komada popust.",
+      "lead": "Klip sa nazubljenom vilicom koji čvrsto zatvori otvorenu kesu, pa čips ostane hrskav, a kafa mirisna. Izaberite boje i broj komada: od 4 komada dobijate popust, a šareni klipovi u kuhinji izgledaju veselo.",
+      "price": 120,
+      "images": [
+        {
+          "src": "/img/p/klipovi-za-kesice/u62ad62a03",
+          "w": 992,
+          "h": 1068,
+          "alt": "Žuti klipovi za kesice sa nazubljenom vilicom i rebrastim krajevima",
+          "og": "/img/p/klipovi-za-kesice/u62ad62a03-og.jpg"
+        },
+        {
+          "src": "/img/p/klipovi-za-kesice/u358fac2b9",
+          "w": 1024,
+          "h": 1038,
+          "alt": "Narandžasti klipovi zatvaraju kesu čipsa, kafe i suvog voća na kuhinjskom pultu",
+          "og": "/img/p/klipovi-za-kesice/u358fac2b9-og.jpg"
+        },
+        {
+          "src": "/img/p/klipovi-za-kesice/u0e7211e8c",
+          "w": 992,
+          "h": 1068,
+          "alt": "Pet žutih klipova za kesice na kuhinjskom pultu pored drvene kašike",
+          "og": "/img/p/klipovi-za-kesice/u0e7211e8c-og.jpg"
+        }
+      ],
+      "motivi": {
+        "lista": [],
+        "popusti": [
+          {
+            "od": 4,
+            "procenat": 15
+          },
+          {
+            "od": 6,
+            "procenat": 20
+          },
+          {
+            "od": 10,
+            "procenat": 30
+          }
+        ],
+        "vrsta": "boje",
+        "silueta": "klip"
+      },
+      "about": [
+        "Presavijte vrh kese i navucite klip preko pregiba. Nazubljena vilica drži kesu čvrsto, a rebrasti krajevi se lako uhvate prstima kad hoćete da je otvorite.",
+        "Klip se stavlja spolja na kesu i ne dodiruje hranu. Dobar je za čips, kafu, brašno, šećer, suvo voće i hranu za ljubimce.",
+        "Izaberite boje i broj komada. Što više klipova uzmete, veći je popust. Kese možete da razvrstate i po bojama, na primer plavi klipovi za slatko, a narandžasti za slano."
+      ],
+      "specs": [
+        [
+          "Za",
+          "kese čipsa, kafe, brašna i suvog voća"
+        ],
+        [
+          "Vilica",
+          "nazubljena, drži kesu čvrsto"
+        ],
+        [
+          "Boje",
+          "sve boje koje imamo, može i miks"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Perite ih ručno u mlakoj vodi. Ne stavljajte ih u mašinu za sudove ni pored rerne: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Da li klip dodiruje hranu?",
+          "a": "Ne. Klip se stavlja spolja, preko presavijenog vrha kese."
+        },
+        {
+          "q": "Mogu li različite boje?",
+          "a": "Možete. Kliknite više boja i za svaku podesite broj komada. Popust se računa na ukupan broj klipova."
+        },
+        {
+          "q": "Da li je klip igračka?",
+          "a": "Nije. Sitan je i nije za decu mlađu od 3 godine."
+        }
+      ],
+      "related": [
+        "privezak-i-stalak-za-telefon",
+        "podmetaci-monstera-sa-saksijom",
+        "rebrasta-vaza-sa-tacnom-i-svecnjakom"
+      ],
+      "seoTitle": "Klipovi za kesice u boji, popust za više komada | Bumbaru",
+      "meta": "Klipovi sa nazubljenom vilicom za kese čipsa, kafe i brašna. Izaberite boje i broj komada, od 4 komada popust. 3D štampa, poručivanje preko Messengera."
+    },
+    {
+      "id": "DM-02",
+      "slug": "rebrasta-vaza-sa-tacnom-i-svecnjakom",
+      "title": "Rebrasta vaza sa tacnom i svećnjakom",
+      "category": "dom-i-kuhinja",
+      "categories": [
+        "dom-i-kuhinja"
+      ],
+      "tags": [
+        "dekoracija"
+      ],
+      "short": "Vaza, ovalna tacna i svećnjak za LED svećicu. Izgleda kao keramika, a ne lomi se.",
+      "lead": "Rebrasta vaza, ovalna tacna i niski svećnjak koji zajedno izgledaju kao keramika, a lagani su i ne lome se. Za suvo cveće i grančice, ili samo kao dekoracija na polici, komodi ili stolu.",
+      "price": 1990,
+      "images": [
+        {
+          "src": "/img/p/rebrasta-vaza-sa-tacnom-i-svecnjakom/uf531c53bc",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Rebrasta vaza, ovalna tacna i rebrasti svećnjak sa svećicom na kamenoj polici",
+          "og": "/img/p/rebrasta-vaza-sa-tacnom-i-svecnjakom/uf531c53bc-og.jpg"
+        },
+        {
+          "src": "/img/p/rebrasta-vaza-sa-tacnom-i-svecnjakom/u936d705e7",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Set vaze, tacne i svećnjaka na drvenoj komodi u dnevnoj sobi",
+          "og": "/img/p/rebrasta-vaza-sa-tacnom-i-svecnjakom/u936d705e7-og.jpg"
+        },
+        {
+          "src": "/img/p/rebrasta-vaza-sa-tacnom-i-svecnjakom/u542855578",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Rebrasta vaza sa tacnom i svećnjakom na stolu pored fotelje i lampe",
+          "og": "/img/p/rebrasta-vaza-sa-tacnom-i-svecnjakom/u542855578-og.jpg"
+        },
+        {
+          "src": "/img/p/rebrasta-vaza-sa-tacnom-i-svecnjakom/u1c478907c",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Rebra na vazi i svećnjaku izbliza",
+          "og": "/img/p/rebrasta-vaza-sa-tacnom-i-svecnjakom/u1c478907c-og.jpg"
+        }
+      ],
+      "options": [
+        {
+          "id": "komplet",
+          "label": "Komplet",
+          "values": [
+            "Vaza, tacna i svećnjak",
+            "Samo vaza"
+          ],
+          "cene": [
+            1990,
+            1190
+          ]
+        }
+      ],
+      "colors": [
+        {
+          "id": "boja",
+          "label": "Boja",
+          "def": "bela"
+        }
+      ],
+      "about": [
+        "Rebra na vazi i svećnjaku hvataju svetlo, pa set izgleda kao od keramike ili gipsa. Štampan je od PLA plastike, pa je lagan i ne lomi se ako padne.",
+        "Vaza je za suvo i veštačko cveće ili grančice. Za sveže cveće unutra stavite čašu ili teglicu sa vodom.",
+        "Svećnjak je za LED svećicu, koju dobijate uz set. Pravu sveću ne stavljajte: plastika omekšava na toploti."
+      ],
+      "specs": [
+        [
+          "U kompletu",
+          "vaza, ovalna tacna, svećnjak i LED svećica"
+        ],
+        [
+          "Vaza",
+          "za suvo i veštačko cveće"
+        ],
+        [
+          "Svetlo",
+          "LED svećica u kompletu"
+        ],
+        [
+          "Boja",
+          "bela, ili druga boja po izboru"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Samo LED svećica",
+          "a": "Plastika omekšava na oko 55–60 °C. Zato ide samo sa LED svećicom, koju dobijate u kompletu, nikad sa pravom svećom."
+        },
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Da li vaza drži vodu?",
+          "a": "Nije pravljena za vodu. Za sveže cveće stavite unutra čašu ili teglicu sa vodom."
+        },
+        {
+          "q": "Može li prava sveća?",
+          "a": "Ne. Prava sveća greje plastiku, pa svećnjak ide samo sa LED svećicom, koja je u kompletu."
+        },
+        {
+          "q": "Mogu li samo vazu?",
+          "a": "Možete. Izaberite „Samo vaza” pre slanja poruke."
+        },
+        {
+          "q": "Koje su mere?",
+          "a": "Mere javljamo u odgovoru na vašu poruku."
+        }
+      ],
+      "related": [
+        "podmetaci-monstera-sa-saksijom",
+        "spiralna-jelka-sa-zvezdom",
+        "klipovi-za-kesice",
+        "patuljak-sa-led-svecicom"
+      ],
+      "seoTitle": "Rebrasta vaza sa tacnom i svećnjakom, set za dekoraciju | Bumbaru",
+      "meta": "Set od rebraste vaze, ovalne tacne i svećnjaka sa LED svećicom. Izgleda kao keramika, a lagan je i ne lomi se. Poručivanje preko Messengera."
+    },
+    {
+      "id": "DM-03",
+      "slug": "podmetaci-monstera-sa-saksijom",
+      "title": "Podmetači Monstera sa saksijom",
+      "category": "dom-i-kuhinja",
+      "categories": [
+        "dom-i-kuhinja"
+      ],
+      "tags": [
+        "kuhinja",
+        "dekoracija"
+      ],
+      "short": "Listovi su podmetači za šolje, a složeni u saksiju izgledaju kao biljka.",
+      "lead": "Set podmetača u obliku lista monstere. Dok ih ne koristite, stoje u maloj rebrastoj saksiji i izgledaju kao prava biljka na stolu ili pultu. Kad dođu gosti, izvadite listove i stavite ih ispod šolja.",
+      "price": 1590,
+      "images": [
+        {
+          "src": "/img/p/podmetaci-monstera-sa-saksijom/u04b4ea74e",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Podmetači u obliku lista monstere složeni kao biljka u roze rebrastoj saksiji",
+          "og": "/img/p/podmetaci-monstera-sa-saksijom/u04b4ea74e-og.jpg"
+        },
+        {
+          "src": "/img/p/podmetaci-monstera-sa-saksijom/u8fd20cbad",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Biljka od podmetača i dva lista monstere položena na stolu",
+          "og": "/img/p/podmetaci-monstera-sa-saksijom/u8fd20cbad-og.jpg"
+        },
+        {
+          "src": "/img/p/podmetaci-monstera-sa-saksijom/u798fd8308",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Šolje kafe na podmetačima u obliku lista monstere, na trpezarijskom stolu",
+          "og": "/img/p/podmetaci-monstera-sa-saksijom/u798fd8308-og.jpg"
+        },
+        {
+          "src": "/img/p/podmetaci-monstera-sa-saksijom/u07d4eb086",
+          "w": 1024,
+          "h": 1024,
+          "alt": "Monstera od podmetača na kuhinjskom pultu pored aparata za kafu",
+          "og": "/img/p/podmetaci-monstera-sa-saksijom/u07d4eb086-og.jpg"
+        }
+      ],
+      "colors": [
+        {
+          "id": "listovi",
+          "label": "Boja listova",
+          "def": "zelena"
+        },
+        {
+          "id": "saksija",
+          "label": "Boja saksije",
+          "def": "narandzasta"
+        }
+      ],
+      "about": [
+        "Svaki list je podmetač za šolju ili čašu. Dok ih ne koristite, stoje u saksiji, pa na stolu, pultu ili polici izgledaju kao mala monstera koju ne treba zalivati.",
+        "Listovi su ravni s donje strane, pa šolja stoji sigurno, a žilice na licu daju im izgled pravog lista.",
+        "Boju listova i saksije birate sami. Lep je poklon za useljenje ili za nekog ko voli biljke, a nema sreće sa pravim."
+      ],
+      "specs": [
+        [
+          "U setu",
+          "podmetači u obliku lista i saksija koja ih drži"
+        ],
+        [
+          "Za",
+          "šolje, čaše i šoljice za kafu"
+        ],
+        [
+          "Boje",
+          "listovi i saksija po izboru"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite vlažnom krpom. Šolja čaja ili kafe je u redu, ali ne stavljajte vrelu šerpu, lonac ni pleh: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Može li vrela šolja?",
+          "a": "Šolja čaja ili kafe može. Vrelu šerpu, lonac ili pleh ne stavljajte, jer plastika omekšava na toploti."
+        },
+        {
+          "q": "Mogu li druge boje?",
+          "a": "Možete. Izaberite boju listova i saksije pre slanja poruke, od boja koje trenutno imamo."
+        },
+        {
+          "q": "Koliko listova ima u setu?",
+          "a": "Broj listova i mere javljamo u odgovoru na vašu poruku."
+        }
+      ],
+      "related": [
+        "rebrasta-vaza-sa-tacnom-i-svecnjakom",
+        "klipovi-za-kesice",
+        "spiralna-jelka-sa-zvezdom"
+      ],
+      "seoTitle": "Podmetači za čaše u obliku lista monstere, sa saksijom | Bumbaru",
+      "meta": "Set podmetača u obliku lista monstere koji stoje u saksiji kao biljka. Boje listova i saksije po izboru. 3D štampa, poručivanje preko Messengera."
     }
   ]
 }

@@ -5,6 +5,7 @@ import { h, ikona, dugmeIkona, din } from './dom';
 import { obradi, uBase64 } from './slike';
 import { ocistiSve, slugify, CmsGreska, IKONA_PODRAZUMEVANA, type CmsPodaci, type Boja } from '../lib/cms-model';
 import type { Product, Img, Option, ColorChoice, Motiv, MotiviCfg } from '../data/products';
+import { SILUETE } from '../lib/siluete';
 import type { Category, Faq } from '../data/categories';
 import { STILOVI } from '../lib/keychain';
 
@@ -312,7 +313,7 @@ function editorProizvoda(p: Product) {
     sekcija('Detalji (harmonika ispod opisa)', listaPitanja(p.details, 'Naslov (npr. Rok i dostava)', 'Tekst', 'Dodaj detalj')),
     sekcija('Česta pitanja', listaPitanja(p.faq, 'Pitanje', 'Odgovor', 'Dodaj pitanje')),
     sekcija('Izbor za kupca', izborSekcija(p)),
-    sekcija('Izbor motiva (npr. modlice)', motiviSekcija(p)),
+    sekcija('Izbor motiva ili boja sa popustom (npr. modlice, klipovi)', motiviSekcija(p)),
     sekcija('Poziv za celu kolekciju (Messenger)', pozivSekcija(p)),
     sekcija('Povezani proizvodi', povezaniSekcija(p)),
 
@@ -536,9 +537,20 @@ function motiviSekcija(p: Product) {
       prekidac(ukljuceno, (v) => {
         if (v) p.motivi = sacuvani || { lista: [], popusti: structuredClone(PODRAZUMEVANI_POPUSTI) };
         else { sacuvani = p.motivi; delete p.motivi; }
-      }, 'Kupac bira motive (umesto obične količine)', crtaj),
-      h('p', { class: 'hint' }, 'Na strani proizvoda kupac klikne motive koje želi, može i više komada istog. Traka sa pčelicom pokazuje koliko mu fali do sledećeg popusta.'),
+      }, 'Kupac bira motive ili boje i broj komada (umesto obične količine)', crtaj),
+      h('p', { class: 'hint' }, 'Na strani proizvoda kupac klikne motive (ili boje) koje želi, može i više komada istog. Traka sa pčelicom pokazuje koliko mu fali do sledećeg popusta.'),
       ...(ukljuceno ? [
+        polje('Kupac bira', izbor([['motivi', 'Motive (svaki motiv sa svojom fotografijom)'], ['boje', 'Boje filamenta (sve boje koje su na stanju)']], p.motivi!.vrsta === 'boje' ? 'boje' : 'motivi', (v) => {
+          if (v === 'boje') { p.motivi!.vrsta = 'boje'; p.motivi!.silueta ||= SILUETE[0]?.id; } else { delete p.motivi!.vrsta; delete p.motivi!.silueta; }
+          crtaj();
+        })),
+      ] : []),
+      ...(ukljuceno && p.motivi!.vrsta === 'boje' ? [
+        polje('Crtež na pločicama boja', izbor([['', 'Krug u boji (bez crteža)'], ...SILUETE.map((x): [string, string] => [x.id, x.label])], p.motivi!.silueta || '', (v) => { if (v) p.motivi!.silueta = v; else delete p.motivi!.silueta; }),
+          'Crtež proizvoda se oboji u svaku boju. Pločice su sve boje koje su na stanju (kartica Boje), pa se same menjaju kad uključite ili isključite boju. Za novi crtež pišite programeru.'),
+        ...(p.colors?.length ? [h('p', { class: 'hint warn' }, 'Ovaj proizvod ima i poseban „Izbor boje” (sekcija Izbor za kupca). Kad kupac bira boje ovde, taj izbor obično treba obrisati.')] : []),
+      ] : []),
+      ...(ukljuceno && p.motivi!.vrsta !== 'boje' ? [
         h('div', { class: 'field' }, h('span', { class: 'flabel' }, `Motivi (${p.motivi!.lista.length})`),
           lista<Motiv>(p.motivi!.lista, (m, i) => {
             const fajl = h('input', { type: 'file', accept: 'image/*', hidden: true, onchange: () => { const f = fajl.files?.[0]; fajl.value = ''; if (f) zameniSliku(m, f); } });
@@ -552,6 +564,8 @@ function motiviSekcija(p: Product) {
             h('button', { type: 'button', class: 'btn btn-sm btn-primary', disabled: rad, onclick: () => fajlVise.click() }, ikona('camera'), rad ? 'Obrađujem…' : 'Dodaj više motiva iz fotografija'),
             h('span', { class: 'hint' }, 'Izaberite fotografije svih motiva odjednom: za svaku se pravi motiv, a naziv od imena fajla.')),
           status),
+      ] : []),
+      ...(ukljuceno ? [
         h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Popust prema broju komada'),
           lista(p.motivi!.popusti, (x) => h('div', { class: 'pair' },
             h('label', { class: 'inl' }, 'Od', ulaz(String(x.od), (v) => { x.od = Math.round(Number(v)) || 0; osveziCenovnik(); }, { type: 'number', min: 2, max: 100, inputmode: 'numeric', 'aria-label': 'Od komada' }), 'kom'),
