@@ -1151,7 +1151,7 @@ const detailIcon = (q: string) => {
 <style>
   .pz { padding-top: 0; }
   .pd { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: 48px; align-items: start; }
-  .gallery { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 12px; }
+  .gallery { position: sticky; top: var(--sticky-top, 96px); transition: top .3s var(--ease); display: flex; flex-direction: column; gap: 12px; }
   .stage { position: relative; aspect-ratio: 1 / 1; border-radius: var(--r-lg); overflow: hidden; background: var(--surface-raised); }
   .slide { position: absolute; inset: 0; }
   .slide img { width: 100%; height: 100%; object-fit: cover; }

@@ -105,7 +105,7 @@ const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity
   .facts li { display: flex; gap: 14px; align-items: center; padding: 20px; background: var(--surface-paper); border-radius: var(--r-lg); }
   .facts li > span { display: flex; flex-direction: column; }
   .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; margin-top: 48px; align-items: start; }
-  .toc { position: sticky; top: 100px; background: var(--surface-paper); border-radius: var(--r-lg); padding: 20px 24px; }
+  .toc { position: sticky; top: calc(var(--sticky-top, 96px) + 4px); transition: top .3s var(--ease); background: var(--surface-paper); border-radius: var(--r-lg); padding: 20px 24px; }
   .toc ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
   .toc a { font-weight: 600; text-decoration: none; }
   .toc a:hover { text-decoration: underline; }

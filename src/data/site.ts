@@ -34,7 +34,7 @@ export const SITE = {
   // Sezona na početnoj strani: 'nova-godina' ili 'stalna'
   season: 'nova-godina' as 'nova-godina' | 'stalna',
   ribbon: {
-    'nova-godina': 'Sa imenom do 16. 12, ostale porudžbine do 20. 12.',
+    'nova-godina': 'Isporuka širom Srbije za 2–3 radna dana',
     stalna: 'Proizvodi na stanju šalju se isti dan.',
   },
 };

@@ -106,6 +106,7 @@ ul, ol { margin: 0; padding: 0; }
 .ribbon span { display: inline-flex; align-items: center; gap: 8px; }
 .ribbon .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink); }
 .ribbon .rib-akcija { display: inline-flex; align-items: center; gap: 8px; padding: 2px 10px; border-radius: 999px; background: var(--berry); color: #fff; text-decoration: none; font-weight: 700; }
+@media (max-width: 1200px) { .rib-ak .opt2 { display: none; } }
 @media (max-width: 760px) {
   .ribbon .opt { display: none; } .ribbon .dot { display: none; }
   /* na telefonu se akcija i rok smenjuju na istom mestu */
@@ -115,10 +116,14 @@ ul, ol { margin: 0; padding: 0; }
   .akcija-kraj .rib-ak .rib-rok { animation: none; opacity: 1; }
 }
 @keyframes rib-smena { 0%, 44% { opacity: 1; visibility: visible; } 50%, 94% { opacity: 0; visibility: hidden; } 100% { opacity: 1; visibility: visible; } }
+@media (prefers-reduced-motion: reduce) { .header { transition: box-shadow .2s ease; } }
 @media (prefers-reduced-motion: reduce) { .rib-ak .rib-akcija, .rib-ak .rib-rok { animation: none; } .rib-ak .rib-rok { display: none; } .akcija-kraj .rib-ak .rib-rok { display: inline-flex; } }
 
 /* Zaglavlje */
-.header { position: sticky; top: 0; z-index: 40; background: var(--surface-paper); border-bottom: 1px solid transparent; transition: box-shadow .2s ease; }
+.header { position: sticky; top: 0; z-index: 40; background: var(--surface-paper); border-bottom: 1px solid transparent; transition: box-shadow .2s ease, transform .3s var(--ease); }
+.header.h-skriven { transform: translateY(-100%); box-shadow: none; }
+:root { --sticky-top: 96px; }
+.hdr-skriven { --sticky-top: 20px; }
 .header.scrolled { box-shadow: 0 1px 0 var(--line), 0 6px 18px rgba(49,32,24,.06); }
 /* logo levo, meni na sredini, korpa i „Pišite nam” desno */
 .header .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px; min-height: 76px; }

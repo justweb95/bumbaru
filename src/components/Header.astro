@@ -24,10 +24,10 @@ const ribbon = SITE.ribbon[SITE.season];
 <div class={`ribbon${AKCIJA ? ' rib-ak' : ''}`}>
   <div class="wrap">
     {AKCIJA && <><a class="rib-akcija ak-on" href="/akcija/"><Icon name="gift" size={16} />{AKCIJA.naziv} −{AKCIJA.procenat}% do {datumKratko(AKCIJA.do)}</a><i class="dot opt ak-on" aria-hidden="true"></i></>}
-    <span class="rib-rok"><Icon name="clock" size={16} />{ribbon}</span>
-    <i class="dot opt" aria-hidden="true"></i>
-    <span class="opt">{AKCIJA ? 'Dostava širom Srbije' : 'Poručivanje preko Messengera'}</span>
-    {!AKCIJA && <><i class="dot opt" aria-hidden="true"></i><span class="opt">Dostava kurirom širom Srbije</span></>}
+    <span class="rib-rok"><Icon name="truck" size={16} />{ribbon}</span>
+    <i class="dot opt opt2" aria-hidden="true"></i>
+    <span class="opt opt2"><Icon name="clock" size={16} />Sa imenom i po meri može duže, zavisno od zahteva</span>
+    {!AKCIJA && <><i class="dot opt" aria-hidden="true"></i><span class="opt">Poručivanje preko Messengera</span></>}
   </div>
 </div>
 <header class="header" id="top" data-header>
@@ -130,9 +130,6 @@ const ribbon = SITE.ribbon[SITE.season];
   });
   menu?.querySelector('[data-menu-close]')?.addEventListener('click', close);
   menu?.addEventListener('click', (e) => { if (e.target === menu) close(); });
-  const header = document.querySelector<HTMLElement>('[data-header]');
-  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 40);
-  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   // Padajući meni „Katalog”: mišem se otvara samo prelaskom (klik vodi na ceo katalog),
   // na ekranu na dodir dodirom, a sa tastature strelicom nadole ili razmakom
@@ -164,6 +161,28 @@ const ribbon = SITE.ribbon[SITE.season];
     mega.addEventListener('focusout', (e) => { const n = (e as FocusEvent).relatedTarget as Node | null; if (n && !mega.contains(n) && n !== btn) postavi(false); });
   }
   bg?.addEventListener('click', () => postavi(false));
+
+  // Zaglavlje na računaru: skrol nadole ga sakrije, skrol nagore ga vrati
+  // (ne krije se pri vrhu strane, dok je otvoren meni Katalog ni dok se zaglavljem kreće tastaturom)
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const racunar = matchMedia('(min-width: 1201px)');
+  let poslednji = window.scrollY;
+  const sakrij = (v: boolean) => {
+    header?.classList.toggle('h-skriven', v);
+    document.documentElement.classList.toggle('hdr-skriven', v);
+  };
+  const onScroll = () => {
+    const y = window.scrollY;
+    header?.classList.toggle('scrolled', y > 40);
+    if (!racunar.matches || y < 160 || otvoren() || header?.querySelector(':focus-visible')) { sakrij(false); poslednji = y; return; }
+    const d = y - poslednji;
+    if (Math.abs(d) < 8) return;
+    sakrij(d > 0);
+    poslednji = y;
+  };
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  racunar.addEventListener('change', () => sakrij(false));
+  header?.addEventListener('focusin', (e) => { if ((e.target as HTMLElement).matches(':focus-visible')) sakrij(false); });
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (otvoren()) { postavi(false); btn?.focus(); }
