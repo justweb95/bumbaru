@@ -2,33 +2,35 @@
 import Icon from './Icon.astro';
 import { SITE, messengerUrl, datumKratko } from '../data/site';
 import { AKCIJA } from '../lib/cene';
+import { CATEGORIES, catUrl } from '../data/categories';
+import { inCategory, hasPhoto, cardImg } from '../data/products';
 interface Props { current?: string }
 const { current = '' } = Astro.props;
-const links = [
-  { href: '/katalog/nova-godina/', label: 'Nova godina', key: 'nova-godina', season: true },
-  { href: '/katalog/radionica/', label: 'Radionica', key: 'radionica' },
-  { href: '/katalog/auto-i-moto/', label: 'Auto i moto', key: 'auto-i-moto' },
-  { href: '/katalog/pokloni-sa-imenom/', label: 'Pokloni sa imenom', key: 'pokloni-sa-imenom' },
-  { href: '/katalog/privesci/', label: 'Privesci', key: 'privesci' },
-  { href: '/katalog/dom-i-kuhinja/', label: 'Dom i kuhinja', key: 'dom-i-kuhinja' },
-  { href: '/po-meri/', label: 'Po meri', key: 'po-meri' },
-];
-const mobileExtra = [
-  { href: '/katalog/igracke-za-decu/', label: 'Igračke za decu' },
-  { href: '/pomoc/', label: 'Pomoć i kako poručiti' },
-];
+
+// Kategorije za padajući meni „Katalog”: fotografija prvog proizvoda (ili pozadina kategorije) i broj proizvoda
+// (prvo prave fotografije, i to različite za svaku kategoriju)
+const iskorisceno = new Set<string>();
+const kat = CATEGORIES.map((c) => {
+  const l = inCategory(c.slug);
+  const sa = l.filter((x) => hasPhoto(x) && x.images[0]);
+  const p = sa.find((x) => x.images[0].src.startsWith('/img/p/') && !iskorisceno.has(x.slug)) || sa.find((x) => !iskorisceno.has(x.slug));
+  if (p) iskorisceno.add(p.slug);
+  return { c, n: l.length, slika: p ? cardImg(p.images[0]) : c.bg, ime: c.slug === 'nova-godina' ? 'Nova godina' : c.label };
+});
+const plural = (n: number) => (n % 10 === 1 && n % 100 !== 11 ? 'proizvod' : 'proizvoda');
+const katAktivan = current === 'katalog' || CATEGORIES.some((c) => c.slug === current);
 const ribbon = SITE.ribbon[SITE.season];
 ---
 <div class={`ribbon${AKCIJA ? ' rib-ak' : ''}`}>
   <div class="wrap">
-    {AKCIJA && <><a class="rib-akcija ak-on" href={`/katalog/${AKCIJA.kategorija}/`}><Icon name="gift" size={16} />{AKCIJA.naziv} −{AKCIJA.procenat}% do {datumKratko(AKCIJA.do)}</a><i class="dot opt ak-on" aria-hidden="true"></i></>}
+    {AKCIJA && <><a class="rib-akcija ak-on" href="/akcija/"><Icon name="gift" size={16} />{AKCIJA.naziv} −{AKCIJA.procenat}% do {datumKratko(AKCIJA.do)}</a><i class="dot opt ak-on" aria-hidden="true"></i></>}
     <span class="rib-rok"><Icon name="clock" size={16} />{ribbon}</span>
     <i class="dot opt" aria-hidden="true"></i>
     <span class="opt">{AKCIJA ? 'Dostava širom Srbije' : 'Poručivanje preko Messengera'}</span>
     {!AKCIJA && <><i class="dot opt" aria-hidden="true"></i><span class="opt">Dostava kurirom širom Srbije</span></>}
   </div>
 </div>
-<header class="header" id="top">
+<header class="header" id="top" data-header>
   <div class="wrap">
     <button class="icon-btn menu-btn" type="button" aria-label="Otvori meni" aria-controls="mobile-menu" aria-expanded="false" data-menu-open>
       <Icon name="menu" size={22} />
@@ -40,24 +42,60 @@ const ribbon = SITE.ribbon[SITE.season];
       </picture>
     </a>
     <nav class="nav" aria-label="Glavni meni">
-      {links.map((l) => (
-        <a href={l.href} class={l.season ? 'season' : undefined} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a>
-      ))}
-      <a href="/nadji-poklon/" class="nav-kviz" aria-current={current === 'kviz' ? 'page' : undefined}><Icon name="gift" size={18} />Nađi poklon</a>
+      <button class={`nav-kat${katAktivan ? ' is-current' : ''}`} type="button" aria-expanded="false" aria-controls="mega" data-mega-btn>
+        <Icon name="menu" size={18} />Katalog<Icon name="chev" size={16} />
+      </button>
+      {AKCIJA && <a href="/akcija/" class="nav-ak ak-on" aria-current={current === 'akcija' ? 'page' : undefined}><Icon name="gift" size={17} />Akcija −{AKCIJA.procenat}%</a>}
+      <a href="/nadji-poklon/" class="nav-kviz" aria-current={current === 'kviz' ? 'page' : undefined}><Icon name="sparkle" size={17} />Nađi poklon</a>
+      <a href="/po-meri/" aria-current={current === 'po-meri' ? 'page' : undefined}>Po meri</a>
     </nav>
     <form class="search" action="/pretraga/" method="get" role="search">
       <label class="sr-only" for="q-desk">Pretraga</label>
       <Icon name="search" size={18} />
-      <input id="q-desk" name="q" type="search" placeholder="Pretraga" autocomplete="off" />
+      <input id="q-desk" name="q" type="search" placeholder="Pretražite proizvode" autocomplete="off" />
     </form>
     <div class="h-act">
       <button class="icon-btn korpa-btn" type="button" data-korpa-open aria-label="Korpa"><Icon name="bag" size={22} /><span class="korpa-n" data-korpa-n hidden>0</span></button>
-      <a class="icon-btn msg-btn" href={messengerUrl()} target="_blank" rel="noopener" aria-label="Pišite nam na Messenger-u" title="Pišite nam na Messenger-u">
-        <Icon name="messenger" size={22} />
+      <a class="msg-btn" href={messengerUrl()} target="_blank" rel="noopener" aria-label="Pišite nam na Messenger-u" title="Pišite nam na Messenger-u">
+        <Icon name="messenger" size={20} /><span class="msg-t">Pišite nam</span>
       </a>
     </div>
   </div>
+
+  <!-- Padajući meni sa svim kategorijama -->
+  <div class="mega" id="mega" data-mega hidden>
+    <div class="wrap mega-in">
+      <div class="mega-grid">
+        {kat.map(({ c, n, slika, ime }, i) => (
+          <a class={`mega-kat${current === c.slug ? ' on' : ''}`} href={catUrl(c.slug)} style={`--r:${i % 2 ? 1 : -1}deg`}>
+            <span class="mega-img"><img src={slika} alt="" width="160" height="160" loading="lazy" decoding="async" /><span class="mega-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={c.icon} /></svg></span></span>
+            <span class="mega-t"><b>{ime}</b><small>{c.soon ? 'Uskoro' : `${n} ${plural(n)}`}</small></span>
+          </a>
+        ))}
+        <a class="mega-kat mega-all" href="/katalog/">
+          <span class="mega-img"><Icon name="blocks" size={30} /></span>
+          <span class="mega-t"><b>Ceo katalog</b><small>Sve kategorije na jednom mestu</small></span>
+        </a>
+      </div>
+      <aside class="mega-side">
+        {AKCIJA && (
+          <a class="mega-promo mp-ak ak-on" href="/akcija/">
+            <span class="mp-lab"><Icon name="gift" size={18} />{AKCIJA.naziv}</span>
+            <b class="mp-big">−{AKCIJA.procenat}% na sve iz kategorije {CATEGORIES.find((c) => c.slug === AKCIJA!.kategorija)?.label || ''}</b>
+            <span class="small">Traje do {datumKratko(AKCIJA.do)}, cene su već umanjene.</span>
+            <span class="link-arrow">Pogledajte akciju<Icon name="arrow" /></span>
+          </a>
+        )}
+        <a class="mega-promo mp-kviz" href="/nadji-poklon/">
+          <img class="fx-float" src="/img/brand/pcelica.webp" alt="" width="64" height="64" loading="lazy" />
+          <span><b>Ne znate šta da poklonite?</b><span class="small">Četiri pitanja i predlažemo vam poklon.</span></span>
+        </a>
+      </aside>
+    </div>
+  </div>
 </header>
+<div class="mega-bg" data-mega-bg hidden></div>
+
 <div class="mobile-menu" id="mobile-menu" data-menu>
   <div class="panel" role="dialog" aria-modal="true" aria-label="Meni">
     <div class="top">
@@ -69,10 +107,20 @@ const ribbon = SITE.ribbon[SITE.season];
       <Icon name="search" size={18} />
       <input id="q-mob" name="q" type="search" placeholder="Pretraga proizvoda" autocomplete="off" />
     </form>
-    <a class="m-kviz" href="/nadji-poklon/"><Icon name="gift" size={22} /><span><strong>Nađi poklon</strong><span class="small">Kviz od 20 sekundi</span></span></a>
-    <nav aria-label="Meni na telefonu">
-      {links.map((l) => <a href={l.href}>{l.label === 'Nova godina' ? 'Novogodišnji katalog' : l.label}</a>)}
-      {mobileExtra.map((l) => <a href={l.href}>{l.label}</a>)}
+    <div class="m-promo">
+      {AKCIJA && <a class="m-ak ak-on" href="/akcija/"><Icon name="gift" size={22} /><span><strong>Akcija −{AKCIJA.procenat}%</strong><span class="small">{AKCIJA.naziv} do {datumKratko(AKCIJA.do)}</span></span></a>}
+      <a class="m-kviz" href="/nadji-poklon/"><Icon name="sparkle" size={22} /><span><strong>Nađi poklon</strong><span class="small">Kviz od 20 sekundi</span></span></a>
+    </div>
+    <p class="m-lab">Kategorije</p>
+    <nav class="m-kat" aria-label="Kategorije">
+      {kat.map(({ c, n, slika, ime }) => (
+        <a href={catUrl(c.slug)} aria-current={current === c.slug ? 'page' : undefined}><img src={slika} alt="" width="44" height="44" loading="lazy" /><span>{ime}</span><small>{c.soon ? 'Uskoro' : n}</small></a>
+      ))}
+    </nav>
+    <nav class="m-links" aria-label="Ostalo">
+      <a href="/po-meri/">3D štampa po meri</a>
+      <a href="/katalog/">Ceo katalog</a>
+      <a href="/pomoc/">Pomoć i kako poručiti</a>
     </nav>
     <a class="btn btn-primary btn-lg" href={messengerUrl()} target="_blank" rel="noopener"><Icon name="messenger" />Pišite nam na Messenger-u</a>
   </div>
@@ -87,8 +135,38 @@ const ribbon = SITE.ribbon[SITE.season];
   });
   menu?.querySelector('[data-menu-close]')?.addEventListener('click', close);
   menu?.addEventListener('click', (e) => { if (e.target === menu) close(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu?.classList.contains('open')) close(); });
-  const header = document.querySelector('.header');
+  const header = document.querySelector<HTMLElement>('[data-header]');
   const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 40);
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Padajući meni „Katalog”: otvara se klikom, a mišem i prelaskom preko dugmeta
+  const btn = document.querySelector<HTMLButtonElement>('[data-mega-btn]');
+  const mega = document.querySelector<HTMLElement>('[data-mega]');
+  const bg = document.querySelector<HTMLElement>('[data-mega-bg]');
+  let t = 0;
+  const otvoren = () => btn?.getAttribute('aria-expanded') === 'true';
+  const postavi = (v: boolean) => {
+    if (!btn || !mega || !bg || v === otvoren()) return;
+    btn.setAttribute('aria-expanded', String(v));
+    mega.hidden = !v; bg.hidden = !v;
+    if (v) { mega.classList.remove('in'); void mega.offsetWidth; mega.classList.add('in'); }
+  };
+  const mis = matchMedia('(hover: hover) and (pointer: fine)');
+  btn?.addEventListener('click', (e) => {
+    clearTimeout(t); postavi(!otvoren());
+    // sa tastature (Enter/razmak) fokus ide na prvu kategoriju
+    if (otvoren() && e.detail === 0) mega?.querySelector<HTMLElement>('a')?.focus();
+  });
+  if (btn && mega) {
+    btn.addEventListener('mouseenter', () => { if (!mis.matches) return; clearTimeout(t); t = window.setTimeout(() => postavi(true), 110); });
+    [btn, mega].forEach((el) => el.addEventListener('mouseleave', () => { if (!mis.matches) return; clearTimeout(t); t = window.setTimeout(() => postavi(false), 260); }));
+    mega.addEventListener('mouseenter', () => clearTimeout(t));
+    mega.addEventListener('focusout', (e) => { const n = (e as FocusEvent).relatedTarget as Node | null; if (n && !mega.contains(n) && n !== btn) postavi(false); });
+  }
+  bg?.addEventListener('click', () => postavi(false));
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (otvoren()) { postavi(false); btn?.focus(); }
+    else if (menu?.classList.contains('open')) close();
+  });
 </script>

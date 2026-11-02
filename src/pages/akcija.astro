@@ -1,0 +1,72 @@
+---
+// Proizvodi na akciji (akcija se podešava u adminu → Podešavanja → Akcija).
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Icon from '../components/Icon.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Odbrojavanje from '../components/Odbrojavanje.astro';
+import { PRODUCTS, hasPhoto, sveCene } from '../data/products';
+import { CATEGORIES, catUrl } from '../data/categories';
+import { AKCIJA, akcijaPct } from '../lib/cene';
+import { datumKratko } from '../data/site';
+
+const lista = AKCIJA ? PRODUCTS.filter((p) => akcijaPct(p) > 0 && sveCene(p).length).sort((a, b) => Number(hasPhoto(b)) - Number(hasPhoto(a))) : [];
+const kat = AKCIJA ? CATEGORIES.find((c) => c.slug === AKCIJA!.kategorija) : undefined;
+const naslov = AKCIJA ? `${AKCIJA.naziv} −${AKCIJA.procenat}%` : 'Akcija';
+---
+<Base title={`${naslov} | Bumbaru`} description={AKCIJA ? `${AKCIJA.naziv}: ${AKCIJA.procenat}% popusta na ${kat?.label || 'izabrane proizvode'} do ${datumKratko(AKCIJA.do)} Poručivanje preko Messengera.` : 'Trenutno nema akcije. Pogledajte ceo Bumbaru katalog.'} current="akcija" noindex={!AKCIJA}>
+  <div class="paper-zone">
+    <div class="wrap">
+      <Crumbs items={[{ label: 'Akcija' }]} />
+      {AKCIJA ? (
+        <>
+          <section class="ak-hero ak-on" aria-labelledby="ak-t">
+            <div class="ak-hero-txt">
+              <span class="badge badge-berry">Akcija traje do {datumKratko(AKCIJA.do)}</span>
+              <h1 id="ak-t" class="h1">{AKCIJA.naziv}: <span class="ak-pct">−{AKCIJA.procenat}%</span></h1>
+              <p class="lead">Popust važi za sve proizvode iz kategorije {kat?.label || ''}, a cena je već umanjena. Popust za veću količinu i za komplet se dodaje na akcijsku cenu.</p>
+              <Odbrojavanje />
+            </div>
+            <div class="ak-hero-art" aria-hidden="true">
+              <span class="ak-big">−{AKCIJA.procenat}%</span>
+              <img class="fx-float" src="/img/brand/pcelica.webp" alt="" width="120" height="120" />
+            </div>
+          </section>
+          <p class="muted ak-cnt"><b>{lista.length}</b> proizvoda na akciji</p>
+          <div class="grid ak-on">{lista.map((p, i) => <ProductCard p={p} eager={i < 4} />)}</div>
+          <div class="ak-kraj-msg">
+            <h2 class="h2">Akcija je završena</h2>
+            <p class="muted">Hvala svima! Ceo katalog je i dalje tu.</p>
+            <a class="btn btn-primary btn-lg" href="/katalog/">Pogledajte katalog</a>
+          </div>
+        </>
+      ) : (
+        <section class="ak-nema">
+          <img src="/img/brand/pcelica.webp" alt="" width="120" height="120" />
+          <h1 class="h1">Trenutno nema akcije</h1>
+          <p class="lead">Pratite nas na Facebook-u da ne propustite sledeću. Do tada, pogledajte ceo katalog ili pustite kviz da vam predloži poklon.</p>
+          <div class="ak-nema-act"><a class="btn btn-primary btn-lg" href="/katalog/">Katalog</a><a class="btn btn-lg" href="/nadji-poklon/"><Icon name="sparkle" />Nađi poklon</a></div>
+        </section>
+      )}
+      {kat && <p class="ak-link"><a class="link-arrow" href={catUrl(kat.slug)}>Cela kategorija {kat.label}<Icon name="arrow" /></a></p>}
+    </div>
+  </div>
+</Base>
+<style>
+  .ak-hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; align-items: center; margin-top: 8px; padding: 40px 48px; border-radius: var(--r-lg); background: var(--berry-soft); border: 2px dashed var(--berry); overflow: hidden; overflow: clip; }
+  .ak-hero-txt { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .ak-pct { color: var(--berry); }
+  .ak-hero-art { position: relative; height: 200px; display: flex; align-items: center; justify-content: center; }
+  .ak-big { width: 170px; height: 170px; border-radius: 50%; background: var(--berry); color: #fff; font-size: 52px; font-weight: 800; display: flex; align-items: center; justify-content: center; transform: rotate(-10deg); border: 4px dashed rgba(255,255,255,.7); box-shadow: 0 14px 30px rgba(154,52,32,.35); }
+  .ak-hero-art img { position: absolute; right: 0; top: -6px; width: 84px; height: auto; }
+  .ak-cnt { margin: 28px 0 20px; }
+  .ak-cnt b { color: var(--ink); }
+  .ak-kraj-msg { display: none; flex-direction: column; align-items: flex-start; gap: 12px; padding: 32px; border-radius: var(--r-lg); background: var(--surface-raised); }
+  :global(.akcija-kraj) .ak-kraj-msg { display: flex; }
+  :global(.akcija-kraj) .ak-cnt { display: none; }
+  .ak-nema { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; max-width: 640px; margin: 40px auto 0; }
+  .ak-nema img { width: 110px; height: auto; }
+  .ak-nema-act { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .ak-link { margin-top: 36px; }
+  @media (max-width: 860px) { .ak-hero { grid-template-columns: 1fr; padding: 28px 22px; } .ak-hero-art { display: none; } }
+</style>
