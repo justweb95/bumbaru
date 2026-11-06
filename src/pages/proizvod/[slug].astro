@@ -11,7 +11,7 @@ import Icon from '../../components/Icon.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Accordion from '../../components/Accordion.astro';
 import ColorPicker from '../../components/ColorPicker.astro';
-import { PRODUCTS, productBySlug, productUrl, cardImg, sveCene, izborKomada, type Product } from '../../data/products';
+import { PRODUCTS, productBySlug, productUrl, cardImg, sveCene, izborKomada, raznaCenaMotiva, type Product } from '../../data/products';
 import { categoryBySlug, catUrl } from '../../data/categories';
 import { SITE, din, messengerUrl } from '../../data/site';
 import { MOTIVI } from '../../lib/ornament';
@@ -39,8 +39,12 @@ const cenaOpc = (i: number) => (opcCena?.cene?.[i] || p.price || 0);
 const showVar = SITE.showPrices && !!opcCena && cenaOpc(0) > 0;
 // Prikazana cena (sa akcijom precrtana redovna): cena izabrane opcije, ili osnovna cena
 const cenaPrikaz = showVar ? cenaOpc(0) : showPrice ? p.price! : 0;
-const cenaPre = !showVar && p.priceFrom ? 'od ' : '';
-const cenaPosle = !showVar && izborKomada(p) ? ' po komadu' : '';
+const razneMot = raznaCenaMotiva(p); // motivi sa različitim cenama (npr. medaljoni): „od … din po komadu”
+const cenaPre = (!showVar && p.priceFrom) || razneMot ? 'od ' : '';
+const cenaPosle = izborKomada(p) ? ' po komadu' : '';
+// izbor komada + veličina sa cenom (npr. modlice): cena motiva se menja srazmerno izabranoj veličini
+const r10 = (x: number) => Math.round(x / 10) * 10;
+const motFaktor0 = showVar && p.price ? cenaOpc(0) / p.price : 1;
 const ak = cenaPrikaz ? akcijaPct(p) : 0;
 const isUkras = p.personal === 'ukras';
 const isSet = p.personal === 'set';
@@ -62,6 +66,7 @@ const ld: any = {
 };
 const doAk = ak && AKCIJA ? { priceValidUntil: AKCIJA.do } : {};
 if (showVar) { const c = sveCene(p).map((x) => snizi(x, ak)); ld.offers = { '@type': 'AggregateOffer', priceCurrency: 'RSD', lowPrice: Math.min(...c), highPrice: Math.max(...c), offerCount: c.length, availability: 'https://schema.org/InStock', url: SITE.url + productUrl(p.slug), ...doAk }; }
+else if (showPrice && razneMot) { const c = [p.price!, ...p.motivi!.lista.map((m) => m.cena || p.price!)].map((x) => snizi(x, ak)); ld.offers = { '@type': 'AggregateOffer', priceCurrency: 'RSD', lowPrice: Math.min(...c), highPrice: Math.max(...c), offerCount: p.motivi!.lista.length, availability: 'https://schema.org/InStock', url: SITE.url + productUrl(p.slug), ...doAk }; }
 else if (showPrice) ld.offers = { '@type': 'Offer', priceCurrency: 'RSD', price: snizi(p.price!, ak), availability: 'https://schema.org/InStock', url: SITE.url + productUrl(p.slug), ...doAk };
 
 // Komplet „Uz ovo često uzimaju”: samo za proizvode bez konfiguratora i izbora komada, i kad svi imaju cenu
@@ -112,8 +117,8 @@ const motBoje = mot?.vrsta === 'boje';
 const sil = motBoje ? silueta(mot!.silueta) : undefined;
 const motSlike = mot && !motBoje ? mot.lista.filter((m) => m.slika) : [];
 const motMax = mot && mot.popusti.length ? mot.popusti[mot.popusti.length - 1].od : 0;
-const motStavke = motBoje ? BOJE_NA_STANJU.map((b) => ({ id: b.id, naziv: b.naziv, hex: b.hex })) : (mot?.lista || []).map((m) => ({ id: m.id, naziv: m.naziv, hex: '' }));
-const motData = mot ? JSON.stringify({ boje: motBoje, sil: sil?.id || '', vb: sil?.viewBox || '', lista: motStavke.map((m) => ({ id: m.id, naziv: m.naziv, hex: m.hex })), popusti: mot.popusti, cena: showPrice ? p.price : 0 }) : '';
+const motStavke = motBoje ? BOJE_NA_STANJU.map((b) => ({ id: b.id, naziv: b.naziv, hex: b.hex, cena: 0 })) : (mot?.lista || []).map((m) => ({ id: m.id, naziv: m.naziv, hex: '', cena: m.cena && m.cena !== p.price ? m.cena : 0 }));
+const motData = mot ? JSON.stringify({ boje: motBoje, sil: sil?.id || '', vb: sil?.viewBox || '', lista: motStavke.map((m) => ({ id: m.id, naziv: m.naziv, hex: m.hex, ...(showPrice && m.cena ? { cena: m.cena } : {}) })), popusti: mot.popusti, cena: showPrice ? p.price : 0 }) : '';
 const rec = motBoje ? { jedan: 'boju', mn: 'boje', Mn: 'Boje' } : { jedan: 'motiv', mn: 'motive', Mn: 'Motivi' };
 const prvaMotiv = !live && p.images.length === 0 ? motSlike[0] : undefined; // bez galerije: prva fotografija motiva
 
@@ -331,7 +336,7 @@ const detailIcon = (q: string) => {
           {mot && (
             <fieldset class="field mot" data-motivi={motData} data-boje={motBoje ? '' : undefined}>
               <legend class="flabel">{motBoje ? 'Izaberite boje i broj komada' : 'Izaberite motive'}</legend>
-              <p class="hint mot-hint">{motBoje ? 'Kliknite boju koju želite, pa sa + i − podesite broj komada. Možete uzeti i više boja zajedno.' : 'Kliknite one koji vam se sviđaju. Može i više komada istog motiva.'}</p>
+              <p class="hint mot-hint">{motBoje ? 'Kliknite boju koju želite, pa sa + i − podesite broj komada. Možete uzeti i više boja zajedno.' : 'Kliknite one koji vam se sviđaju. Može i više komada istog motiva.'}{razneMot && showPrice && <> Medaljoni su veći, pa im je cena upisana na pločici.</>}</p>
               {motBoje && (
                 <svg width="0" height="0" class="sil-sprite" aria-hidden="true"><defs set:html={SILUETE_DEFS} />{sil && <symbol id={`sil-${sil.id}`} viewBox={sil.viewBox} set:html={sil.symbol} />}</svg>
               )}
@@ -347,6 +352,7 @@ const detailIcon = (q: string) => {
                         <span class="mot-img">{slika ? <img src={cardImg(slika)} alt="" width="300" height="300" loading="lazy" /> : <img class="mot-ph" src="/img/brand/pcelica.webp" alt="" width="160" height="160" loading="lazy" />}</span>
                       )}
                       <span class="mot-name">{m.naziv}</span>
+                      {showPrice && m.cena > 0 && <span class="mot-cena" data-mot-cena><Cena n={r10(m.cena * motFaktor0)} pct={ak} /></span>}
                       <span class="mot-check" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
                     </button>
                     <div class="mot-step" data-mot-step hidden>
@@ -798,7 +804,12 @@ const detailIcon = (q: string) => {
   const osveziCenu = () => {
     const c = izabranaCena();
     if (!c || !cenaEl) return;
-    if (cenaEl.dataset.n !== String(c)) { cenaEl.dataset.n = String(c); cenaEl.innerHTML = cenaHtml(c); cenaEl.classList.remove('pop'); void cenaEl.offsetWidth; cenaEl.classList.add('pop'); }
+    if (cenaEl.dataset.n !== String(c)) {
+      cenaEl.dataset.n = String(c);
+      // kod izbora komada (modlice): „od … po komadu” ostaje uz novu cenu
+      cenaEl.innerHTML = motCfg ? (motCfg.lista.some((m) => m.cena) ? 'od ' : '') + cenaHtml(c) + ' po komadu' : cenaHtml(c);
+      cenaEl.classList.remove('pop'); void cenaEl.offsetWidth; cenaEl.classList.add('pop');
+    }
   };
   form.addEventListener('change', osveziCenu);
 
@@ -822,11 +833,17 @@ const detailIcon = (q: string) => {
 
   // ——— Izbor motiva (npr. modlice) ———
   const motEl = form.querySelector<HTMLElement>('[data-motivi]');
-  const motCfg = motEl ? (JSON.parse(motEl.dataset.motivi || '{}') as { boje: boolean; sil: string; vb: string; lista: { id: string; naziv: string; hex: string }[]; popusti: { od: number; procenat: number }[]; cena: number }) : null;
+  const motCfg = motEl ? (JSON.parse(motEl.dataset.motivi || '{}') as { boje: boolean; sil: string; vb: string; lista: { id: string; naziv: string; hex: string; cena?: number }[]; popusti: { od: number; procenat: number }[]; cena: number }) : null;
   const motN = new Map<string, number>();
   const motUkupno = () => [...motN.values()].reduce((a, b) => a + b, 0);
   const motPopust = (n: number) => (motCfg ? motCfg.popusti.filter((x) => n >= x.od).reduce((a, x) => Math.max(a, x.procenat), 0) : 0);
-  const motCena = (n: number) => (motCfg ? Math.round((n * snizi(motCfg.cena) * (1 - motPopust(n) / 100)) / 10) * 10 : 0);
+  // zbir cena izabranih komada (motiv može imati svoju cenu, npr. medaljon), pa popust na zbir
+  // izabrana veličina sa cenom (npr. Mala 250): osnovna cena po komadu, a motivi sa svojom cenom srazmerno
+  const motOsnova = () => (motCfg ? (cenaEl ? izabranaCena() : 0) || motCfg.cena : 0);
+  const motJed = (m: { cena?: number }) => (!motCfg ? 0 : m.cena ? Math.round((m.cena * motOsnova()) / (motCfg.cena || 1) / 10) * 10 : motOsnova());
+  const motZbir = (f: (c: number) => number) => (motCfg ? motCfg.lista.reduce((a, m) => a + (motN.get(m.id) || 0) * f(motJed(m)), 0) : 0);
+  const motPuna = () => motZbir((c) => c);
+  const motCena = (n: number) => (motCfg ? Math.round((motZbir((c) => snizi(c)) * (1 - motPopust(n) / 100)) / 10) * 10 : 0);
   const dinar = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' din';
   const kom = (n: number) => (n === 1 ? 'komad' : 'komada');
   const pop = (el: Element | null) => { if (!el) return; el.classList.remove('pop'); void (el as HTMLElement).offsetWidth; el.classList.add('pop'); };
@@ -869,9 +886,13 @@ const detailIcon = (q: string) => {
     const tot = motEl.querySelector<HTMLElement>('[data-mm-total]');
     if (tot) {
       tot.hidden = n === 0 || !motCfg.cena;
-      tot.innerHTML = n ? `Ukupno <strong>${dinar(motCena(n))}</strong>${pct || akPct() ? ` <s>${dinar(n * motCfg.cena)}</s>` : ''}` : '';
+      tot.innerHTML = n ? `Ukupno <strong>${dinar(motCena(n))}</strong>${pct || akPct() ? ` <s>${dinar(motPuna())}</s>` : ''}` : '';
     }
     if (n > 0) motEl.querySelector('[data-err-mot]')!.textContent = '';
+    motEl.querySelectorAll<HTMLElement>('[data-mot]').forEach((t) => {
+      const c = t.querySelector<HTMLElement>('[data-mot-cena]'); const m = motCfg.lista.find((x) => x.id === t.dataset.mot);
+      if (c && m?.cena) { const v = motJed(m); if (c.dataset.n !== String(v)) { c.dataset.n = String(v); c.innerHTML = cenaHtml(v); } }
+    });
     if (motCfg.boje) mixCrtaj(n);
     motPrethodni = n;
     sbarCena();
@@ -940,6 +961,7 @@ const detailIcon = (q: string) => {
       motCrtaj(); showMix(); pop(b);
     }));
     motCrtaj();
+    form.addEventListener('change', (e) => { if ((e.target as HTMLElement).matches('[data-cena]')) motCrtaj(); });
   }
 
   const greska = (el: HTMLElement | null, msg: string) => { if (el) { el.textContent = msg; el.style.color = 'var(--berry)'; } };
@@ -981,7 +1003,7 @@ const detailIcon = (q: string) => {
       const pct = motPopust(n);
       if (pct) lines.push('Popust: ' + pct + '%');
       if (akPct()) lines.push(`${form.dataset.akNaziv || 'Akcija'}: −${akPct()}%`);
-      if (motCfg.cena) { cena = motCena(n); lines.push('Cena: ' + dinar(cena) + (pct || akPct() ? ' (umesto ' + dinar(n * motCfg.cena) + ')' : '')); }
+      if (motCfg.cena) { cena = motCena(n); lines.push('Cena: ' + dinar(cena) + (pct || akPct() ? ' (umesto ' + dinar(motPuna()) + ')' : '')); }
       qty = n;
     }
     if (kcCfg) {
@@ -1126,7 +1148,7 @@ const detailIcon = (q: string) => {
   const sbar = document.querySelector<HTMLElement>('[data-sbar]');
   function sbarCena() {
     const el = document.querySelector<HTMLElement>('[data-sbar-cena]'); if (!el) return;
-    if (motCfg && motCfg.cena) { const n = motUkupno(); el.textContent = n ? `${n} kom · ${dinH(motCena(n))}` : `${dinH(snizi(motCfg.cena))} / kom`; return; }
+    if (motCfg && motCfg.cena) { const n = motUkupno(); el.textContent = n ? `${n} kom · ${dinH(motCena(n))}` : `${motCfg.lista.some((m) => m.cena) ? 'od ' : ''}${dinH(snizi(motOsnova()))} / kom`; return; }
     const c = (cenaEl ? izabranaCena() : 0) || osnovnaCena;
     el.textContent = c ? (form.dataset.od ? 'od ' : '') + dinH(snizi(c)) : '';
   }
@@ -1344,6 +1366,8 @@ const detailIcon = (q: string) => {
   .mot-img img { width: 100%; height: 100%; object-fit: cover; }
   .mot-img .mot-ph { width: 56%; height: auto; opacity: .55; }
   .mot-name { font-size: 13px; line-height: 17px; font-weight: 700; text-align: center; }
+  .mot-cena { font-size: 12px; line-height: 16px; font-weight: 800; padding: 2px 8px; margin-top: -2px; border-radius: 999px; background: var(--surface-raised); white-space: nowrap; }
+  .mot-tile.on .mot-cena { background: var(--surface-paper); }
   .mot-check { position: absolute; top: -7px; right: -7px; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--surface-paper); display: inline-flex; align-items: center; justify-content: center; transform: scale(0); transition: transform .35s cubic-bezier(.3,1.7,.5,1); }
   .mot-tile.on .mot-pick { border-color: var(--ink); background: var(--honey-soft); transform: rotate(-2deg); }
   .mot-tile.on:nth-child(even) .mot-pick { transform: rotate(2deg); }

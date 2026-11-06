@@ -56,6 +56,76 @@
       ]
     },
     {
+      "slug": "slavske-modlice",
+      "label": "Slavske modlice",
+      "title": "Slavske modlice za slavski kolač i česnicu",
+      "text": "Modlice sa pečatom za slavski kolač: medaljoni svetaca, krst, pečat ИС ХС НИ КА, klas, grožđe i još, plus božićne za česnicu. U tri veličine, kao gotov set za vašu slavu ili set koji složite sami.",
+      "seoTitle": "Slavske modlice za slavski kolač, setovi po slavama | Bumbaru",
+      "meta": "Slavske modlice sa pečatom: Sveti Nikola, Sveti Georgije, Arhangel Mihailo, Sveti Jovan, Sveti Dimitrije, Sveti Sava i božićne modlice. Setovi po slavama i set po izboru sa popustom.",
+      "bg": "/img/bg/slavske-modlice.webp",
+      "bgPos": "right center",
+      "icon": "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v10M8.5 10.5h7",
+      "filters": [
+        {
+          "id": "sve",
+          "label": "Sve"
+        },
+        {
+          "id": "sv-nikola",
+          "label": "Sv. Nikola"
+        },
+        {
+          "id": "sv-georgije",
+          "label": "Sv. Georgije"
+        },
+        {
+          "id": "arh-mihailo",
+          "label": "Arh. Mihailo"
+        },
+        {
+          "id": "sv-jovan",
+          "label": "Sv. Jovan"
+        },
+        {
+          "id": "sv-dimitrije",
+          "label": "Sv. Dimitrije"
+        },
+        {
+          "id": "sv-sava",
+          "label": "Sv. Sava"
+        },
+        {
+          "id": "bozic",
+          "label": "Božić"
+        }
+      ],
+      "about": {
+        "h2": "Slavske modlice sa pečatom: kako rade",
+        "p": [
+          "Svaka modlica ima dva dela: sekač iseče oblik iz razvaljanog testa, a pečat se spusti u njega i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
+          "Slavski set ima medaljon sveca i 11 osnovnih modlica i jeftiniji je nego modlice pojedinačno. Ako želite samo neke motive ili više komada istog, složite svoj set: od 6 modlica dobijate popust. Za Božić su tu Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”."
+        ]
+      },
+      "faq": [
+        {
+          "q": "Koju modlicu da uzmem za svoju slavu?",
+          "a": "Kliknite filter sa imenom svoje slave: tu su set, medaljon sveca i sve modlice koje idu uz njega. Ako vaše slave nema na spisku, pišite nam u Messenger-u."
+        },
+        {
+          "q": "Šta je u slavskom setu?",
+          "a": "Medaljon sveca i 11 osnovnih modlica: krst, dva pečata ИС ХС НИ КА, „Срећна слава”, golub, knjiga, klas, cvet, grožđe, bure i pletenica. Ukupno 12 komada."
+        },
+        {
+          "q": "Koje veličine imate?",
+          "a": "Svaku modlicu i svaki set pravimo u tri veličine: velikoj, srednjoj i maloj. Medaljon sveca je Ø 9,5, 7,6 ili 6,2 cm, a mere svake modlice su na njenoj strani."
+        },
+        {
+          "q": "Mogu li u mašinu za sudove?",
+          "a": "Ne. Perite ih ručno u mlakoj vodi, jer PLA plastika omekšava na toploti."
+        }
+      ]
+    },
+    {
       "slug": "radionica",
       "label": "Radionica",
       "title": "Držači za aku alat i pribor za radionicu",

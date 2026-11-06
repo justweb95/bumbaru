@@ -45,6 +45,7 @@ const PO_KATEGORIJI: Record<string, Profil> = {
   'dom-i-kuhinja': { za: ['ona', 'dom', 'porodica'], povod: ['useljenje', 'rodjendan', 'paznja'], stil: ['lepo', 'korisno'] },
   radionica: { za: ['on', 'dom'], povod: ['rodjendan', 'useljenje', 'paznja'], stil: ['korisno'] },
   'auto-i-moto': { za: ['on'], povod: ['rodjendan', 'paznja'], stil: ['korisno'] },
+  'slavske-modlice': { za: ['ona', 'porodica', 'dom'], povod: ['paznja', 'useljenje'], stil: ['korisno', 'lepo'] },
 };
 const P = (za: string[], povod: string[], stil: string[]): Profil => ({ za, povod, stil });
 const LUTKICA = P(['dete', 'ona', 'porodica', 'kolege'], ['nova-godina', 'paznja', 'rodjendan'], ['zabavno', 'lepo']);
@@ -82,5 +83,7 @@ const GRUPE: Record<string, string> = {
   'privezak-sa-imenom': 'ime', 'privezak-sa-imenom-bajkovita-slova': 'ime', 'privezak-sa-imenom-kockice': 'ime', 'pikselasti-privezak-sa-imenom': 'ime',
   'privezak-deda-mraz': 'ng-privesci', 'privezak-irvas': 'ng-privesci',
 };
-export const grupa = (p: Product) => GRUPE[p.slug] || p.slug;
+// Slavske modlice: svi setovi su jedna grupa, sve pojedinačne modlice druga (i nove iz admina); „sastavite svoj set” je zaseban
+const grupaModlice = (p: Product) => (p.category !== 'slavske-modlice' || p.motivi ? '' : /set/i.test(p.title) ? 'slavski-setovi' : 'slavske-modlice');
+export const grupa = (p: Product) => GRUPE[p.slug] || grupaModlice(p) || p.slug;
 export const profil = (p: Product): Profil => PROFILI[p.slug] || PO_KATEGORIJI[p.category] || { za: SVI_ZA, povod: SVI_POVODI, stil: [] };

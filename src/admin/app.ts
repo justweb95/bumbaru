@@ -533,7 +533,8 @@ function motiviSekcija(p: Product) {
     const P = [...p.motivi.popusti].filter((x) => x.od > 1 && x.procenat > 0).sort((a, b) => a.od - b.od);
     if (!p.price) { cenovnik.textContent = 'Upišite cenu po komadu (sekcija Cena), pa ovde vidite cene paketa.'; return; }
     const c = (n: number) => { const pct = P.filter((x) => n >= x.od).reduce((a, x) => Math.max(a, x.procenat), 0); return Math.round((n * p.price! * (1 - pct / 100)) / 10) * 10; };
-    cenovnik.textContent = 'Cene: ' + [1, ...P.map((x) => x.od)].map((n) => `${n} kom = ${din(c(n))}`).join(' · ') + ' (zaokruženo na 10 din).';
+    const razne = p.motivi.vrsta !== 'boje' && p.motivi.lista.some((m) => m.cena && m.cena !== p.price);
+    cenovnik.textContent = (razne ? 'Cene (motivi po osnovnoj ceni): ' : 'Cene: ') + [1, ...P.map((x) => x.od)].map((n) => `${n} kom = ${din(c(n))}`).join(' · ') + ' (zaokruženo na 10 din).';
   };
 
   const crtaj = () => {
@@ -563,11 +564,13 @@ function motiviSekcija(p: Product) {
               h('button', { type: 'button', class: 'mthumb', disabled: rad, title: m.slika ? 'Zameni fotografiju' : 'Dodaj fotografiju', 'aria-label': m.slika ? `Zameni fotografiju: ${m.naziv}` : `Dodaj fotografiju: ${m.naziv}`, onclick: () => fajl.click() },
                 m.slika ? h('img', { src: slikaUrl(m.slika), alt: '', onerror: (e: Event) => ((e.target as HTMLImageElement).style.opacity = '0') }) : ikona('camera', 22)),
               ulaz(m.naziv, (v) => { m.naziv = v; if (m.slika) m.slika.alt = `${p.title}: ${v}`; }, { placeholder: `Naziv motiva (npr. Jelka)`, 'aria-label': `Naziv motiva ${i + 1}`, maxlength: 40 }),
+              h('label', { class: 'inl mcena' }, ulaz(m.cena ? String(m.cena) : '', (v) => { const n = Math.round(Number(v)); if (n > 0) m.cena = n; else delete m.cena; osveziCenovnik(); }, { type: 'number', min: 0, inputmode: 'numeric', placeholder: p.price ? String(p.price) : 'cena', 'aria-label': `Cena motiva ${i + 1} (prazno = osnovna cena)` }), 'din'),
               fajl);
           }, () => ({ id: '', naziv: '' }), 'Dodaj motiv', 40),
           h('div', { class: 'tog-row' },
             h('button', { type: 'button', class: 'btn btn-sm btn-primary', disabled: rad, onclick: () => fajlVise.click() }, ikona('camera'), rad ? 'Obrađujem…' : 'Dodaj više motiva iz fotografija'),
             h('span', { class: 'hint' }, 'Izaberite fotografije svih motiva odjednom: za svaku se pravi motiv, a naziv od imena fajla.')),
+          h('p', { class: 'hint' }, 'Cena pored motiva je cena po komadu baš tog motiva (npr. veći medaljon). Prazno = osnovna cena proizvoda. Popust se računa na zbir.'),
           status),
       ] : []),
       ...(ukljuceno ? [

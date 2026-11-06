@@ -21,7 +21,8 @@ export interface ColorChoice { id: string; label: string; def: string }
 // popust zavisi od ukupnog broja komada (od: najmanje komada, procenat: popust na cenu po komadu).
 // vrsta 'boje': kupac bira boje filamenta (sve boje na stanju) i broj komada svake, umesto motiva;
 // silueta = crtež proizvoda koji se oboji u svaku boju (src/lib/siluete.ts), bez nje se prikazuje krug boje.
-export interface Motiv { id: string; naziv: string; slika?: Img }
+// cena: cena po komadu baš tog motiva (npr. veći medaljon); bez nje važi osnovna cena proizvoda
+export interface Motiv { id: string; naziv: string; slika?: Img; cena?: number }
 export interface MotiviCfg { lista: Motiv[]; popusti: { od: number; procenat: number }[]; vrsta?: 'boje'; silueta?: string }
 // Komplet „Uz ovo često uzimaju”: drugi proizvodi (adrese) i popust na ukupnu cenu kompleta
 export interface Komplet { uz: string[]; popust: number }
@@ -77,6 +78,8 @@ export const cardImg = (i: Img) => (i.src.startsWith('/img/p/') ? `${i.src}-sq.w
 // Izbor motiva: popust za dati broj komada (0 ako nema) i ukupna cena zaokružena na 10 din
 export const popustZa = (m: MotiviCfg, n: number) => m.popusti.filter((x) => n >= x.od).reduce((a, x) => Math.max(a, x.procenat), 0);
 export const cenaMotiva = (cena: number, m: MotiviCfg, n: number) => Math.round((n * cena * (1 - popustZa(m, n) / 100)) / 10) * 10;
+// Motivi sa sopstvenom cenom (npr. medaljoni skuplji od osnovnih modlica)
+export const raznaCenaMotiva = (x: Product) => !!x.price && x.motivi?.vrsta !== 'boje' && !!x.motivi?.lista.some((m) => m.cena && m.cena !== x.price);
 
 // Cene po opcijama: sve cene koje kupac može da dobije (za „od … din” i Google)
 export const sveCene = (x: Product) => {
