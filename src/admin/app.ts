@@ -565,12 +565,18 @@ function motiviSekcija(p: Product) {
                 m.slika ? h('img', { src: slikaUrl(m.slika), alt: '', onerror: (e: Event) => ((e.target as HTMLImageElement).style.opacity = '0') }) : ikona('camera', 22)),
               ulaz(m.naziv, (v) => { m.naziv = v; if (m.slika) m.slika.alt = `${p.title}: ${v}`; }, { placeholder: `Naziv motiva (npr. Jelka)`, 'aria-label': `Naziv motiva ${i + 1}`, maxlength: 40 }),
               h('label', { class: 'inl mcena' }, ulaz(m.cena ? String(m.cena) : '', (v) => { const n = Math.round(Number(v)); if (n > 0) m.cena = n; else delete m.cena; osveziCenovnik(); }, { type: 'number', min: 0, inputmode: 'numeric', placeholder: p.price ? String(p.price) : 'cena', 'aria-label': `Cena motiva ${i + 1} (prazno = osnovna cena)` }), 'din'),
+              ...(() => {
+                // motiv sa svojom cenom (npr. medaljon) može imati cenu za svaku veličinu; prazno = srazmerno
+                const opc = (p.options || []).find((o) => o.cene?.some((c) => c > 0));
+                if (!opc || opc.values.length < 2 || !(m.cena || m.cene)) return [];
+                return opc.values.map((val, j) => h('label', { class: 'inl mcena' }, val.split(/[ ,:]/)[0], ulaz(m.cene?.[j] ? String(m.cene[j]) : '', (v) => { const n = Math.round(Number(v)); const a = opc.values.map((_, k) => m.cene?.[k] || 0); a[j] = n > 0 ? n : 0; if (a.some((x) => x > 0)) m.cene = a; else delete m.cene; }, { type: 'number', min: 0, inputmode: 'numeric', 'aria-label': `Cena motiva ${i + 1} za veličinu ${val}` })));
+              })(),
               fajl);
           }, () => ({ id: '', naziv: '' }), 'Dodaj motiv', 40),
           h('div', { class: 'tog-row' },
             h('button', { type: 'button', class: 'btn btn-sm btn-primary', disabled: rad, onclick: () => fajlVise.click() }, ikona('camera'), rad ? 'Obrađujem…' : 'Dodaj više motiva iz fotografija'),
             h('span', { class: 'hint' }, 'Izaberite fotografije svih motiva odjednom: za svaku se pravi motiv, a naziv od imena fajla.')),
-          h('p', { class: 'hint' }, 'Cena pored motiva je cena po komadu baš tog motiva (npr. veći medaljon). Prazno = osnovna cena proizvoda. Popust se računa na zbir.'),
+          h('p', { class: 'hint' }, 'Cena pored motiva je cena po komadu baš tog motiva (npr. veći medaljon). Prazno = osnovna cena proizvoda. Kod motiva sa svojom cenom možete upisati i cenu za svaku veličinu (prazno = srazmerno). Popust se računa na zbir.'),
           status),
       ] : []),
       ...(ukljuceno ? [

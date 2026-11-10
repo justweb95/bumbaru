@@ -117,8 +117,8 @@ const motBoje = mot?.vrsta === 'boje';
 const sil = motBoje ? silueta(mot!.silueta) : undefined;
 const motSlike = mot && !motBoje ? mot.lista.filter((m) => m.slika) : [];
 const motMax = mot && mot.popusti.length ? mot.popusti[mot.popusti.length - 1].od : 0;
-const motStavke = motBoje ? BOJE_NA_STANJU.map((b) => ({ id: b.id, naziv: b.naziv, hex: b.hex, cena: 0 })) : (mot?.lista || []).map((m) => ({ id: m.id, naziv: m.naziv, hex: '', cena: m.cena && m.cena !== p.price ? m.cena : 0 }));
-const motData = mot ? JSON.stringify({ boje: motBoje, sil: sil?.id || '', vb: sil?.viewBox || '', lista: motStavke.map((m) => ({ id: m.id, naziv: m.naziv, hex: m.hex, ...(showPrice && m.cena ? { cena: m.cena } : {}) })), popusti: mot.popusti, cena: showPrice ? p.price : 0 }) : '';
+const motStavke = motBoje ? BOJE_NA_STANJU.map((b) => ({ id: b.id, naziv: b.naziv, hex: b.hex, cena: 0 })) : (mot?.lista || []).map((m) => ({ id: m.id, naziv: m.naziv, hex: '', cena: m.cena && m.cena !== p.price ? m.cena : 0, cene: m.cena && m.cene?.some((c) => c > 0) ? m.cene : undefined }));
+const motData = mot ? JSON.stringify({ boje: motBoje, sil: sil?.id || '', vb: sil?.viewBox || '', lista: motStavke.map((m) => ({ id: m.id, naziv: m.naziv, hex: m.hex, ...(showPrice && m.cena ? { cena: m.cena } : {}), ...(showPrice && m.cena && m.cene ? { cene: m.cene } : {}) })), popusti: mot.popusti, cena: showPrice ? p.price : 0 }) : '';
 const rec = motBoje ? { jedan: 'boju', mn: 'boje', Mn: 'Boje' } : { jedan: 'motiv', mn: 'motive', Mn: 'Motivi' };
 const prvaMotiv = !live && p.images.length === 0 ? motSlike[0] : undefined; // bez galerije: prva fotografija motiva
 
@@ -352,7 +352,7 @@ const detailIcon = (q: string) => {
                         <span class="mot-img">{slika ? <img src={cardImg(slika)} alt="" width="300" height="300" loading="lazy" /> : <img class="mot-ph" src="/img/brand/pcelica.webp" alt="" width="160" height="160" loading="lazy" />}</span>
                       )}
                       <span class="mot-name">{m.naziv}</span>
-                      {showPrice && m.cena > 0 && <span class="mot-cena" data-mot-cena><Cena n={r10(m.cena * motFaktor0)} pct={ak} /></span>}
+                      {showPrice && m.cena > 0 && <span class="mot-cena" data-mot-cena><Cena n={m.cene?.[0] || r10(m.cena * motFaktor0)} pct={ak} /></span>}
                       <span class="mot-check" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
                     </button>
                     <div class="mot-step" data-mot-step hidden>
@@ -833,14 +833,16 @@ const detailIcon = (q: string) => {
 
   // ——— Izbor motiva (npr. modlice) ———
   const motEl = form.querySelector<HTMLElement>('[data-motivi]');
-  const motCfg = motEl ? (JSON.parse(motEl.dataset.motivi || '{}') as { boje: boolean; sil: string; vb: string; lista: { id: string; naziv: string; hex: string; cena?: number }[]; popusti: { od: number; procenat: number }[]; cena: number }) : null;
+  const motCfg = motEl ? (JSON.parse(motEl.dataset.motivi || '{}') as { boje: boolean; sil: string; vb: string; lista: { id: string; naziv: string; hex: string; cena?: number; cene?: number[] }[]; popusti: { od: number; procenat: number }[]; cena: number }) : null;
   const motN = new Map<string, number>();
   const motUkupno = () => [...motN.values()].reduce((a, b) => a + b, 0);
   const motPopust = (n: number) => (motCfg ? motCfg.popusti.filter((x) => n >= x.od).reduce((a, x) => Math.max(a, x.procenat), 0) : 0);
   // zbir cena izabranih komada (motiv može imati svoju cenu, npr. medaljon), pa popust na zbir
   // izabrana veličina sa cenom (npr. Mala 250): osnovna cena po komadu, a motivi sa svojom cenom srazmerno
   const motOsnova = () => (motCfg ? (cenaEl ? izabranaCena() : 0) || motCfg.cena : 0);
-  const motJed = (m: { cena?: number }) => (!motCfg ? 0 : m.cena ? Math.round((m.cena * motOsnova()) / (motCfg.cena || 1) / 10) * 10 : motOsnova());
+  // redni broj izabrane vrednosti opcije sa cenom (npr. Velika 0, Srednja 1, Mala 2): motiv može imati svoju cenu za svaku
+  const motVel = () => { const r = [...form.querySelectorAll<HTMLInputElement>('input[data-cena]')]; if (r.length) return Math.max(0, r.findIndex((x) => x.checked)); const sel = form.querySelector<HTMLSelectElement>('select[data-option]'); return sel ? Math.max(0, sel.selectedIndex) : 0; };
+  const motJed = (m: { cena?: number; cene?: number[] }) => (!motCfg ? 0 : m.cena ? (m.cene?.[motVel()] || Math.round((m.cena * motOsnova()) / (motCfg.cena || 1) / 10) * 10) : motOsnova());
   const motZbir = (f: (c: number) => number) => (motCfg ? motCfg.lista.reduce((a, m) => a + (motN.get(m.id) || 0) * f(motJed(m)), 0) : 0);
   const motPuna = () => motZbir((c) => c);
   const motCena = (n: number) => (motCfg ? Math.round((motZbir((c) => snizi(c)) * (1 - motPopust(n) / 100)) / 10) * 10 : 0);

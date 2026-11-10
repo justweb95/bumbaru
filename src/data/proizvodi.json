@@ -3528,9 +3528,9 @@
         "sv-sava",
         "bozic"
       ],
-      "short": "Izaberite modlice i veličinu, od svih 22 motiva. Od 6 komada popust, a od 15 komada 35%.",
+      "short": "Izaberite modlice i veličinu, od svih 22 motiva. Kupite 5, šesta je gratis, a što više uzmete, veći je popust.",
       "lead": "Složite set po svom ukusu: medaljon sveca, krst, pečate, klas, grožđe ili božićne motive. Kliknite modlice koje želite, a pčelica pokazuje koliko vam fali do sledećeg popusta.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavske-modlice-sastavite-svoj-set/uad6cd8736",
@@ -3547,12 +3547,12 @@
           "values": [
             "Velika, medaljon Ø 9,5 cm",
             "Srednja, medaljon Ø 7,6 cm",
-            "Mala, medaljon Ø 6,2 cm"
+            "Mala, uz srednji medaljon Ø 7,6 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -3568,7 +3568,12 @@
               "alt": "Slavska modlica Sveti Nikola: medaljon sa likom Svetog Nikole i natpisom СВ. НИКОЛА, sekač sa pečatom",
               "og": "/img/p/modlica-sveti-nikola/u338bb0f9c-og.jpg"
             },
-            "cena": 690
+            "cena": 500,
+            "cene": [
+              500,
+              400,
+              400
+            ]
           },
           {
             "id": "sv-georgije",
@@ -3580,7 +3585,12 @@
               "alt": "Slavska modlica Sveti Georgije: medaljon sa likom Svetog Georgija (Đorđa) na konju i natpisom СВ. ГЕОРГИЈЕ, sekač sa pečatom",
               "og": "/img/p/modlica-sveti-georgije/udfdaec415-og.jpg"
             },
-            "cena": 690
+            "cena": 500,
+            "cene": [
+              500,
+              400,
+              400
+            ]
           },
           {
             "id": "arh-mihailo",
@@ -3592,7 +3602,12 @@
               "alt": "Slavska modlica Arhangel Mihailo: medaljon sa likom Arhangela Mihaila sa krilima i natpisom АРХ. МИХАИЛО, sekač sa pečatom",
               "og": "/img/p/modlica-arhangel-mihailo/u605cd61b3-og.jpg"
             },
-            "cena": 690
+            "cena": 500,
+            "cene": [
+              500,
+              400,
+              400
+            ]
           },
           {
             "id": "sv-jovan",
@@ -3604,7 +3619,12 @@
               "alt": "Slavska modlica Sveti Jovan: medaljon sa likom Svetog Jovana Krstitelja i natpisom СВ. ЈОВАН, sekač sa pečatom",
               "og": "/img/p/modlica-sveti-jovan/ue20ca60e6-og.jpg"
             },
-            "cena": 690
+            "cena": 500,
+            "cene": [
+              500,
+              400,
+              400
+            ]
           },
           {
             "id": "sv-dimitrije",
@@ -3616,7 +3636,12 @@
               "alt": "Slavska modlica Sveti Dimitrije: medaljon sa likom Svetog Dimitrija i natpisom СВ. ДИМИТРИЈЕ, sekač sa pečatom",
               "og": "/img/p/modlica-sveti-dimitrije/u3276404c3-og.jpg"
             },
-            "cena": 690
+            "cena": 500,
+            "cene": [
+              500,
+              400,
+              400
+            ]
           },
           {
             "id": "sv-sava",
@@ -3628,7 +3653,12 @@
               "alt": "Slavska modlica Sveti Sava: medaljon sa likom Svetog Save i natpisom СВ. САВА, sekač sa pečatom",
               "og": "/img/p/modlica-sveti-sava/u415b4db8b-og.jpg"
             },
-            "cena": 690
+            "cena": 500,
+            "cene": [
+              500,
+              400,
+              400
+            ]
           },
           {
             "id": "krst",
@@ -3772,7 +3802,12 @@
               "alt": "Božićna modlica Rođenje Hristovo: medaljon: Mladenac u jaslama u pećini, vo i magarac, Vitlejemska zvezda i natpis ИС ХС, sekač sa pečatom",
               "og": "/img/p/bozicna-modlica-rodjenje-hristovo/ued2093e2f-og.jpg"
             },
-            "cena": 690
+            "cena": 500,
+            "cene": [
+              500,
+              400,
+              400
+            ]
           },
           {
             "id": "vitlejemska-zvezda",
@@ -3811,19 +3846,19 @@
         "popusti": [
           {
             "od": 6,
-            "procenat": 15
+            "procenat": 17
           },
           {
-            "od": 9,
-            "procenat": 22
-          },
-          {
-            "od": 12,
-            "procenat": 30
+            "od": 10,
+            "procenat": 20
           },
           {
             "od": 15,
-            "procenat": 35
+            "procenat": 25
+          },
+          {
+            "od": 20,
+            "procenat": 30
           }
         ]
       },
@@ -3833,10 +3868,10 @@
         "poruka": "Zdravo! Slavimo ______. Da li imate ili pravite slavsku modlicu sa tim svecem?"
       },
       "about": [
-        "Izaberite modlice koje vam trebaju, a od svake možete uzeti i više komada. Što više modlica uzmete, veći je popust: od 6 komada 15%, od 9 komada 22%, od 12 komada 30%, a od 15 komada 35%.",
-        "Izaberite veličinu za ceo set: veliku, srednju ili malu. U velikoj su osnovne modlice 350 din, u srednjoj 300 din, a u maloj 250 din po komadu. Medaljoni svetaca i Rođenje Hristovo su veći, pa koštaju 690, 590 i 490 din. Popust se računa na ukupnu cenu.",
+        "Izaberite modlice koje vam trebaju, a od svake možete uzeti i više komada. Što više modlica uzmete, veći je popust: od 6 komada 17% (kao 5 + 1 gratis), od 10 komada 20% (2 gratis), od 15 komada 25%, a od 20 komada 30%.",
+        "Izaberite veličinu za ceo set: veliku, srednju ili malu. U velikoj su osnovne modlice 300 din, u srednjoj 200 din, a u maloj 150 din po komadu. Medaljoni svetaca i Rođenje Hristovo su veći: veliki 500 din, srednji 400 din. Uz male modlice ide srednji medaljon, jer se na manjem lik i natpis ne bi videli. Popust se računa na ukupnu cenu.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Ako slavite jednog od šest svetaca sa spiska, pogledajte i gotov slavski set: medaljon i 11 osnovnih modlica su u njemu jeftiniji nego ovde."
+        "Ako slavite jednog od šest svetaca sa spiska, pogledajte i gotov slavski set: 8 modlica po izboru i medaljon su u njemu jeftiniji nego ovde."
       ],
       "specs": [
         [
@@ -3845,15 +3880,15 @@
         ],
         [
           "Popust",
-          "od 6 kom 15%, od 9 kom 22%, od 12 kom 30%, od 15 kom 35%"
+          "od 6 kom 17%, od 10 kom 20%, od 15 kom 25%, od 20 kom 30%"
         ],
         [
           "Veličine",
-          "velika (medaljon Ø 9,5 cm), srednja (Ø 7,6 cm), mala (Ø 6,2 cm)"
+          "velika (medaljon Ø 9,5 cm), srednja i mala (medaljon Ø 7,6 cm)"
         ],
         [
           "Cena po komadu",
-          "osnovne 350 / 300 / 250 din, medaljoni 690 / 590 / 490 din"
+          "osnovne 300 / 200 / 150 din, medaljon 500 (veliki) / 400 din (srednji)"
         ],
         [
           "Svaka modlica",
@@ -3893,7 +3928,7 @@
         },
         {
           "q": "Kako se računa popust?",
-          "a": "Prema ukupnom broju modlica u porudžbini: od 6 komada 15%, od 9 komada 22%, od 12 komada 30%, od 15 komada 35%. Motivi mogu biti različiti."
+          "a": "Prema ukupnom broju modlica u porudžbini: od 6 komada 17% (kao 5 + 1 gratis), od 10 komada 20% (2 gratis), od 15 komada 25%, od 20 komada 30%. Motivi mogu biti različiti."
         },
         {
           "q": "Koju veličinu da izaberem?",
@@ -3909,7 +3944,7 @@
         },
         {
           "q": "Šta je jeftinije, ovo ili slavski set?",
-          "a": "Za medaljon i 11 osnovnih modlica jeftiniji je gotov slavski set. Ovde birate tačno one modlice koje hoćete, i više komada istog motiva."
+          "a": "Za 8 modlica i medaljon jeftiniji je gotov slavski set. Ovde birate tačno one modlice koje hoćete, i koliko god komada."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -3924,8 +3959,8 @@
         "slavski-set-modlica-sveti-dimitrije",
         "slavski-set-modlica-sveti-sava"
       ],
-      "seoTitle": "Slavske modlice po izboru, popust do 35% | Bumbaru",
-      "meta": "Sastavite svoj set slavskih modlica: medaljoni svetaca, krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe i božićni motivi. Od 6 komada popust, do 35%."
+      "seoTitle": "Slavske modlice po izboru, 5 + 1 gratis | Bumbaru",
+      "meta": "Sastavite svoj set slavskih modlica: medaljoni svetaca, krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe i božićni motivi. Kupite 5, šesta je gratis, a popust raste do 30%."
     },
     {
       "id": "SS-01",
@@ -3938,9 +3973,9 @@
       "tags": [
         "sv-nikola"
       ],
-      "short": "12 modlica: medaljon Sveti Nikola i 11 osnovnih motiva, u tri veličine. Jeftinije nego pojedinačno.",
-      "lead": "Sve za slavski kolač za Nikoljdan (19. decembar) u jednom setu: medaljon sa likom Svetog Nikole za sredinu kolača i 11 modlica za ukrase oko njega.",
-      "price": 2490,
+      "short": "8 modlica po izboru i medaljon Sveti Nikola, u tri veličine. Medaljon je uvek veličinu veći. Jeftinije nego pojedinačno.",
+      "lead": "Sve za slavski kolač za Nikoljdan (19. decembar) u jednom setu: medaljon sa likom Svetog Nikole za sredinu kolača i 8 modlica po izboru za ukrase oko njega.",
+      "price": 2400,
       "images": [
         {
           "src": "/img/p/slavski-set-modlica-sveti-nikola/u2f45339e7",
@@ -3962,22 +3997,14 @@
           "id": "velicina",
           "label": "Veličina",
           "values": [
-            "Velika, medaljon Ø 9,5 cm",
-            "Srednja, medaljon Ø 7,6 cm",
-            "Mala, medaljon Ø 6,2 cm"
+            "Velika: 8 velikih + veliki medaljon Ø 9,5 cm",
+            "Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm",
+            "Mala: 8 malih + srednji medaljon Ø 7,6 cm"
           ],
           "cene": [
-            2490,
-            1490,
-            1190
-          ]
-        },
-        {
-          "id": "golub",
-          "label": "Golub",
-          "values": [
-            "Golub u letu",
-            "Golub sa grančicom"
+            2400,
+            1600,
+            1300
           ]
         }
       ],
@@ -3987,27 +4014,27 @@
         "poruka": "Zdravo! Slavimo ______. Da li imate ili pravite slavsku modlicu sa tim svecem?"
       },
       "about": [
-        "U setu je 12 modlica: medaljon Sveti Nikola sa natpisom СВ. НИКОЛА, krst, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, golub, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Goluba birate sami: u letu ili sa grančicom.",
+        "U setu je medaljon Sveti Nikola sa natpisom СВ. НИКОЛА i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Izbor napišite u napomeni uz porudžbinu; ako ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Set pravimo u tri veličine: velikoj (medaljon Ø 9,5 cm, ostale modlice oko 6–8 cm), srednjoj (medaljon Ø 7,6 cm) i maloj (medaljon Ø 6,2 cm). Sve modlice u setu su iste veličine.",
-        "U velikoj veličini pojedinačno bi ove modlice koštale 4.540 din, a u setu su 2.490 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
+        "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
+        "Pojedinačno bi ove modlice koštale 2.900 din u velikoj, 2.100 u srednjoj i 1.600 din u maloj veličini, a u setu su 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
       ],
       "specs": [
         [
           "U setu",
-          "12 modlica: medaljon i 11 osnovnih"
+          "8 modlica po izboru i medaljon"
         ],
         [
           "Medaljon",
-          "Sveti Nikola, Ø 9,5 / 7,6 / 6,2 cm (velika / srednja / mala)"
+          "Sveti Nikola, Ø 9,5 cm (veliki i srednji set) ili Ø 7,6 cm (mali set)"
         ],
         [
           "Veličine",
-          "velika, srednja i mala; ceo set u istoj veličini"
+          "velika, srednja i mala; medaljon uvek veličinu veći"
         ],
         [
-          "Osnovne",
-          "krst, 2 pečata ИС ХС НИ КА, Srećna slava, golub, knjiga, klas, cvet, grožđe, bure, pletenica"
+          "Birate od",
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Srećna slava, knjiga, klas, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4042,16 +4069,16 @@
       ],
       "faq": [
         {
-          "q": "Mogu li da zamenim neku modlicu?",
-          "a": "Set je uvek isti, osim goluba. Za svoj izbor uzmite „Sastavite svoj set”: birate modlice koje hoćete, a od 6 komada dobijate popust."
+          "q": "Koje modlice idu u set?",
+          "a": "Birate sami 8 modlica, može i dve iste. Izbor napišite u napomeni uz porudžbinu. Ako ništa ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe."
         },
         {
-          "q": "Koji golub ide u set?",
-          "a": "Birate sami: golub u letu ili golub sa maslinovom grančicom. Izbor ide u poruku."
+          "q": "Mogu li više od 8 modlica?",
+          "a": "Možete: dodajte pojedinačne modlice ili uzmite „Sastavite svoj set”, gde je od 6 komada šesta gratis."
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki ili srednji set, oba imaju veliki medaljon. Za manji kolač ili česnicu mali set. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Stiže li do Nikoljdana?",
@@ -4069,8 +4096,8 @@
         "slavski-set-modlica-arhangel-mihailo",
         "bozicna-modlica-rodjenje-hristovo"
       ],
-      "seoTitle": "Slavski set modlica Sveti Nikola, 12 modlica za Nikoljdan | Bumbaru",
-      "meta": "Set od 12 slavskih modlica za Nikoljdan: medaljon Sveti Nikola i krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "seoTitle": "Slavski set modlica Sveti Nikola, 8 modlica i medaljon za Nikoljdan | Bumbaru",
+      "meta": "Slavski set za Nikoljdan: medaljon Sveti Nikola i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-02",
@@ -4083,9 +4110,9 @@
       "tags": [
         "sv-georgije"
       ],
-      "short": "12 modlica: medaljon Sveti Georgije i 11 osnovnih motiva, u tri veličine. Jeftinije nego pojedinačno.",
-      "lead": "Sve za slavski kolač za Đurđevdan (6. maj) u jednom setu: medaljon sa likom Svetog Georgija (Đorđa) na konju za sredinu kolača i 11 modlica za ukrase oko njega.",
-      "price": 2490,
+      "short": "8 modlica po izboru i medaljon Sveti Georgije, u tri veličine. Medaljon je uvek veličinu veći. Jeftinije nego pojedinačno.",
+      "lead": "Sve za slavski kolač za Đurđevdan (6. maj) u jednom setu: medaljon sa likom Svetog Georgija (Đorđa) na konju za sredinu kolača i 8 modlica po izboru za ukrase oko njega.",
+      "price": 2400,
       "images": [
         {
           "src": "/img/p/slavski-set-modlica-sveti-georgije/u9e404643a",
@@ -4107,22 +4134,14 @@
           "id": "velicina",
           "label": "Veličina",
           "values": [
-            "Velika, medaljon Ø 9,5 cm",
-            "Srednja, medaljon Ø 7,6 cm",
-            "Mala, medaljon Ø 6,2 cm"
+            "Velika: 8 velikih + veliki medaljon Ø 9,5 cm",
+            "Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm",
+            "Mala: 8 malih + srednji medaljon Ø 7,6 cm"
           ],
           "cene": [
-            2490,
-            1490,
-            1190
-          ]
-        },
-        {
-          "id": "golub",
-          "label": "Golub",
-          "values": [
-            "Golub u letu",
-            "Golub sa grančicom"
+            2400,
+            1600,
+            1300
           ]
         }
       ],
@@ -4132,27 +4151,27 @@
         "poruka": "Zdravo! Slavimo ______. Da li imate ili pravite slavsku modlicu sa tim svecem?"
       },
       "about": [
-        "U setu je 12 modlica: medaljon Sveti Georgije sa natpisom СВ. ГЕОРГИЈЕ, krst, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, golub, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Goluba birate sami: u letu ili sa grančicom.",
+        "U setu je medaljon Sveti Georgije sa natpisom СВ. ГЕОРГИЈЕ i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Izbor napišite u napomeni uz porudžbinu; ako ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Set pravimo u tri veličine: velikoj (medaljon Ø 9,5 cm, ostale modlice oko 6–8 cm), srednjoj (medaljon Ø 7,6 cm) i maloj (medaljon Ø 6,2 cm). Sve modlice u setu su iste veličine.",
-        "U velikoj veličini pojedinačno bi ove modlice koštale 4.540 din, a u setu su 2.490 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
+        "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
+        "Pojedinačno bi ove modlice koštale 2.900 din u velikoj, 2.100 u srednjoj i 1.600 din u maloj veličini, a u setu su 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
       ],
       "specs": [
         [
           "U setu",
-          "12 modlica: medaljon i 11 osnovnih"
+          "8 modlica po izboru i medaljon"
         ],
         [
           "Medaljon",
-          "Sveti Georgije, Ø 9,5 / 7,6 / 6,2 cm (velika / srednja / mala)"
+          "Sveti Georgije, Ø 9,5 cm (veliki i srednji set) ili Ø 7,6 cm (mali set)"
         ],
         [
           "Veličine",
-          "velika, srednja i mala; ceo set u istoj veličini"
+          "velika, srednja i mala; medaljon uvek veličinu veći"
         ],
         [
-          "Osnovne",
-          "krst, 2 pečata ИС ХС НИ КА, Srećna slava, golub, knjiga, klas, cvet, grožđe, bure, pletenica"
+          "Birate od",
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Srećna slava, knjiga, klas, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4187,16 +4206,16 @@
       ],
       "faq": [
         {
-          "q": "Mogu li da zamenim neku modlicu?",
-          "a": "Set je uvek isti, osim goluba. Za svoj izbor uzmite „Sastavite svoj set”: birate modlice koje hoćete, a od 6 komada dobijate popust."
+          "q": "Koje modlice idu u set?",
+          "a": "Birate sami 8 modlica, može i dve iste. Izbor napišite u napomeni uz porudžbinu. Ako ništa ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe."
         },
         {
-          "q": "Koji golub ide u set?",
-          "a": "Birate sami: golub u letu ili golub sa maslinovom grančicom. Izbor ide u poruku."
+          "q": "Mogu li više od 8 modlica?",
+          "a": "Možete: dodajte pojedinačne modlice ili uzmite „Sastavite svoj set”, gde je od 6 komada šesta gratis."
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki ili srednji set, oba imaju veliki medaljon. Za manji kolač ili česnicu mali set. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Stiže li do Đurđevdana?",
@@ -4214,8 +4233,8 @@
         "slavski-set-modlica-arhangel-mihailo",
         "bozicna-modlica-rodjenje-hristovo"
       ],
-      "seoTitle": "Slavski set modlica Sveti Georgije, 12 modlica za Đurđevdan | Bumbaru",
-      "meta": "Set od 12 slavskih modlica za Đurđevdan: medaljon Sveti Georgije i krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "seoTitle": "Slavski set modlica Sveti Georgije, 8 modlica i medaljon za Đurđevdan | Bumbaru",
+      "meta": "Slavski set za Đurđevdan: medaljon Sveti Georgije i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-03",
@@ -4228,9 +4247,9 @@
       "tags": [
         "arh-mihailo"
       ],
-      "short": "12 modlica: medaljon Arhangel Mihailo i 11 osnovnih motiva, u tri veličine. Jeftinije nego pojedinačno.",
-      "lead": "Sve za slavski kolač za Aranđelovdan (21. novembar) u jednom setu: medaljon sa likom Arhangela Mihaila sa krilima za sredinu kolača i 11 modlica za ukrase oko njega.",
-      "price": 2490,
+      "short": "8 modlica po izboru i medaljon Arhangel Mihailo, u tri veličine. Medaljon je uvek veličinu veći. Jeftinije nego pojedinačno.",
+      "lead": "Sve za slavski kolač za Aranđelovdan (21. novembar) u jednom setu: medaljon sa likom Arhangela Mihaila sa krilima za sredinu kolača i 8 modlica po izboru za ukrase oko njega.",
+      "price": 2400,
       "images": [
         {
           "src": "/img/p/slavski-set-modlica-arhangel-mihailo/u93a1a19b0",
@@ -4252,22 +4271,14 @@
           "id": "velicina",
           "label": "Veličina",
           "values": [
-            "Velika, medaljon Ø 9,5 cm",
-            "Srednja, medaljon Ø 7,6 cm",
-            "Mala, medaljon Ø 6,2 cm"
+            "Velika: 8 velikih + veliki medaljon Ø 9,5 cm",
+            "Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm",
+            "Mala: 8 malih + srednji medaljon Ø 7,6 cm"
           ],
           "cene": [
-            2490,
-            1490,
-            1190
-          ]
-        },
-        {
-          "id": "golub",
-          "label": "Golub",
-          "values": [
-            "Golub u letu",
-            "Golub sa grančicom"
+            2400,
+            1600,
+            1300
           ]
         }
       ],
@@ -4277,27 +4288,27 @@
         "poruka": "Zdravo! Slavimo ______. Da li imate ili pravite slavsku modlicu sa tim svecem?"
       },
       "about": [
-        "U setu je 12 modlica: medaljon Arhangel Mihailo sa natpisom АРХ. МИХАИЛО, krst, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, golub, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Goluba birate sami: u letu ili sa grančicom.",
+        "U setu je medaljon Arhangel Mihailo sa natpisom АРХ. МИХАИЛО i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Izbor napišite u napomeni uz porudžbinu; ako ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Set pravimo u tri veličine: velikoj (medaljon Ø 9,5 cm, ostale modlice oko 6–8 cm), srednjoj (medaljon Ø 7,6 cm) i maloj (medaljon Ø 6,2 cm). Sve modlice u setu su iste veličine.",
-        "U velikoj veličini pojedinačno bi ove modlice koštale 4.540 din, a u setu su 2.490 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
+        "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
+        "Pojedinačno bi ove modlice koštale 2.900 din u velikoj, 2.100 u srednjoj i 1.600 din u maloj veličini, a u setu su 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
       ],
       "specs": [
         [
           "U setu",
-          "12 modlica: medaljon i 11 osnovnih"
+          "8 modlica po izboru i medaljon"
         ],
         [
           "Medaljon",
-          "Arhangel Mihailo, Ø 9,5 / 7,6 / 6,2 cm (velika / srednja / mala)"
+          "Arhangel Mihailo, Ø 9,5 cm (veliki i srednji set) ili Ø 7,6 cm (mali set)"
         ],
         [
           "Veličine",
-          "velika, srednja i mala; ceo set u istoj veličini"
+          "velika, srednja i mala; medaljon uvek veličinu veći"
         ],
         [
-          "Osnovne",
-          "krst, 2 pečata ИС ХС НИ КА, Srećna slava, golub, knjiga, klas, cvet, grožđe, bure, pletenica"
+          "Birate od",
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Srećna slava, knjiga, klas, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4332,16 +4343,16 @@
       ],
       "faq": [
         {
-          "q": "Mogu li da zamenim neku modlicu?",
-          "a": "Set je uvek isti, osim goluba. Za svoj izbor uzmite „Sastavite svoj set”: birate modlice koje hoćete, a od 6 komada dobijate popust."
+          "q": "Koje modlice idu u set?",
+          "a": "Birate sami 8 modlica, može i dve iste. Izbor napišite u napomeni uz porudžbinu. Ako ništa ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe."
         },
         {
-          "q": "Koji golub ide u set?",
-          "a": "Birate sami: golub u letu ili golub sa maslinovom grančicom. Izbor ide u poruku."
+          "q": "Mogu li više od 8 modlica?",
+          "a": "Možete: dodajte pojedinačne modlice ili uzmite „Sastavite svoj set”, gde je od 6 komada šesta gratis."
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki ili srednji set, oba imaju veliki medaljon. Za manji kolač ili česnicu mali set. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Stiže li do Aranđelovdana?",
@@ -4359,8 +4370,8 @@
         "slavski-set-modlica-sveti-georgije",
         "bozicna-modlica-rodjenje-hristovo"
       ],
-      "seoTitle": "Slavski set modlica Arhangel Mihailo, 12 modlica za Aranđelovdan | Bumbaru",
-      "meta": "Set od 12 slavskih modlica za Aranđelovdan: medaljon Arhangel Mihailo i krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "seoTitle": "Slavski set modlica Arhangel Mihailo, 8 modlica i medaljon za Aranđelovdan | Bumbaru",
+      "meta": "Slavski set za Aranđelovdan: medaljon Arhangel Mihailo i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-04",
@@ -4373,9 +4384,9 @@
       "tags": [
         "sv-jovan"
       ],
-      "short": "12 modlica: medaljon Sveti Jovan i 11 osnovnih motiva, u tri veličine. Jeftinije nego pojedinačno.",
-      "lead": "Sve za slavski kolač za Jovanjdan (20. januar) u jednom setu: medaljon sa likom Svetog Jovana Krstitelja za sredinu kolača i 11 modlica za ukrase oko njega.",
-      "price": 2490,
+      "short": "8 modlica po izboru i medaljon Sveti Jovan, u tri veličine. Medaljon je uvek veličinu veći. Jeftinije nego pojedinačno.",
+      "lead": "Sve za slavski kolač za Jovanjdan (20. januar) u jednom setu: medaljon sa likom Svetog Jovana Krstitelja za sredinu kolača i 8 modlica po izboru za ukrase oko njega.",
+      "price": 2400,
       "images": [
         {
           "src": "/img/p/slavski-set-modlica-sveti-jovan/u0e4138f16",
@@ -4397,22 +4408,14 @@
           "id": "velicina",
           "label": "Veličina",
           "values": [
-            "Velika, medaljon Ø 9,5 cm",
-            "Srednja, medaljon Ø 7,6 cm",
-            "Mala, medaljon Ø 6,2 cm"
+            "Velika: 8 velikih + veliki medaljon Ø 9,5 cm",
+            "Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm",
+            "Mala: 8 malih + srednji medaljon Ø 7,6 cm"
           ],
           "cene": [
-            2490,
-            1490,
-            1190
-          ]
-        },
-        {
-          "id": "golub",
-          "label": "Golub",
-          "values": [
-            "Golub u letu",
-            "Golub sa grančicom"
+            2400,
+            1600,
+            1300
           ]
         }
       ],
@@ -4422,27 +4425,27 @@
         "poruka": "Zdravo! Slavimo ______. Da li imate ili pravite slavsku modlicu sa tim svecem?"
       },
       "about": [
-        "U setu je 12 modlica: medaljon Sveti Jovan sa natpisom СВ. ЈОВАН, krst, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, golub, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Goluba birate sami: u letu ili sa grančicom.",
+        "U setu je medaljon Sveti Jovan sa natpisom СВ. ЈОВАН i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Izbor napišite u napomeni uz porudžbinu; ako ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Set pravimo u tri veličine: velikoj (medaljon Ø 9,5 cm, ostale modlice oko 6–8 cm), srednjoj (medaljon Ø 7,6 cm) i maloj (medaljon Ø 6,2 cm). Sve modlice u setu su iste veličine.",
-        "U velikoj veličini pojedinačno bi ove modlice koštale 4.540 din, a u setu su 2.490 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
+        "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
+        "Pojedinačno bi ove modlice koštale 2.900 din u velikoj, 2.100 u srednjoj i 1.600 din u maloj veličini, a u setu su 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
       ],
       "specs": [
         [
           "U setu",
-          "12 modlica: medaljon i 11 osnovnih"
+          "8 modlica po izboru i medaljon"
         ],
         [
           "Medaljon",
-          "Sveti Jovan, Ø 9,5 / 7,6 / 6,2 cm (velika / srednja / mala)"
+          "Sveti Jovan, Ø 9,5 cm (veliki i srednji set) ili Ø 7,6 cm (mali set)"
         ],
         [
           "Veličine",
-          "velika, srednja i mala; ceo set u istoj veličini"
+          "velika, srednja i mala; medaljon uvek veličinu veći"
         ],
         [
-          "Osnovne",
-          "krst, 2 pečata ИС ХС НИ КА, Srećna slava, golub, knjiga, klas, cvet, grožđe, bure, pletenica"
+          "Birate od",
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Srećna slava, knjiga, klas, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4477,16 +4480,16 @@
       ],
       "faq": [
         {
-          "q": "Mogu li da zamenim neku modlicu?",
-          "a": "Set je uvek isti, osim goluba. Za svoj izbor uzmite „Sastavite svoj set”: birate modlice koje hoćete, a od 6 komada dobijate popust."
+          "q": "Koje modlice idu u set?",
+          "a": "Birate sami 8 modlica, može i dve iste. Izbor napišite u napomeni uz porudžbinu. Ako ništa ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe."
         },
         {
-          "q": "Koji golub ide u set?",
-          "a": "Birate sami: golub u letu ili golub sa maslinovom grančicom. Izbor ide u poruku."
+          "q": "Mogu li više od 8 modlica?",
+          "a": "Možete: dodajte pojedinačne modlice ili uzmite „Sastavite svoj set”, gde je od 6 komada šesta gratis."
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki ili srednji set, oba imaju veliki medaljon. Za manji kolač ili česnicu mali set. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Stiže li do Jovanjdana?",
@@ -4504,8 +4507,8 @@
         "slavski-set-modlica-sveti-georgije",
         "bozicna-modlica-rodjenje-hristovo"
       ],
-      "seoTitle": "Slavski set modlica Sveti Jovan, 12 modlica za Jovanjdan | Bumbaru",
-      "meta": "Set od 12 slavskih modlica za Jovanjdan: medaljon Sveti Jovan i krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "seoTitle": "Slavski set modlica Sveti Jovan, 8 modlica i medaljon za Jovanjdan | Bumbaru",
+      "meta": "Slavski set za Jovanjdan: medaljon Sveti Jovan i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-05",
@@ -4518,9 +4521,9 @@
       "tags": [
         "sv-dimitrije"
       ],
-      "short": "12 modlica: medaljon Sveti Dimitrije i 11 osnovnih motiva, u tri veličine. Jeftinije nego pojedinačno.",
-      "lead": "Sve za slavski kolač za Mitrovdan (8. novembar) u jednom setu: medaljon sa likom Svetog Dimitrija za sredinu kolača i 11 modlica za ukrase oko njega.",
-      "price": 2490,
+      "short": "8 modlica po izboru i medaljon Sveti Dimitrije, u tri veličine. Medaljon je uvek veličinu veći. Jeftinije nego pojedinačno.",
+      "lead": "Sve za slavski kolač za Mitrovdan (8. novembar) u jednom setu: medaljon sa likom Svetog Dimitrija za sredinu kolača i 8 modlica po izboru za ukrase oko njega.",
+      "price": 2400,
       "images": [
         {
           "src": "/img/p/slavski-set-modlica-sveti-dimitrije/ubaec1cd2a",
@@ -4542,22 +4545,14 @@
           "id": "velicina",
           "label": "Veličina",
           "values": [
-            "Velika, medaljon Ø 9,5 cm",
-            "Srednja, medaljon Ø 7,6 cm",
-            "Mala, medaljon Ø 6,2 cm"
+            "Velika: 8 velikih + veliki medaljon Ø 9,5 cm",
+            "Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm",
+            "Mala: 8 malih + srednji medaljon Ø 7,6 cm"
           ],
           "cene": [
-            2490,
-            1490,
-            1190
-          ]
-        },
-        {
-          "id": "golub",
-          "label": "Golub",
-          "values": [
-            "Golub u letu",
-            "Golub sa grančicom"
+            2400,
+            1600,
+            1300
           ]
         }
       ],
@@ -4567,27 +4562,27 @@
         "poruka": "Zdravo! Slavimo ______. Da li imate ili pravite slavsku modlicu sa tim svecem?"
       },
       "about": [
-        "U setu je 12 modlica: medaljon Sveti Dimitrije sa natpisom СВ. ДИМИТРИЈЕ, krst, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, golub, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Goluba birate sami: u letu ili sa grančicom.",
+        "U setu je medaljon Sveti Dimitrije sa natpisom СВ. ДИМИТРИЈЕ i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Izbor napišite u napomeni uz porudžbinu; ako ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Set pravimo u tri veličine: velikoj (medaljon Ø 9,5 cm, ostale modlice oko 6–8 cm), srednjoj (medaljon Ø 7,6 cm) i maloj (medaljon Ø 6,2 cm). Sve modlice u setu su iste veličine.",
-        "U velikoj veličini pojedinačno bi ove modlice koštale 4.540 din, a u setu su 2.490 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
+        "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
+        "Pojedinačno bi ove modlice koštale 2.900 din u velikoj, 2.100 u srednjoj i 1.600 din u maloj veličini, a u setu su 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
       ],
       "specs": [
         [
           "U setu",
-          "12 modlica: medaljon i 11 osnovnih"
+          "8 modlica po izboru i medaljon"
         ],
         [
           "Medaljon",
-          "Sveti Dimitrije, Ø 9,5 / 7,6 / 6,2 cm (velika / srednja / mala)"
+          "Sveti Dimitrije, Ø 9,5 cm (veliki i srednji set) ili Ø 7,6 cm (mali set)"
         ],
         [
           "Veličine",
-          "velika, srednja i mala; ceo set u istoj veličini"
+          "velika, srednja i mala; medaljon uvek veličinu veći"
         ],
         [
-          "Osnovne",
-          "krst, 2 pečata ИС ХС НИ КА, Srećna slava, golub, knjiga, klas, cvet, grožđe, bure, pletenica"
+          "Birate od",
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Srećna slava, knjiga, klas, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4622,16 +4617,16 @@
       ],
       "faq": [
         {
-          "q": "Mogu li da zamenim neku modlicu?",
-          "a": "Set je uvek isti, osim goluba. Za svoj izbor uzmite „Sastavite svoj set”: birate modlice koje hoćete, a od 6 komada dobijate popust."
+          "q": "Koje modlice idu u set?",
+          "a": "Birate sami 8 modlica, može i dve iste. Izbor napišite u napomeni uz porudžbinu. Ako ništa ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe."
         },
         {
-          "q": "Koji golub ide u set?",
-          "a": "Birate sami: golub u letu ili golub sa maslinovom grančicom. Izbor ide u poruku."
+          "q": "Mogu li više od 8 modlica?",
+          "a": "Možete: dodajte pojedinačne modlice ili uzmite „Sastavite svoj set”, gde je od 6 komada šesta gratis."
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki ili srednji set, oba imaju veliki medaljon. Za manji kolač ili česnicu mali set. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Stiže li do Mitrovdana?",
@@ -4649,8 +4644,8 @@
         "slavski-set-modlica-sveti-georgije",
         "bozicna-modlica-rodjenje-hristovo"
       ],
-      "seoTitle": "Slavski set modlica Sveti Dimitrije, 12 modlica za Mitrovdan | Bumbaru",
-      "meta": "Set od 12 slavskih modlica za Mitrovdan: medaljon Sveti Dimitrije i krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "seoTitle": "Slavski set modlica Sveti Dimitrije, 8 modlica i medaljon za Mitrovdan | Bumbaru",
+      "meta": "Slavski set za Mitrovdan: medaljon Sveti Dimitrije i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-06",
@@ -4663,9 +4658,9 @@
       "tags": [
         "sv-sava"
       ],
-      "short": "12 modlica: medaljon Sveti Sava i 11 osnovnih motiva, u tri veličine. Jeftinije nego pojedinačno.",
-      "lead": "Sve za slavski kolač za Savindan (27. januar) u jednom setu: medaljon sa likom Svetog Save za sredinu kolača i 11 modlica za ukrase oko njega.",
-      "price": 2490,
+      "short": "8 modlica po izboru i medaljon Sveti Sava, u tri veličine. Medaljon je uvek veličinu veći. Jeftinije nego pojedinačno.",
+      "lead": "Sve za slavski kolač za Savindan (27. januar) u jednom setu: medaljon sa likom Svetog Save za sredinu kolača i 8 modlica po izboru za ukrase oko njega.",
+      "price": 2400,
       "images": [
         {
           "src": "/img/p/slavski-set-modlica-sveti-sava/u4ac6daa66",
@@ -4687,22 +4682,14 @@
           "id": "velicina",
           "label": "Veličina",
           "values": [
-            "Velika, medaljon Ø 9,5 cm",
-            "Srednja, medaljon Ø 7,6 cm",
-            "Mala, medaljon Ø 6,2 cm"
+            "Velika: 8 velikih + veliki medaljon Ø 9,5 cm",
+            "Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm",
+            "Mala: 8 malih + srednji medaljon Ø 7,6 cm"
           ],
           "cene": [
-            2490,
-            1490,
-            1190
-          ]
-        },
-        {
-          "id": "golub",
-          "label": "Golub",
-          "values": [
-            "Golub u letu",
-            "Golub sa grančicom"
+            2400,
+            1600,
+            1300
           ]
         }
       ],
@@ -4712,27 +4699,27 @@
         "poruka": "Zdravo! Slavimo ______. Da li imate ili pravite slavsku modlicu sa tim svecem?"
       },
       "about": [
-        "U setu je 12 modlica: medaljon Sveti Sava sa natpisom СВ. САВА, krst, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, golub, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Goluba birate sami: u letu ili sa grančicom.",
+        "U setu je medaljon Sveti Sava sa natpisom СВ. САВА i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas, cvet, grožđe sa listom, bure i pletenica. Izbor napišite u napomeni uz porudžbinu; ako ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Set pravimo u tri veličine: velikoj (medaljon Ø 9,5 cm, ostale modlice oko 6–8 cm), srednjoj (medaljon Ø 7,6 cm) i maloj (medaljon Ø 6,2 cm). Sve modlice u setu su iste veličine.",
-        "U velikoj veličini pojedinačno bi ove modlice koštale 4.540 din, a u setu su 2.490 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
+        "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
+        "Pojedinačno bi ove modlice koštale 2.900 din u velikoj, 2.100 u srednjoj i 1.600 din u maloj veličini, a u setu su 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, sa crnom pločom i zlatnim reljefom, pa set lepo izgleda i kao poklon domaćici pred slavu."
       ],
       "specs": [
         [
           "U setu",
-          "12 modlica: medaljon i 11 osnovnih"
+          "8 modlica po izboru i medaljon"
         ],
         [
           "Medaljon",
-          "Sveti Sava, Ø 9,5 / 7,6 / 6,2 cm (velika / srednja / mala)"
+          "Sveti Sava, Ø 9,5 cm (veliki i srednji set) ili Ø 7,6 cm (mali set)"
         ],
         [
           "Veličine",
-          "velika, srednja i mala; ceo set u istoj veličini"
+          "velika, srednja i mala; medaljon uvek veličinu veći"
         ],
         [
-          "Osnovne",
-          "krst, 2 pečata ИС ХС НИ КА, Srećna slava, golub, knjiga, klas, cvet, grožđe, bure, pletenica"
+          "Birate od",
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Srećna slava, knjiga, klas, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4767,16 +4754,16 @@
       ],
       "faq": [
         {
-          "q": "Mogu li da zamenim neku modlicu?",
-          "a": "Set je uvek isti, osim goluba. Za svoj izbor uzmite „Sastavite svoj set”: birate modlice koje hoćete, a od 6 komada dobijate popust."
+          "q": "Koje modlice idu u set?",
+          "a": "Birate sami 8 modlica, može i dve iste. Izbor napišite u napomeni uz porudžbinu. Ako ništa ne napišete, šaljemo krst, goluba u letu, oba pečata, „Срећна слава”, knjigu, klas i grožđe."
         },
         {
-          "q": "Koji golub ide u set?",
-          "a": "Birate sami: golub u letu ili golub sa maslinovom grančicom. Izbor ide u poruku."
+          "q": "Mogu li više od 8 modlica?",
+          "a": "Možete: dodajte pojedinačne modlice ili uzmite „Sastavite svoj set”, gde je od 6 komada šesta gratis."
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki ili srednji set, oba imaju veliki medaljon. Za manji kolač ili česnicu mali set. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Stiže li do Savindana?",
@@ -4794,8 +4781,8 @@
         "slavski-set-modlica-sveti-georgije",
         "bozicna-modlica-rodjenje-hristovo"
       ],
-      "seoTitle": "Slavski set modlica Sveti Sava, 12 modlica za Savindan | Bumbaru",
-      "meta": "Set od 12 slavskih modlica za Savindan: medaljon Sveti Sava i krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "seoTitle": "Slavski set modlica Sveti Sava, 8 modlica i medaljon za Savindan | Bumbaru",
+      "meta": "Slavski set za Savindan: medaljon Sveti Sava i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SM-13",
@@ -4810,7 +4797,7 @@
       ],
       "short": "Medaljon Sveti Nikola, Ø oko 9,5 cm. Središte slavskog kolača za Nikoljdan.",
       "lead": "Medaljon sa likom Svetog Nikole i natpisom СВ. НИКОЛА uz ivicu. Ide u sredinu slavskog kolača za Nikoljdan (19. decembar), a oko njega se ređaju ostali ukrasi.",
-      "price": 690,
+      "price": 500,
       "images": [
         {
           "src": "/img/p/modlica-sveti-nikola/u338bb0f9c",
@@ -4826,21 +4813,19 @@
           "label": "Veličina",
           "values": [
             "Velika, Ø 9,5 cm",
-            "Srednja, Ø 7,6 cm",
-            "Mala, Ø 6,2 cm"
+            "Srednja, Ø 7,6 cm"
           ],
           "cene": [
-            690,
-            590,
-            490
+            500,
+            400
           ]
         }
       ],
       "about": [
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
+        "Medaljon pravimo u dve veličine: velikoj (Ø 9,5 cm) za kolač od oko 30 cm i srednjoj (Ø 7,6 cm) za manji kolač ili česnicu. Manji ne pravimo, jer se lik i natpis u testu ne bi videli.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Medaljon je i u slavskom setu Sveti Nikola, zajedno sa 11 osnovnih modlica, a set je jeftiniji nego modlice pojedinačno."
+        "Medaljon je i u slavskom setu Sveti Nikola, uz 8 modlica po izboru, a set je jeftiniji nego modlice pojedinačno."
       ],
       "specs": [
         [
@@ -4849,7 +4834,7 @@
         ],
         [
           "Veličine",
-          "velika Ø 9,5 cm, srednja Ø 7,6 cm, mala Ø 6,2 cm"
+          "velika Ø 9,5 cm, srednja Ø 7,6 cm"
         ],
         [
           "U kompletu",
@@ -4889,11 +4874,11 @@
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki medaljon, a za manji kolač ili česnicu srednji. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Ima li ceo set za ovu slavu?",
-          "a": "Ima: slavski set Sveti Nikola ima ovaj medaljon i 11 osnovnih modlica, ukupno 12 komada."
+          "a": "Ima: slavski set Sveti Nikola ima ovaj medaljon i 8 modlica koje birate sami."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -4923,7 +4908,7 @@
       ],
       "short": "Medaljon Sveti Georgije, Ø oko 9,5 cm. Središte slavskog kolača za Đurđevdan.",
       "lead": "Medaljon sa likom Svetog Georgija (Đorđa) na konju i natpisom СВ. ГЕОРГИЈЕ uz ivicu. Ide u sredinu slavskog kolača za Đurđevdan (6. maj), a oko njega se ređaju ostali ukrasi.",
-      "price": 690,
+      "price": 500,
       "images": [
         {
           "src": "/img/p/modlica-sveti-georgije/udfdaec415",
@@ -4939,21 +4924,19 @@
           "label": "Veličina",
           "values": [
             "Velika, Ø 9,5 cm",
-            "Srednja, Ø 7,6 cm",
-            "Mala, Ø 6,2 cm"
+            "Srednja, Ø 7,6 cm"
           ],
           "cene": [
-            690,
-            590,
-            490
+            500,
+            400
           ]
         }
       ],
       "about": [
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
+        "Medaljon pravimo u dve veličine: velikoj (Ø 9,5 cm) za kolač od oko 30 cm i srednjoj (Ø 7,6 cm) za manji kolač ili česnicu. Manji ne pravimo, jer se lik i natpis u testu ne bi videli.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Medaljon je i u slavskom setu Sveti Georgije, zajedno sa 11 osnovnih modlica, a set je jeftiniji nego modlice pojedinačno."
+        "Medaljon je i u slavskom setu Sveti Georgije, uz 8 modlica po izboru, a set je jeftiniji nego modlice pojedinačno."
       ],
       "specs": [
         [
@@ -4962,7 +4945,7 @@
         ],
         [
           "Veličine",
-          "velika Ø 9,5 cm, srednja Ø 7,6 cm, mala Ø 6,2 cm"
+          "velika Ø 9,5 cm, srednja Ø 7,6 cm"
         ],
         [
           "U kompletu",
@@ -5002,11 +4985,11 @@
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki medaljon, a za manji kolač ili česnicu srednji. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Ima li ceo set za ovu slavu?",
-          "a": "Ima: slavski set Sveti Georgije ima ovaj medaljon i 11 osnovnih modlica, ukupno 12 komada."
+          "a": "Ima: slavski set Sveti Georgije ima ovaj medaljon i 8 modlica koje birate sami."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -5036,7 +5019,7 @@
       ],
       "short": "Medaljon Arhangel Mihailo, Ø oko 9,5 cm. Središte slavskog kolača za Aranđelovdan.",
       "lead": "Medaljon sa likom Arhangela Mihaila sa krilima i natpisom АРХ. МИХАИЛО uz ivicu. Ide u sredinu slavskog kolača za Aranđelovdan (21. novembar), a oko njega se ređaju ostali ukrasi.",
-      "price": 690,
+      "price": 500,
       "images": [
         {
           "src": "/img/p/modlica-arhangel-mihailo/u605cd61b3",
@@ -5052,21 +5035,19 @@
           "label": "Veličina",
           "values": [
             "Velika, Ø 9,5 cm",
-            "Srednja, Ø 7,6 cm",
-            "Mala, Ø 6,2 cm"
+            "Srednja, Ø 7,6 cm"
           ],
           "cene": [
-            690,
-            590,
-            490
+            500,
+            400
           ]
         }
       ],
       "about": [
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
+        "Medaljon pravimo u dve veličine: velikoj (Ø 9,5 cm) za kolač od oko 30 cm i srednjoj (Ø 7,6 cm) za manji kolač ili česnicu. Manji ne pravimo, jer se lik i natpis u testu ne bi videli.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Medaljon je i u slavskom setu Arhangel Mihailo, zajedno sa 11 osnovnih modlica, a set je jeftiniji nego modlice pojedinačno."
+        "Medaljon je i u slavskom setu Arhangel Mihailo, uz 8 modlica po izboru, a set je jeftiniji nego modlice pojedinačno."
       ],
       "specs": [
         [
@@ -5075,7 +5056,7 @@
         ],
         [
           "Veličine",
-          "velika Ø 9,5 cm, srednja Ø 7,6 cm, mala Ø 6,2 cm"
+          "velika Ø 9,5 cm, srednja Ø 7,6 cm"
         ],
         [
           "U kompletu",
@@ -5115,11 +5096,11 @@
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki medaljon, a za manji kolač ili česnicu srednji. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Ima li ceo set za ovu slavu?",
-          "a": "Ima: slavski set Arhangel Mihailo ima ovaj medaljon i 11 osnovnih modlica, ukupno 12 komada."
+          "a": "Ima: slavski set Arhangel Mihailo ima ovaj medaljon i 8 modlica koje birate sami."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -5149,7 +5130,7 @@
       ],
       "short": "Medaljon Sveti Jovan, Ø oko 9,5 cm. Središte slavskog kolača za Jovanjdan.",
       "lead": "Medaljon sa likom Svetog Jovana Krstitelja i natpisom СВ. ЈОВАН uz ivicu. Ide u sredinu slavskog kolača za Jovanjdan (20. januar), a oko njega se ređaju ostali ukrasi.",
-      "price": 690,
+      "price": 500,
       "images": [
         {
           "src": "/img/p/modlica-sveti-jovan/ue20ca60e6",
@@ -5165,21 +5146,19 @@
           "label": "Veličina",
           "values": [
             "Velika, Ø 9,5 cm",
-            "Srednja, Ø 7,6 cm",
-            "Mala, Ø 6,2 cm"
+            "Srednja, Ø 7,6 cm"
           ],
           "cene": [
-            690,
-            590,
-            490
+            500,
+            400
           ]
         }
       ],
       "about": [
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
+        "Medaljon pravimo u dve veličine: velikoj (Ø 9,5 cm) za kolač od oko 30 cm i srednjoj (Ø 7,6 cm) za manji kolač ili česnicu. Manji ne pravimo, jer se lik i natpis u testu ne bi videli.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Medaljon je i u slavskom setu Sveti Jovan, zajedno sa 11 osnovnih modlica, a set je jeftiniji nego modlice pojedinačno."
+        "Medaljon je i u slavskom setu Sveti Jovan, uz 8 modlica po izboru, a set je jeftiniji nego modlice pojedinačno."
       ],
       "specs": [
         [
@@ -5188,7 +5167,7 @@
         ],
         [
           "Veličine",
-          "velika Ø 9,5 cm, srednja Ø 7,6 cm, mala Ø 6,2 cm"
+          "velika Ø 9,5 cm, srednja Ø 7,6 cm"
         ],
         [
           "U kompletu",
@@ -5228,11 +5207,11 @@
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki medaljon, a za manji kolač ili česnicu srednji. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Ima li ceo set za ovu slavu?",
-          "a": "Ima: slavski set Sveti Jovan ima ovaj medaljon i 11 osnovnih modlica, ukupno 12 komada."
+          "a": "Ima: slavski set Sveti Jovan ima ovaj medaljon i 8 modlica koje birate sami."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -5262,7 +5241,7 @@
       ],
       "short": "Medaljon Sveti Dimitrije, Ø oko 9,5 cm. Središte slavskog kolača za Mitrovdan.",
       "lead": "Medaljon sa likom Svetog Dimitrija i natpisom СВ. ДИМИТРИЈЕ uz ivicu. Ide u sredinu slavskog kolača za Mitrovdan (8. novembar), a oko njega se ređaju ostali ukrasi.",
-      "price": 690,
+      "price": 500,
       "images": [
         {
           "src": "/img/p/modlica-sveti-dimitrije/u3276404c3",
@@ -5278,21 +5257,19 @@
           "label": "Veličina",
           "values": [
             "Velika, Ø 9,5 cm",
-            "Srednja, Ø 7,6 cm",
-            "Mala, Ø 6,2 cm"
+            "Srednja, Ø 7,6 cm"
           ],
           "cene": [
-            690,
-            590,
-            490
+            500,
+            400
           ]
         }
       ],
       "about": [
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
+        "Medaljon pravimo u dve veličine: velikoj (Ø 9,5 cm) za kolač od oko 30 cm i srednjoj (Ø 7,6 cm) za manji kolač ili česnicu. Manji ne pravimo, jer se lik i natpis u testu ne bi videli.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Medaljon je i u slavskom setu Sveti Dimitrije, zajedno sa 11 osnovnih modlica, a set je jeftiniji nego modlice pojedinačno."
+        "Medaljon je i u slavskom setu Sveti Dimitrije, uz 8 modlica po izboru, a set je jeftiniji nego modlice pojedinačno."
       ],
       "specs": [
         [
@@ -5301,7 +5278,7 @@
         ],
         [
           "Veličine",
-          "velika Ø 9,5 cm, srednja Ø 7,6 cm, mala Ø 6,2 cm"
+          "velika Ø 9,5 cm, srednja Ø 7,6 cm"
         ],
         [
           "U kompletu",
@@ -5341,11 +5318,11 @@
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki medaljon, a za manji kolač ili česnicu srednji. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Ima li ceo set za ovu slavu?",
-          "a": "Ima: slavski set Sveti Dimitrije ima ovaj medaljon i 11 osnovnih modlica, ukupno 12 komada."
+          "a": "Ima: slavski set Sveti Dimitrije ima ovaj medaljon i 8 modlica koje birate sami."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -5375,7 +5352,7 @@
       ],
       "short": "Medaljon Sveti Sava, Ø oko 9,5 cm. Središte slavskog kolača za Savindan.",
       "lead": "Medaljon sa likom Svetog Save i natpisom СВ. САВА uz ivicu. Ide u sredinu slavskog kolača za Savindan (27. januar), a oko njega se ređaju ostali ukrasi.",
-      "price": 690,
+      "price": 500,
       "images": [
         {
           "src": "/img/p/modlica-sveti-sava/u415b4db8b",
@@ -5391,21 +5368,19 @@
           "label": "Veličina",
           "values": [
             "Velika, Ø 9,5 cm",
-            "Srednja, Ø 7,6 cm",
-            "Mala, Ø 6,2 cm"
+            "Srednja, Ø 7,6 cm"
           ],
           "cene": [
-            690,
-            590,
-            490
+            500,
+            400
           ]
         }
       ],
       "about": [
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
+        "Medaljon pravimo u dve veličine: velikoj (Ø 9,5 cm) za kolač od oko 30 cm i srednjoj (Ø 7,6 cm) za manji kolač ili česnicu. Manji ne pravimo, jer se lik i natpis u testu ne bi videli.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Medaljon je i u slavskom setu Sveti Sava, zajedno sa 11 osnovnih modlica, a set je jeftiniji nego modlice pojedinačno."
+        "Medaljon je i u slavskom setu Sveti Sava, uz 8 modlica po izboru, a set je jeftiniji nego modlice pojedinačno."
       ],
       "specs": [
         [
@@ -5414,7 +5389,7 @@
         ],
         [
           "Veličine",
-          "velika Ø 9,5 cm, srednja Ø 7,6 cm, mala Ø 6,2 cm"
+          "velika Ø 9,5 cm, srednja Ø 7,6 cm"
         ],
         [
           "U kompletu",
@@ -5454,11 +5429,11 @@
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki medaljon, a za manji kolač ili česnicu srednji. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Ima li ceo set za ovu slavu?",
-          "a": "Ima: slavski set Sveti Sava ima ovaj medaljon i 11 osnovnih modlica, ukupno 12 komada."
+          "a": "Ima: slavski set Sveti Sava ima ovaj medaljon i 8 modlica koje birate sami."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -5488,7 +5463,7 @@
       ],
       "short": "Medaljon Rođenje Hristovo, Ø oko 9,5 cm. Središte božićne česnice.",
       "lead": "Medaljon sa prizorom Rođenja Hristovog: Mladenac u jaslama u pećini, nad Njim vo i magarac i Vitlejemska zvezda. Ide u sredinu božićne česnice ili kolača za Božić.",
-      "price": 690,
+      "price": 500,
       "images": [
         {
           "src": "/img/p/bozicna-modlica-rodjenje-hristovo/ued2093e2f",
@@ -5504,21 +5479,19 @@
           "label": "Veličina",
           "values": [
             "Velika, Ø 9,5 cm",
-            "Srednja, Ø 7,6 cm",
-            "Mala, Ø 6,2 cm"
+            "Srednja, Ø 7,6 cm"
           ],
           "cene": [
-            690,
-            590,
-            490
+            500,
+            400
           ]
         }
       ],
       "about": [
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
-        "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
+        "Medaljon pravimo u dve veličine: velikoj (Ø 9,5 cm) za kolač od oko 30 cm i srednjoj (Ø 7,6 cm) za manji kolač ili česnicu. Manji ne pravimo, jer se lik i natpis u testu ne bi videli.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Uz nju lepo idu i druge božićne modlice: Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”. Složite svoj set i od 6 modlica dobijate popust."
+        "Uz nju lepo idu i druge božićne modlice: Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”. Složite svoj set i kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -5527,7 +5500,7 @@
         ],
         [
           "Veličine",
-          "velika Ø 9,5 cm, srednja Ø 7,6 cm, mala Ø 6,2 cm"
+          "velika Ø 9,5 cm, srednja Ø 7,6 cm"
         ],
         [
           "U kompletu",
@@ -5567,7 +5540,7 @@
         },
         {
           "q": "Koju veličinu da izaberem?",
-          "a": "Za kolač prečnika oko 30 cm i medaljon u sredini uzmite veliku. Za manji kolač ili česnicu, ili kad stavljate mnogo ukrasa, srednju ili malu. Ako niste sigurni, pišite nam prečnik kolača."
+          "a": "Za kolač prečnika oko 30 cm uzmite veliki medaljon, a za manji kolač ili česnicu srednji. Ako niste sigurni, pišite nam prečnik kolača."
         },
         {
           "q": "Ima li božićni set?",
@@ -5601,7 +5574,7 @@
       ],
       "short": "Vitlejemska zvezda sa osam krakova, sekač i pečat. Za česnicu i božićni kolač.",
       "lead": "Vitlejemska zvezda sa osam krakova, koja je mudracima pokazala put do Mladenca. Lep ukras za česnicu i božićne kolače.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/bozicna-modlica-vitlejemska-zvezda/uc7611b4d3",
@@ -5621,9 +5594,9 @@
             "Mala, 4,2 × 4,2 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -5631,7 +5604,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Uz nju lepo idu i druge božićne modlice: Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”. Složite svoj set i od 6 modlica dobijate popust."
+        "Uz nju lepo idu i druge božićne modlice: Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”. Složite svoj set i kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -5714,7 +5687,7 @@
       ],
       "short": "Badnjak, hrastova grančica sa žirevima, sekač i pečat.",
       "lead": "Hrastova grančica sa lišćem i žirevima, badnjak. Ukras za česnicu i kolače za Badnji dan i Božić.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/bozicna-modlica-badnjak/uf523bc82e",
@@ -5734,9 +5707,9 @@
             "Mala, 4,5 × 4,8 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -5744,7 +5717,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Uz nju lepo idu i druge božićne modlice: Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”. Složite svoj set i od 6 modlica dobijate popust."
+        "Uz nju lepo idu i druge božićne modlice: Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”. Složite svoj set i kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -5827,7 +5800,7 @@
       ],
       "short": "Pločica sa natpisom „Христос се роди” crkvenim slovima, sekač i pečat.",
       "lead": "Pločica sa božićnim pozdravom „Христос се роди”, ispisanim crkvenim slovima. Za česnicu i božićni kolač.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/bozicna-modlica-hristos-se-rodi/ufd772c465",
@@ -5847,9 +5820,9 @@
             "Mala, 5,5 × 3,6 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -5857,7 +5830,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Uz nju lepo idu i druge božićne modlice: Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”. Složite svoj set i od 6 modlica dobijate popust."
+        "Uz nju lepo idu i druge božićne modlice: Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”. Složite svoj set i kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -5946,7 +5919,7 @@
       ],
       "short": "Pravoslavni krst sa natpisom ИС ХС, sekač i pečat. Za slavski kolač i božićnu česnicu.",
       "lead": "Pravoslavni krst sa natpisom ИС ХС i kosom donjom prečkom. Najčešći ukras na slavskom kolaču, a lepo stoji i na božićnoj česnici.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-krst/uef02454a5",
@@ -5966,9 +5939,9 @@
             "Mala, 4,4 × 5,2 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -5976,7 +5949,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -6029,7 +6002,7 @@
         },
         {
           "q": "Ide li u slavski set?",
-          "a": "Ide. Ova modlica je u svakom slavskom setu (12 modlica sa medaljonom sveca), a set je jeftiniji nego modlice pojedinačno."
+          "a": "Ide. U slavskom setu birate 8 modlica i uz njih dobijate medaljon sveca, a set je jeftiniji nego modlice pojedinačno."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -6064,7 +6037,7 @@
       ],
       "short": "Golub raširenih krila, sekač i pečat. Simbol mira na slavskom kolaču.",
       "lead": "Golub raširenih krila u letu, simbol mira i Svetog Duha. Stavlja se uz krst ili pored medaljona sveca.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-golub-u-letu/u7926f6bc4",
@@ -6084,9 +6057,9 @@
             "Mala, 4,5 × 3,6 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -6094,7 +6067,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -6182,7 +6155,7 @@
       ],
       "short": "Golub sa maslinovom grančicom, sekač i pečat. Manji golub za ukrase oko krsta.",
       "lead": "Golub sa maslinovom grančicom, simbol mira. Manji je od goluba u letu, pa lepo popuni mesto između ostalih ukrasa.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-golub-sa-grancicom/u39d1af207",
@@ -6202,9 +6175,9 @@
             "Mala, 3,8 × 3,5 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -6212,7 +6185,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -6299,7 +6272,7 @@
       ],
       "short": "Pločica sa natpisom „Срећна слава” crkvenim slovima, sekač i pečat.",
       "lead": "Pločica sa natpisom „Срећна слава”, ispisanim crkvenim slovima. Natpis je čitak i posle pečenja, jer su slova dovoljno debela.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-srecna-slava/u40c372842",
@@ -6319,9 +6292,9 @@
             "Mala, 4,8 × 3,6 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -6329,7 +6302,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -6417,7 +6390,7 @@
       ],
       "short": "Četvrtasti pečat sa krstom i natpisom ИС ХС НИ КА, sekač i pečat.",
       "lead": "Četvrtasti slavski pečat: krst u sredini i natpis ИС ХС НИ КА („Isus Hristos pobeđuje”) u četiri polja. Klasičan pečat za vrh slavskog kolača.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavski-pecat-sa-krstom/u23b14fe35",
@@ -6437,9 +6410,9 @@
             "Mala, 4 × 4 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -6447,7 +6420,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -6500,7 +6473,7 @@
         },
         {
           "q": "Ide li u slavski set?",
-          "a": "Ide. Ova modlica je u svakom slavskom setu (12 modlica sa medaljonom sveca), a set je jeftiniji nego modlice pojedinačno."
+          "a": "Ide. U slavskom setu birate 8 modlica i uz njih dobijate medaljon sveca, a set je jeftiniji nego modlice pojedinačno."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -6535,7 +6508,7 @@
       ],
       "short": "Okrugli pečat sa natpisom ИС ХС НИ КА, sekač i pečat.",
       "lead": "Okrugli slavski pečat sa natpisom ИС ХС НИ КА („Isus Hristos pobeđuje”), bez krsta u sredini. Dobro ide uz četvrtasti pečat sa krstom.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavski-pecat-okrugli/uc6c32c47e",
@@ -6555,9 +6528,9 @@
             "Mala, Ø 4,2 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -6565,7 +6538,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -6618,7 +6591,7 @@
         },
         {
           "q": "Ide li u slavski set?",
-          "a": "Ide. Ova modlica je u svakom slavskom setu (12 modlica sa medaljonom sveca), a set je jeftiniji nego modlice pojedinačno."
+          "a": "Ide. U slavskom setu birate 8 modlica i uz njih dobijate medaljon sveca, a set je jeftiniji nego modlice pojedinačno."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -6653,7 +6626,7 @@
       ],
       "short": "Otvoreno Jevanđelje sa krstom, sekač i pečat.",
       "lead": "Otvorena knjiga sa krstom na jednoj strani i redovima na drugoj: Jevanđelje, jedan od tradicionalnih ukrasa slavskog kolača.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-knjiga/uc78e2eab2",
@@ -6673,9 +6646,9 @@
             "Mala, 3,8 × 3,4 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -6683,7 +6656,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -6736,7 +6709,7 @@
         },
         {
           "q": "Ide li u slavski set?",
-          "a": "Ide. Ova modlica je u svakom slavskom setu (12 modlica sa medaljonom sveca), a set je jeftiniji nego modlice pojedinačno."
+          "a": "Ide. U slavskom setu birate 8 modlica i uz njih dobijate medaljon sveca, a set je jeftiniji nego modlice pojedinačno."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -6771,7 +6744,7 @@
       ],
       "short": "Klas pšenice, sekač i pečat. Za berićet na slavskom kolaču.",
       "lead": "Klas pšenice sa zrnima utisnutim jedno do drugog. Simbol berićeta i hleba, stavlja se oko krsta ili uz ivicu kolača.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-klas/ua6ac651b4",
@@ -6791,9 +6764,9 @@
             "Mala, 5,2 × 3,8 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -6801,7 +6774,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -6854,7 +6827,7 @@
         },
         {
           "q": "Ide li u slavski set?",
-          "a": "Ide. Ova modlica je u svakom slavskom setu (12 modlica sa medaljonom sveca), a set je jeftiniji nego modlice pojedinačno."
+          "a": "Ide. U slavskom setu birate 8 modlica i uz njih dobijate medaljon sveca, a set je jeftiniji nego modlice pojedinačno."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -6889,7 +6862,7 @@
       ],
       "short": "Cvet sa pet latica, sekač i pečat. Mali ukras za popunjavanje kolača.",
       "lead": "Cvet sa pet latica i krugom u sredini. Mali ukras kojim se popuni prazno mesto između većih motiva.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-cvet/uf002e5153",
@@ -6909,9 +6882,9 @@
             "Mala, 3,8 × 3,6 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -6919,7 +6892,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -6972,7 +6945,7 @@
         },
         {
           "q": "Ide li u slavski set?",
-          "a": "Ide. Ova modlica je u svakom slavskom setu (12 modlica sa medaljonom sveca), a set je jeftiniji nego modlice pojedinačno."
+          "a": "Ide. U slavskom setu birate 8 modlica i uz njih dobijate medaljon sveca, a set je jeftiniji nego modlice pojedinačno."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -7007,7 +6980,7 @@
       ],
       "short": "Grozd sa listom vinove loze, sekač i pečat.",
       "lead": "Grozd sa listom vinove loze, simbol vina i plodnosti. Svaka bobica je posebno utisnuta, pa grozd izgleda pun i na kolaču.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-grozdje-sa-listom/uec80e2e04",
@@ -7027,9 +7000,9 @@
             "Mala, 3,5 × 4,4 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -7037,7 +7010,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -7090,7 +7063,7 @@
         },
         {
           "q": "Ide li u slavski set?",
-          "a": "Ide. Ova modlica je u svakom slavskom setu (12 modlica sa medaljonom sveca), a set je jeftiniji nego modlice pojedinačno."
+          "a": "Ide. U slavskom setu birate 8 modlica i uz njih dobijate medaljon sveca, a set je jeftiniji nego modlice pojedinačno."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -7125,7 +7098,7 @@
       ],
       "short": "Bure sa obručima, sekač i pečat. Za vino i obilje na slavskom kolaču.",
       "lead": "Bure sa obručima i dugama, simbol vina i obilja u kući. Jedan od omiljenih ukrasa na slavskom kolaču.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-bure/u1690fa02c",
@@ -7145,9 +7118,9 @@
             "Mala, 3,7 × 4,7 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -7155,7 +7128,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -7208,7 +7181,7 @@
         },
         {
           "q": "Ide li u slavski set?",
-          "a": "Ide. Ova modlica je u svakom slavskom setu (12 modlica sa medaljonom sveca), a set je jeftiniji nego modlice pojedinačno."
+          "a": "Ide. U slavskom setu birate 8 modlica i uz njih dobijate medaljon sveca, a set je jeftiniji nego modlice pojedinačno."
         },
         {
           "q": "Mogu li u mašinu za sudove?",
@@ -7243,7 +7216,7 @@
       ],
       "short": "Pletenica za ivicu kolača, sekač i pečat. Ređajte je jednu do druge.",
       "lead": "Pletenica koja izgleda kao ručno upletena. Ređajte je jednu do druge oko ivice kolača ili preko sredine, kao krst.",
-      "price": 350,
+      "price": 300,
       "images": [
         {
           "src": "/img/p/slavska-modlica-pletenica/u8303b3a8c",
@@ -7263,9 +7236,9 @@
             "Mala, 6,9 × 1,7 cm"
           ],
           "cene": [
-            350,
             300,
-            250
+            200,
+            150
           ]
         }
       ],
@@ -7273,7 +7246,7 @@
         "Modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Pravimo je u tri veličine: velikoj, srednjoj i maloj. Veliku uzmite za veći kolač i kad želite krupne ukrase, a srednju i malu za manji kolač, česnicu ili kad na kolač stavljate više motiva. Mere svake veličine su pored izbora.",
         "Štampamo je od PLA plastike: ploča pečata je crna, a reljef zlatni, pa lepo izgleda i kao poklon domaćici pred slavu.",
-        "Ova modlica je i u svakom slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: od 6 modlica dobijate popust."
+        "Ovu modlicu možete izabrati i u slavskom setu, uz medaljon sveca. Ako želite samo neke motive, složite svoj set: kupite 5 modlica, a šesta je gratis."
       ],
       "specs": [
         [
@@ -7326,7 +7299,7 @@
         },
         {
           "q": "Ide li u slavski set?",
-          "a": "Ide. Ova modlica je u svakom slavskom setu (12 modlica sa medaljonom sveca), a set je jeftiniji nego modlice pojedinačno."
+          "a": "Ide. U slavskom setu birate 8 modlica i uz njih dobijate medaljon sveca, a set je jeftiniji nego modlice pojedinačno."
         },
         {
           "q": "Mogu li u mašinu za sudove?",

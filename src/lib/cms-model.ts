@@ -187,7 +187,8 @@ function motivi(v: unknown, gde: string): MotiviCfg | undefined {
     ids.add(id);
     const c = x?.cena as unknown;
     const cena = c === undefined || c === null || c === '' || c === 0 ? 0 : ceo(c, `${gde}: cena motiva „${naziv}”`, 0, 10_000_000);
-    return { id, naziv, ...(x?.slika ? { slika: slika(x.slika, `${gde}: fotografija motiva „${naziv}”`) } : {}), ...(cena > 0 ? { cena } : {}) };
+    const cene = Array.isArray(x?.cene) ? (x.cene as unknown[]).slice(0, 30).map((c, j) => (c === undefined || c === null || c === '' ? 0 : ceo(c, `${gde}: cena motiva „${naziv}” za veličinu ${j + 1}`, 0, 10_000_000))) : [];
+    return { id, naziv, ...(x?.slika ? { slika: slika(x.slika, `${gde}: fotografija motiva „${naziv}”`) } : {}), ...(cena > 0 ? { cena } : {}), ...(cene.some((c) => c > 0) ? { cene } : {}) };
   });
   const boje = m.vrsta === 'boje';
   if (!lista.length && !boje) greska(`${gde}: izbor motiva je uključen, a nema nijednog motiva.`);

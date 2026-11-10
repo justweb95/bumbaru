@@ -22,7 +22,7 @@ export interface ColorChoice { id: string; label: string; def: string }
 // vrsta 'boje': kupac bira boje filamenta (sve boje na stanju) i broj komada svake, umesto motiva;
 // silueta = crtež proizvoda koji se oboji u svaku boju (src/lib/siluete.ts), bez nje se prikazuje krug boje.
 // cena: cena po komadu baš tog motiva (npr. veći medaljon); bez nje važi osnovna cena proizvoda
-export interface Motiv { id: string; naziv: string; slika?: Img; cena?: number }
+export interface Motiv { id: string; naziv: string; slika?: Img; cena?: number; cene?: number[] } // cene: po vrednosti opcije sa cenom (npr. veličina), 0 = srazmerno
 export interface MotiviCfg { lista: Motiv[]; popusti: { od: number; procenat: number }[]; vrsta?: 'boje'; silueta?: string }
 // Komplet „Uz ovo često uzimaju”: drugi proizvodi (adrese) i popust na ukupnu cenu kompleta
 export interface Komplet { uz: string[]; popust: number }
