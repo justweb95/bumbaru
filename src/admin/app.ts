@@ -7,6 +7,7 @@ import { ocistiSve, slugify, CmsGreska, IKONA_PODRAZUMEVANA, type CmsPodaci, typ
 import type { Product, Img, Option, ColorChoice, Motiv, MotiviCfg } from '../data/products';
 import { SILUETE } from '../lib/siluete';
 import { CRTEZI } from '../lib/crtezi';
+import { SET_MEDALJONI } from '../lib/set-modlice';
 import type { Category, Faq } from '../data/categories';
 import { STILOVI } from '../lib/keychain';
 
@@ -389,6 +390,7 @@ function slikeSekcija(p: Product) {
           h('img', { src: slikaUrl(im), alt: '', loading: 'lazy', onerror: (e: Event) => ((e.target as HTMLImageElement).style.opacity = '0') }),
           i === 0 ? h('span', { class: 'tag imc-main' }, 'Glavna') : null),
         ulaz(im.alt, (v) => (im.alt = v), { placeholder: 'Opis fotografije (za Google)', 'aria-label': `Opis fotografije ${i + 1}`, maxlength: 200 }),
+        (() => { const opc = (p.options || []).find((o) => o.cene?.some((c) => c > 0)); return opc ? izbor([['', 'Prikazuje: sve / ništa posebno'], ...opc.values.map((v, j): [string, string] => [String(j), `Prikazuje: ${v}`])], im.vel != null ? String(im.vel) : '', (v) => { if (v === '') delete im.vel; else im.vel = Number(v); }, { 'aria-label': `Koju vrednost prikazuje fotografija ${i + 1}` }) : null; })(),
         h('div', { class: 'imc-acts' },
           dugmeIkona('left', 'Pomeri levo', () => { [p.images[i - 1], p.images[i]] = [p.images[i], p.images[i - 1]]; crtaj(); izmena(); }, { disabled: i === 0 }),
           dugmeIkona('right', 'Pomeri desno', () => { [p.images[i + 1], p.images[i]] = [p.images[i], p.images[i + 1]]; crtaj(); izmena(); }, { disabled: i === p.images.length - 1 }),
@@ -474,11 +476,16 @@ function izborSekcija(p: Product) {
       polje('Crtež u izabranim bojama (galerija)', izbor([['', '— bez crteža —'], ...CRTEZI.map((c): [string, string] => [c.id, `${c.label} (boje: ${c.delovi.map((d, i) => `${i + 1}. izbor boje = ${d}`).join(', ')})`])], p.crtez || '', (v) => { if (v) p.crtez = v; else delete p.crtez; }),
         'Kad kupac promeni boju, u galeriji se pojavi crtež proizvoda u izabranim bojama. Za novi crtež pišite programeru.')),
     h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Ostale opcije'),
-      h('p', { class: 'hint' }, 'Npr. Veličina, Motiv, Oblik. Uz vrednost možete upisati i njenu cenu (npr. Mali 590, Veliki 1290): na sajtu se cena menja sa izborom. Prazna cena = osnovna cena proizvoda.'),
+      h('p', { class: 'hint' }, 'Npr. Veličina, Motiv, Oblik. Uz vrednost možete upisati i njenu cenu (npr. Mali 590, Veliki 1290): na sajtu se cena menja sa izborom. Prazna cena = osnovna cena proizvoda. „Redovna” je precrtana cena (za akcijske cene); prazno = bez nje.'),
       lista<Option>(p.options!, (o) => h('div', { class: 'stack' },
         ulaz(o.label, (v) => (o.label = v), { placeholder: 'Naziv opcije (npr. Veličina)', 'aria-label': 'Naziv opcije', maxlength: 40 }),
         vrednostiOpcije(o)),
         () => ({ id: '', label: '', values: [''] }), 'Dodaj opciju', 6)),
+    h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Sastavljanje slavskog seta'),
+      h('p', { class: 'hint' }, 'Kupac na strani proizvoda bira modlice za set (krst, golub, pečati…), a u galeriji vidi pregled seta u krug oko medaljona. Izbor ide u poruku. Lista modlica je u kodu (src/lib/set-modlice.ts).'),
+      grid(
+        polje('Medaljon u setu', izbor([['', '— bez sastavljanja seta —'], ...SET_MEDALJONI.map((m): [string, string] => [m.id, m.naziv])], p.sastav?.medaljon || '', (v) => { if (v) p.sastav = { medaljon: v, broj: p.sastav?.broj || 8 }; else delete p.sastav; })),
+        polje('Broj modlica u setu', ulaz(String(p.sastav?.broj || 8), (v) => { const n = Math.round(Number(v)); if (p.sastav && n >= 2 && n <= 20) p.sastav.broj = n; }, { type: 'number', min: 2, max: 20, inputmode: 'numeric' })))),
   );
 }
 
@@ -599,16 +606,18 @@ function motiviSekcija(p: Product) {
 function vrednostiOpcije(o: Option) {
   const box = h('div', { class: 'vals' });
   const cene = () => (o.cene ||= o.values.map(() => 0));
-  const zameni = (i: number, j: number) => { [o.values[i], o.values[j]] = [o.values[j], o.values[i]]; if (o.cene) [o.cene[i], o.cene[j]] = [o.cene[j], o.cene[i]]; };
+  const stare = () => (o.stare ||= o.values.map(() => 0));
+  const zameni = (i: number, j: number) => { [o.values[i], o.values[j]] = [o.values[j], o.values[i]]; if (o.cene) [o.cene[i], o.cene[j]] = [o.cene[j], o.cene[i]]; if (o.stare) [o.stare[i], o.stare[j]] = [o.stare[j], o.stare[i]]; };
   const crtaj = (fokus = false) => {
     box.replaceChildren(
       ...o.values.map((v, i) => h('div', { class: 'val' },
         ulaz(v, (x) => (o.values[i] = x), { placeholder: `Vrednost ${i + 1} (npr. Mali)`, 'aria-label': `Vrednost ${i + 1}`, maxlength: 60 }),
         h('label', { class: 'inl' }, ulaz(o.cene?.[i] ? String(o.cene[i]) : '', (x) => { const n = Math.round(Number(x)); cene()[i] = Number.isFinite(n) && n > 0 ? n : 0; }, { type: 'number', min: 0, step: 10, inputmode: 'numeric', placeholder: 'cena', 'aria-label': `Cena za vrednost ${i + 1}` }), 'din'),
+        h('label', { class: 'inl', title: 'Redovna cena: prikazuje se precrtana pored cene (akcija). Prazno = bez precrtane cene.' }, ulaz(o.stare?.[i] ? String(o.stare[i]) : '', (x) => { const n = Math.round(Number(x)); stare()[i] = Number.isFinite(n) && n > 0 ? n : 0; }, { type: 'number', min: 0, step: 10, inputmode: 'numeric', placeholder: 'redovna', 'aria-label': `Redovna (precrtana) cena za vrednost ${i + 1}` }), 'din'),
         dugmeIkona('up', 'Pomeri gore', () => { zameni(i, i - 1); crtaj(); izmena(); }, { disabled: i === 0 }),
         dugmeIkona('down', 'Pomeri dole', () => { zameni(i, i + 1); crtaj(); izmena(); }, { disabled: i === o.values.length - 1 }),
-        dugmeIkona('close', 'Obriši vrednost', () => { o.values.splice(i, 1); o.cene?.splice(i, 1); crtaj(); izmena(); }, { class: 'del' }))),
-      ...(o.values.length < 30 ? [h('button', { type: 'button', class: 'btn btn-sm', onclick: () => { o.values.push(''); o.cene?.push(0); crtaj(true); izmena(); } }, ikona('plus'), 'Dodaj vrednost')] : []),
+        dugmeIkona('close', 'Obriši vrednost', () => { o.values.splice(i, 1); o.cene?.splice(i, 1); o.stare?.splice(i, 1); crtaj(); izmena(); }, { class: 'del' }))),
+      ...(o.values.length < 30 ? [h('button', { type: 'button', class: 'btn btn-sm', onclick: () => { o.values.push(''); o.cene?.push(0); o.stare?.push(0); crtaj(true); izmena(); } }, ikona('plus'), 'Dodaj vrednost')] : []),
     );
     if (fokus) box.querySelector<HTMLInputElement>('.val:last-of-type input')?.focus();
   };

@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import type { Product } from '../data/products';
-import { productUrl, cardImg, sveCene, izborKomada, raznaCenaMotiva } from '../data/products';
+import { productUrl, cardImg, sveCene, izborKomada, raznaCenaMotiva, staraZa } from '../data/products';
 import { SITE } from '../data/site';
 import Cena from './Cena.astro';
 import { akcijaPct } from '../lib/cene';
@@ -16,6 +16,8 @@ const cenaN = raspon ? Math.min(...cene) : SITE.showPrices && cene.length ? cene
 const cenaPre = raspon || p.priceFrom || raznaCenaMotiva(p) ? 'od ' : '';
 const cenaPosle = izborKomada(p) ? ' / kom' : '';
 const ak = cenaN ? akcijaPct(p) : 0;
+const stara = cenaN ? staraZa(p, cenaN) : 0; // redovna (precrtana) cena uz akcijsku
+const staraPct = stara && !ak ? Math.round((1 - cenaN / stara) * 100) : 0;
 const url = productUrl(p.slug);
 const popustDo = izborKomada(p) && p.motivi!.popusti.length ? Math.max(...p.motivi!.popusti.map((x) => x.procenat)) : 0;
 ---
@@ -29,6 +31,7 @@ const popustDo = izborKomada(p) && p.motivi!.popusti.length ? Math.max(...p.moti
       )}
     </a>
     {ak > 0 && <span class="ak-sticker ak-on" aria-label={`Akcija −${ak}%`}>−{ak}%</span>}
+    {staraPct > 0 && <span class="ak-sticker" aria-label={`Akcijska cena, −${staraPct}%`}>−{staraPct}%</span>}
     {popustDo ? <span class="badge badge-custom">Popust do {popustDo}%</span> : p.custom && <span class="badge badge-custom">Po meri · 3–5 dana</span>}
     {p.personal || izborKomada(p) ? (
       <a class="quick" href={url} aria-label={izborKomada(p) ? `${p.motivi!.vrsta === 'boje' ? 'Izaberite boje' : 'Izaberite motive'}: ${p.title}` : `Poruči sa imenom: ${p.title}`}><Icon name="plus" size={22} stroke={2.4} /></a>
@@ -39,7 +42,7 @@ const popustDo = izborKomada(p) && p.motivi!.popusti.length ? Math.max(...p.moti
   <div class="body">
     <div class="row">
       <h3><a href={url}>{p.title}</a></h3>
-      {cenaN > 0 && <span class="price" style="font-size:18px"><Cena n={cenaN} pct={ak} pre={cenaPre} posle={cenaPosle} /></span>}
+      {cenaN > 0 && <span class="price" style="font-size:18px"><Cena n={cenaN} pct={ak} pre={cenaPre} posle={cenaPosle} stara={stara} /></span>}
     </div>
     <p class="note">{p.short}</p>
   </div>

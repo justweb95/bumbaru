@@ -25,6 +25,7 @@ import Cena from '../../components/Cena.astro';
 import Odbrojavanje from '../../components/Odbrojavanje.astro';
 import Nedavno from '../../components/Nedavno.astro';
 import { bojaById } from '../../lib/colors';
+import { SET_MODLICE, SET_POCETNI, SET_POZADINA, setMedaljon } from '../../lib/set-modlice';
 
 export function getStaticPaths() {
   return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { p } }));
@@ -37,6 +38,8 @@ const showPrice = SITE.showPrices && p.price;
 const opcCena = (p.options || []).find((o) => o.cene?.some((c) => c > 0));
 const cenaOpc = (i: number) => (opcCena?.cene?.[i] || p.price || 0);
 const showVar = SITE.showPrices && !!opcCena && cenaOpc(0) > 0;
+// redovna (precrtana) cena po vrednosti, kad je upisana i veća od cene
+const stareOpc = (i: number) => { const st = opcCena?.stare?.[i] || 0; return showVar && st > cenaOpc(i) ? st : 0; };
 // Prikazana cena (sa akcijom precrtana redovna): cena izabrane opcije, ili osnovna cena
 const cenaPrikaz = showVar ? cenaOpc(0) : showPrice ? p.price! : 0;
 const razneMot = raznaCenaMotiva(p); // motivi sa različitim cenama (npr. medaljoni): „od … din po komadu”
@@ -46,6 +49,13 @@ const cenaPosle = izborKomada(p) ? ' po komadu' : '';
 const r10 = (x: number) => Math.round(x / 10) * 10;
 const motFaktor0 = showVar && p.price ? cenaOpc(0) / p.price : 1;
 const ak = cenaPrikaz ? akcijaPct(p) : 0;
+const cenaStara = showVar ? stareOpc(0) : 0;
+
+// Slavski set: kupac bira modlice za set, pregled u krug oko medaljona se menja uživo
+const sasMed = p.sastav ? setMedaljon(p.sastav.medaljon) : undefined;
+const sas = p.sastav && sasMed ? { broj: p.sastav.broj, med: sasMed } : null;
+const sasPoc = sas ? Array.from({ length: sas.broj }, (_, i) => SET_POCETNI[i % SET_POCETNI.length]) : [];
+const sasData = sas ? JSON.stringify({ broj: sas.broj, poc: sasPoc, lista: SET_MODLICE.map((m) => ({ id: m.id, naziv: m.naziv, slika: m.slika })) }) : '';
 const isUkras = p.personal === 'ukras';
 const isSet = p.personal === 'set';
 const isKey = p.personal === 'privezak' && !!p.keychain;
@@ -191,6 +201,15 @@ const detailIcon = (q: string) => {
               <p class="mix-hint">Crtež pokazuje izabrane boje, a pravi izgled je na fotografijama.</p>
             </div>
           )}
+          {sas && (
+            <div class="slide sastav" data-slide="sastav" data-sas-stage>
+              <span class="badge live-badge"><i class="dotlive"></i>Vaš set</span>
+              <div class="ss-stage" style={`background-image:url(${SET_POZADINA})`} data-vel="0">
+                <img class="ss-med" src={sas.med.slika} alt={`Medaljon ${sas.med.naziv}`} width="520" height="500" />
+                {sasPoc.map((id, i) => { const m = SET_MODLICE.find((x) => x.id === id)!; return <span class="ss-m" data-ss-slot={i} style={`--a:${(-90 + (i * 360) / sas.broj).toFixed(2)}deg;--r:${(((i * 37) % 11) - 5).toFixed(0)}deg`}><img src={m.slika} alt={m.naziv} loading="eager" /></span>; })}
+              </div>
+            </div>
+          )}
           {motBoje && (
             <div class="slide mix" data-slide="mix" hidden>
               <span class="badge live-badge"><i class="dotlive"></i>Vaš izbor<b data-mix-n></b></span>
@@ -199,9 +218,9 @@ const detailIcon = (q: string) => {
             </div>
           )}
           {p.images.map((im, i) => (
-            <div class="slide" data-slide={`i${i}`} hidden={live || i > 0}>
+            <div class="slide" data-slide={`i${i}`} data-vel={im.vel} hidden={live || !!sas || i > 0}>
               {im.w !== im.h && <img class="backdrop" src={cardImg(im)} alt="" width="900" height="900" loading="lazy" aria-hidden="true" />}
-              <img class="full" src={`${im.src}-lg.webp`} alt={im.alt} width={im.w} height={im.h} loading={i === 0 && !live ? 'eager' : 'lazy'} fetchpriority={i === 0 && !live ? 'high' : undefined} decoding="async" />
+              <img class="full" src={`${im.src}-lg.webp`} alt={im.alt} width={im.w} height={im.h} loading={i === 0 && !live && !sas ? 'eager' : 'lazy'} fetchpriority={i === 0 && !live && !sas ? 'high' : undefined} decoding="async" />
             </div>
           ))}
           {motSlike.map((m) => (
@@ -215,13 +234,14 @@ const detailIcon = (q: string) => {
             <div class="slide"><div class="soon-photo"><img src="/img/brand/pcelica.webp" alt="" width="320" height="320" /><span>Fotografija uskoro</span></div></div>
           )}
         </div>
-        {(live || motBoje || (cr && crBoje.length) ? p.images.length > 0 : p.images.length > 1) && (
+        {(live || motBoje || sas || (cr && crBoje.length) ? p.images.length > 0 : p.images.length > 1) && (
           <div class="thumbs" role="group" aria-label="Fotografije">
             {live && <button type="button" class="thumb thumb-live" data-thumb="live" aria-pressed="true" aria-label="Pregled sa vašim imenom"><Icon name="star" size={22} /><span>Pregled</span></button>}
+            {sas && <button type="button" class="thumb thumb-live thumb-sas" data-thumb="sastav" aria-pressed="true" aria-label="Pregled vašeg seta"><img src={sas.med.slika} alt="" width="60" height="58" /><span>Vaš set</span></button>}
             {motBoje && <button type="button" class="thumb thumb-live" data-thumb="mix" aria-pressed="false" aria-label="Vaš izbor boja" hidden><Icon name="palette" size={22} /><span>Vaš izbor</span></button>}
             {cr && crBoje.length > 0 && <button type="button" class="thumb thumb-live thumb-crtez" data-thumb="crtez" aria-pressed="false" aria-label="Crtež u izabranim bojama" style={crBoje.map((h, i) => `--c${i + 1}:${h}`).join(';')}><span class="tc-dots" aria-hidden="true">{crBoje.map((_, i) => <i style={`background:var(--c${i + 1})`}></i>)}</span><span>Vaše boje</span></button>}
             {p.images.map((im, i) => (
-              <button type="button" class="thumb" data-thumb={`i${i}`} aria-pressed={!live && i === 0 ? 'true' : 'false'} aria-label={`Fotografija ${i + 1}: ${im.alt}`}><img src={cardImg(im)} alt="" width="120" height="120" loading="lazy" /></button>
+              <button type="button" class="thumb" data-thumb={`i${i}`} data-vel={im.vel} aria-pressed={!live && !sas && i === 0 ? 'true' : 'false'} aria-label={`Fotografija ${i + 1}: ${im.alt}`}><img src={cardImg(im)} alt="" width="120" height="120" loading="lazy" /></button>
             ))}
           </div>
         )}
@@ -237,7 +257,7 @@ const detailIcon = (q: string) => {
         </div>
         <h1 class="h1">{p.title}</h1>
         {ak > 0 && <Odbrojavanje mali />}
-        {cenaPrikaz > 0 && <p class="price" data-price-el><Cena n={cenaPrikaz} pct={ak} pre={cenaPre} posle={cenaPosle} /></p>}
+        {cenaPrikaz > 0 && <p class="price" data-price-el><Cena n={cenaPrikaz} pct={ak} pre={cenaPre} posle={cenaPosle} stara={cenaStara} /></p>}
         <p class="lead" style="color:var(--ink)">{p.lead}</p>
 
         <form class="order" id="poruci" data-order-form data-id={p.id} data-personal={p.personal || ''} data-kc={kcData || undefined} data-cena={showPrice ? p.price : undefined} data-od={p.priceFrom ? '1' : undefined} data-ak={ak || undefined} data-ak-naziv={ak && AKCIJA ? AKCIJA.naziv : undefined} novalidate>
@@ -394,18 +414,43 @@ const detailIcon = (q: string) => {
               <fieldset class="field">
                 <legend class="flabel">{o.label}</legend>
                 <div class="chips">
-                  {o.values.map((v, i) => <label class="chip"><input type="radio" name={`o-${o.id}`} value={v} checked={i === 0} data-option={o.label} data-cena={o === opcCena && showVar ? cenaOpc(i) : undefined} />{v}{o === opcCena && showVar && <small class="chip-cena"><Cena n={cenaOpc(i)} pct={ak} /></small>}</label>)}
+                  {o.values.map((v, i) => <label class="chip"><input type="radio" name={`o-${o.id}`} value={v} checked={i === 0} data-option={o.label} data-cena={o === opcCena && showVar ? cenaOpc(i) : undefined} data-stara={o === opcCena && stareOpc(i) ? stareOpc(i) : undefined} />{v}{o === opcCena && showVar && <small class="chip-cena"><Cena n={cenaOpc(i)} pct={ak} stara={stareOpc(i)} /></small>}</label>)}
                 </div>
               </fieldset>
             ) : (
               <div class="field">
                 <label for={`o-${o.id}`}>{o.label}</label>
                 <select id={`o-${o.id}`} class="select" name={`o-${o.id}`} data-option={o.label}>
-                  {o.values.map((v, i) => <option value={v} data-cena={o === opcCena && showVar ? cenaOpc(i) : undefined}>{o === opcCena && showVar ? `${v} – ${din(snizi(cenaOpc(i), ak))}` : v}</option>)}
+                  {o.values.map((v, i) => <option value={v} data-cena={o === opcCena && showVar ? cenaOpc(i) : undefined} data-stara={o === opcCena && stareOpc(i) ? stareOpc(i) : undefined}>{o === opcCena && showVar ? `${v} – ${din(snizi(cenaOpc(i), ak))}` : v}</option>)}
                 </select>
               </div>
             )
           ))}
+          {sas && (
+            <fieldset class="field mot sas" data-sastav={sasData}>
+              <legend class="flabel">Izaberite {sas.broj} modlica za set</legend>
+              <p class="hint mot-hint">Uz medaljon {sas.med.naziv} birate {sas.broj} modlica. Može i više komada iste. Pregled seta u galeriji se menja sa vašim izborom.</p>
+              <div class="mot-grid sas-grid" data-sas-grid>
+                {SET_MODLICE.map((m) => (
+                  <div class="mot-tile" data-sas={m.id}>
+                    <button type="button" class="mot-pick" aria-pressed="false" data-sas-pick aria-label={m.naziv}>
+                      <span class="mot-img sas-img"><img src={m.slika} alt="" width={m.w} height={m.h} loading="lazy" /></span>
+                      <span class="mot-name">{m.naziv}</span>
+                      <span class="mot-check" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
+                    </button>
+                    <div class="mot-step" data-sas-step hidden>
+                      <button type="button" data-sas-dec aria-label={`Jedna manje: ${m.naziv}`}>−</button>
+                      <span data-sas-n aria-live="polite">1</span>
+                      <button type="button" data-sas-inc aria-label={`Još jedna: ${m.naziv}`}>+</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p class="mm-msg sas-msg" aria-live="polite"><span class="mm-count" data-sas-count>0 / {sas.broj}</span><span data-sas-text></span></p>
+              <div class="sas-acts"><button type="button" class="btn btn-sm" data-sas-reset>Vrati početni izbor</button><button type="button" class="btn btn-sm" data-sas-clear>Isprazni izbor</button></div>
+              <p class="hint mot-err" data-err-sas role="alert"></p>
+            </fieldset>
+          )}
           <div class="field">
             <label for="f-nap">Napomena <span style="text-transform:none;letter-spacing:0;font-weight:400">(nije obavezno)</span></label>
             <input id="f-nap" class="input" name="napomena" maxlength="160" placeholder={p.custom ? 'npr. poruka za karticu u paketu' : mot ? 'npr. rok ili poruka za karticu' : 'npr. broj komada, rok'} autocomplete="off" />
@@ -621,7 +666,7 @@ const detailIcon = (q: string) => {
   const akPct = () => (document.documentElement.classList.contains('akcija-kraj') ? 0 : Number(form.dataset.ak || 0));
   const snizi = (n: number, pct = akPct()) => (pct ? Math.round((n * (1 - pct / 100)) / 10) * 10 : n);
   const dinH = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' din';
-  const cenaHtml = (n: number) => (akPct() ? `<s class="ak-s">${dinH(n)}</s> <span class="ak-n">${dinH(snizi(n))}</span>` : dinH(n));
+  const cenaHtml = (n: number, stara = 0) => (stara > n ? `<s class="ak-s">${dinH(stara)}</s> <span class="ak-n">${dinH(snizi(n))}</span>` : akPct() ? `<s class="ak-s">${dinH(n)}</s> <span class="ak-n">${dinH(snizi(n))}</span>` : dinH(n));
   const akTekst = (redovna: number) => (akPct() ? ` (${form.dataset.akNaziv || 'akcija'} −${akPct()}%, redovna ${dinH(redovna)})` : '');
 
   // Galerija
@@ -801,17 +846,91 @@ const detailIcon = (q: string) => {
     const o = sel?.selectedOptions[0];
     return o?.dataset.cena ? Number(o.dataset.cena) : 0;
   };
+  // redovna (precrtana) cena izabrane vrednosti (0 ako nije upisana)
+  const izabranaStara = () => {
+    const r = form.querySelector<HTMLInputElement>('input[data-cena]:checked');
+    if (r) return Number(r.dataset.stara) || 0;
+    const o = form.querySelector<HTMLSelectElement>('select[data-option]')?.selectedOptions[0];
+    return o?.dataset.stara ? Number(o.dataset.stara) : 0;
+  };
+  // indeks izabrane vrednosti opcije sa cenom (npr. 0 = Velika)
+  const izabranaVel = () => {
+    const r = [...form.querySelectorAll<HTMLInputElement>('input[data-cena]')];
+    if (r.length) return Math.max(0, r.findIndex((x) => x.checked));
+    const sel = form.querySelector<HTMLSelectElement>('select[data-option]');
+    return sel && sel.selectedOptions[0]?.dataset.cena ? Math.max(0, sel.selectedIndex) : -1;
+  };
   const osveziCenu = () => {
     const c = izabranaCena();
     if (!c || !cenaEl) return;
     if (cenaEl.dataset.n !== String(c)) {
       cenaEl.dataset.n = String(c);
+      const st = izabranaStara();
       // kod izbora komada (modlice): „od … po komadu” ostaje uz novu cenu
-      cenaEl.innerHTML = motCfg ? (motCfg.lista.some((m) => m.cena) ? 'od ' : '') + cenaHtml(c) + ' po komadu' : cenaHtml(c);
+      cenaEl.innerHTML = motCfg ? (motCfg.lista.some((m) => m.cena) ? 'od ' : '') + cenaHtml(c, st) + ' po komadu' : cenaHtml(c, st);
       cenaEl.classList.remove('pop'); void cenaEl.offsetWidth; cenaEl.classList.add('pop');
     }
   };
   form.addEventListener('change', osveziCenu);
+
+  // Izbor veličine prikaže fotografiju te veličine (fotografije sa oznakom vel), osim kad je otvoren pregled seta
+  form.addEventListener('change', (e) => {
+    const t = e.target as HTMLElement;
+    if (!t.matches('input[data-cena], select[data-option]') || !gal) return;
+    const v = izabranaVel();
+    if (v < 0) return;
+    const sasStage = gal.querySelector<HTMLElement>('.ss-stage');
+    if (sasStage) { sasStage.dataset.vel = String(v); return; }
+    const th = gal.querySelector<HTMLButtonElement>(`.thumb[data-vel="${v}"]`);
+    if (th) th.click();
+    else { const sl = gal.querySelector<HTMLElement>(`[data-slide][data-vel="${v}"]`); if (sl) showSlide(sl.dataset.slide || ''); }
+  });
+
+  // ——— Slavski set: izbor modlica i pregled u krug ———
+  const sasEl = form.querySelector<HTMLElement>('[data-sastav]');
+  const sasCfg = sasEl ? (JSON.parse(sasEl.dataset.sastav || '{}') as { broj: number; poc: string[]; lista: { id: string; naziv: string; slika: string }[] }) : null;
+  const sasN = new Map<string, number>();
+  const sasUkupno = () => [...sasN.values()].reduce((a, b) => a + b, 0);
+  const sasRed = () => (sasCfg ? sasCfg.lista.flatMap((m) => Array.from({ length: sasN.get(m.id) || 0 }, () => m)) : []);
+  const sasStage = document.querySelector<HTMLElement>('.ss-stage');
+  function sasCrtaj() {
+    if (!sasCfg || !sasEl) return;
+    const n = sasUkupno(), max = sasCfg.broj;
+    sasEl.querySelectorAll<HTMLElement>('[data-sas]').forEach((t) => {
+      const k = sasN.get(t.dataset.sas || '') || 0;
+      t.classList.toggle('on', k > 0);
+      t.querySelector('[data-sas-pick]')?.setAttribute('aria-pressed', String(k > 0));
+      const st = t.querySelector<HTMLElement>('[data-sas-step]')!; st.hidden = k === 0;
+      t.querySelector('[data-sas-n]')!.textContent = String(k);
+      t.querySelector<HTMLButtonElement>('[data-sas-inc]')!.disabled = n >= max;
+      t.querySelector<HTMLButtonElement>('[data-sas-pick]')!.classList.toggle('full', n >= max && k === 0);
+    });
+    sasEl.querySelector('[data-sas-count]')!.textContent = `${n} / ${max}`;
+    sasEl.querySelector('[data-sas-text]')!.textContent = n < max ? `Izaberite još ${max - n}.` : 'Set je kompletan. Za zamenu prvo uklonite neku modlicu (klik na nju ili −).';
+    sasEl.classList.toggle('done', n === max);
+    if (n === max) sasEl.querySelector('[data-err-sas]')!.textContent = '';
+    // pregled: prazna mesta su prozirna, izabrane modlice idu redom u krug
+    const red = sasRed();
+    sasStage?.querySelectorAll<HTMLElement>('[data-ss-slot]').forEach((slot, i) => {
+      const m = red[i];
+      const img = slot.querySelector('img')!;
+      slot.classList.toggle('prazno', !m);
+      if (m && img.getAttribute('src') !== m.slika) { img.src = m.slika; img.alt = m.naziv; slot.classList.remove('pop'); void slot.offsetWidth; slot.classList.add('pop'); }
+    });
+  }
+  const sasPostavi = (ids: string[]) => { sasN.clear(); ids.forEach((id) => sasN.set(id, (sasN.get(id) || 0) + 1)); sasCrtaj(); };
+  if (sasCfg && sasEl) {
+    sasEl.querySelectorAll<HTMLElement>('[data-sas]').forEach((t) => {
+      const id = t.dataset.sas || '';
+      const dodaj = () => { if (sasUkupno() >= sasCfg.broj) { pop(sasEl.querySelector('[data-sas-count]')); return; } sasN.set(id, (sasN.get(id) || 0) + 1); sasCrtaj(); };
+      t.querySelector('[data-sas-pick]')?.addEventListener('click', () => { if (sasN.get(id)) { sasN.delete(id); sasCrtaj(); } else dodaj(); showSlide('sastav'); gal?.querySelector('[data-thumb="sastav"]')?.setAttribute('aria-pressed', 'true'); });
+      t.querySelector('[data-sas-inc]')?.addEventListener('click', dodaj);
+      t.querySelector('[data-sas-dec]')?.addEventListener('click', () => { const k = (sasN.get(id) || 0) - 1; if (k > 0) sasN.set(id, k); else sasN.delete(id); sasCrtaj(); });
+    });
+    sasEl.querySelector('[data-sas-reset]')?.addEventListener('click', () => sasPostavi(sasCfg.poc));
+    sasEl.querySelector('[data-sas-clear]')?.addEventListener('click', () => { sasN.clear(); sasCrtaj(); });
+    sasPostavi(sasCfg.poc);
+  }
 
   form.addEventListener('input', (e) => {
     const t = e.target as HTMLInputElement;
@@ -993,6 +1112,15 @@ const detailIcon = (q: string) => {
     if (personal === 'ukras' || personal === 'set') {
       lines.push('Motiv: ' + lab('motiv'), 'Boja ukrasa: ' + lab('boja'), 'Boja imena: ' + lab('bojaImena'));
     }
+    if (sasCfg && sasEl) {
+      const n = sasUkupno();
+      if (n !== sasCfg.broj) {
+        greska(sasEl.querySelector('[data-err-sas]'), `U setu je ${sasCfg.broj} modlica, a izabrano je ${n}. ${n < sasCfg.broj ? `Izaberite još ${sasCfg.broj - n}.` : ''}`);
+        sasEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return null;
+      }
+      lines.push('Modlice u setu: ' + sasCfg.lista.filter((m) => sasN.get(m.id)).map((m) => m.naziv + ((sasN.get(m.id) || 0) > 1 ? ' ×' + sasN.get(m.id) : '')).join(', '));
+    }
     if (motCfg && motEl) {
       const n = motUkupno();
       if (!n) {
@@ -1043,7 +1171,8 @@ const detailIcon = (q: string) => {
     // obična cena (po komadu): izabrana opcija ili osnovna cena proizvoda
     if (!motCfg && !kcCfg) {
       const c = (cenaEl ? izabranaCena() : 0) || osnovnaCena;
-      if (c) { jed = snizi(c); cena = jed * qty; lines.push('Cena: ' + (form.dataset.od ? 'od ' : '') + dinar(jed) + (qty > 1 ? ' po komadu' : '') + akTekst(c)); }
+      const st = cenaEl ? izabranaStara() : 0;
+      if (c) { jed = snizi(c); cena = jed * qty; lines.push('Cena: ' + (form.dataset.od ? 'od ' : '') + dinar(jed) + (qty > 1 ? ' po komadu' : '') + (st > c ? ` (akcijska cena, redovna ${dinar(st)})` : akTekst(c))); }
     }
     const nap = (form.querySelector<HTMLInputElement>('input[name="napomena"]')?.value || '').trim();
     if (nap) lines.push('Napomena: ' + nap);
@@ -1423,6 +1552,25 @@ const detailIcon = (q: string) => {
   .mq:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
   .mq.pop { animation: mot-pop .5s cubic-bezier(.3,1.7,.5,1); }
   @media (hover: hover) { .mq:hover { background: var(--honey-soft); transform: translateY(-2px); } }
+  /* Slavski set: pregled u krug (medaljon u sredini, izabrane modlice oko njega) */
+  .slide.sastav { background: #6b5646; }
+  .ss-stage { position: absolute; inset: 0; background-size: cover; background-position: center; --box: 23; --med: 40%; --rad: 35.5; }
+  .ss-stage[data-vel="1"] { --box: 20; --med: 40%; --rad: 34; }
+  .ss-stage[data-vel="2"] { --box: 17; --med: 33%; --rad: 31; }
+  .ss-med, .ss-m { position: absolute; left: 50%; top: 50%; transition: width .45s cubic-bezier(.3,1.3,.5,1), height .45s cubic-bezier(.3,1.3,.5,1), transform .45s cubic-bezier(.3,1.3,.5,1); }
+  .slide .ss-med { width: var(--med); height: auto; object-fit: contain; transform: translate(-50%, -50%); filter: drop-shadow(2px 6px 7px rgba(30,18,10,.45)); }
+  .ss-m { width: calc(var(--box) * 1%); height: calc(var(--box) * 1%); transform: translate(-50%, -50%) rotate(var(--a)) translateX(calc(var(--rad) / var(--box) * 100%)) rotate(calc(-1 * var(--a))) rotate(var(--r)); }
+  .slide .ss-m img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(2px 5px 5px rgba(30,18,10,.45)); transition: opacity .25s; }
+  .ss-m.prazno img { opacity: 0; }
+  .ss-m.prazno::after { content: ''; position: absolute; inset: 12%; border: 2px dashed rgba(255,255,255,.75); border-radius: 22%; }
+  .ss-m.pop img { animation: ss-in .45s cubic-bezier(.3,1.5,.5,1); }
+  @keyframes ss-in { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .thumb-sas img { width: 46px; height: auto; }
+  .sas-img { background: radial-gradient(circle at 50% 45%, #F7F3EC, #E4DDD2 80%); }
+  .sas-img img { object-fit: contain; padding: 8%; }
+  .mot-pick.full { opacity: .5; }
+  .sas-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .sas.done .mm-count { background: var(--leaf, #3f7d4e); color: #fff; }
   .slide.mix { background: radial-gradient(circle at 50% 40%, #F7F3EC, #E4DDD2 75%); }
   .slide.mix .live-badge b { font-weight: 800; }
   .mix-grid { position: absolute; inset: 66px 18px 52px; container-type: size; display: flex; flex-wrap: wrap; align-items: center; align-content: center; justify-content: center; gap: 2cqh 4cqw; --h: 64; }

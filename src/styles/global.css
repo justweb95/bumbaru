@@ -389,7 +389,7 @@ ul, ol { margin: 0; padding: 0; }
 .card .ak-sticker { position: absolute; right: 12px; top: 12px; z-index: 2; width: 54px; height: 54px; border-radius: 50%; background: var(--berry); color: #fff; font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; transform: rotate(10deg); box-shadow: 0 4px 10px rgba(49,32,24,.25); border: 2px dashed rgba(255,255,255,.7); }
 body.has-sbar { padding-bottom: 72px; }
 body.has-sbar .kp-toast { bottom: 88px !important; }
-.card .row:has(.ak-on) { flex-direction: column; gap: 2px; }
+.card .row:has(.ak-on), .card .row:has(.ak-s) { flex-direction: column; gap: 2px; }
 .card .row .price:has(.ak-on) { white-space: normal; flex: 0 1 auto; }
 .ak-s, .ak-n { white-space: nowrap; }
 @media (max-width: 760px) { .card .ak-sticker { width: 42px; height: 42px; font-size: 13px; top: 46px; right: 8px; } }

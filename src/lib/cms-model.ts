@@ -1,7 +1,8 @@
 // Provera i čišćenje podataka iz admin panela (proizvodi, kategorije, boje, podešavanja).
 // Koristi ga i server (/api/cms/) i admin u pregledaču, pa ovde nema ničeg specifičnog za Node.
 // Svaka funkcija vraća čist objekat (samo poznata polja, u stalnom redosledu) ili baca CmsGreska.
-import type { Product, Img, Option, ColorChoice, KeychainCfg, Personal, MotiviCfg, Poziv, Komplet, Firme } from '../data/products';
+import type { Product, Img, Option, ColorChoice, KeychainCfg, Personal, MotiviCfg, Poziv, Komplet, Firme, SastavCfg } from '../data/products';
+import { SET_MEDALJONI } from './set-modlice';
 import type { Category, Faq } from '../data/categories';
 import { SILUETE } from './siluete';
 import { CRTEZI } from './crtezi';
@@ -171,6 +172,7 @@ function slika(im: Img, gde: string): Img {
     h: ceo(im?.h, `${gde}: visina`, 1, 10000),
     alt: red(im?.alt, `${gde}: opis`, 200),
     ...(og ? { og } : {}),
+    ...(Number.isInteger(im?.vel) && im.vel! >= 0 && im.vel! < 30 ? { vel: im.vel } : {}),
   };
 }
 const slike = (v: unknown, gde: string): Img[] => niz<Img>(v, `${gde}: slike`, 12).map((im, i) => slika(im, `${gde}: slika ${i + 1}`));
@@ -234,11 +236,13 @@ function opcije(v: unknown, gde: string): Option[] {
       const label = red(o?.label, `${gde}: opcija ${i + 1} (naziv)`, 40);
       const sirove = niz<string>(o?.values, `${gde}: opcija „${label}”`, 30).map((x) => red(x, `${gde}: opcija „${label}”`, 60));
       const cene0 = Array.isArray(o?.cene) ? o.cene : [];
+      const stare0 = Array.isArray(o?.stare) ? o.stare : [];
       // prazne vrednosti se izbacuju zajedno sa svojom cenom
-      const parovi = sirove.map((x, j) => [x, cene0[j]] as [string, unknown]).filter(([x]) => x);
+      const parovi = sirove.map((x, j) => [x, cene0[j], stare0[j]] as [string, unknown, unknown]).filter(([x]) => x);
       const values = parovi.map(([x]) => x);
       const cene = parovi.map(([x, c]) => (c === undefined || c === null || c === '' ? 0 : ceo(c, `${gde}: cena za „${x}”`, 0, 10_000_000)));
-      return { id: String(o?.id ?? '').trim(), label, values, cene };
+      const stare = parovi.map(([x, , c]) => (c === undefined || c === null || c === '' ? 0 : ceo(c, `${gde}: redovna cena za „${x}”`, 0, 10_000_000)));
+      return { id: String(o?.id ?? '').trim(), label, values, cene, stare };
     })
     .filter((o) => o.label || o.values.length)
     .map((o) => {
@@ -247,8 +251,16 @@ function opcije(v: unknown, gde: string): Option[] {
       let id = SLUG.test(o.id) ? o.id : slugify(o.label, 30) || 'opcija';
       for (let n = 2; ids.has(id); n++) id = `${slugify(o.label, 26) || 'opcija'}-${n}`;
       ids.add(id);
-      return { id, label: o.label, values: o.values, ...(o.cene.some((c) => c > 0) ? { cene: o.cene } : {}) };
+      const ima = o.cene.some((c) => c > 0);
+      return { id, label: o.label, values: o.values, ...(ima ? { cene: o.cene } : {}), ...(ima && o.stare.some((c) => c > 0) ? { stare: o.stare } : {}) };
     });
+}
+
+function sastav(v: unknown, gde: string): SastavCfg | undefined {
+  if (v == null) return undefined;
+  const x = v as SastavCfg;
+  if (!SET_MEDALJONI.some((m) => m.id === x.medaljon)) greska(`${gde}: sastavljanje seta – izaberite medaljon.`);
+  return { medaljon: x.medaljon, broj: ceo(x.broj, `${gde}: broj modlica u setu`, 2, 20) };
 }
 
 function poziv(v: unknown, gde: string): Poziv | undefined {
@@ -346,6 +358,7 @@ export function ocistiProizvode(ulaz: unknown, kategorije: Category[]): Product[
       ...(() => { const x = komplet(p?.komplet, gde); return x ? { komplet: x } : {}; })(),
       ...(() => { const x = firme(p?.firme, gde); return x ? { firme: x } : {}; })(),
       ...(CRTEZI.some((c) => c.id === p?.crtez) ? { crtez: p.crtez } : {}),
+      ...(() => { const x = sastav(p?.sastav, gde); return x ? { sastav: x } : {}; })(),
       about: pasusi(p?.about, `${gde}: opis`),
       specs,
       details: pitanja(p?.details, `${gde}: detalji`, 12),

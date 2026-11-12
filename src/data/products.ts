@@ -8,9 +8,11 @@
 import type { Faq } from './categories';
 import data from './proizvodi.json';
 
-export interface Img { src: string; w: number; h: number; alt: string; og?: string }
+// vel: fotografija prikazuje tu vrednost opcije sa cenom (npr. 0 = Velika); kad kupac izabere veličinu, galerija je prikaže
+export interface Img { src: string; w: number; h: number; alt: string; og?: string; vel?: number }
 // cene: cena za svaku vrednost (isti redosled kao values); 0 = važi osnovna cena proizvoda
-export interface Option { id: string; label: string; values: string[]; cene?: number[] }
+// stare: redovna (precrtana) cena za svaku vrednost; prikazuje se samo kad je veća od cene (akcijska cena)
+export interface Option { id: string; label: string; values: string[]; cene?: number[]; stare?: number[] }
 // Istaknut poziv na Messenger (npr. „pišite nam za celu kolekciju”)
 export interface Poziv { tekst: string; dugme: string; poruka?: string }
 export type Personal = 'ukras' | 'set' | 'privezak';
@@ -28,6 +30,8 @@ export interface MotiviCfg { lista: Motiv[]; popusti: { od: number; procenat: nu
 export interface Komplet { uz: string[]; popust: number }
 // Popusti za firme (velike količine): od koliko komada i procenat; tekst se prikazuje u kartici
 export interface Firme { popusti: { od: number; procenat: number }[]; tekst?: string }
+// Slavski set: kupac bira `broj` modlica (src/lib/set-modlice.ts), uz medaljon sveca; pregled seta se menja uživo
+export interface SastavCfg { medaljon: string; broj: number }
 export interface KeychainCfg { stilovi: string[]; startImena: number; minImena: number; maxImena: number; sareno?: boolean; slike?: Record<string, number> } // slike: koja fotografija prikazuje koji stil
 
 export interface Product {
@@ -52,6 +56,7 @@ export interface Product {
   komplet?: Komplet;
   firme?: Firme;
   crtez?: string; // crtež u izabranim bojama (src/lib/crtezi.ts); delovi se boje redom izbora boja
+  sastav?: SastavCfg;
   about: string[];
   specs: [string, string][];
   details: Faq[];
@@ -86,4 +91,13 @@ export const sveCene = (x: Product) => {
   const opc = (x.options || []).find((o) => o.cene?.some((c) => c > 0));
   if (!opc) return x.price ? [x.price] : [];
   return opc.values.map((_, i) => opc.cene![i] || x.price || 0).filter((c) => c > 0);
+};
+
+// Redovna (precrtana) cena za datu cenu proizvoda: iz opcije sa cenama (ista vrednost), 0 ako je nema ili nije veća
+export const staraZa = (x: Product, cena: number) => {
+  const opc = (x.options || []).find((o) => o.cene?.some((c) => c > 0));
+  if (!opc?.stare) return 0;
+  const i = opc.values.findIndex((_, j) => (opc.cene![j] || x.price || 0) === cena);
+  const st = i >= 0 ? opc.stare[i] || 0 : 0;
+  return st > cena ? st : 0;
 };
