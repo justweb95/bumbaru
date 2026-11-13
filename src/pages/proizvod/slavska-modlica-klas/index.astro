@@ -1,0 +1,17 @@
+---
+// Stara adresa (proizvod „Klas” je preimenovan u „Kukuruz”, 13. 11. 2026): preusmerava na novu,
+// da linkovi iz starih poruka i pretrage i dalje rade.
+const nova = '/proizvod/slavska-modlica-kukuruz/';
+---
+<!doctype html>
+<html lang="sr-Latn">
+  <head>
+    <meta charset="utf-8" />
+    <title>Slavska modlica Kukuruz | Bumbaru</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={new URL(nova, Astro.site).href} />
+    <meta http-equiv="refresh" content={`0;url=${nova}`} />
+    <script is:inline define:vars={{ nova }}>location.replace(nova + location.search + location.hash);</script>
+  </head>
+  <body><p>Strana je premeštena: <a href={nova}>Slavska modlica Kukuruz</a>.</p></body>
+</html>

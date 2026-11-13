@@ -14,7 +14,7 @@ export const SET_MODLICE: SetMotiv[] = [
   { id: 'pecat-krst', naziv: 'Pečat sa krstom', slika: '/img/set/pecat-krst.webp', w: 380, h: 358 },
   { id: 'pecat-okrugli', naziv: 'Pečat okrugli', slika: '/img/set/pecat-okrugli.webp', w: 380, h: 363 },
   { id: 'knjiga', naziv: 'Knjiga', slika: '/img/set/knjiga.webp', w: 368, h: 314 },
-  { id: 'klas', naziv: 'Klas', slika: '/img/set/klas.webp', w: 270, h: 380 },
+  { id: 'kukuruz', naziv: 'Kukuruz', slika: '/img/set/kukuruz.webp', w: 270, h: 380 },
   { id: 'zito', naziv: 'Žito', slika: '/img/set/zito.webp', w: 360, h: 380 },
   { id: 'cvet', naziv: 'Cvet', slika: '/img/set/cvet.webp', w: 380, h: 355 },
   { id: 'grozdje', naziv: 'Grožđe sa listom', slika: '/img/set/grozdje.webp', w: 316, h: 380 },
@@ -32,7 +32,7 @@ export const SET_MEDALJONI: { id: string; naziv: string; slika: string }[] = [
 ];
 
 // Početni izbor (kupac ga menja): najtraženiji motivi
-export const SET_POCETNI = ['krst', 'golub-u-letu', 'pecat-krst', 'pecat-okrugli', 'srecna-slava', 'knjiga', 'klas', 'grozdje'];
+export const SET_POCETNI = ['krst', 'golub-u-letu', 'pecat-krst', 'pecat-okrugli', 'srecna-slava', 'knjiga', 'kukuruz', 'grozdje'];
 
 export const setMotiv = (id: string) => SET_MODLICE.find((m) => m.id === id);
 export const setMedaljon = (id: string) => SET_MEDALJONI.find((m) => m.id === id);

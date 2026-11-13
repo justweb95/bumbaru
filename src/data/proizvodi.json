@@ -3529,7 +3529,7 @@
         "bozic"
       ],
       "short": "Izaberite modlice i veličinu, od svih 22 motiva. Kupite 5, šesta je gratis, a što više uzmete, veći je popust.",
-      "lead": "Složite set po svom ukusu: medaljon sveca, krst, pečate, klas, grožđe ili božićne motive. Kliknite modlice koje želite, a pčelica pokazuje koliko vam fali do sledećeg popusta.",
+      "lead": "Složite set po svom ukusu: medaljon sveca, krst, pečate, kukuruz, žito, grožđe ili božićne motive. Kliknite modlice koje želite, a pčelica pokazuje koliko vam fali do sledećeg popusta.",
       "price": 300,
       "images": [
         {
@@ -3743,13 +3743,13 @@
             }
           },
           {
-            "id": "klas",
-            "naziv": "Klas (kukuruz)",
+            "id": "kukuruz",
+            "naziv": "Kukuruz",
             "slika": {
               "src": "/img/p/slavske-modlice-sastavite-svoj-set/u7d74242d5",
               "w": 955,
               "h": 955,
-              "alt": "Motiv Klas (kukuruz): slavska modlica, sekač sa pečatom na stolu sa brašnom",
+              "alt": "Motiv Kukuruz: slavska modlica, sekač sa pečatom na stolu sa brašnom",
               "og": "/img/p/slavske-modlice-sastavite-svoj-set/u7d74242d5-og.jpg"
             }
           },
@@ -3948,7 +3948,7 @@
         "slavski-set-modlica-sveti-sava"
       ],
       "seoTitle": "Slavske modlice po izboru, 5 + 1 gratis | Bumbaru",
-      "meta": "Sastavite svoj set slavskih modlica: medaljoni svetaca, krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe i božićni motivi. Kupite 5, šesta je gratis, a popust raste do 30%."
+      "meta": "Sastavite svoj set slavskih modlica: medaljoni svetaca, krst, pečati ИС ХС НИ КА, Srećna slava, golub, kukuruz, žito, grožđe i božićni motivi. Kupite 5, šesta je gratis, a popust raste do 30%."
     },
     {
       "id": "SS-01",
@@ -4012,7 +4012,7 @@
         "broj": 8
       },
       "about": [
-        "U setu je medaljon Sveti Nikola sa natpisom СВ. НИКОЛА i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas (kukuruz), žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
+        "U setu je medaljon Sveti Nikola sa natpisom СВ. НИКОЛА i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, kukuruz, žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
         "Redovna cena seta je 3.490 din za veliki, 3.090 za srednji i 2.590 din za mali set, a sada je 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, u boji kao na fotografijama (crvena ili bela). Ako želite drugu boju, napišite je u napomeni uz porudžbinu."
@@ -4032,7 +4032,7 @@
         ],
         [
           "Birate od",
-          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, klas (kukuruz), žito, cvet, grožđe, bure, pletenica"
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, kukuruz, žito, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4095,7 +4095,7 @@
         "bozicna-modlica-rodjenje-hristovo"
       ],
       "seoTitle": "Slavski set modlica Sveti Nikola, 8 modlica i medaljon za Nikoljdan | Bumbaru",
-      "meta": "Slavski set za Nikoljdan: medaljon Sveti Nikola i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "meta": "Slavski set za Nikoljdan: medaljon Sveti Nikola i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, kukuruz, žito, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-02",
@@ -4159,7 +4159,7 @@
         "broj": 8
       },
       "about": [
-        "U setu je medaljon Sveti Georgije sa natpisom СВ. ГЕОРГИЈЕ i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas (kukuruz), žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
+        "U setu je medaljon Sveti Georgije sa natpisom СВ. ГЕОРГИЈЕ i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, kukuruz, žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
         "Redovna cena seta je 3.490 din za veliki, 3.090 za srednji i 2.590 din za mali set, a sada je 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, u boji kao na fotografijama (crvena ili bela). Ako želite drugu boju, napišite je u napomeni uz porudžbinu."
@@ -4179,7 +4179,7 @@
         ],
         [
           "Birate od",
-          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, klas (kukuruz), žito, cvet, grožđe, bure, pletenica"
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, kukuruz, žito, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4242,7 +4242,7 @@
         "bozicna-modlica-rodjenje-hristovo"
       ],
       "seoTitle": "Slavski set modlica Sveti Georgije, 8 modlica i medaljon za Đurđevdan | Bumbaru",
-      "meta": "Slavski set za Đurđevdan: medaljon Sveti Georgije i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "meta": "Slavski set za Đurđevdan: medaljon Sveti Georgije i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, kukuruz, žito, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-03",
@@ -4306,7 +4306,7 @@
         "broj": 8
       },
       "about": [
-        "U setu je medaljon Arhangel Mihailo sa natpisom АРХ. МИХАИЛО i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas (kukuruz), žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
+        "U setu je medaljon Arhangel Mihailo sa natpisom АРХ. МИХАИЛО i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, kukuruz, žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
         "Redovna cena seta je 3.490 din za veliki, 3.090 za srednji i 2.590 din za mali set, a sada je 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, u boji kao na fotografijama (crvena ili bela). Ako želite drugu boju, napišite je u napomeni uz porudžbinu."
@@ -4326,7 +4326,7 @@
         ],
         [
           "Birate od",
-          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, klas (kukuruz), žito, cvet, grožđe, bure, pletenica"
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, kukuruz, žito, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4389,7 +4389,7 @@
         "bozicna-modlica-rodjenje-hristovo"
       ],
       "seoTitle": "Slavski set modlica Arhangel Mihailo, 8 modlica i medaljon za Aranđelovdan | Bumbaru",
-      "meta": "Slavski set za Aranđelovdan: medaljon Arhangel Mihailo i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "meta": "Slavski set za Aranđelovdan: medaljon Arhangel Mihailo i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, kukuruz, žito, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-04",
@@ -4453,7 +4453,7 @@
         "broj": 8
       },
       "about": [
-        "U setu je medaljon Sveti Jovan sa natpisom СВ. ЈОВАН i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas (kukuruz), žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
+        "U setu je medaljon Sveti Jovan sa natpisom СВ. ЈОВАН i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, kukuruz, žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
         "Redovna cena seta je 3.490 din za veliki, 3.090 za srednji i 2.590 din za mali set, a sada je 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, u boji kao na fotografijama (crvena ili bela). Ako želite drugu boju, napišite je u napomeni uz porudžbinu."
@@ -4473,7 +4473,7 @@
         ],
         [
           "Birate od",
-          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, klas (kukuruz), žito, cvet, grožđe, bure, pletenica"
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, kukuruz, žito, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4536,7 +4536,7 @@
         "bozicna-modlica-rodjenje-hristovo"
       ],
       "seoTitle": "Slavski set modlica Sveti Jovan, 8 modlica i medaljon za Jovanjdan | Bumbaru",
-      "meta": "Slavski set za Jovanjdan: medaljon Sveti Jovan i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "meta": "Slavski set za Jovanjdan: medaljon Sveti Jovan i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, kukuruz, žito, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-05",
@@ -4600,7 +4600,7 @@
         "broj": 8
       },
       "about": [
-        "U setu je medaljon Sveti Dimitrije sa natpisom СВ. ДИМИТРИЈЕ i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas (kukuruz), žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
+        "U setu je medaljon Sveti Dimitrije sa natpisom СВ. ДИМИТРИЈЕ i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, kukuruz, žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
         "Redovna cena seta je 3.490 din za veliki, 3.090 za srednji i 2.590 din za mali set, a sada je 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, u boji kao na fotografijama (crvena ili bela). Ako želite drugu boju, napišite je u napomeni uz porudžbinu."
@@ -4620,7 +4620,7 @@
         ],
         [
           "Birate od",
-          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, klas (kukuruz), žito, cvet, grožđe, bure, pletenica"
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, kukuruz, žito, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4683,7 +4683,7 @@
         "bozicna-modlica-rodjenje-hristovo"
       ],
       "seoTitle": "Slavski set modlica Sveti Dimitrije, 8 modlica i medaljon za Mitrovdan | Bumbaru",
-      "meta": "Slavski set za Mitrovdan: medaljon Sveti Dimitrije i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "meta": "Slavski set za Mitrovdan: medaljon Sveti Dimitrije i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, kukuruz, žito, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SS-06",
@@ -4747,7 +4747,7 @@
         "broj": 8
       },
       "about": [
-        "U setu je medaljon Sveti Sava sa natpisom СВ. САВА i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, klas (kukuruz), žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
+        "U setu je medaljon Sveti Sava sa natpisom СВ. САВА i 8 modlica koje birate sami, može i dve iste: krst, golub u letu ili sa grančicom, dva pečata ИС ХС НИ КА (sa krstom i okrugli), „Срећна слава”, knjiga, kukuruz, žito, cvet, grožđe sa listom, bure i pletenica. Modlice birate ovde na strani, a pregled seta u galeriji se menja sa vašim izborom.",
         "Svaka modlica ima dva dela. Sekač iseče oblik iz razvaljanog testa i ostane u njemu, a pečat se spusti u sekač i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
         "Set pravimo u tri veličine, a medaljon je uvek veličinu veći od ostalih modlica, da se lik sveca i natpis lepo vide: u velikom i srednjem setu je veliki medaljon (Ø 9,5 cm), a u malom srednji (Ø 7,6 cm). Ostale modlice su oko 6–8 cm u velikom, 5–6,5 cm u srednjem i 4–5 cm u malom setu.",
         "Redovna cena seta je 3.490 din za veliki, 3.090 za srednji i 2.590 din za mali set, a sada je 2.400, 1.600 i 1.300 din. Štampamo ih od PLA plastike, u boji kao na fotografijama (crvena ili bela). Ako želite drugu boju, napišite je u napomeni uz porudžbinu."
@@ -4767,7 +4767,7 @@
         ],
         [
           "Birate od",
-          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, klas (kukuruz), žito, cvet, grožđe, bure, pletenica"
+          "krst, golub (2 vrste), 2 pečata ИС ХС НИ КА, Срећна слава, knjiga, kukuruz, žito, cvet, grožđe, bure, pletenica"
         ],
         [
           "Svaka modlica",
@@ -4830,7 +4830,7 @@
         "bozicna-modlica-rodjenje-hristovo"
       ],
       "seoTitle": "Slavski set modlica Sveti Sava, 8 modlica i medaljon za Savindan | Bumbaru",
-      "meta": "Slavski set za Savindan: medaljon Sveti Sava i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, klas, grožđe, bure i još. Jeftinije nego pojedinačno."
+      "meta": "Slavski set za Savindan: medaljon Sveti Sava i 8 modlica po izboru: krst, pečati ИС ХС НИ КА, Srećna slava, golub, kukuruz, žito, grožđe, bure i još. Jeftinije nego pojedinačno."
     },
     {
       "id": "SM-13",
@@ -7214,8 +7214,8 @@
     },
     {
       "id": "SM-08",
-      "slug": "slavska-modlica-klas",
-      "title": "Slavska modlica Klas",
+      "slug": "slavska-modlica-kukuruz",
+      "title": "Slavska modlica Kukuruz",
       "category": "slavske-modlice",
       "categories": [
         "slavske-modlice"
@@ -7234,42 +7234,42 @@
       "price": 300,
       "images": [
         {
-          "src": "/img/p/slavska-modlica-klas/u9a9d9961c",
+          "src": "/img/p/slavska-modlica-kukuruz/u9a9d9961c",
           "w": 1200,
           "h": 900,
-          "alt": "Slavska modlica Klas, klip kukuruza, velika veličina: sekač sa pečatom na stolu sa brašnom",
-          "og": "/img/p/slavska-modlica-klas/u9a9d9961c-og.jpg",
+          "alt": "Slavska modlica Kukuruz (klip kukuruza), velika veličina: sekač sa pečatom na stolu sa brašnom",
+          "og": "/img/p/slavska-modlica-kukuruz/u9a9d9961c-og.jpg",
           "vel": 0
         },
         {
-          "src": "/img/p/slavska-modlica-klas/u50bc45894",
+          "src": "/img/p/slavska-modlica-kukuruz/u50bc45894",
           "w": 1200,
           "h": 900,
-          "alt": "Slavska modlica Klas, klip kukuruza, srednja veličina (80 %): sekač sa pečatom na stolu sa brašnom",
-          "og": "/img/p/slavska-modlica-klas/u50bc45894-og.jpg",
+          "alt": "Slavska modlica Kukuruz (klip kukuruza), srednja veličina (80 %): sekač sa pečatom na stolu sa brašnom",
+          "og": "/img/p/slavska-modlica-kukuruz/u50bc45894-og.jpg",
           "vel": 1
         },
         {
-          "src": "/img/p/slavska-modlica-klas/u1992cd737",
+          "src": "/img/p/slavska-modlica-kukuruz/u1992cd737",
           "w": 1200,
           "h": 900,
-          "alt": "Slavska modlica Klas, klip kukuruza, mala veličina (65 %): sekač sa pečatom na stolu sa brašnom",
-          "og": "/img/p/slavska-modlica-klas/u1992cd737-og.jpg",
+          "alt": "Slavska modlica Kukuruz (klip kukuruza), mala veličina (65 %): sekač sa pečatom na stolu sa brašnom",
+          "og": "/img/p/slavska-modlica-kukuruz/u1992cd737-og.jpg",
           "vel": 2
         },
         {
-          "src": "/img/p/slavska-modlica-klas/u38c211da0",
+          "src": "/img/p/slavska-modlica-kukuruz/u38c211da0",
           "w": 1200,
           "h": 900,
-          "alt": "Slavska modlica Klas, klip kukuruza: mala, srednja i velika veličina jedna pored druge",
-          "og": "/img/p/slavska-modlica-klas/u38c211da0-og.jpg"
+          "alt": "Slavska modlica Kukuruz (klip kukuruza): mala, srednja i velika veličina jedna pored druge",
+          "og": "/img/p/slavska-modlica-kukuruz/u38c211da0-og.jpg"
         },
         {
-          "src": "/img/p/slavska-modlica-klas/u51c36d3fb",
+          "src": "/img/p/slavska-modlica-kukuruz/u51c36d3fb",
           "w": 1200,
           "h": 900,
-          "alt": "Slavska modlica Klas, klip kukuruza: sekač i pečat odvojeno",
-          "og": "/img/p/slavska-modlica-klas/u51c36d3fb-og.jpg"
+          "alt": "Slavska modlica Kukuruz (klip kukuruza): sekač i pečat odvojeno",
+          "og": "/img/p/slavska-modlica-kukuruz/u51c36d3fb-og.jpg"
         }
       ],
       "options": [
@@ -7363,7 +7363,7 @@
         "modlica-sveti-nikola",
         "slavska-modlica-krst"
       ],
-      "seoTitle": "Slavska modlica Klas, sekač i pečat za slavski kolač | Bumbaru",
+      "seoTitle": "Slavska modlica Kukuruz, sekač i pečat za slavski kolač | Bumbaru",
       "meta": "Klip kukuruza, sekač i pečat za slavski kolač. Štampamo od PLA plastike, poručivanje preko Messengera, dostava širom Srbije."
     },
     {
