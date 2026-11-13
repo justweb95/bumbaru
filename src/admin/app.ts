@@ -10,8 +10,9 @@ import { CRTEZI } from '../lib/crtezi';
 import { SET_MEDALJONI } from '../lib/set-modlice';
 import type { Category, Faq } from '../data/categories';
 import { STILOVI } from '../lib/keychain';
+import { panelKalkulator } from './kalkulator';
 
-type Tab = 'proizvodi' | 'kategorije' | 'boje' | 'podesavanja';
+type Tab = 'proizvodi' | 'kategorije' | 'boje' | 'podesavanja' | 'kalkulator';
 const init = JSON.parse(document.getElementById('adm-data')!.textContent || '{}') as { podaci: CmsPodaci; pozadine: string[] };
 
 // ——— stanje ———
@@ -204,7 +205,7 @@ function render() {
   document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
   const el = tab === 'proizvodi' ? (otvorenP ? editorProizvoda(otvorenP) : listaProizvoda())
     : tab === 'kategorije' ? (otvorenK ? editorKategorije(otvorenK) : listaKategorija())
-    : tab === 'boje' ? panelBoje() : panelPodesavanja();
+    : tab === 'boje' ? panelBoje() : tab === 'kalkulator' ? panelKalkulator(P) : panelPodesavanja();
   panel().replaceChildren(el);
   osveziBrojeve();
 }
