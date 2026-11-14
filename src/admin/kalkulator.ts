@@ -6,6 +6,7 @@
 // Kalkulator sam bira koliko setova se isplati kupcu; ostale modlice idu pojedinačno sa popustom na količinu.
 import { h, din } from './dom';
 import type { CmsPodaci } from '../lib/cms-model';
+import { panelTrosak } from './kalkulator-trosak';
 
 type Vel = 'V' | 'S' | 'M';
 interface Cenovnik { osn: Record<Vel, number>; med: { V: number; S: number }; set: Record<Vel, number>; popusti: { od: number; procenat: number }[] }
@@ -114,9 +115,9 @@ export function panelKalkulator(P: CmsPodaci): HTMLElement {
       h('div', { style: 'display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-top:2px solid var(--line);padding-top:12px' },
         h('span', { style: 'font-weight:800;font-size:20px' }, `Za naplatu (${ukupnoKom} kom)`),
         h('span', { style: 'font-weight:800;font-size:28px' }, din(r.ukupno))),
-      akcijske && bezAkcije > r.ukupno
-        ? h('p', { class: 'hint' }, `Bez akcije (regularne cene, bez popusta) bi bilo ${din(bezAkcije)}, kupac štedi ${din(bezAkcije - r.ukupno)}.`)
-        : usteda > 0 ? h('p', { class: 'hint' }, `Bez seta i popusta bi bilo ${din(r.bezPopusta)}, kupac štedi ${din(usteda)}.`) : null,
+      ...(akcijske && bezAkcije > r.ukupno
+        ? [h('p', { class: 'hint' }, `Bez akcije (regularne cene, bez popusta) bi bilo ${din(bezAkcije)}, kupac štedi ${din(bezAkcije - r.ukupno)}.`)]
+        : usteda > 0 ? [h('p', { class: 'hint' }, `Bez seta i popusta bi bilo ${din(r.bezPopusta)}, kupac štedi ${din(usteda)}.`)] : []),
       h('div', { style: 'display:flex;gap:10px;flex-wrap:wrap' }, kopiraj, ponisti));
   }
   crtaj();
@@ -127,5 +128,6 @@ export function panelKalkulator(P: CmsPodaci): HTMLElement {
       mod, modOpis,
       h('div', { class: 'stack', style: 'gap:0' }, ...redovi.map((r) => r.el)),
       h('p', { class: 'hint' }, `Uvek ista pravila kao na sajtu: 8 osnovnih iste veličine + medaljon veličinu veći računa se kao set (mali set ide sa srednjim medaljonom), kad je to jeftinije za kupca. Ostale modlice idu pojedinačno sa popustom na količinu iz „Sastavite svoj set” (${popustiTxt}). Cene se menjaju u proizvodima Krst, Sveti Nikola i Slavski set Sveti Nikola.`)),
-    h('div', { class: 'card-box sec' }, h('h3', { class: 'h3' }, 'Račun'), rez));
+    h('div', { class: 'card-box sec' }, h('h3', { class: 'h3' }, 'Račun'), rez),
+    ...panelTrosak());
 }
