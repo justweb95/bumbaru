@@ -72,3 +72,17 @@ Novo u 2.5
   Porodični set: 4 imena 1.090 din (272 po ukrasu), 5. ukras +190 din. Set je uvek povoljniji od 3–4 pojedinačna,
   a kad kupac stavi 2–4 ukrasa, ispod pčelice piše predlog „Za 4 imena je povoljniji Porodični set…”.
   (Menja se samo ono što je bilo podrazumevano: 390/1.590/+390 i popust 2/3/5.)
+– Podloga ispod imena: ime ima podlogu u boji ukrasa (isto ime, deblje ~2 mm), pa se sva slova dodiruju i ime
+  je od jednog do drugog kraja obruča spojeno u jedan komad; ime u boji ide iznad podloge (reljef 0,6 mm).
+  Važi za sve motive osim Velike pahulje (ime je na traci) i Okretne pahulje (ime je na pahuljici).
+– Cene (pregled cena):
+  • Uklonjene stalne precrtane cene kod slavskih i božićnih modlica, medaljona i gotovih slavskih setova
+    (npr. 300 umesto „350”, set 1.300 umesto „2.590”): precrtana cena mora biti stvarna ranija cena.
+    Prave akcije (akcija kategorije, akcijska cena u proizvodu) i dalje prikazuju precrtanu cenu.
+  • Popusti se više ne sabiraju sa akcijom: važi veći od dva (akcija ILI popust za komplet / broj komada /
+    motive). Npr. tokom akcije −10%: 5 ukrasa = 260 din (akcija), 7 ukrasa = 250 (−15% na 290);
+    komplet 3 lutkice = 1.500 (−15% na 1.770), a ne 1.350 kao ranije. Pragovi koji nisu veći od akcije
+    se tokom akcije ne prikazuju (posle akcije se vrate sami).
+  • Proizvodi bez cene (privesci sa imenom, Zlatna i Mini jelka, Jelkica za punjenje, Patuljak, Prstenovi za
+    salvete, Nastavak za lanac, Polica i Zidni držač, privesci Irvas i Deda Mraz) i dalje se poručuju preko
+    Messengera; upišite im cenu u proizvodu ako želite da se kupuju na sajtu.

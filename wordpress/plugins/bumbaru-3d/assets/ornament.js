@@ -21,6 +21,7 @@
   // Kraća imena dobiju veći font i blago razvučena slova (sx); šinice ostaju samo za imena od 1–2 slova.
   // Traka/pločica (motiv.ime.traka): ime leži na delu ukrasa, pa se samo smesti u širinu w i visinu fs.
   var REACH = 97, FS_MAX = 70, SX_MAX = 1.6;
+  var PODLOGA = 5.5; // podloga ispod imena: koliko je deblja od slova (jedinice crteža; 80 mm ukras ≈ 2 mm)
   function ink(id) {
     var f = FM && (FM.fonts[id] || FM.fonts.pacifico), m = {};
     if (f && f.l) Array.from(FM.chars).forEach(function (ch, i) { if (f.w[i] !== null) m[ch] = [f.l[i], f.r[i]]; });
@@ -57,7 +58,8 @@
         'M' + r(120 + w / 2 - 0.22 * fs) + ' ' + r(yr) + 'L' + r(120 + hr + 4) + ' ' + r(yr);
     }
     var tf = 'matrix(' + r3(sx) + ' 0 0 1 ' + r3(120 - 120 * sx - dx) + ' 0)';
-    return { name: name, fs: r(fs), y: r(y), rails: rails, railW: r(Math.max(4.2, 0.085 * fs)), sx: r3(sx), dx: r3(dx), tf: tf, mode: traka ? 'traka' : 'obruc', reach: r(reach), font: F.id, css: F.css, sw: String(F.sw) };
+    return { name: name, fs: r(fs), y: r(y), rails: rails, railW: r(Math.max(4.2, 0.085 * fs)), sx: r3(sx), dx: r3(dx), tf: tf, mode: traka ? 'traka' : 'obruc', reach: r(reach), font: F.id, css: F.css, sw: String(F.sw),
+      bk: traka || (M && M.podloga === false) ? '0' : String(PODLOGA) };
   }
 
   var ids = Object.keys(D.colors);
@@ -73,6 +75,15 @@
       if (f.css) { t.setAttribute('font-family', f.css); t.setAttribute('stroke-width', f.sw); }
     });
     g.querySelectorAll('.orn-rail').forEach(function (p) { p.setAttribute('d', f.rails); p.setAttribute('stroke-width', f.railW); });
+    // podloga: isti tekst sa debelom linijom u boji ukrasa
+    var bk = parseFloat(f.bk || '0');
+    g.querySelectorAll('.orn-be, .orn-bf').forEach(function (b) { b.style.display = bk > 0 ? '' : 'none'; });
+    g.querySelectorAll('.orn-bkt').forEach(function (t) {
+      t.textContent = f.name; t.setAttribute('font-size', f.fs); t.setAttribute('y', f.y); t.setAttribute('transform', f.tf);
+      if (f.css) t.setAttribute('font-family', f.css);
+      t.setAttribute('stroke-width', String(2 * bk + parseFloat(f.sw || '1.2')));
+    });
+    g.querySelectorAll('.orn-bkr').forEach(function (p) { p.setAttribute('d', f.rails); p.setAttribute('stroke-width', String(parseFloat(f.railW) + 2 * bk)); });
   }
 
   // Oboji jedan ukras: motiv, boja ukrasa, boja imena i ime.
@@ -85,6 +96,9 @@
     var ne = g.querySelector('.orn-ne'), nf = g.querySelector('.orn-nf');
     ne.setAttribute('fill', N.edge); ne.setAttribute('stroke', N.edge);
     nf.setAttribute('fill', N.face); nf.setAttribute('stroke', N.face);
+    var be = g.querySelector('.orn-be'), bf = g.querySelector('.orn-bf');
+    if (be) { be.setAttribute('fill', B.edge); be.setAttribute('stroke', B.edge); }
+    if (bf) { bf.setAttribute('fill', B.face); bf.setAttribute('stroke', B.face); }
     g.setAttribute('data-motif', M.id); g.setAttribute('data-hy', M.hy);
     var fid = o.font;
     if (!fid) { var fi = document.querySelector('[data-order-form] input[name="font"]:checked'); fid = fi ? fi.value : 'pacifico'; }

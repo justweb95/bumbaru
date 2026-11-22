@@ -363,3 +363,25 @@ function bumbaru_migrate_25() {
 	}
 	update_option( 'bumbaru_migrate_25', 1 );
 }
+
+/**
+ * 2.5: bez stalnih precrtanih („starih”) cena u opcijama (npr. [300 / 350] → [300]): precrtana cena mora biti
+ * cena koju je proizvod zaista imao pre popusta. Prave akcije (akcija kategorije, akcijska cena) ostaju.
+ */
+function bumbaru_migrate_25b() {
+	if ( get_option( 'bumbaru_migrate_25b' ) ) {
+		return;
+	}
+	$ids = get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => '_bu_config' ) ); // phpcs:ignore
+	foreach ( $ids as $id ) {
+		$cfg = get_post_meta( $id, '_bu_config', true );
+		if ( is_array( $cfg ) && ! empty( $cfg['options'] ) && is_string( $cfg['options'] ) ) {
+			$new = preg_replace( '/\[(\d+(?:[.,]\d+)?)\s*\/\s*\d+(?:[.,]\d+)?\]/', '[$1]', $cfg['options'] );
+			if ( $new !== $cfg['options'] ) {
+				$cfg['options'] = $new;
+				update_post_meta( $id, '_bu_config', $cfg );
+			}
+		}
+	}
+	update_option( 'bumbaru_migrate_25b', 1 );
+}

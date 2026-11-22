@@ -74,6 +74,7 @@ add_action( 'init', function () {
 	}
 	bumbaru_migrate_23();
 	bumbaru_migrate_25();
+	bumbaru_migrate_25b();
 	update_option( 'bumbaru3d_db', BUMBARU3D_VERSION );
 } );
 

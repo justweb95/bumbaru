@@ -71,6 +71,7 @@ function bumbaru_read_choice( $product, $src ) {
 	$raw   = array( 'type' => $type );
 	$base  = bumbaru_base_price( $product );
 	$price = null; // cena jedne stavke posle popusta
+	$list  = null; // ista stavka po redovnoj ceni (bez akcije), za pravilo „važi veći popust”
 	$qty   = 0;
 	$name  = '';
 	$oi    = bumbaru_price_option_index( $c );
@@ -203,6 +204,7 @@ function bumbaru_read_choice( $product, $src ) {
 		$raw['slojevi'] = $layer;
 		if ( $base ) {
 			$price = bumbaru_eff( $product, $unit_list ) * count( $names );
+			$list  = $unit_list * count( $names );
 		}
 		$qty = 1;
 	}
@@ -286,7 +288,9 @@ function bumbaru_read_choice( $product, $src ) {
 			$lines[] = array( 'Popust', $pct . '%' );
 		}
 		if ( $base ) {
-			$price = round( $sum_e * ( 1 - $pct / 100 ) / 10 ) * 10;
+			// Važi veći popust (akcija ili popust za broj komada), ne zbir oba.
+			$price = min( round( $sum_e / 10 ) * 10, round( $sum_l * ( 1 - $pct / 100 ) / 10 ) * 10 );
+			$list  = $sum_l;
 			if ( $price < $sum_l ) {
 				$lines[] = array( 'Umesto', bumbaru_din( $sum_l ) );
 			}
@@ -316,15 +320,19 @@ function bumbaru_read_choice( $product, $src ) {
 				$mine[] = $l[0] . ': ' . $l[1];
 			}
 			$zbir  = bumbaru_eff( $product, $unit_list );
+			$zlist = $unit_list;
 			$lines = array( array( $product->get_name(), $mine ? implode( ', ', $mine ) : 'osnovni izbor' ) );
 			$nazivi = array( $product->get_name() );
 			foreach ( $k['uz'] as $x ) {
 				$zbir    += $x['eff'];
+				$zlist   += $x['cena'];
 				$nazivi[] = $x['naziv'];
 				$lines[]  = array( $x['naziv'] . ' (šifra ' . $x['id'] . ')', $x['izbor'] ? implode( ', ', $x['izbor'] ) : 'osnovni izbor' );
 			}
 			$lines[]        = array( 'Popust za komplet', $k['popust'] . '%' );
-			$price          = round( $zbir * ( 1 - $k['popust'] / 100 ) / 10 ) * 10;
+			// Važi veći popust (akcija ili popust za komplet), ne zbir oba.
+			$price          = min( round( $zbir / 10 ) * 10, round( $zlist * ( 1 - $k['popust'] / 100 ) / 10 ) * 10 );
+			$list           = $zlist;
 			$name           = 'Komplet: ' . implode( ' + ', $nazivi );
 			$raw['komplet'] = wp_list_pluck( $k['uz'], 'pid' );
 		}
@@ -337,8 +345,9 @@ function bumbaru_read_choice( $product, $src ) {
 	// Obična cena po komadu: izabrana opcija (sa cenom ili doplatom), posle popusta
 	if ( null === $price && $base && ( $unit_list != $base || 'set' === $type ) ) {
 		$price = bumbaru_eff( $product, $unit_list );
+		$list  = $unit_list;
 	}
-	return array( 'lines' => $lines, 'price' => $price, 'qty' => $qty, 'name' => $name, 'raw' => $raw, 'old' => $old );
+	return array( 'lines' => $lines, 'price' => $price, 'list' => $list, 'qty' => $qty, 'name' => $name, 'raw' => $raw, 'old' => $old );
 }
 
 // Provera pre dodavanja u korpu.
@@ -413,13 +422,19 @@ add_action( 'woocommerce_before_calculate_totals', function ( $cart ) {
 		$pct   = $tiers ? bumbaru_popust_za( $tiers, $count[ $item['product_id'] ] ) : 0;
 		if ( isset( $item['bumbaru']['price'] ) && null !== $item['bumbaru']['price'] ) {
 			$unit = (float) $item['bumbaru']['price'];
+			$list = ! empty( $item['bumbaru']['list'] ) ? (float) $item['bumbaru']['list'] : $unit;
 		} else {
 			$fresh = wc_get_product( $item['variation_id'] ? $item['variation_id'] : $item['product_id'] );
 			$unit  = $fresh ? (float) $fresh->get_price() : 0;
+			$list  = $fresh && (float) $fresh->get_regular_price( 'edit' ) > 0 ? (float) $fresh->get_regular_price( 'edit' ) : $unit;
+		}
+		// Važi veći popust: akcija (već u $unit) ili popust za količinu na redovnu cenu ($list), ne zbir oba.
+		if ( $pct && bumbaru_snizi( $list, $pct ) >= $unit ) {
+			$pct = 0;
 		}
 		$cart->cart_contents[ $key ]['bu_kolicina'] = $pct ? array( 'pct' => $pct, 'kom' => $count[ $item['product_id'] ], 'old' => $unit ) : null;
 		if ( $pct && $unit ) {
-			$new = bumbaru_snizi( $unit, $pct );
+			$new = bumbaru_snizi( $list, $pct );
 			$item['data']->update_meta_data( '_bu_cart_price', (string) $new ); // akcija kategorije ovu cenu ne dira
 			$item['data']->set_price( $new );
 		} elseif ( ! isset( $item['bumbaru']['price'] ) || null === $item['bumbaru']['price'] ) {

@@ -656,6 +656,12 @@
       if (f.rails) name = union(name, stroke(parsePath(f.rails), parseFloat(f.railW)));
       // Ime nikad van spoljne ivice obruča (npr. rep slova J u fontu Great Vibes), isto kao na sajtu (orn-cn).
       name = inter(name, circle(CX, CY, 103.5));
+      // Podloga ispod imena (boja ukrasa): isto ime podebljano za PODLOGA jedinica, pa se sva slova dodiruju
+      // i krajevima ulaze u obruč; ime ide iznad nje (reljef). Nema je kod motiva sa trakom i okretnog.
+      if (!OKR && f.bk && parseFloat(f.bk) > 0) {
+        var bk = inter(grow(grow(name, parseFloat(f.bk) + 1.5), -1.5), circle(CX, CY, 103.5));
+        body = union(body, bk);
+      }
 
       if (OKR) name = okrFitName(name);
       // Tačke na i/j, kvačice (č, ć, š, ž) i slova koja se ne dodiruju: spoje se mostićem sa najbližim delom.

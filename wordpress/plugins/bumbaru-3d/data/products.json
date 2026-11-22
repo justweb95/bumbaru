@@ -3843,7 +3843,7 @@
   "og": "p/slavske-modlice-sastavite-svoj-set/u243790ca1-og.jpg",
   "config": {
    "type": "motivi",
-   "options": "Veličina = Velika, medaljon Ø 9,5 cm [300 / 350] | Srednja, medaljon Ø 7,6 cm [200 / 300] | Mala, uz srednji medaljon Ø 7,6 cm [150 / 250]",
+   "options": "Veličina = Velika, medaljon Ø 9,5 cm [300] | Srednja, medaljon Ø 7,6 cm [200] | Mala, uz srednji medaljon Ø 7,6 cm [150]",
    "motivi": {
     "vrsta": "",
     "popusti": [
@@ -4265,7 +4265,7 @@
   "og": "p/slavski-set-modlica-sveti-nikola/ua0da7a996-og.jpg",
   "config": {
    "type": "sastav",
-   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400 / 3490] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600 / 3090] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300 / 2590]",
+   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300]",
    "sastav": {
     "medaljon": "sv-nikola",
     "broj": 8
@@ -4401,7 +4401,7 @@
   "og": "p/slavski-set-modlica-sveti-georgije/u1d8a9f071-og.jpg",
   "config": {
    "type": "sastav",
-   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400 / 3490] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600 / 3090] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300 / 2590]",
+   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300]",
    "sastav": {
     "medaljon": "sv-georgije",
     "broj": 8
@@ -4537,7 +4537,7 @@
   "og": "p/slavski-set-modlica-arhangel-mihailo/uaddcb7a1d-og.jpg",
   "config": {
    "type": "sastav",
-   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400 / 3490] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600 / 3090] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300 / 2590]",
+   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300]",
    "sastav": {
     "medaljon": "arh-mihailo",
     "broj": 8
@@ -4673,7 +4673,7 @@
   "og": "p/slavski-set-modlica-sveti-jovan/u0dfffba69-og.jpg",
   "config": {
    "type": "sastav",
-   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400 / 3490] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600 / 3090] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300 / 2590]",
+   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300]",
    "sastav": {
     "medaljon": "sv-jovan",
     "broj": 8
@@ -4809,7 +4809,7 @@
   "og": "p/slavski-set-modlica-sveti-dimitrije/u3553309c4-og.jpg",
   "config": {
    "type": "sastav",
-   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400 / 3490] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600 / 3090] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300 / 2590]",
+   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300]",
    "sastav": {
     "medaljon": "sv-dimitrije",
     "broj": 8
@@ -4945,7 +4945,7 @@
   "og": "p/slavski-set-modlica-sveti-sava/ua8486f979-og.jpg",
   "config": {
    "type": "sastav",
-   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400 / 3490] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600 / 3090] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300 / 2590]",
+   "options": "Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300]",
    "sastav": {
     "medaljon": "sv-sava",
     "broj": 8
@@ -5084,7 +5084,7 @@
   "og": "p/modlica-sveti-nikola/u234e8c869-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, Ø 9,5 cm [500 / 690] | Srednja, Ø 7,6 cm [400 / 590]"
+   "options": "Veličina = Velika, Ø 9,5 cm [500] | Srednja, Ø 7,6 cm [400]"
   }
  },
  {
@@ -5207,7 +5207,7 @@
   "og": "p/modlica-sveti-georgije/u463ced2f4-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, Ø 9,5 cm [500 / 690] | Srednja, Ø 7,6 cm [400 / 590]"
+   "options": "Veličina = Velika, Ø 9,5 cm [500] | Srednja, Ø 7,6 cm [400]"
   }
  },
  {
@@ -5330,7 +5330,7 @@
   "og": "p/modlica-arhangel-mihailo/uf8d6db607-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, Ø 9,5 cm [500 / 690] | Srednja, Ø 7,6 cm [400 / 590]"
+   "options": "Veličina = Velika, Ø 9,5 cm [500] | Srednja, Ø 7,6 cm [400]"
   }
  },
  {
@@ -5453,7 +5453,7 @@
   "og": "p/modlica-sveti-jovan/u09e0090bf-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, Ø 9,5 cm [500 / 690] | Srednja, Ø 7,6 cm [400 / 590]"
+   "options": "Veličina = Velika, Ø 9,5 cm [500] | Srednja, Ø 7,6 cm [400]"
   }
  },
  {
@@ -5576,7 +5576,7 @@
   "og": "p/modlica-sveti-dimitrije/ufaaf81614-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, Ø 9,5 cm [500 / 690] | Srednja, Ø 7,6 cm [400 / 590]"
+   "options": "Veličina = Velika, Ø 9,5 cm [500] | Srednja, Ø 7,6 cm [400]"
   }
  },
  {
@@ -5706,7 +5706,7 @@
   "og": "p/modlica-sveti-sava/ufbe98105d-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, Ø 9,5 cm [500 / 690] | Srednja, Ø 7,6 cm [400 / 590]"
+   "options": "Veličina = Velika, Ø 9,5 cm [500] | Srednja, Ø 7,6 cm [400]"
   }
  },
  {
@@ -6058,7 +6058,7 @@
   "og": "p/bozicna-modlica-badnjak/u5d2fbeef8-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 6,9 × 7,4 cm [300 / 350] | Srednja, 5,5 × 5,9 cm [200 / 300] | Mala, 4,5 × 4,8 cm [150 / 250]"
+   "options": "Veličina = Velika, 6,9 × 7,4 cm [300] | Srednja, 5,5 × 5,9 cm [200] | Mala, 4,5 × 4,8 cm [150]"
   }
  },
  {
@@ -6189,7 +6189,7 @@
   "og": "p/bozicna-modlica-hristos-se-rodi/u1810640d5-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 8,4 × 5,6 cm [300 / 350] | Srednja, 6,7 × 4,5 cm [200 / 300] | Mala, 5,5 × 3,6 cm [150 / 250]"
+   "options": "Veličina = Velika, 8,4 × 5,6 cm [300] | Srednja, 6,7 × 4,5 cm [200] | Mala, 5,5 × 3,6 cm [150]"
   }
  },
  {
@@ -6325,7 +6325,7 @@
   "og": "p/slavska-modlica-krst/u51e498dd0-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 6,7 × 8 cm [300 / 350] | Srednja, 5,4 × 6,4 cm [200 / 300] | Mala, 4,4 × 5,2 cm [150 / 250]"
+   "options": "Veličina = Velika, 6,7 × 8 cm [300] | Srednja, 5,4 × 6,4 cm [200] | Mala, 4,4 × 5,2 cm [150]"
   }
  },
  {
@@ -6468,7 +6468,7 @@
   "og": "p/slavska-modlica-golub-u-letu/ub58ec6c38-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 7 × 5,5 cm [300 / 350] | Srednja, 5,6 × 4,4 cm [200 / 300] | Mala, 4,5 × 3,6 cm [150 / 250]"
+   "options": "Veličina = Velika, 7 × 5,5 cm [300] | Srednja, 5,6 × 4,4 cm [200] | Mala, 4,5 × 3,6 cm [150]"
   }
  },
  {
@@ -6611,7 +6611,7 @@
   "og": "p/slavska-modlica-golub-sa-grancicom/u43f35da29-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 5,8 × 5,4 cm [300 / 350] | Srednja, 4,6 × 4,3 cm [200 / 300] | Mala, 3,8 × 3,5 cm [150 / 250]"
+   "options": "Veličina = Velika, 5,8 × 5,4 cm [300] | Srednja, 4,6 × 4,3 cm [200] | Mala, 3,8 × 3,5 cm [150]"
   }
  },
  {
@@ -6753,7 +6753,7 @@
   "og": "p/slavska-modlica-srecna-slava/u41b24376a-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 7,4 × 5,6 cm [300 / 350] | Srednja, 5,9 × 4,5 cm [200 / 300] | Mala, 4,8 × 3,6 cm [150 / 250]"
+   "options": "Veličina = Velika, 7,4 × 5,6 cm [300] | Srednja, 5,9 × 4,5 cm [200] | Mala, 4,8 × 3,6 cm [150]"
   }
  },
  {
@@ -6889,7 +6889,7 @@
   "og": "p/slavski-pecat-sa-krstom/uf1d62594f-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 6,2 × 6,2 cm [300 / 350] | Srednja, 5 × 5 cm [200 / 300] | Mala, 4 × 4 cm [150 / 250]"
+   "options": "Veličina = Velika, 6,2 × 6,2 cm [300] | Srednja, 5 × 5 cm [200] | Mala, 4 × 4 cm [150]"
   }
  },
  {
@@ -7032,7 +7032,7 @@
   "og": "p/slavski-pecat-okrugli/ue80372caa-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, Ø 6,4 cm [300 / 350] | Srednja, Ø 5,1 cm [200 / 300] | Mala, Ø 4,2 cm [150 / 250]"
+   "options": "Veličina = Velika, Ø 6,4 cm [300] | Srednja, Ø 5,1 cm [200] | Mala, Ø 4,2 cm [150]"
   }
  },
  {
@@ -7175,7 +7175,7 @@
   "og": "p/slavska-modlica-knjiga/u43ef0d7e7-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 5,9 × 5,3 cm [300 / 350] | Srednja, 4,7 × 4,2 cm [200 / 300] | Mala, 3,8 × 3,4 cm [150 / 250]"
+   "options": "Veličina = Velika, 5,9 × 5,3 cm [300] | Srednja, 4,7 × 4,2 cm [200] | Mala, 3,8 × 3,4 cm [150]"
   }
  },
  {
@@ -7318,7 +7318,7 @@
   "og": "p/slavska-modlica-kukuruz/u9a9d9961c-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 5,2 × 8 cm [300 / 350] | Srednja, 4,2 × 6,4 cm [200 / 300] | Mala, 3,4 × 5,2 cm [150 / 250]"
+   "options": "Veličina = Velika, 5,2 × 8 cm [300] | Srednja, 4,2 × 6,4 cm [200] | Mala, 3,4 × 5,2 cm [150]"
   }
  },
  {
@@ -7461,7 +7461,7 @@
   "og": "p/slavska-modlica-zito/u9d000e8ca-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 8 × 5,8 cm [300 / 350] | Srednja, 6,4 × 4,6 cm [200 / 300] | Mala, 5,2 × 3,8 cm [150 / 250]"
+   "options": "Veličina = Velika, 8 × 5,8 cm [300] | Srednja, 6,4 × 4,6 cm [200] | Mala, 5,2 × 3,8 cm [150]"
   }
  },
  {
@@ -7604,7 +7604,7 @@
   "og": "p/slavska-modlica-cvet/ue0b73fdfe-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 5,8 × 5,6 cm [300 / 350] | Srednja, 4,6 × 4,5 cm [200 / 300] | Mala, 3,8 × 3,6 cm [150 / 250]"
+   "options": "Veličina = Velika, 5,8 × 5,6 cm [300] | Srednja, 4,6 × 4,5 cm [200] | Mala, 3,8 × 3,6 cm [150]"
   }
  },
  {
@@ -7747,7 +7747,7 @@
   "og": "p/slavska-modlica-grozdje-sa-listom/u390ff77c8-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 5,4 × 6,7 cm [300 / 350] | Srednja, 4,3 × 5,4 cm [200 / 300] | Mala, 3,5 × 4,4 cm [150 / 250]"
+   "options": "Veličina = Velika, 5,4 × 6,7 cm [300] | Srednja, 4,3 × 5,4 cm [200] | Mala, 3,5 × 4,4 cm [150]"
   }
  },
  {
@@ -7890,7 +7890,7 @@
   "og": "p/slavska-modlica-bure/ubd8c1aba1-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 5,7 × 7,3 cm [300 / 350] | Srednja, 4,6 × 5,8 cm [200 / 300] | Mala, 3,7 × 4,7 cm [150 / 250]"
+   "options": "Veličina = Velika, 5,7 × 7,3 cm [300] | Srednja, 4,6 × 5,8 cm [200] | Mala, 3,7 × 4,7 cm [150]"
   }
  },
  {
@@ -8033,7 +8033,7 @@
   "og": "p/slavska-modlica-pletenica/u1f6ad7bbe-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Velika, 10,6 × 2,6 cm [300 / 350] | Srednja, 8,5 × 2,1 cm [200 / 300] | Mala, 6,9 × 1,7 cm [150 / 250]"
+   "options": "Veličina = Velika, 10,6 × 2,6 cm [300] | Srednja, 8,5 × 2,1 cm [200] | Mala, 6,9 × 1,7 cm [150]"
   }
  }
 ]

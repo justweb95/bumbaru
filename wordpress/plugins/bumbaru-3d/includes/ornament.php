@@ -18,10 +18,10 @@ function bumbaru_motivi() {
 		array( 'id' => 'pahulje', 'label' => 'Pahuljice', 'hy' => 53, 'ime' => array( 'ri' => 92 ) ),
 		array( 'id' => 'pahulje-masna', 'label' => 'Pahuljice i mašna', 'hy' => 69, 'ime' => array( 'ri' => 92 ) ),
 		array( 'id' => 'kapa', 'label' => 'Kapa Deda Mraza', 'hy' => 55, 'ime' => array( 'ri' => 92.5 ) ),
-		array( 'id' => 'pahulja', 'label' => 'Velika pahulja', 'hy' => 72, 'ime' => array( 'traka' => 1, 'w' => 80, 'y' => 189, 'fs' => 46 ) ),
+		array( 'id' => 'pahulja', 'label' => 'Velika pahulja', 'hy' => 72, 'podloga' => false, 'ime' => array( 'traka' => 1, 'w' => 80, 'y' => 189, 'fs' => 46 ) ),
 		// Okretni (po ideji ArmenioMarques, Christmas Baubles Ball): tri obruča se posle štampe okreću oko osovine,
 		// pahuljica sa imenom u sredini. Obruči, rupe i osovina se prave u generatoru (okrBuild), debljina 4 mm.
-		array( 'id' => 'okretni', 'label' => 'Okretna pahulja', 'hy' => 69, 'okretni' => true, 'ime' => array( 'traka' => 1, 'w' => 56, 'y' => 189, 'fs' => 34 ) ),
+		array( 'id' => 'okretni', 'label' => 'Okretna pahulja', 'hy' => 69, 'okretni' => true, 'podloga' => false, 'ime' => array( 'traka' => 1, 'w' => 56, 'y' => 189, 'fs' => 34 ) ),
 	);
 }
 
@@ -187,6 +187,8 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila', $m = null, $font = 'pacific
 		'font'  => $fo['id'],
 		'css'   => $fo['css'],
 		'sw'    => (string) $fo['sw'],
+		// podloga ispod imena (isto kao PODLOGA u ornament.js); nema je kod trake/pločice i kod motiva sa 'podloga' => false
+		'bk'    => ( $traka || ( is_array( $m ) && isset( $m['podloga'] ) && ! $m['podloga'] ) ) ? '0' : '5.5',
 	);
 }
 
@@ -205,9 +207,17 @@ function bumbaru_ornament_g( $o ) {
 			. '<path class="orn-rail" d="' . esc_attr( $f['rails'] ) . '" fill="none" stroke-width="' . $f['railW'] . '" stroke-linecap="round"></path>'
 			. '<text class="orn-name" x="120" y="' . $f['y'] . '" transform="' . esc_attr( $f['tf'] ) . '" text-anchor="middle" font-family="' . esc_attr( $f['css'] ) . '" font-size="' . $f['fs'] . '" stroke-width="' . $f['sw'] . '" stroke-linejoin="round">' . esc_html( $f['name'] ) . '</text></g>';
 	};
+	$bk = (float) $f['bk'];
+	$bl = function ( $cls, $col, $tf = '' ) use ( $f, $bk ) {
+		return '<g class="' . $cls . '"' . $tf . ' clip-path="url(#orn-cn)" fill="' . esc_attr( $col ) . '" stroke="' . esc_attr( $col ) . '"' . ( $bk > 0 ? '' : ' style="display:none"' ) . '>'
+			. '<path class="orn-bkr" d="' . esc_attr( $f['rails'] ) . '" fill="none" stroke-width="' . ( (float) $f['railW'] + 2 * $bk ) . '" stroke-linecap="round"></path>'
+			. '<text class="orn-bkt" x="120" y="' . $f['y'] . '" transform="' . esc_attr( $f['tf'] ) . '" text-anchor="middle" font-family="' . esc_attr( $f['css'] ) . '" font-size="' . $f['fs'] . '" stroke-width="' . ( 2 * $bk + (float) $f['sw'] ) . '" stroke-linejoin="round">' . esc_html( $f['name'] ) . '</text></g>';
+	};
 	return '<g class="orn"' . ( $o['key'] ? ' data-orn="' . esc_attr( $o['key'] ) . '"' : '' ) . ' data-hy="' . (int) $m['hy'] . '" data-motif="' . esc_attr( $m['id'] ) . '">'
 		. '<use class="orn-edge" href="#orn-' . esc_attr( $m['id'] ) . '" transform="translate(1.4 3.2)" fill="' . esc_attr( $b['edge'] ) . '" stroke="' . esc_attr( $b['edge'] ) . '"></use>'
+		. $bl( 'orn-be', $b['edge'], ' transform="translate(1.4 3.2)"' )
 		. '<use class="orn-face" href="#orn-' . esc_attr( $m['id'] ) . '" fill="' . esc_attr( $b['face'] ) . '" stroke="' . esc_attr( $b['face'] ) . '"></use>'
+		. $bl( 'orn-bf', $b['face'] )
 		. $nl( 'orn-ne', $n['edge'], ' transform="translate(1.1 2.6)"' )
 		. $nl( 'orn-nf', $n['face'] )
 		. '</g>';
