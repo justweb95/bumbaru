@@ -5,7 +5,7 @@
   var root = document.querySelector('[data-gen]');
   if (!C || !G || !root) return;
   var $ = function (s) { return root.querySelector(s); };
-  var font = null, defs = null, items = [], src = null, timer = 0;
+  var font = null, defs = null, okretni = null, items = [], src = null, timer = 0;
 
   var colors = {};
   C.colors.forEach(function (c) { colors[c.id] = c; });
@@ -28,10 +28,11 @@
     return o + '</select>';
   }
   function addRow(r) {
-    r = r || { ime: '', motiv: C.motivi[0].id, boja: 'bela', bojaImena: 'crvena' };
+    r = r || { ime: '', motiv: C.motivi[0].id, boja: 'bela', bojaImena: 'crvena', font: 'pacifico' };
+    var fon = '<select class="bg-font">' + (C.fontovi || []).map(function (f) { return '<option value="' + esc(f.id) + '"' + (f.id === (r.font || 'pacifico') ? ' selected' : '') + '>' + esc(f.label) + '</option>'; }).join('') + '</select>';
     var mot = '<select class="bg-mot">' + C.motivi.map(function (m) { return '<option value="' + esc(m.id) + '"' + (m.id === r.motiv ? ' selected' : '') + '>' + esc(m.label) + '</option>'; }).join('') + '</select>';
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td class="bg-n"></td><td><input type="text" class="bg-ime" maxlength="12" value="' + esc(r.ime) + '" placeholder="npr. Mila" /></td><td>' + mot + '</td>'
+    tr.innerHTML = '<td class="bg-n"></td><td><input type="text" class="bg-ime" maxlength="12" value="' + esc(r.ime) + '" placeholder="npr. Mila" /></td><td>' + mot + '</td><td>' + fon + '</td>'
       + '<td>' + colorSelect('bg-boja', r.boja, false) + '</td><td>' + colorSelect('bg-bi', r.bojaImena || 'ista', true) + '</td>'
       + '<td><button type="button" class="button-link bg-del" aria-label="Ukloni">✕</button></td>';
     tbody.appendChild(tr);
@@ -40,7 +41,7 @@
   function number() { Array.prototype.forEach.call(tbody.rows, function (tr, i) { tr.cells[0].textContent = i + 1; }); }
   function rows() {
     return Array.prototype.map.call(tbody.rows, function (tr) {
-      return { ime: tr.querySelector('.bg-ime').value.trim(), motiv: tr.querySelector('.bg-mot').value, boja: tr.querySelector('.bg-boja').value, bojaImena: tr.querySelector('.bg-bi').value };
+      return { ime: tr.querySelector('.bg-ime').value.trim(), motiv: tr.querySelector('.bg-mot').value, font: tr.querySelector('.bg-font').value, boja: tr.querySelector('.bg-boja').value, bojaImena: tr.querySelector('.bg-bi').value };
     }).filter(function (r) { return r.ime; });
   }
   function setRows(list, label) {
@@ -62,7 +63,7 @@
   });
   $('[data-gen-add]').addEventListener('click', function () {
     var last = tbody.rows[tbody.rows.length - 1];
-    addRow(last ? { ime: '', motiv: last.querySelector('.bg-mot').value, boja: last.querySelector('.bg-boja').value, bojaImena: last.querySelector('.bg-bi').value } : null);
+    addRow(last ? { ime: '', motiv: last.querySelector('.bg-mot').value, font: last.querySelector('.bg-font').value, boja: last.querySelector('.bg-boja').value, bojaImena: last.querySelector('.bg-bi').value } : null);
     tbody.rows[tbody.rows.length - 1].querySelector('.bg-ime').focus();
   });
   root.addEventListener('change', function (e) { if (e.target.matches('[data-gen-dim],[data-gen-model]')) schedule(); });
@@ -207,9 +208,9 @@
     list.forEach(function (r) {
       var bi = r.bojaImena === 'ista' ? null : color(r.bojaImena);
       out.push(model.build({
-        motiv: r.motiv, ime: r.ime, precnik: d.precnik, debljina: d.debljina, izdignuto: d.izdignuto, vrh: d.vrh,
+        motiv: r.motiv, font: r.font || 'pacifico', ime: r.ime, precnik: d.precnik, debljina: d.debljina, izdignuto: d.izdignuto, vrh: d.vrh,
         boja: color(r.boja), bojaImena: bi,
-      }, { defs: defs, font: font, fitName: window.BumbaruOrnament.fitName, motiv: window.BumbaruOrnament.motiv }));
+      }, { defs: defs, okretni: okretni, font: font.pacifico, fonts: font, fitName: window.BumbaruOrnament.fitName, motiv: window.BumbaruOrnament.motiv }));
     });
     return G.arrange(out, 6, d.ploca);
   }
@@ -224,7 +225,10 @@
       items = [];
     }
     var warn = items.map(function (i) { return i.upozorenje; }).filter(Boolean);
+    var nap = items.map(function (i) { return i.napomena; }).filter(function (x, k, a) { return x && a.indexOf(x) === k; });
     if (warn.length) err.textContent = 'Pažnja: ' + warn.join(' ');
+    var napEl = $('[data-gen-nap]');
+    if (napEl) napEl.textContent = nap.join(' ');
     var ok = items.length > 0;
     $('[data-gen-3mf]').disabled = !ok;
     $('[data-gen-stl]').disabled = !ok;
@@ -280,11 +284,17 @@
   /* ——— Početak ——— */
   renderOrders();
   addRow({ ime: 'Mila', motiv: C.motivi[0].id, boja: 'bela', bojaImena: 'crvena' });
-  Promise.all([
-    new Promise(function (ok, no) { window.opentype.load(C.font, function (e, f) { if (e) no(e); else ok(f); }); }),
+  // Svi fontovi imena se učitaju odmah (model se pravi bez čekanja kad se promeni font u redu).
+  var FURL = C.fonts || { pacifico: C.font };
+  var fids = Object.keys(FURL);
+  Promise.all(fids.map(function (id) {
+    return new Promise(function (ok, no) { window.opentype.load(FURL[id], function (e, f) { if (e) no(e); else ok(f); }); });
+  }).concat([
     fetch(C.defs, { credentials: 'same-origin' }).then(function (r) { return r.text(); }),
-  ]).then(function (r) {
-    font = r[0]; defs = r[1];
+    C.okretni ? fetch(C.okretni, { credentials: 'same-origin' }).then(function (x) { return x.arrayBuffer(); }).then(G.readOkretni) : null,
+  ])).then(function (r) {
+    okretni = r[fids.length + 1];
+    font = {}; fids.forEach(function (id, i) { font[id] = r[i]; }); defs = r[fids.length];
     var sel = C.sel || {};
     if (sel.order && loadItem(sel.order, sel.item)) {
       if (sel.download === '3mf') {

@@ -380,7 +380,7 @@
         if (m[1]) { depth--; if (depth === clipDepth) clipDepth = -1; if (depth === 0) break; }
         else if (!m[4]) { depth++; if (attr(m[3], 'clip-path')) clipDepth = depth - 1; }
       } else if (!m[1]) {
-        out.push({ d: attr(m[3], 'd') || '', fill: attr(m[3], 'fill') !== 'none', rule: attr(m[3], 'fill-rule') || 'nonzero', sw: parseFloat(attr(m[3], 'stroke-width') || '0'), clip: clipDepth >= 0 });
+        out.push({ d: attr(m[3], 'd') || '', fill: attr(m[3], 'fill') !== 'none', rule: attr(m[3], 'fill-rule') || 'nonzero', sw: parseFloat(attr(m[3], 'stroke-width') || '0'), clip: clipDepth >= 0, part: attr(m[3], 'data-part') });
       }
     }
     return out;
@@ -421,13 +421,84 @@
     return name;
   }
 
+  /* ——— Okretni ukras: obruči iz originala (1:1), osovina i pahuljica sa imenom u sredini ——— */
+
+  var OKR = { s: 54 / 104, T: 8, rod: { r: 2.7, y0: -52.5, y1: 52.5 }, sfera: 39.5 };
+  // Ime (sa reljefom) mora da prođe kroz unutrašnji obruč kad se okreće: sve tačke u kugli poluprečnika OKR.sfera.
+  function okrFitName(name, p) {
+    var up = Math.max(0, p.izdignuto || 0), zt = OKR.T / 2 + up;
+    var lim = Math.sqrt(OKR.sfera * OKR.sfera - zt * zt) / OKR.s, rmax = 0;
+    name.forEach(function (path) { path.forEach(function (q) { rmax = Math.max(rmax, Math.hypot(q.X / SC - 120, q.Y / SC - 182)); }); });
+    if (rmax <= lim) return name;
+    var k = lim / rmax * 0.995;
+    return name.map(function (path) { return path.map(function (q) { return { X: Math.round((q.X / SC - 120) * k * SC + 120 * SC), Y: Math.round((q.Y / SC - 182) * k * SC + 182 * SC) }; }); });
+  }
+  /** Valjak duž ose y (osovina), centar x = 0, z = zc. */
+  function rodMesh(r, y0, y1, zc, n) {
+    var v = [], t = [];
+    for (var i = 0; i < n; i++) { var a = 2 * Math.PI * i / n; v.push(r * Math.cos(a), y0, zc + r * Math.sin(a)); }
+    for (i = 0; i < n; i++) { a = 2 * Math.PI * i / n; v.push(r * Math.cos(a), y1, zc + r * Math.sin(a)); }
+    for (i = 0; i < n; i++) {
+      var j = (i + 1) % n;
+      t.push(i, j, n + j, i, n + j, n + i); // omotač (normala ka spolja)
+      if (i > 0 && i < n - 1) { t.push(0, i + 1, i); t.push(n, n + i, n + i + 1); } // poklopci
+    }
+    return { v: v, t: t };
+  }
+  function okrBuild(p, ctx, f, body, name, parts) {
+    if (!ctx.okretni) throw new Error('Obruči okretnog ukrasa se još učitavaju.');
+    var s = OKR.s, T = OKR.T, up = Math.max(0, p.izdignuto || 0), top = Math.max(0, Math.min(T, p.vrh || 0));
+    var mm = function (polys) {
+      return exPolys(grow(grow(polys.map(function (e) { return [toPath(e.outer)].concat(e.holes.map(toPath)); }).reduce(function (a, b) { return a.concat(b); }, []), 0.03), -0.03)).map(function (e) {
+        var t = function (r) { return r.map(function (q) { return [(q[0] - 120) * s, (182 - q[1]) * s]; }); };
+        return { outer: t(e.outer), holes: e.holes.map(t) };
+      });
+    };
+    var B = p.boja, N = p.bojaImena, same = !N || N.id === B.id;
+    var ob = ctx.okretni, ring = { v: Array.prototype.slice.call(ob.v), t: Array.prototype.slice.call(ob.t) };
+    var ringShape = [];
+    parts.forEach(function (q) { if (q.part === 'obruci') ringShape = mm(exPolys(fill(parsePath(q.d), q.rule))); });
+    var rodShape = [{ outer: [[-OKR.rod.r, OKR.rod.y0], [OKR.rod.r, OKR.rod.y0], [OKR.rod.r, OKR.rod.y1], [-OKR.rod.r, OKR.rod.y1]], holes: [] }];
+    var delovi = [
+      { naziv: 'Obruči (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: ring, oblik: ringShape },
+      { naziv: 'Osovina (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: rodMesh(OKR.rod.r, OKR.rod.y0, OKR.rod.y1, T / 2, 40), oblik: rodShape },
+    ];
+    if (same) {
+      var all = mm(exPolys(union(body, name))), m1 = extrude(all, 0, T);
+      if (up) extrude(mm(exPolys(name)), T, T + up, m1);
+      delovi.push({ naziv: 'Pahuljica (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: m1, oblik: all });
+    } else if (up) {
+      var base = mm(exPolys(union(body, name))), nr = mm(exPolys(name));
+      delovi.push({ naziv: 'Pahuljica (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: extrude(base, 0, T), oblik: base });
+      delovi.push({ naziv: 'Ime (' + N.naziv + ')', boja: N.id, bojaNaziv: N.naziv, hex: N.hex, mesh: extrude(nr, T, T + up), oblik: nr, promenaBoje: T });
+    } else {
+      var bo = mm(exPolys(diff(body, name))), nm = mm(exPolys(name)), mb = extrude(bo, 0, T), zN = top ? T - top : 0;
+      if (zN > 0) extrude(nm, 0, zN, mb);
+      delovi.push({ naziv: 'Pahuljica (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: mb, oblik: bo });
+      delovi.push({ naziv: 'Ime (' + N.naziv + ')', boja: N.id, bojaNaziv: N.naziv, hex: N.hex, mesh: extrude(nm, zN, T), oblik: nm });
+    }
+    var upozorenje = '';
+    var nBody = exPolys(body).length, nAll = exPolys(union(body, name)).length;
+    if (nAll > nBody) upozorenje = f.name + ': deo imena nije spojen sa pahuljicom.';
+    var bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity;
+    for (var i = 0; i < ring.v.length; i += 3) { bx0 = Math.min(bx0, ring.v[i]); bx1 = Math.max(bx1, ring.v[i]); by0 = Math.min(by0, ring.v[i + 1]); by1 = Math.max(by1, ring.v[i + 1]); }
+    return { naziv: 'Okretni ukras ' + f.name, ime: f.name, upozorenje: upozorenje, napomena: 'Okretni ukras: stalna veličina ' + Math.round(bx1 - bx0) + ' mm i debljina ' + T + ' mm (ne menja se sa merama), obruči se okreću posle štampe.',
+      sirina: bx1 - bx0, visina: by1 - by0, ox: (bx0 + bx1) / 2, oy: (by0 + by1) / 2, delovi: delovi };
+  }
+
+  /** Obruči okretnog ukrasa iz data/okretni-obruci.bin (Uint32 nv, nt; Float32 xyz; Uint16 trouglovi). */
+  function readOkretni(buf) {
+    var dv = new DataView(buf), nv = dv.getUint32(0, true), nt = dv.getUint32(4, true);
+    return { v: new Float32Array(buf.slice(8, 8 + nv * 12)), t: new Uint16Array(buf.slice(8 + nv * 12, 8 + nv * 12 + nt * 6)) };
+  }
+
   /* ——— Modeli ——— */
 
   var models = {};
 
   /**
    * Ukras sa imenom (isti crtež kao pregled na sajtu: obruč 208 jedinica, kukica gore, motiv u krugu, ime preko sredine).
-   * p: { motiv, ime, precnik (mm), debljina (mm), izdignuto (mm), vrh (mm: druga boja samo u gornjih vrh mm; 0 = cela debljina),
+   * p: { motiv, font (id iz bumbaru_fontovi), ime, precnik (mm), debljina (mm), izdignuto (mm), vrh (mm: druga boja samo u gornjih vrh mm; 0 = cela debljina),
    *      boja: {id, naziv, hex}, bojaImena: {id, naziv, hex} ili null (= kao ukras) }
    * ctx: { defs (SVG tekst), font (opentype.Font), fitName (funkcija sa sajta) }
    */
@@ -435,8 +506,12 @@
     naziv: 'Ukras sa imenom',
     build: function (p, ctx) {
       var CX = 120, CY = 182;
+      var M = ctx.motiv ? ctx.motiv(p.motiv) : null;
+      var OKR = !!(M && M.okretni);
       var parts = readGroup(ctx.defs, 'orn-' + p.motiv);
       if (!parts) throw new Error('Nema motiva: ' + p.motiv);
+      var okrParts = null;
+      if (OKR) { okrParts = parts; parts = parts.filter(function (q) { return q.part === 'rotor'; }); }
       var free = [], clipped = [];
       parts.forEach(function (q) {
         var subs = parsePath(q.d), shape;
@@ -449,12 +524,12 @@
       // Zatvori prorez nulte širine (rupa koja ivicom leži na spoljnoj ivici), da mreža bude zatvorena.
       body = grow(grow(body, 0.05), -0.05);
 
-      // Ime: slova fonta Pacifico (stroke 1.2 kao na sajtu) i „šinice” koje ga spajaju sa obručem.
-      var M = ctx.motiv ? ctx.motiv(p.motiv) : null;
-      var f = ctx.fitName(p.ime, undefined, M);
+      // Ime: slova izabranog fonta (linija oko slova kao na sajtu) i „šinice” koje ga spajaju sa obručem.
+      var f = ctx.fitName(p.ime, undefined, M, p.font);
       var fs = parseFloat(f.fs), y = parseFloat(f.y);
-      var adv = ctx.font.getAdvanceWidth(f.name, fs, { kerning: true });
-      var fpath = ctx.font.getPath(f.name, CX - adv / 2, y, fs, { kerning: true });
+      var FO = (ctx.fonts && f.font && ctx.fonts[f.font]) || ctx.font;
+      var adv = FO.getAdvanceWidth(f.name, fs, { kerning: true });
+      var fpath = FO.getPath(f.name, CX - adv / 2, y, fs, { kerning: true });
       var glyphs = fontPathToSubs(fpath);
       var sx = parseFloat(f.sx || '1'), dx = parseFloat(f.dx || '0');
       var tx;
@@ -472,15 +547,17 @@
         tx = function (x) { return sx * (x - CX) + CX - dx; };
       }
       glyphs.forEach(function (sub) { sub.pts.forEach(function (q) { q[0] = tx(q[0]); }); });
-      var name = grow(fill(glyphs, 'nonzero'), 0.6);
+      var name = grow(fill(glyphs, 'nonzero'), parseFloat(f.sw || '1.2') / 2); // kao linija oko slova na sajtu
       if (f.rails) name = union(name, stroke(parsePath(f.rails), parseFloat(f.railW)));
 
+      if (OKR) name = okrFitName(name, p);
       // Tačke na i/j, kvačice (č, ć, š, ž) i slova koja se ne dodiruju: spoje se mostićem sa najbližim delom.
       name = connectIslands(body, name, 2.4);
+      if (OKR) return okrBuild(p, ctx, f, body, name, okrParts);
 
       var s = p.precnik / 208;
       var mm = function (polys) {
-        return polys.map(function (e) {
+        return exPolys(grow(grow(polys.map(function (e) { return [toPath(e.outer)].concat(e.holes.map(toPath)); }).reduce(function (a, b) { return a.concat(b); }, []), 0.03), -0.03)).map(function (e) {
           var t = function (r) { return r.map(function (q) { return [(q[0] - CX) * s, (CY - q[1]) * s]; }); };
           return { outer: t(e.outer), holes: e.holes.map(t) };
         });
@@ -494,6 +571,13 @@
         var m1 = extrude(all, 0, T);
         if (up) extrude(mm(exPolys(name)), T, T + up, m1);
         delovi.push({ naziv: 'Ukras (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: m1, oblik: all });
+      } else if (up) {
+        // Reljef: ukras (sa podlogom ispod slova) ceo u boji ukrasa, ime u drugoj boji samo iznad njega.
+        // Jedna promena boje na visini T: manje filamenta i brža štampa i bez AMS-a (pauza za promenu boje).
+        var base = mm(exPolys(union(body, name)));
+        var nr = mm(exPolys(name));
+        delovi.push({ naziv: 'Telo (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: extrude(base, 0, T), oblik: base });
+        delovi.push({ naziv: 'Ime (' + N.naziv + ')', boja: N.id, bojaNaziv: N.naziv, hex: N.hex, mesh: extrude(nr, T, T + up), oblik: nr, promenaBoje: T });
       } else {
         var bodyOnly = mm(exPolys(diff(body, name)));
         var nm = mm(exPolys(name));
@@ -570,6 +654,6 @@
     fontPathToSubs: fontPathToSubs,
     fill: fill, union: union, diff: diff, inter: inter, grow: grow, stroke: stroke, circle: circle,
     exPolys: exPolys, extrude: extrude, arrange: arrange,
-    to3MF: to3MF, toSTL: toSTL, zip: zip, previewSVG: previewSVG, stats: stats, readGroup: readGroup,
+    readOkretni: readOkretni, to3MF: to3MF, toSTL: toSTL, zip: zip, previewSVG: previewSVG, stats: stats, readGroup: readGroup,
   };
 });

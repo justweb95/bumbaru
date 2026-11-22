@@ -3,7 +3,7 @@
  * Bumbaru 3D → Generator modela: 3MF i STL za štampu iz porudžbine (ukras sa imenom, porodični set).
  *
  * Model se pravi u pregledaču (assets/gen/bumbaru-gen.js): isti crtež motiva kao pregled na sajtu
- * (data/ornament-defs.svg) i slova fonta Pacifico. Ovde su samo strana, podaci porudžbina i podešavanja.
+ * (data/ornament-defs.svg) i slova izabranog fonta (bumbaru_fontovi()). Ovde su samo strana, podaci porudžbina i podešavanja.
  * Novi model (npr. privezak) se dodaje u BumbaruGen.models u JS-u i u bumbaru_gen_models() ovde.
  */
 
@@ -20,7 +20,7 @@ function bumbaru_gen_defaults() {
 	$d = array(
 		'precnik'   => 80,  // spoljni prečnik obruča, mm
 		'debljina'  => 3,   // debljina ukrasa, mm
-		'izdignuto' => 0,   // ime izdignuto iznad ukrasa, mm
+		'izdignuto' => 1.2, // ime kao reljef iznad ukrasa, mm (druga boja samo u reljefu = jedna promena boje)
 		'vrh'       => 0,   // druga boja imena samo u gornjih … mm (0 = cela debljina)
 		'ploca'     => 250, // širina ploče štampača, mm (raspored više ukrasa)
 	);
@@ -42,15 +42,16 @@ function bumbaru_gen_item_rows( $item ) {
 	$qty   = max( 1, (int) $item->get_quantity() );
 	$motiv = isset( $raw['motiv'] ) ? $raw['motiv'] : 'zvezde';
 	$nc    = isset( $raw['boja_imena'] ) ? $raw['boja_imena'] : 'ista';
+	$font  = isset( $raw['font'] ) ? $raw['font'] : 'pacifico';
 	$rows  = array();
 	if ( 'ukras' === $raw['type'] ) {
-		$one = array( 'ime' => (string) $raw['ime'], 'motiv' => $motiv, 'boja' => $raw['boja'], 'bojaImena' => $nc );
+		$one = array( 'ime' => (string) $raw['ime'], 'motiv' => $motiv, 'boja' => $raw['boja'], 'bojaImena' => $nc, 'font' => $font );
 		$rows = array_fill( 0, $qty, $one );
 	} else {
 		for ( $q = 0; $q < $qty; $q++ ) {
 			foreach ( array_values( (array) $raw['imena'] ) as $i => $ime ) {
 				$b      = 'sareno' === $raw['boja'] ? ( ! empty( $raw['sareno'][ $i ] ) ? $raw['sareno'][ $i ] : 'bela' ) : $raw['boja'];
-				$rows[] = array( 'ime' => (string) $ime, 'motiv' => $motiv, 'boja' => $b, 'bojaImena' => $nc );
+				$rows[] = array( 'ime' => (string) $ime, 'motiv' => $motiv, 'boja' => $b, 'bojaImena' => $nc, 'font' => $font );
 			}
 		}
 	}
@@ -257,7 +258,12 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 	}
 	wp_localize_script( 'bumbaru-gen-ui', 'BUMBARU_GEN', array(
 		'font'     => BUMBARU3D_URL . 'assets/gen/Pacifico-Regular.ttf',
+		'fonts'    => array_combine( wp_list_pluck( bumbaru_fontovi(), 'id' ), array_map( function ( $f ) {
+			return BUMBARU3D_URL . 'assets/gen/' . $f['ttf'];
+		}, bumbaru_fontovi() ) ),
+		'fontovi'  => bumbaru_fontovi(),
 		'defs'     => BUMBARU3D_URL . 'data/ornament-defs.svg?v=' . $v,
+		'okretni'  => BUMBARU3D_URL . 'data/okretni-obruci.bin?v=' . $v,
 		'colors'   => $colors,
 		'motivi'   => bumbaru_motivi(),
 		'models'   => bumbaru_gen_models(),
@@ -269,7 +275,7 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 		'ceka'     => bumbaru_gen_pending_count(),
 	) );
 	// ornament.js (fitName) čita boje i motive iz BUMBARU3D
-	wp_add_inline_script( 'bumbaru-ornament', 'window.BUMBARU3D = window.BUMBARU3D || { colors: {}, motivi: ' . wp_json_encode( bumbaru_motivi() ) . ' };', 'before' );
+	wp_add_inline_script( 'bumbaru-ornament', 'window.BUMBARU3D = window.BUMBARU3D || { colors: {}, motivi: ' . wp_json_encode( bumbaru_motivi() ) . ', fontovi: ' . wp_json_encode( bumbaru_fontovi() ) . ', fm: ' . wp_json_encode( bumbaru_font_metrics() ) . ' };', 'before' );
 } );
 
 // Podrazumevane mere (prečnik, debljina…) se pamte za sledeći put.
@@ -316,7 +322,7 @@ function bumbaru_page_generator() {
 			</div>
 
 			<table class="widefat bg-rows">
-				<thead><tr><th>#</th><th>Ime (do 12 slova)</th><th>Motiv</th><th>Boja ukrasa</th><th>Boja imena</th><th></th></tr></thead>
+				<thead><tr><th>#</th><th>Ime (do 12 slova)</th><th>Motiv</th><th>Slova</th><th>Boja ukrasa</th><th>Boja imena</th><th></th></tr></thead>
 				<tbody data-gen-rows></tbody>
 			</table>
 			<p><button type="button" class="button" data-gen-add>+ Još jedan ukras</button></p>
@@ -326,8 +332,8 @@ function bumbaru_page_generator() {
 				<div class="bg-dims-grid">
 					<label>Prečnik ukrasa (mm)<input type="number" step="0.5" min="20" max="250" data-gen-dim="precnik" value="<?php echo esc_attr( $d['precnik'] ); ?>" /></label>
 					<label>Debljina (mm)<input type="number" step="0.1" min="0.6" max="20" data-gen-dim="debljina" value="<?php echo esc_attr( $d['debljina'] ); ?>" /></label>
-					<label>Ime izdignuto (mm, 0 = ravno)<input type="number" step="0.1" min="0" max="10" data-gen-dim="izdignuto" value="<?php echo esc_attr( $d['izdignuto'] ); ?>" /></label>
-					<label>Boja imena samo gornjih (mm, 0 = cela debljina)<input type="number" step="0.1" min="0" max="20" data-gen-dim="vrh" value="<?php echo esc_attr( $d['vrh'] ); ?>" /></label>
+					<label>Ime kao reljef iznad ukrasa (mm, 0 = ravno u ukrasu; reljef = samo jedna promena boje)<input type="number" step="0.1" min="0" max="10" data-gen-dim="izdignuto" value="<?php echo esc_attr( $d['izdignuto'] ); ?>" /></label>
+					<label>Ravno ime: boja imena samo gornjih (mm, 0 = cela debljina)<input type="number" step="0.1" min="0" max="20" data-gen-dim="vrh" value="<?php echo esc_attr( $d['vrh'] ); ?>" /></label>
 					<label>Ploča štampača (mm)<input type="number" step="1" min="100" max="600" data-gen-dim="ploca" value="<?php echo esc_attr( $d['ploca'] ); ?>" /></label>
 				</div>
 				<p><button type="button" class="button" data-gen-save>Zapamti ove mere</button> <span class="description" data-gen-saved></span></p>
@@ -341,6 +347,7 @@ function bumbaru_page_generator() {
 			</p>
 			<p class="description">3MF: svaki ukras je jedan predmet sa delovima „Telo” i „Ime”, svaki u svojoj boji. U slajseru (Anycubic, Bambu, Orca, Prusa) dodelite filament svakom delu. STL: zip sa posebnim fajlom za svaki deo.</p>
 			<p class="bg-err" data-gen-err role="alert"></p>
+			<p class="description" data-gen-nap></p>
 		</section>
 	</div>
 	</div>

@@ -136,7 +136,10 @@ function bumbaru_read_choice( $product, $src ) {
 		$b  = 'set' === $type && 'sareno' === $b ? 'sareno' : bumbaru_valid_color( $b, 'bela' );
 		$nc = sanitize_key( (string) $get( 'bojaImena', 'ista' ) );
 		$nc = 'ista' === $nc ? 'ista' : bumbaru_valid_color( $nc, 'crvena' );
+		$fo = bumbaru_font( sanitize_key( (string) $get( 'font', 'pacifico' ) ) );
 		$lines[]           = array( 'Motiv', $m['label'] );
+		$lines[]           = array( 'Slova', $fo['label'] );
+		$raw['font']       = $fo['id'];
 		$lines[]           = array( 'Boja ukrasa', 'sareno' === $b ? 'Šareno' : bumbaru_color_label( $b ) );
 		$lines[]           = array( 'Boja imena', 'ista' === $nc ? 'Kao ukras' : bumbaru_color_label( $nc ) );
 		$raw['motiv']      = $m['id'];

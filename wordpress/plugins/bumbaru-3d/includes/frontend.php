@@ -31,6 +31,8 @@ add_action( 'wp_enqueue_scripts', function () {
 		'colors'  => $colors,
 		'boje'    => $boje,
 		'motivi'  => bumbaru_motivi(),
+		'fontovi' => bumbaru_fontovi(),
+		'fm'      => bumbaru_font_metrics(),
 		'stilovi' => bumbaru_astro_data( 'STILOVI' ),
 		'primeri' => bumbaru_astro_data( 'PRIMERI' ),
 		'ajax'    => class_exists( 'WC_AJAX' ) ? WC_AJAX::get_endpoint( '%%endpoint%%' ) : '',
@@ -38,8 +40,15 @@ add_action( 'wp_enqueue_scripts', function () {
 		'checkout' => function_exists( 'wc_get_checkout_url' ) ? wc_get_checkout_url() : '',
 	) );
 	wp_enqueue_style( 'bumbaru-3d', BUMBARU3D_URL . 'assets/front.css', array(), BUMBARU3D_VERSION );
+	// Pregled ukrasa u korpi, plaćanju i nalogu: ime u izabranom fontu.
+	if ( ( function_exists( 'is_cart' ) && ( is_cart() || is_checkout() || is_account_page() ) ) ) {
+		wp_enqueue_style( 'bumbaru-ukrasi-fontovi', BUMBARU3D_URL . 'assets/fonts/ukrasi.css', array(), BUMBARU3D_VERSION );
+	}
 	if ( $on_product ) {
 		$p = wc_get_product( get_queried_object_id() );
+		if ( $p && in_array( bumbaru_config( $p )['type'], array( 'ukras', 'set' ), true ) ) {
+			wp_enqueue_style( 'bumbaru-ukrasi-fontovi', BUMBARU3D_URL . 'assets/fonts/ukrasi.css', array(), BUMBARU3D_VERSION );
+		}
 		if ( $p && 'privezak' === bumbaru_config( $p )['type'] ) {
 			wp_enqueue_style( 'bumbaru-privesci-fontovi', BUMBARU3D_URL . 'assets/fonts/privesci.css', array(), BUMBARU3D_VERSION );
 		}
@@ -498,6 +507,7 @@ function bumbaru_config_fields( $product ) {
 				. '<svg viewBox="-12 34 264 256" aria-hidden="true"><use href="#orn-' . esc_attr( $m['id'] ) . '" fill="#7A6A5A" stroke="#7A6A5A" /></svg>' . esc_html( $m['label'] ) . '</label>';
 		}
 		$out .= '</div></fieldset>';
+		$out .= bumbaru_font_picker( 'set' === $type );
 		$out .= bumbaru_color_picker( 'boja', 'Boja ukrasa', 'bela', array( 'mix' => 'set' === $type ? 'Šareno' : '', 'mix_default' => 'set' === $type ) );
 		$out .= '<div>' . bumbaru_color_picker( 'bojaImena', 'Boja imena', 'crvena', array( 'extra' => array( array( 'value' => 'ista', 'label' => 'Kao ukras', 'css' => 'linear-gradient(135deg, #EEEAE3 50%, #ADA498 50%)', 'checked' => 'set' === $type ) ) ) )
 			. '<p class="hint" style="margin-top:8px">Ime u drugoj boji štampamo u istom komadu, bez lepljenja.</p></div>';
@@ -617,6 +627,16 @@ function bumbaru_kolicina_html( $product ) {
 }
 
 /** Izbor motiva (npr. modlice) ili boja (npr. klipovi): pločice, brojač i traka popusta sa pčelicom. */
+/** Izbor fonta za ime na ukrasu: dugme sa primerom imena u tom fontu. */
+function bumbaru_font_picker( $set = false ) {
+	$o = '<fieldset class="field"><legend class="flabel">' . ( $set ? 'Slova za sva imena' : 'Slova' ) . '</legend><div class="chips font-chips">';
+	foreach ( bumbaru_fontovi() as $i => $f ) {
+		$o .= '<label class="chip font-chip"><input type="radio" name="font" value="' . esc_attr( $f['id'] ) . '"' . ( 0 === $i ? ' checked' : '' ) . ' data-label="' . esc_attr( $f['label'] ) . '" />'
+			. '<span class="font-ex" style="font-family:' . esc_attr( $f['css'] ) . '">Ime</span><small>' . esc_html( $f['label'] ) . '</small></label>';
+	}
+	return $o . '</div><p class="hint">Ćirilicu imaju sva slova osim „Četkica” (tada ime štampamo okruglim slovima).</p></fieldset>';
+}
+
 function bumbaru_motivi_fields( $product ) {
 	$c     = bumbaru_config( $product );
 	$m     = $c['motivi'];

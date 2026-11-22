@@ -4,29 +4,38 @@
   'use strict';
   var D = window.BUMBARU3D || { colors: {}, motivi: [] };
 
-  var CH = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzČĆŠŽĐčćšžđАБВГДЂЕЖЗИЈКЛЉМНЊОПРСТЋУФХЦЧЏШабвгдђежзијклљмнњопрстћуфхцчџш -'.";
-  var W = [786,827,686,836,686,712,811,873,495,743,937,673,1232,884,816,805,816,880,693,697,890,763,1217,712,851,721,470,473,368,515,393,371,479,502,246,254,525,326,744,496,451,481,500,455,427,393,462,449,700,529,479,445,686,686,693,721,821,368,368,427,445,470,786,917,827,635,964,974,686,1234,725,890,743,937,861,1158,1133,873,1182,816,892,805,686,697,979,824,977,712,890,773,890,1272,470,473,473,380,479,514,393,717,435,462,254,465,549,794,734,475,751,451,496,481,368,744,502,479,721,529,501,555,600,693,265,403,290,257];
-  var ADV = {};
-  for (var i = 0; i < CH.length; i++) ADV[CH[i]] = W[i];
+  // Fontovi i širine slova (data/font-widths.json, 1/1000 em); Pacifico je osnovni.
+  var FM = D.fm || null, FONTS = D.fontovi || [{ id: 'pacifico', css: 'Pacifico, cursive', cyr: true, sw: 1.2 }];
+  var ADVS = {};
+  function adv(id) {
+    if (ADVS[id]) return ADVS[id];
+    var f = FM && (FM.fonts[id] || FM.fonts.pacifico), m = {};
+    if (f) Array.from(FM.chars).forEach(function (ch, i) { if (f.w[i] !== null) m[ch] = f.w[i]; });
+    return (ADVS[id] = m);
+  }
+  function font(id) { for (var i = 0; i < FONTS.length; i++) if (FONTS[i].id === id) return FONTS[i]; return FONTS[0]; }
+  // Font bez ćirilice + ime ćirilicom = Pacifico (isto kao bumbaru_name_font u PHP-u).
+  function nameFont(id, name) { var f = font(id || 'pacifico'); return !f.cyr && /[\u0400-\u04FF]/.test(name) ? font('pacifico') : f; }
 
   // Obruč: ime ide od jedne do druge strane obruča i krajevima ulazi u njega, pa ga drži bez šinica.
   // Kraća imena dobiju veći font i blago razvučena slova (sx); šinice ostaju samo za imena od 1–2 slova.
   // Traka/pločica (motiv.ime.traka): ime leži na delu ukrasa, pa se samo smesti u širinu w i visinu fs.
   var REACH = 97, FS_MAX = 70, SX_MAX = 1.6;
-  function fitName(raw, fallback, M) {
+  function fitName(raw, fallback, M, fontId) {
     var cfg = (M && M.ime) || {};
     var name = String(raw || '').trim().slice(0, 12) || fallback || 'Mila';
+    var F = nameFont(fontId, name), ADV = adv(F.id), fm = (FM && FM.fonts[F.id]) || { ik: 1, yk: 0.23, dxk: 0.07 };
     var sum = 0;
     Array.from(name).forEach(function (ch) { sum += ADV[ch] !== undefined ? ADV[ch] : 520; });
     var traka = !!cfg.traka;
     var reach = traka ? +cfg.w : (cfg.reach || REACH);
-    var em = sum / 1000 + 0.1;
+    var em = sum * fm.ik / 1000 + 0.1;
     var CY = 182, RI = cfg.ri || 94, yc = cfg.y || CY + 6;
     var fs = traka ? Math.max(16, Math.min(+cfg.fs, 2 * reach / em)) : Math.max(22, Math.min(FS_MAX, 2 * reach / em));
     var sx = traka ? 1 : Math.max(1, Math.min(SX_MAX, 2 * reach / (em * fs)));
-    var y = yc + 0.23 * fs;
+    var y = yc + fm.yk * fs;
     var w = em * fs * sx;
-    var dx = 0.07 * fs * sx; // slova sa repom: crtež je malo desno od širine slova
+    var dx = fm.dxk * fs * sx; // slova sa repom: crtež je malo desno od širine slova
     var rails = '';
     var r = function (v) { return v.toFixed(1); };
     var r3 = function (v) { return (Math.round(v * 1000) / 1000).toString(); };
@@ -37,7 +46,7 @@
         'M' + r(120 + w / 2 - 0.22 * fs) + ' ' + r(yr) + 'L' + r(120 + hr + 4) + ' ' + r(yr);
     }
     var tf = 'matrix(' + r3(sx) + ' 0 0 1 ' + r3(120 - 120 * sx - dx) + ' 0)';
-    return { name: name, fs: r(fs), y: r(y), rails: rails, railW: r(Math.max(4.2, 0.085 * fs)), sx: r3(sx), dx: r3(dx), tf: tf, mode: traka ? 'traka' : 'obruc', reach: r(reach) };
+    return { name: name, fs: r(fs), y: r(y), rails: rails, railW: r(Math.max(4.2, 0.085 * fs)), sx: r3(sx), dx: r3(dx), tf: tf, mode: traka ? 'traka' : 'obruc', reach: r(reach), font: F.id, css: F.css, sw: String(F.sw) };
   }
 
   var ids = Object.keys(D.colors);
@@ -48,7 +57,10 @@
   }
 
   function setName(g, f) {
-    g.querySelectorAll('.orn-name').forEach(function (t) { t.textContent = f.name; t.setAttribute('font-size', f.fs); t.setAttribute('y', f.y); t.setAttribute('transform', f.tf); });
+    g.querySelectorAll('.orn-name').forEach(function (t) {
+      t.textContent = f.name; t.setAttribute('font-size', f.fs); t.setAttribute('y', f.y); t.setAttribute('transform', f.tf);
+      if (f.css) { t.setAttribute('font-family', f.css); t.setAttribute('stroke-width', f.sw); }
+    });
     g.querySelectorAll('.orn-rail').forEach(function (p) { p.setAttribute('d', f.rails); p.setAttribute('stroke-width', f.railW); });
   }
 
@@ -63,11 +75,20 @@
     ne.setAttribute('fill', N.edge); ne.setAttribute('stroke', N.edge);
     nf.setAttribute('fill', N.face); nf.setAttribute('stroke', N.face);
     g.setAttribute('data-motif', M.id); g.setAttribute('data-hy', M.hy);
-    setName(g, fitName(o.name, o.fallback, M));
+    var fid = o.font;
+    if (!fid) { var fi = document.querySelector('[data-order-form] input[name="font"]:checked'); fid = fi ? fi.value : 'pacifico'; }
+    setName(g, fitName(o.name, o.fallback, M, fid));
     return M;
   }
 
-  window.BumbaruOrnament = { fitName: fitName, boja: boja, motiv: motiv, paint: paint, setName: setName };
+  window.BumbaruOrnament = { fitName: fitName, boja: boja, motiv: motiv, paint: paint, setName: setName, font: font, nameFont: nameFont };
+
+  // Strana proizvoda: promena fonta osveži pregled (product.js crta pregled kad se promeni ime).
+  document.addEventListener('change', function (e) {
+    if (!e.target.matches || !e.target.matches('[data-order-form] input[name="font"]')) return;
+    var n = document.querySelector('[data-order-form] [data-ime], [data-order-form] [data-set-name]');
+    if (n) n.dispatchEvent(new Event('input', { bubbles: true }));
+  });
 
   // Početna strana: ime upisano u polje odmah se vidi na tri ukrasa.
   var input = document.querySelector('[data-home-ime]');

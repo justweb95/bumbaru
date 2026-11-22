@@ -19,7 +19,9 @@ function bumbaru_motivi() {
 		array( 'id' => 'pahulje-masna', 'label' => 'Pahuljice i mašna', 'hy' => 69, 'ime' => array( 'ri' => 92 ) ),
 		array( 'id' => 'kapa', 'label' => 'Kapa Deda Mraza', 'hy' => 55, 'ime' => array( 'ri' => 92.5 ) ),
 		array( 'id' => 'pahulja', 'label' => 'Velika pahulja', 'hy' => 72, 'ime' => array( 'traka' => 1, 'w' => 80, 'y' => 189, 'fs' => 46 ) ),
-		array( 'id' => 'plocica', 'label' => 'Pločica sa imenom', 'hy' => 69, 'ime' => array( 'traka' => 1, 'w' => 63, 'y' => 187, 'fs' => 42 ) ),
+		// Okretni: tri obruča iz originala (1:1, štampaju se odvojeni i okreću se oko osovine), pahuljica u sredini.
+		// Stalna veličina 108 mm i debljina 8 mm (zbog razmaka za okretanje), ime mora da stane u unutrašnji obruč.
+		array( 'id' => 'okretni', 'label' => 'Okretna pahulja', 'hy' => 69, 'okretni' => true, 'ime' => array( 'traka' => 1, 'w' => 60, 'y' => 189, 'fs' => 36 ) ),
 	);
 }
 
@@ -42,20 +44,63 @@ function bumbaru_ornament_defs() {
 	return $defs;
 }
 
-/** Širine slova fonta Pacifico (1/1000 em), da ime uvek ispuni obruč. */
-function bumbaru_glyph_widths() {
-	static $adv = null;
-	if ( null !== $adv ) {
-		return $adv;
+/**
+ * Fontovi za ime na ukrasu (SIL OFL). sw = debljina linije oko slova (Great Vibes je tanak, pa dobije deblju),
+ * cyr = font ima ćirilicu (ako nema, ime ćirilicom ide u Pacifico). ttf = fajl za generator (assets/gen/).
+ */
+function bumbaru_fontovi() {
+	return apply_filters( 'bumbaru_fontovi', array(
+		array( 'id' => 'pacifico', 'label' => 'Okrugla', 'css' => 'Pacifico, cursive', 'ttf' => 'Pacifico-Regular.ttf', 'cyr' => true, 'sw' => 1.2 ),
+		array( 'id' => 'lobster', 'label' => 'Debela', 'css' => "'Lobster', cursive", 'ttf' => 'Lobster-Regular.ttf', 'cyr' => true, 'sw' => 1.2 ),
+		array( 'id' => 'great-vibes', 'label' => 'Elegantna', 'css' => "'Great Vibes', cursive", 'ttf' => 'GreatVibes-Regular.ttf', 'cyr' => true, 'sw' => 2.6 ),
+		array( 'id' => 'kaushan', 'label' => 'Četkica', 'css' => "'Kaushan Script', cursive", 'ttf' => 'KaushanScript-Regular.ttf', 'cyr' => false, 'sw' => 1.2 ),
+	) );
+}
+
+function bumbaru_font( $id ) {
+	$all = bumbaru_fontovi();
+	foreach ( $all as $f ) {
+		if ( $f['id'] === $id ) {
+			return $f;
+		}
 	}
-	$ch  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzČĆŠŽĐčćšžđАБВГДЂЕЖЗИЈКЛЉМНЊОПРСТЋУФХЦЧЏШабвгдђежзијклљмнњопрстћуфхцчџш -'.";
-	$w   = array( 786, 827, 686, 836, 686, 712, 811, 873, 495, 743, 937, 673, 1232, 884, 816, 805, 816, 880, 693, 697, 890, 763, 1217, 712, 851, 721, 470, 473, 368, 515, 393, 371, 479, 502, 246, 254, 525, 326, 744, 496, 451, 481, 500, 455, 427, 393, 462, 449, 700, 529, 479, 445, 686, 686, 693, 721, 821, 368, 368, 427, 445, 470, 786, 917, 827, 635, 964, 974, 686, 1234, 725, 890, 743, 937, 861, 1158, 1133, 873, 1182, 816, 892, 805, 686, 697, 979, 824, 977, 712, 890, 773, 890, 1272, 470, 473, 473, 380, 479, 514, 393, 717, 435, 462, 254, 465, 549, 794, 734, 475, 751, 451, 496, 481, 368, 744, 502, 479, 721, 529, 501, 555, 600, 693, 265, 403, 290, 257 );
-	$chs = preg_split( '//u', $ch, -1, PREG_SPLIT_NO_EMPTY );
+	return $all[0];
+}
+
+/** Font kojim se stvarno piše ime: font bez ćirilice + ime ćirilicom = Pacifico (isto u ornament.js). */
+function bumbaru_name_font( $id, $name ) {
+	$f = bumbaru_font( $id );
+	if ( empty( $f['cyr'] ) && preg_match( '/[\x{0400}-\x{04FF}]/u', (string) $name ) ) {
+		return bumbaru_font( 'pacifico' );
+	}
+	return $f;
+}
+
+/** Mere fontova (data/font-widths.json): širine slova (1/1000 em), ik/yk/dxk u odnosu na Pacifico. */
+function bumbaru_font_metrics() {
+	static $m = null;
+	if ( null === $m ) {
+		$m = json_decode( (string) file_get_contents( BUMBARU3D_DIR . 'data/font-widths.json' ), true );
+	}
+	return $m;
+}
+
+/** Širine slova jednog fonta, da ime uvek ispuni obruč. */
+function bumbaru_glyph_widths( $font = 'pacifico' ) {
+	static $cache = array();
+	if ( isset( $cache[ $font ] ) ) {
+		return $cache[ $font ];
+	}
+	$m   = bumbaru_font_metrics();
+	$f   = isset( $m['fonts'][ $font ] ) ? $m['fonts'][ $font ] : $m['fonts']['pacifico'];
+	$chs = preg_split( '//u', $m['chars'], -1, PREG_SPLIT_NO_EMPTY );
 	$adv = array();
 	foreach ( $chs as $i => $c ) {
-		$adv[ $c ] = $w[ $i ];
+		if ( null !== $f['w'][ $i ] ) {
+			$adv[ $c ] = $f['w'][ $i ];
+		}
 	}
-	return $adv;
+	return $cache[ $font ] = $adv;
 }
 
 /**
@@ -64,28 +109,31 @@ function bumbaru_glyph_widths() {
  * i blago razvučena slova (sx). Šinice ostaju samo za imena od 1–2 slova.
  * Traka/pločica ($m['ime']['traka']): ime leži na delu ukrasa (traka, pločica), pa se samo smesti u širinu w i visinu fs.
  */
-function bumbaru_fit_name( $raw, $fallback = 'Mila', $m = null ) {
+function bumbaru_fit_name( $raw, $fallback = 'Mila', $m = null, $font = 'pacifico' ) {
 	$cfg  = is_array( $m ) && ! empty( $m['ime'] ) ? $m['ime'] : array();
 	$name = mb_substr( trim( (string) $raw ), 0, 12, 'UTF-8' );
 	if ( '' === $name ) {
 		$name = $fallback;
 	}
-	$adv = bumbaru_glyph_widths();
+	$fo  = bumbaru_name_font( $font, $name );
+	$mt  = bumbaru_font_metrics();
+	$fm  = isset( $mt['fonts'][ $fo['id'] ] ) ? $mt['fonts'][ $fo['id'] ] : $mt['fonts']['pacifico'];
+	$adv = bumbaru_glyph_widths( $fo['id'] );
 	$sum = 0;
 	foreach ( preg_split( '//u', $name, -1, PREG_SPLIT_NO_EMPTY ) as $c ) {
 		$sum += isset( $adv[ $c ] ) ? $adv[ $c ] : 520;
 	}
 	$traka = ! empty( $cfg['traka'] );
 	$reach = $traka ? (float) $cfg['w'] : ( isset( $cfg['reach'] ) ? (float) $cfg['reach'] : 97 );
-	$em    = $sum / 1000 + 0.1;
+	$em    = $sum * $fm['ik'] / 1000 + 0.1;
 	$cy    = 182;
 	$ri    = isset( $cfg['ri'] ) ? (float) $cfg['ri'] : 94;
 	$yc    = isset( $cfg['y'] ) ? (float) $cfg['y'] : $cy + 6;
 	$fs    = $traka ? max( 16, min( (float) $cfg['fs'], 2 * $reach / $em ) ) : max( 22, min( 70, 2 * $reach / $em ) );
 	$sx    = $traka ? 1 : max( 1, min( 1.6, 2 * $reach / ( $em * $fs ) ) );
-	$y     = $yc + 0.23 * $fs;
+	$y     = $yc + $fm['yk'] * $fs;
 	$w     = $em * $fs * $sx;
-	$dx    = 0.07 * $fs * $sx;
+	$dx    = $fm['dxk'] * $fs * $sx;
 	$r     = function ( $v ) {
 		return number_format( $v, 1, '.', '' );
 	};
@@ -110,6 +158,9 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila', $m = null ) {
 		'tf'    => 'matrix(' . $r3( $sx ) . ' 0 0 1 ' . $r3( 120 - 120 * $sx - $dx ) . ' 0)',
 		'mode'  => $traka ? 'traka' : 'obruc',
 		'reach' => $r( $reach ),
+		'font'  => $fo['id'],
+		'css'   => $fo['css'],
+		'sw'    => (string) $fo['sw'],
 	);
 }
 
@@ -118,15 +169,15 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila', $m = null ) {
  * $o: motif, color, nameColor ('ista' ili oznaka boje), name, fallback, key.
  */
 function bumbaru_ornament_g( $o ) {
-	$o  = wp_parse_args( $o, array( 'motif' => 'zvezde', 'color' => 'bela', 'nameColor' => 'ista', 'name' => '', 'fallback' => 'Mila', 'key' => '' ) );
+	$o  = wp_parse_args( $o, array( 'motif' => 'zvezde', 'color' => 'bela', 'nameColor' => 'ista', 'name' => '', 'fallback' => 'Mila', 'key' => '', 'font' => 'pacifico' ) );
 	$m  = bumbaru_motiv( $o['motif'] );
 	$b  = bumbaru_color( $o['color'] );
 	$n  = ( ! $o['nameColor'] || 'ista' === $o['nameColor'] ) ? $b : bumbaru_color( $o['nameColor'] );
-	$f  = bumbaru_fit_name( $o['name'], $o['fallback'], $m );
+	$f  = bumbaru_fit_name( $o['name'], $o['fallback'], $m, $o['font'] );
 	$nl = function ( $cls, $col, $tf = '' ) use ( $f ) {
 		return '<g class="' . $cls . '"' . $tf . ' fill="' . esc_attr( $col ) . '" stroke="' . esc_attr( $col ) . '">'
 			. '<path class="orn-rail" d="' . esc_attr( $f['rails'] ) . '" fill="none" stroke-width="' . $f['railW'] . '" stroke-linecap="round"></path>'
-			. '<text class="orn-name" x="120" y="' . $f['y'] . '" transform="' . esc_attr( $f['tf'] ) . '" text-anchor="middle" font-family="Pacifico, cursive" font-size="' . $f['fs'] . '" stroke-width="1.2" stroke-linejoin="round">' . esc_html( $f['name'] ) . '</text></g>';
+			. '<text class="orn-name" x="120" y="' . $f['y'] . '" transform="' . esc_attr( $f['tf'] ) . '" text-anchor="middle" font-family="' . esc_attr( $f['css'] ) . '" font-size="' . $f['fs'] . '" stroke-width="' . $f['sw'] . '" stroke-linejoin="round">' . esc_html( $f['name'] ) . '</text></g>';
 	};
 	return '<g class="orn"' . ( $o['key'] ? ' data-orn="' . esc_attr( $o['key'] ) . '"' : '' ) . ' data-hy="' . (int) $m['hy'] . '" data-motif="' . esc_attr( $m['id'] ) . '">'
 		. '<use class="orn-edge" href="#orn-' . esc_attr( $m['id'] ) . '" transform="translate(1.4 3.2)" fill="' . esc_attr( $b['edge'] ) . '" stroke="' . esc_attr( $b['edge'] ) . '"></use>'
@@ -148,7 +199,7 @@ function bumbaru_preview_svg( $raw, $max = 0 ) {
 	if ( 'ukras' === $raw['type'] && isset( $raw['ime'] ) ) {
 		$m   = bumbaru_motiv( isset( $raw['motiv'] ) ? $raw['motiv'] : 'zvezde' );
 		$svg = '<svg viewBox="0 0 240 300" role="img" aria-label="Pregled ukrasa"><g transform="translate(0 ' . ( 6 - $m['hy'] + 64 ) . ')" filter="url(#orn-sh)">'
-			. bumbaru_ornament_g( array( 'motif' => $m['id'], 'color' => $raw['boja'], 'nameColor' => $raw['boja_imena'], 'name' => $raw['ime'] ) ) . '</g></svg>';
+			. bumbaru_ornament_g( array( 'motif' => $m['id'], 'color' => $raw['boja'], 'nameColor' => $raw['boja_imena'], 'name' => $raw['ime'], 'font' => isset( $raw['font'] ) ? $raw['font'] : 'pacifico' ) ) . '</g></svg>';
 	} elseif ( 'set' === $raw['type'] && ! empty( $raw['imena'] ) ) {
 		foreach ( array_values( $raw['imena'] ) as $i => $ime ) {
 			if ( $max && $i >= $max ) {
@@ -156,7 +207,7 @@ function bumbaru_preview_svg( $raw, $max = 0 ) {
 			}
 			$color = 'sareno' === $raw['boja'] && ! empty( $raw['sareno'][ $i ] ) ? $raw['sareno'][ $i ] : $raw['boja'];
 			$svg  .= '<svg viewBox="0 0 240 300" role="img" aria-label="' . esc_attr( $ime ) . '"><g filter="url(#orn-sh)">'
-				. bumbaru_ornament_g( array( 'motif' => $raw['motiv'], 'color' => $color, 'nameColor' => $raw['boja_imena'], 'name' => $ime ) ) . '</g></svg>';
+				. bumbaru_ornament_g( array( 'motif' => $raw['motiv'], 'color' => $color, 'nameColor' => $raw['boja_imena'], 'name' => $ime, 'font' => isset( $raw['font'] ) ? $raw['font'] : 'pacifico' ) ) . '</g></svg>';
 		}
 	} elseif ( 'jelka' === $raw['type'] ) {
 		$svg = bumbaru_tree_svg( isset( $raw['tree'] ) ? $raw['tree'] : 'mini', isset( $raw['zvezda'] ) ? $raw['zvezda'] : 'zlatna', isset( $raw['tree_color'] ) ? $raw['tree_color'] : '' );

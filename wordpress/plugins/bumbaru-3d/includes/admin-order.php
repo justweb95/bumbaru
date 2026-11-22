@@ -26,4 +26,7 @@ add_action( 'admin_footer', function () {
 		return;
 	}
 	echo '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' . bumbaru_ornament_defs() . '</defs></svg>'; // phpcs:ignore
+	// Fontovi imena (u adminu nema fontova teme, pa Pacifico ide iz generatora).
+	echo '<link rel="stylesheet" href="' . esc_url( BUMBARU3D_URL . 'assets/fonts/ukrasi.css?v=' . BUMBARU3D_VERSION ) . '" />';
+	echo '<style>@font-face{font-family:Pacifico;src:url(' . esc_url( BUMBARU3D_URL . 'assets/gen/Pacifico-Regular.ttf' ) . ') format("truetype");font-display:swap}</style>';
 } );
