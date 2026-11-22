@@ -101,6 +101,12 @@ get_header();
 				<ul class="contact">
 					<li><?php echo bu_icon( 'messenger' ); ?><span><strong>Messenger</strong><a href="<?php echo esc_url( bu_messenger_url() ); ?>" target="_blank" rel="noopener">m.me/<?php echo esc_html( bu_site( 'messenger_page' ) ); ?></a></span></li>
 					<li><?php echo bu_icon( 'facebook' ); ?><span><strong>Facebook</strong><a href="<?php echo esc_url( bu_site( 'facebook_url' ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( preg_replace( '#^https?://(www\.)?#', '', untrailingslashit( bu_site( 'facebook_url' ) ) ) ); ?></a></span></li>
+					<?php if ( bu_whatsapp_url() ) : ?>
+						<li><?php echo bu_icon( 'whatsapp' ); ?><span><strong>WhatsApp</strong><a href="<?php echo esc_url( bu_whatsapp_url() ); ?>" target="_blank" rel="noopener"><?php echo esc_html( bu_site( 'whatsapp' ) ); ?></a></span></li>
+					<?php endif; ?>
+					<?php if ( bu_site( 'instagram_url' ) ) : ?>
+						<li><?php echo bu_icon( 'instagram' ); ?><span><strong>Instagram</strong><a href="<?php echo esc_url( bu_site( 'instagram_url' ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( preg_replace( '#^https?://(www\.)?#', '', untrailingslashit( bu_site( 'instagram_url' ) ) ) ); ?></a></span></li>
+					<?php endif; ?>
 					<li><?php echo bu_icon( 'pin' ); ?><span><strong>Radionica</strong><span class="muted"><?php echo esc_html( bu_site( 'city' ) ); ?></span></span></li>
 				</ul>
 			</section>

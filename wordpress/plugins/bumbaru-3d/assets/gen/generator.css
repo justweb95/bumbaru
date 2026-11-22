@@ -1,0 +1,29 @@
+/* Bumbaru 3D → Generator modela */
+.bg-wrap { display: grid; grid-template-columns: minmax(240px, 320px) minmax(0, 1fr); gap: 16px; align-items: start; max-width: 1400px; }
+.bg-wrap .bu-card { margin: 0; }
+@media (max-width: 960px) { .bg-wrap { grid-template-columns: 1fr; } }
+.bg-orders { max-height: calc(100vh - 140px); overflow: auto; position: sticky; top: 40px; }
+@media (max-width: 960px) { .bg-orders { position: static; max-height: 360px; } }
+.bg-orders h2 { margin-top: 0; }
+.bg-order { border-top: 1px solid #e6dfd3; padding: 10px 0; display: flex; flex-direction: column; gap: 6px; }
+.bg-order-h span { color: #7a6c5d; font-size: 12px; display: block; }
+.bg-item { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; width: 100%; padding: 8px 10px; border: 1px solid #d9cfbf; border-radius: 8px; background: #fffdf8; cursor: pointer; }
+.bg-item:hover, .bg-item.is-on, .bg-all.is-on { border-color: #b8860b; background: #fff4d6; }
+.bg-item small { color: #6b5d4f; }
+.bg-head { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; margin-bottom: 12px; }
+.bg-head label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; }
+.bg-src { color: #8a5a00; font-weight: 600; }
+.bg-rows td, .bg-rows th { vertical-align: middle; }
+.bg-rows .bg-n { width: 28px; color: #7a6c5d; }
+.bg-rows input.bg-ime { width: 100%; min-width: 140px; font-size: 15px; }
+.bg-rows .bg-del { color: #a00; font-size: 16px; text-decoration: none; }
+.bg-dims { margin: 12px 0; }
+.bg-dims summary { font-weight: 600; cursor: pointer; }
+.bg-dims-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 10px; }
+.bg-dims-grid label { display: flex; flex-direction: column; gap: 4px; }
+.bg-dims-grid input { max-width: 140px; }
+.bg-preview { background: repeating-conic-gradient(#f4efe6 0% 25%, #fbf8f2 0% 50%) 0 0 / 24px 24px; border: 1px solid #e6dfd3; border-radius: 12px; padding: 16px; min-height: 240px; display: flex; align-items: center; justify-content: center; }
+.bg-preview svg { width: 100%; max-height: 520px; }
+.bg-stats { color: #5b4d40; }
+.bg-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.bg-err { color: #b32d2e; font-weight: 600; }

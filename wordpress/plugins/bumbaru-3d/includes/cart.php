@@ -395,6 +395,49 @@ add_action( 'woocommerce_before_calculate_totals', function ( $cart ) {
 	}
 }, 20 );
 
+// Popust za više komada: saberu se svi komadi istog proizvoda u korpi (ukrasi sa različitim imenima).
+add_action( 'woocommerce_before_calculate_totals', function ( $cart ) {
+	if ( is_admin() && ! wp_doing_ajax() ) {
+		return;
+	}
+	$count = array();
+	foreach ( $cart->get_cart() as $item ) {
+		$count[ $item['product_id'] ] = ( isset( $count[ $item['product_id'] ] ) ? $count[ $item['product_id'] ] : 0 ) + (int) $item['quantity'];
+	}
+	foreach ( $cart->get_cart() as $key => $item ) {
+		$tiers = bumbaru_config( $item['product_id'] )['kolicina'];
+		$pct   = $tiers ? bumbaru_popust_za( $tiers, $count[ $item['product_id'] ] ) : 0;
+		if ( isset( $item['bumbaru']['price'] ) && null !== $item['bumbaru']['price'] ) {
+			$unit = (float) $item['bumbaru']['price'];
+		} else {
+			$fresh = wc_get_product( $item['variation_id'] ? $item['variation_id'] : $item['product_id'] );
+			$unit  = $fresh ? (float) $fresh->get_price() : 0;
+		}
+		$cart->cart_contents[ $key ]['bu_kolicina'] = $pct ? array( 'pct' => $pct, 'kom' => $count[ $item['product_id'] ], 'old' => $unit ) : null;
+		if ( $pct && $unit ) {
+			$new = bumbaru_snizi( $unit, $pct );
+			$item['data']->update_meta_data( '_bu_cart_price', (string) $new ); // akcija kategorije ovu cenu ne dira
+			$item['data']->set_price( $new );
+		} elseif ( ! isset( $item['bumbaru']['price'] ) || null === $item['bumbaru']['price'] ) {
+			$item['data']->delete_meta_data( '_bu_cart_price' );
+		}
+	}
+}, 30 );
+
+add_filter( 'woocommerce_get_item_data', function ( $out, $item ) {
+	if ( ! empty( $item['bu_kolicina'] ) ) {
+		$k     = $item['bu_kolicina'];
+		$out[] = array( 'key' => 'Popust za količinu', 'value' => '−' . $k['pct'] . '% (' . $k['kom'] . ' kom)', 'display' => '−' . esc_html( $k['pct'] ) . '% (' . (int) $k['kom'] . ' kom)' );
+	}
+	return $out;
+}, 20, 2 );
+
+add_action( 'woocommerce_checkout_create_order_line_item', function ( $order_item, $cart_key, $values ) {
+	if ( ! empty( $values['bu_kolicina'] ) ) {
+		$order_item->add_meta_data( 'Popust za količinu', '−' . $values['bu_kolicina']['pct'] . '% (' . $values['bu_kolicina']['kom'] . ' kom)' );
+	}
+}, 20, 3 );
+
 // Naziv stavke (komplet).
 add_filter( 'woocommerce_cart_item_name', function ( $name, $item ) {
 	if ( ! empty( $item['bumbaru']['name'] ) ) {
@@ -495,6 +538,7 @@ function bumbaru_ajax_add() {
 	wp_send_json( array(
 		'ok'        => true,
 		'count'     => WC()->cart->get_cart_contents_count(),
+		'u_korpi'   => bumbaru_u_korpi( $pid ),
 		'fragments' => $frag,
 		'cart'      => wc_get_cart_url(),
 		'checkout'  => wc_get_checkout_url(),

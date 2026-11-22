@@ -585,7 +585,7 @@ add_action( 'admin_post_bumbaru_save_site', function () {
 	}
 	$in  = isset( $_POST['site'] ) ? (array) wp_unslash( $_POST['site'] ) : array(); // phpcs:ignore
 	$out = array();
-	foreach ( array( 'brand_sentence', 'city', 'messenger_page', 'season', 'paleta', 'ribbon_ng', 'ribbon_stalna', 'ribbon_2', 'ribbon_3', 'ng_deadline' ) as $k ) {
+	foreach ( array( 'brand_sentence', 'city', 'messenger_page', 'whatsapp', 'season', 'paleta', 'ribbon_ng', 'ribbon_stalna', 'ribbon_2', 'ribbon_3', 'ng_deadline' ) as $k ) {
 		$out[ $k ] = sanitize_text_field( isset( $in[ $k ] ) ? $in[ $k ] : '' );
 	}
 	foreach ( array( 'facebook_url', 'instagram_url' ) as $k ) {
@@ -613,6 +613,7 @@ function bumbaru_page_site() {
 		'messenger_page' => array( 'Messenger (korisničko ime stranice)', 'text' ),
 		'facebook_url'   => array( 'Facebook stranica', 'url' ),
 		'instagram_url'  => array( 'Instagram (prazno = ne prikazuje se)', 'url' ),
+		'whatsapp'       => array( 'WhatsApp broj (npr. 064 123 4567; prazno = ne prikazuje se)', 'text' ),
 		'city'           => array( 'Radionica (grad)', 'text' ),
 		'brand_sentence' => array( 'Rečenica u podnožju', 'text' ),
 	);
@@ -644,6 +645,15 @@ function bumbaru_page_site() {
 			<?php endforeach; ?>
 		</table>
 		<p><button class="button bu-btn" type="submit">Sačuvaj</button></p>
+	</form>
+	<?php $st = bumbaru_srpski_status(); ?>
+	<form class="bu-card" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<input type="hidden" name="action" value="bumbaru_srpski" />
+		<?php wp_nonce_field( 'bumbaru_srpski' ); ?>
+		<h2>Jezik: srpski, latinica</h2>
+		<p>Jezik sajta: <strong><?php echo esc_html( $st['locale'] ); ?></strong><?php echo $st['jezik'] ? ' ✓' : ''; ?> · WooCommerce prevod: <strong><?php echo $st['wc'] ? 'preuzet ✓' : 'nije preuzet'; ?></strong></p>
+		<p class="description">WordPress, WooCommerce (administracija, korpa, plaćanje, emailovi) i ostali dodaci su na srpskom. Zvanični prevodi su na ćirilici, a plugin ih prikazuje latinicom. Dugme ponovo podesi jezik i preuzme najnovije prevode.</p>
+		<p><button class="button" type="submit">Prebaci na srpski i osveži prevode</button></p>
 	</form>
 	</div>
 	<?php

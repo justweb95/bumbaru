@@ -185,6 +185,7 @@ add_action( 'woocommerce_product_data_panels', function () {
 			$km = $cfg['komplet'] ? $cfg['komplet'] : array( 'uz' => array(), 'popust' => 10 );
 			woocommerce_wp_text_input( array( 'id' => 'bu_km_uz', 'name' => 'bu_config[komplet][uz]', 'label' => 'Komplet: uz ovo', 'value' => implode( ', ', $km['uz'] ), 'placeholder' => 'adresa-drugog-proizvoda', 'description' => 'Adrese proizvoda (slug), odvojene zarezom. Prazno = nema kompleta.', 'desc_tip' => false ) );
 			woocommerce_wp_text_input( array( 'id' => 'bu_km_p', 'name' => 'bu_config[komplet][popust]', 'label' => 'Popust za komplet, %', 'type' => 'number', 'value' => $km['popust'], 'custom_attributes' => array( 'min' => 0, 'max' => 90 ) ) );
+			woocommerce_wp_text_input( array( 'id' => 'bu_kol', 'name' => 'bu_config[kolicina]', 'label' => 'Popust za više komada', 'value' => $cfg['kolicina_txt'], 'placeholder' => '2=5, 3=10, 5=15', 'description' => 'Od koliko komada = procenat. Sabiraju se svi komadi ovog proizvoda u korpi (npr. ukrasi sa različitim imenima). Na strani proizvoda pčelica na traci pokazuje koliko još do popusta. Prazno = nema popusta. Ne važi za izbor motiva/boja i slavski set (oni imaju svoj popust).', 'desc_tip' => false ) );
 			$fm = $cfg['firme'] ? $cfg['firme'] : array( 'popusti' => array(), 'tekst' => '' );
 			woocommerce_wp_text_input( array( 'id' => 'bu_fm_p', 'name' => 'bu_config[firme][popusti]', 'label' => 'Popusti za firme', 'value' => bumbaru_tiers_to_text( $fm['popusti'] ), 'placeholder' => '25=35, 50=40, 100=45', 'description' => 'Kartica „Za firme i veće količine” sa kalkulatorom. Prazno = nema kartice.', 'desc_tip' => false ) );
 			woocommerce_wp_textarea_input( array( 'id' => 'bu_fm_t', 'name' => 'bu_config[firme][tekst]', 'label' => 'Tekst za firme', 'value' => $fm['tekst'], 'rows' => 2 ) );
@@ -235,6 +236,7 @@ add_action( 'woocommerce_process_product_meta', function ( $id ) {
 		'options'      => isset( $in['options'] ) ? sanitize_textarea_field( $in['options'] ) : '',
 		'izbor_boja'   => bumbaru_parse_color_choices( isset( $in['izbor_boja'] ) ? sanitize_textarea_field( $in['izbor_boja'] ) : '' ),
 		'crtez'        => isset( $in['crtez'] ) ? sanitize_key( $in['crtez'] ) : '',
+		'kolicina'     => isset( $in['kolicina'] ) ? bumbaru_tiers_to_text( bumbaru_parse_tiers( sanitize_text_field( $in['kolicina'] ) ) ) : '',
 	);
 	// Izbor boja zadržava oznake polja (npr. „zvezda”) kad se naziv ne menja.
 	if ( ! empty( $prev['izbor_boja'] ) ) {

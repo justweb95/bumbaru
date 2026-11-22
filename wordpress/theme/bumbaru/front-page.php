@@ -72,14 +72,25 @@ get_header();
 						<path d="M8 232 C40 130 120 160 160 100 S 250 30 292 40" fill="none" stroke="#312018" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 12" mask="url(#trailMask)" />
 					</svg>
 					<span class="hero-bee fx-bee"><img class="fx-float" src="<?php echo esc_url( bu_img( 'brand/pcelica.webp' ) ); ?>" alt="" width="320" height="320" /></span>
-					<a class="float-card fx-drop" style="--d:0;--r:-3deg" href="<?php echo esc_url( bu_product_url( 'patuljak-sa-led-svecicom' ) ); ?>">
-						<span class="fc-img" style="aspect-ratio:5/6"><img src="<?php echo esc_url( bu_img( 'p/patuljak-sa-led-svecicom/1-sm.webp' ) ); ?>" alt="Beli patuljak sa zvezdicama na kapi i upaljenom LED svećicom, pored jelke" width="640" height="768" /></span>
-						<span class="fc-label">Patuljak sa LED svećicom</span>
-					</a>
-					<a class="float-card fc-2 fx-drop" style="--d:1;--r:3deg" href="<?php echo esc_url( add_query_arg( 'filter', 'privesci', $ng_url ) ); ?>">
-						<span class="fc-img" style="aspect-ratio:1/1"><img src="<?php echo esc_url( bu_img( 'c/privesci-zbirno-sm.webp' ) ); ?>" alt="Novogodišnji privesci: irvas, jelka, Deda Mraz i Sneško" width="640" height="640" /></span>
-						<span class="fc-label">Novogodišnji privesci</span>
-					</a>
+					<?php
+					// Dve kartice u vrhu: glavna slika proizvoda iz WooCommerce-a (menja se u samom proizvodu).
+					$hero_cards = array(
+						array( 'irvas-lutkica-pleteni-izgled', 'Irvas lutkica', '-3deg', '' ),
+						array( 'spiralna-jelka-sa-zvezdom', 'Spiralna jelka sa zvezdom', '3deg', ' fc-2' ),
+					);
+					foreach ( $hero_cards as $i => $hc ) :
+						$hp  = function_exists( 'bu_product_by_slug' ) ? bu_product_by_slug( $hc[0] ) : null;
+						$img = $hp ? wp_get_attachment_image_src( $hp->get_image_id(), 'woocommerce_single' ) : false;
+						if ( ! $img ) {
+							continue;
+						}
+						$alt = trim( (string) get_post_meta( $hp->get_image_id(), '_wp_attachment_image_alt', true ) );
+						?>
+						<a class="float-card<?php echo esc_attr( $hc[3] ); ?> fx-drop" style="--d:<?php echo (int) $i; ?>;--r:<?php echo esc_attr( $hc[2] ); ?>" href="<?php echo esc_url( get_permalink( $hp->get_id() ) ); ?>">
+							<span class="fc-img" style="aspect-ratio:1/1"><img src="<?php echo esc_url( $img[0] ); ?>" alt="<?php echo esc_attr( $alt ? $alt : $hp->get_name() ); ?>" width="<?php echo (int) $img[1]; ?>" height="<?php echo (int) $img[2]; ?>" /></span>
+							<span class="fc-label"><?php echo esc_html( $hc[1] ); ?></span>
+						</a>
+					<?php endforeach; ?>
 				</div>
 			</div>
 			<div class="hero-intro">

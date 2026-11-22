@@ -1,0 +1,24 @@
+BUMBARU 2.1 – tema 2.1.0 i plugin Bumbaru 3D 2.1.0
+==================================================
+
+Postavljanje (preko verzije 2.0; napravite rezervnu kopiju)
+1. Izgled → Teme → Dodaj → Otpremi temu → bumbaru-tema.zip → „Zameni postojeću”.
+2. Dodaci → Dodaj → Otpremi dodatak → bumbaru-3d-plugin.zip → „Zameni postojeći”.
+3. Otvorite bilo koju stranu u administraciji: sajt sam pređe na srpski (latinica) i preuzme prevode
+   (traje nekoliko sekundi, pojavi se zelena poruka). Ako hosting ne dozvoli preuzimanje:
+   Podešavanja → Opšte → Jezik sajta → Srpski, pa Bumbaru 3D → Podešavanja sajta → „Prebaci na srpski i osveži prevode”.
+   Ko želi administraciju na engleskom: Korisnici → Profil → Jezik.
+
+Šta je novo
+– Ceo WordPress i WooCommerce na srpskom, latinicom: administracija (porudžbine, proizvodi, podešavanja,
+  analitika), korpa, plaćanje i emailovi. Prevodi se dalje sami osvežavaju.
+– Messenger, Facebook, Instagram i WhatsApp ikonice u originalnim bojama i obliku, iste veličine kao do sada.
+  WhatsApp i Instagram se vide kad ih upišete u Bumbaru 3D → Podešavanja sajta.
+– Početna: u vrhu su Irvas lutkica (pleteni izgled) i Spiralna jelka sa zvezdom (glavna slika iz proizvoda).
+– Bumbaru 3D → Generator modela: izaberete porudžbinu (ili upišete imena), pa „Izvezi 3MF” ili „Izvezi STL”.
+  U porudžbini uz svaku stavku sa ukrasom postoji dugme „Preuzmi 3MF” (jedan klik).
+  3MF ima delove „Telo” i „Ime” u bojama iz porudžbine; porodični set i više komada idu u jedan fajl.
+  Mere: prečnik 80 mm, debljina 3 mm (promenite i kliknite „Zapamti ove mere”).
+– Ukras za jelku sa imenom: popust za više komada 2 kom −5%, 3 kom −10%, 5 kom −15% (sabiraju se svi ukrasi
+  u korpi, svaki sa svojim imenom) i traka sa pčelicom koja pokazuje koliko još do popusta.
+  Menja se u Proizvod → Konfigurator → „Popust za više komada” (prazno = bez popusta).

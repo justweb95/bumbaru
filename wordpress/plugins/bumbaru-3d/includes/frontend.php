@@ -44,6 +44,9 @@ add_action( 'wp_enqueue_scripts', function () {
 			wp_enqueue_style( 'bumbaru-privesci-fontovi', BUMBARU3D_URL . 'assets/fonts/privesci.css', array(), BUMBARU3D_VERSION );
 		}
 		wp_enqueue_script( 'bumbaru-product', BUMBARU3D_URL . 'assets/product.js', array( 'bumbaru-ornament' ), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+		if ( $p && bumbaru_config( $p )['kolicina'] ) {
+			wp_enqueue_script( 'bumbaru-kolicina', BUMBARU3D_URL . 'assets/kolicina.js', array(), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+		}
 	}
 }, 30 );
 
@@ -510,6 +513,8 @@ function bumbaru_config_fields( $product ) {
 		}
 	}
 
+	$out .= bumbaru_kolicina_html( $product );
+
 	// Slavski set: izbor modlica.
 	if ( 'sastav' === $type ) {
 		$med  = bumbaru_set_medaljon( $c['sastav']['medaljon'] );
@@ -528,6 +533,44 @@ function bumbaru_config_fields( $product ) {
 			. '<p class="hint mot-err" data-err-sas role="alert"></p></fieldset>';
 	}
 	return $out;
+}
+
+/** Koliko komada ovog proizvoda je već u korpi. */
+function bumbaru_u_korpi( $product_id ) {
+	$n = 0;
+	if ( function_exists( 'WC' ) && WC()->cart ) {
+		foreach ( WC()->cart->get_cart() as $it ) {
+			if ( (int) $it['product_id'] === (int) $product_id ) {
+				$n += (int) $it['quantity'];
+			}
+		}
+	}
+	return $n;
+}
+
+/** Popust za više komada (npr. ukrasi sa imenom): traka sa pčelicom koja pokazuje koliko još do popusta. */
+function bumbaru_kolicina_html( $product ) {
+	$c     = bumbaru_config( $product );
+	$tiers = $c['kolicina'];
+	if ( ! $tiers ) {
+		return '';
+	}
+	$max  = end( $tiers )['od'];
+	$korp = bumbaru_u_korpi( $product->get_id() );
+	$unit = bumbaru_eff( $product, bumbaru_base_price( $product ) );
+	$rec  = 'ukras' === $c['type'] ? array( 'ukras', 'ukrasa' ) : array( 'komad', 'komada' );
+	$data = array( 'tiers' => $tiers, 'korpa' => $korp, 'cena' => $unit, 'pid' => $product->get_id(), 'rec' => $rec );
+	$o    = '<div class="field mot kol" data-kolicina="' . esc_attr( wp_json_encode( $data ) ) . '"><p class="flabel">Popust za više ' . esc_html( $rec[1] ) . '</p>'
+		. '<p class="hint mot-hint">' . ( 'ukras' === $c['type'] ? 'Svaki ukras može imati drugo ime: upišite ime, dodajte u korpu, pa sledeće. ' : '' ) . 'Sabiramo sve komade u korpi.</p>'
+		. '<div class="mm" aria-hidden="true"><div class="mm-track"><div class="mm-fill" data-mm-fill></div>';
+	foreach ( $tiers as $t ) {
+		$o .= '<span class="mm-stop" data-mm-stop="' . (int) $t['od'] . '" style="--x:' . esc_attr( round( $t['od'] / $max * 100, 2 ) ) . '%"><i></i><span class="mm-lab"><b>−' . esc_html( (float) $t['procenat'] ) . '%</b><small>' . (int) $t['od'] . ' kom</small></span></span>';
+	}
+	$o .= '<img class="mm-bee" data-mm-bee src="' . esc_url( function_exists( 'bu_img' ) ? bu_img( 'brand/pcelica.webp' ) : '' ) . '" alt="" width="44" height="44" /></div></div>'
+		. '<p class="mm-msg" aria-live="polite"><span class="mm-count" data-mm-count>1 kom</span><span class="mm-badge" data-mm-badge hidden></span><span data-mm-text></span></p>'
+		. ( $unit ? '<p class="mm-total" data-mm-total hidden></p>' : '' )
+		. '</div>';
+	return $o;
 }
 
 /** Izbor motiva (npr. modlice) ili boja (npr. klipovi): pločice, brojač i traka popusta sa pčelicom. */

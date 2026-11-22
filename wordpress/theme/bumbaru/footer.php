@@ -17,6 +17,9 @@ defined( 'ABSPATH' ) || exit;
 					<?php if ( bu_site( 'instagram_url' ) ) : ?>
 						<a href="<?php echo esc_url( bu_site( 'instagram_url' ) ); ?>" target="_blank" rel="noopener" aria-label="Bumbaru na Instagram-u"><?php echo bu_icon( 'instagram' ); ?></a>
 					<?php endif; ?>
+					<?php if ( bu_whatsapp_url() ) : ?>
+						<a href="<?php echo esc_url( bu_whatsapp_url() ); ?>" target="_blank" rel="noopener" aria-label="Pišite nam na WhatsApp-u"><?php echo bu_icon( 'whatsapp' ); ?></a>
+					<?php endif; ?>
 				</div>
 			</div>
 			<div>

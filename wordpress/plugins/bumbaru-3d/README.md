@@ -31,3 +31,18 @@ sa centimetrima smanjuje jelku u pregledu uživo i pokazuje visinu.
 Svaki proizvod sa cenom ima dva dugmeta: „Poruči preko sajta” (korpa → plaćanje pouzećem, besplatna
 dostava Post Express) i „Poruči preko Messengera” (poruka sa nazivom, šifrom, izborom kupca, cenom i linkom
 se složi sama). Dok proizvod nema cenu, ima samo „Poruči preko Messengera”.
+
+## Generator modela (3MF / STL)
+Bumbaru 3D → **Generator modela**, ili u porudžbini dugme **„Preuzmi 3MF”** uz stavku sa ukrasom.
+- Model je isti crtež kao pregled na sajtu (`data/ornament-defs.svg`) i slova fonta Pacifico (`assets/gen/Pacifico-Regular.ttf`).
+- 3MF: svaki ukras je predmet sa delovima „Telo” i „Ime”, svaki sa svojom bojom; u slajseru dodelite filament delu.
+- Mere (prečnik, debljina, izdignuto ime, boja imena samo na vrhu, ploča) se pamte dugmetom „Zapamti ove mere”.
+- Novi model: dodajte ga u `BumbaruGen.models` (`assets/gen/bumbaru-gen.js`, vidi `models.ukras`) i u `bumbaru_gen_models()` (`includes/generator.php`).
+
+## Popust za više komada
+Proizvod → Konfigurator → „Popust za više komada” (npr. `2=5, 3=10, 5=15`). Sabiraju se svi komadi tog proizvoda
+u korpi; na strani proizvoda pčelica na traci pokazuje koliko još do popusta. Za ukras sa imenom podrazumevano je `2=5, 3=10, 5=15`.
+
+## Srpski jezik
+Posle nadogradnje plugin sam postavi jezik sajta na srpski i preuzme prevode; zvanični (ćirilični) prevodi se prikazuju
+latinicom. Ponovo: Bumbaru 3D → Podešavanja sajta → „Prebaci na srpski i osveži prevode”.

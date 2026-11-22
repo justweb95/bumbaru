@@ -15,6 +15,7 @@ function bu_site_defaults() {
 		'facebook_url'   => 'https://www.facebook.com/bumbaru.rs',
 		'messenger_page' => 'bumbaru.rs',
 		'instagram_url'  => '',
+		'whatsapp'       => '',
 		'season'         => 'nova-godina',
 		'paleta'         => 'svetla',
 		'ribbon_ng'      => 'Sa imenom do 16. 12, ostale porudžbine do 20. 12.',
@@ -115,10 +116,51 @@ function bu_icon( $name, $size = 20, $stroke = 2, $class = '', $label = '' ) {
 		'trash'     => '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
 		'sparkle'   => '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/>',
 	);
-	$body = isset( $p[ $name ] ) ? $p[ $name ] : '';
 	$aria = $label ? ' role="img" aria-label="' . esc_attr( $label ) . '"' : ' aria-hidden="true"';
 	$cls  = $class ? ' class="' . esc_attr( $class ) . '"' : '';
+	// Messenger, Facebook, Instagram, WhatsApp: originalni logo u originalnim bojama, iste veličine kao ostale ikonice.
+	$brand = bu_brand_icon( $name );
+	if ( $brand ) {
+		return '<svg class="ico-brand ico-' . esc_attr( $name ) . ( $class ? ' ' . esc_attr( $class ) : '' ) . '" width="' . (int) $size . '" height="' . (int) $size . '" viewBox="0 0 24 24"' . $aria . '>' . $brand . '</svg>';
+	}
+	$body = isset( $p[ $name ] ) ? $p[ $name ] : '';
 	return '<svg' . $cls . ' width="' . (int) $size . '" height="' . (int) $size . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' . esc_attr( $stroke ) . '" stroke-linecap="round" stroke-linejoin="round"' . $aria . '>' . $body . '</svg>';
+}
+
+/** Originalni logo društvene mreže (SVG sadržaj za viewBox 0 0 24 24), ili prazno. */
+function bu_brand_icon( $name ) {
+	static $n = 0;
+	$id = 'bu-br' . ( ++$n );
+	switch ( $name ) {
+		case 'messenger':
+			return '<defs><radialGradient id="' . $id . '" cx="19.25%" cy="99.47%" r="108.96%"><stop offset="0" stop-color="#09F"/><stop offset=".61" stop-color="#A033FF"/><stop offset=".93" stop-color="#FF5280"/><stop offset="1" stop-color="#FF7061"/></radialGradient></defs>'
+				. '<path fill="url(#' . $id . ')" d="M12 .6C5.6.6.6 5.3.6 11.6c0 3.3 1.4 6.2 3.6 8.2.2.2.3.4.3.7l.1 2c0 .6.7 1 1.3.8l2.3-1c.2-.1.4-.1.6 0 1 .3 2.1.4 3.2.4 6.4 0 11.4-4.7 11.4-11S18.4.6 12 .6z"/>'
+				. '<path fill="#fff" d="M5.2 14.9l3.3-5.3c.5-.8 1.7-1.1 2.5-.5l2.7 2c.2.2.6.2.8 0l3.6-2.7c.5-.4 1.1.2.8.7l-3.3 5.3c-.5.8-1.7 1.1-2.5.5l-2.7-2c-.2-.2-.6-.2-.8 0L6 15.6c-.5.4-1.1-.2-.8-.7z"/>';
+		case 'facebook':
+			return '<circle cx="12" cy="12" r="11.4" fill="#0866FF"/>'
+				. '<path fill="#fff" d="M13.6 23.3v-8.1h2.7l.4-3.3h-3.1V9.8c0-.9.3-1.6 1.6-1.6h1.7V5.3c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4v3.3h2.8v8.1z"/>';
+		case 'instagram':
+			return '<defs><radialGradient id="' . $id . '" cx="26.5%" cy="107.7%" r="99%"><stop offset="0" stop-color="#FD5"/><stop offset=".1" stop-color="#FD5"/><stop offset=".5" stop-color="#FF543E"/><stop offset="1" stop-color="#C837AB"/></radialGradient>'
+				. '<radialGradient id="' . $id . 'b" cx="-16.7%" cy="7.2%" r="44.3%" gradientTransform="matrix(.2 1 -4.1 .9 0 0)"><stop offset="0" stop-color="#3771C8"/><stop offset=".13" stop-color="#3771C8"/><stop offset="1" stop-color="#60F" stop-opacity="0"/></radialGradient></defs>'
+				. '<rect x=".6" y=".6" width="22.8" height="22.8" rx="6.4" fill="url(#' . $id . ')"/><rect x=".6" y=".6" width="22.8" height="22.8" rx="6.4" fill="url(#' . $id . 'b)"/>'
+				. '<rect x="5" y="5" width="14" height="14" rx="4" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="3.4" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="16.3" cy="7.7" r="1.05" fill="#fff"/>';
+		case 'whatsapp':
+			return '<path fill="#25D366" d="M12 .7C5.8.7.7 5.8.7 12c0 2 .5 3.9 1.5 5.6L.6 23.4l6-1.6c1.6.9 3.5 1.4 5.4 1.4 6.2 0 11.3-5.1 11.3-11.3S18.2.7 12 .7z"/>'
+				. '<path fill="#fff" d="M17.6 14.6c-.3-.2-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6 2.6 1 3.1.8 3.7.8.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4z"/>';
+	}
+	return '';
+}
+
+/** WhatsApp link za broj iz podešavanja (prazno ako broj nije upisan). */
+function bu_whatsapp_url( $text = '' ) {
+	$num = preg_replace( '/\D+/', '', (string) bu_site( 'whatsapp' ) );
+	if ( '' === $num ) {
+		return '';
+	}
+	if ( 0 === strpos( $num, '0' ) ) {
+		$num = '381' . substr( $num, 1 );
+	}
+	return 'https://wa.me/' . $num . ( $text ? '?text=' . rawurlencode( $text ) : '' );
 }
 
 /** Putanja (Početna / … ) sa BreadcrumbList podacima. */

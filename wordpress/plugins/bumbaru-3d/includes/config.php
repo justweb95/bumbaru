@@ -263,6 +263,9 @@ function bumbaru_config( $product ) {
 		'komplet'      => null,
 		'firme'        => null,
 		'crtez'        => isset( $raw['crtez'] ) && bumbaru_crtez( $raw['crtez'] ) ? $raw['crtez'] : '',
+		// Popust za više komada istog proizvoda (svi komadi u korpi se sabiraju, npr. ukrasi sa različitim imenima).
+		'kolicina'     => in_array( $type, array( 'motivi', 'boje', 'sastav' ), true ) ? array() : bumbaru_parse_tiers( isset( $raw['kolicina'] ) ? $raw['kolicina'] : ( 'ukras' === $type ? bumbaru_kolicina_default() : '' ) ),
+		'kolicina_txt' => isset( $raw['kolicina'] ) ? (string) $raw['kolicina'] : ( 'ukras' === $type ? bumbaru_kolicina_default() : '' ),
 	);
 	if ( ! in_array( $c['star_default'], $c['star_colors'], true ) ) {
 		$c['star_default'] = $c['star_colors'][0];
@@ -334,6 +337,11 @@ function bumbaru_config( $product ) {
 	}
 	$cache[ $id ] = $c;
 	return $c;
+}
+
+/** Podrazumevani popust za više ukrasa sa imenom (menja se u proizvodu → Konfigurator). */
+function bumbaru_kolicina_default() {
+	return '2=5, 3=10, 5=15';
 }
 
 function bumbaru_has_live( $product ) {

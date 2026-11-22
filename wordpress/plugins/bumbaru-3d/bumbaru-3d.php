@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       Bumbaru 3D
- * Description:       Konfiguratori proizvoda (ukras sa imenom, porodični set, privesci sa imenom u 5 stilova, slavske modlice i slavski set, izbor boja i motiva sa popustom, komplet, jelke sa zvezdicom), akcija za kategoriju, boje, filamenti i kalkulator cene 3D štampe, uvoz proizvoda i podešavanje prodavnice (plaćanje pouzećem, Post Express, besplatna dostava od 2.000 din).
- * Version:           2.0.0
+ * Description:       Generator 3MF/STL modela za štampu, sajt na srpskom (latinica), konfiguratori proizvoda (ukras sa imenom, porodični set, privesci sa imenom u 5 stilova, slavske modlice i slavski set, izbor boja i motiva sa popustom, komplet, jelke sa zvezdicom), akcija za kategoriju, boje, filamenti i kalkulator cene 3D štampe, uvoz proizvoda i podešavanje prodavnice (plaćanje pouzećem, Post Express, besplatna dostava od 2.000 din).
+ * Version:           2.1.0
  * Author:            Bumbaru
  * Requires at least: 6.5
  * Requires PHP:      7.4
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BUMBARU3D_VERSION', '2.0.0' );
+define( 'BUMBARU3D_VERSION', '2.1.0' );
 define( 'BUMBARU3D_FILE', __FILE__ );
 define( 'BUMBARU3D_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BUMBARU3D_URL', plugin_dir_url( __FILE__ ) );
@@ -27,6 +27,7 @@ require_once BUMBARU3D_DIR . 'includes/calculator.php';
 require_once BUMBARU3D_DIR . 'includes/frontend.php';
 require_once BUMBARU3D_DIR . 'includes/cart.php';
 require_once BUMBARU3D_DIR . 'includes/i18n.php';
+require_once BUMBARU3D_DIR . 'includes/srpski.php';
 require_once BUMBARU3D_DIR . 'includes/setup.php';
 require_once BUMBARU3D_DIR . 'includes/account.php';
 require_once BUMBARU3D_DIR . 'includes/importer.php';
@@ -38,6 +39,7 @@ if ( is_admin() ) {
 	require_once BUMBARU3D_DIR . 'includes/admin-product.php';
 	require_once BUMBARU3D_DIR . 'includes/admin-category.php';
 	require_once BUMBARU3D_DIR . 'includes/admin-order.php';
+	require_once BUMBARU3D_DIR . 'includes/generator.php';
 }
 
 // WooCommerce: plugin radi sa novim tabelama porudžbina (HPOS) i sa blokovima korpe.
