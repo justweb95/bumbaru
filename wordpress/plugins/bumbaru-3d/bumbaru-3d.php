@@ -73,6 +73,7 @@ add_action( 'init', function () {
 		update_option( 'bumbaru_update_notice', 1 );
 	}
 	bumbaru_migrate_23();
+	bumbaru_migrate_25();
 	update_option( 'bumbaru3d_db', BUMBARU3D_VERSION );
 } );
 

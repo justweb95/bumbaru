@@ -324,3 +324,42 @@ function bumbaru_migrate_23() {
 	wp_cache_flush();
 	update_option( 'bumbaru_migrate_23', 1 );
 }
+
+/**
+ * 2.5: cene ukrasa sa imenom po kalkulatoru (290 din; ako proizvod ima obračun, predlog kalkulatora),
+ * popust za više komada 5/7/10 i porodični set povoljniji od pojedinačnih (4 imena 1.090, peto +190).
+ * Menja samo stare podrazumevane vrednosti (ono što ste sami promenili ostaje).
+ */
+function bumbaru_migrate_25() {
+	if ( get_option( 'bumbaru_migrate_25' ) || ! function_exists( 'wc_get_product' ) ) {
+		return;
+	}
+	$ids = get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => '_bu_config' ) ); // phpcs:ignore
+	foreach ( $ids as $id ) {
+		$p   = wc_get_product( $id );
+		$cfg = get_post_meta( $id, '_bu_config', true );
+		if ( ! $p || ! is_array( $cfg ) || empty( $cfg['type'] ) ) {
+			continue;
+		}
+		if ( 'ukras' === $cfg['type'] ) {
+			if ( ! isset( $cfg['kolicina'] ) || ( is_string( $cfg['kolicina'] ) && '2=5, 3=10, 5=15' === bumbaru_tiers_to_text( bumbaru_parse_tiers( $cfg['kolicina'] ) ) ) ) {
+				$cfg['kolicina'] = '5=10, 7=15, 10=20';
+				update_post_meta( $id, '_bu_config', $cfg );
+			}
+			if ( ! bumbaru_calc_sync_price( $p ) && 390 === (int) $p->get_regular_price( 'edit' ) ) {
+				$p->set_regular_price( '290' );
+				$p->save();
+			}
+		} elseif ( 'set' === $cfg['type'] ) {
+			if ( 1590 === (int) $p->get_regular_price( 'edit' ) ) {
+				$p->set_regular_price( '1090' );
+				$p->save();
+			}
+			if ( isset( $cfg['set_extra'] ) && 390 === (int) $cfg['set_extra'] ) {
+				$cfg['set_extra'] = 190;
+				update_post_meta( $id, '_bu_config', $cfg );
+			}
+		}
+	}
+	update_option( 'bumbaru_migrate_25', 1 );
+}

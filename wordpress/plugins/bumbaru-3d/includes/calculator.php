@@ -20,6 +20,7 @@ function bumbaru_calc_defaults() {
 		'other'     => 0,
 		'margin'    => '',  // prazno = zarada iz podešavanja
 		'pieces'    => 1,   // koliko komada izlazi iz jedne štampe (trošak štampe se deli)
+		'prati'     => 1,   // cena proizvoda = predlog kalkulatora (menja se sama kad se promene troškovi)
 	);
 }
 
@@ -147,5 +148,40 @@ function bumbaru_calc_sanitize( $in ) {
 	}
 	$out['pieces'] = isset( $in['pieces'] ) ? max( 1, (int) $in['pieces'] ) : 1;
 	$out['margin'] = isset( $in['margin'] ) && '' !== trim( (string) $in['margin'] ) ? (float) str_replace( ',', '.', $in['margin'] ) : '';
+	$out['prati']  = empty( $in['prati'] ) ? 0 : 1;
 	return $out;
+}
+
+/** Cena proizvoda prati kalkulator: upiše predlog kao redovnu cenu (ako je uključeno i ima obračuna). Vraća true ako je promenjena. */
+function bumbaru_calc_sync_price( $product ) {
+	if ( is_numeric( $product ) ) {
+		$product = wc_get_product( $product );
+	}
+	if ( ! $product ) {
+		return false;
+	}
+	$calc = get_post_meta( $product->get_id(), '_bu_calc', true );
+	if ( ! bumbaru_calc_has_data( $calc ) || ( isset( $calc['prati'] ) && empty( $calc['prati'] ) ) ) { // stari obračun bez polja = prati
+		return false;
+	}
+	$r = bumbaru_calc( $calc );
+	if ( $r['price'] <= 0 || (float) $product->get_regular_price( 'edit' ) === (float) $r['price'] ) {
+		return false;
+	}
+	$product->set_regular_price( (string) $r['price'] );
+	$product->save();
+	return true;
+}
+
+/** Posle promene troškova ili filamenata: nove cene za sve proizvode koji prate kalkulator. */
+function bumbaru_calc_sync_all() {
+	$ids = get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => '_bu_calc' ) ); // phpcs:ignore
+	$n   = 0;
+	foreach ( $ids as $id ) {
+		$n += bumbaru_calc_sync_price( $id ) ? 1 : 0;
+	}
+	return $n;
+}
+foreach ( array( 'update_option_bumbaru_costs', 'update_option_bumbaru_filaments', 'update_option_bumbaru_extras' ) as $bu_hook ) {
+	add_action( $bu_hook, 'bumbaru_calc_sync_all' );
 }

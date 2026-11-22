@@ -248,7 +248,7 @@ function bumbaru_config( $product ) {
 		'type'         => $type,
 		'colors'       => $filter( isset( $raw['colors'] ) ? $raw['colors'] : array(), array( 'bela', 'crvena', 'zelena', 'zlatna' ) ),
 		'name_color'   => isset( $raw['name_color'] ) ? (string) $raw['name_color'] : '',
-		'set_extra'    => isset( $raw['set_extra'] ) ? max( 0, (float) $raw['set_extra'] ) : 390,
+		'set_extra'    => isset( $raw['set_extra'] ) ? max( 0, (float) $raw['set_extra'] ) : 190,
 		'tree'         => $tree,
 		'tree_color'   => isset( $raw['tree_color'] ) && in_array( $raw['tree_color'], $ids, true ) ? $raw['tree_color'] : '',
 		'star_colors'  => $filter( isset( $raw['star_colors'] ) ? $raw['star_colors'] : array(), array( 'zlatna', 'crvena', 'bela', 'srebrna', 'braon' ) ),
@@ -346,7 +346,7 @@ function bumbaru_config( $product ) {
 
 /** Podrazumevani popust za više ukrasa sa imenom (menja se u proizvodu → Konfigurator). */
 function bumbaru_kolicina_default() {
-	return '2=5, 3=10, 5=15';
+	return '5=10, 7=15, 10=20'; // do 4 komada je povoljniji porodični set (4 imena)
 }
 
 function bumbaru_has_live( $product ) {

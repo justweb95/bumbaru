@@ -137,6 +137,7 @@ function bumbaru_calc_ui( $calc, $name, $context = 'page' ) {
 				<div class="bu-price" data-price>—</div>
 				<div class="bu-profit" data-profit></div>
 				<?php if ( 'product' === $context ) : ?>
+					<p><label><input type="checkbox" name="<?php echo $n; ?>[prati]" value="1"<?php checked( ! isset( $c['prati'] ) || ! empty( $c['prati'] ) ); ?> /> <strong>Cena prati kalkulator</strong></label><br /><small>Posle „Ažuriraj” cena na sajtu = predlog. Kad promenite cenu filamenta, struje ili zaradu, cena se promeni sama.</small></p>
 					<p><a href="#" class="button bu-btn" data-apply-price>Upiši kao cenu proizvoda</a></p>
 					<p class="bu-note">Upisuje se u polje „Redovna cena” (Opšte), a čuva se klikom na „Ažuriraj”.</p>
 					<p class="bu-row" style="margin-top:14px"><label>Akcija, % <input type="number" min="1" max="90" step="1" data-c="sale_pct" style="width:70px" placeholder="10" /></label> <a href="#" class="button secondary" data-apply-sale>Upiši akcijsku cenu</a></p>

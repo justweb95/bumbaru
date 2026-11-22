@@ -540,7 +540,7 @@
         tx = function (x) { return CX + (x - ct) * kt; };
       } else if (!f.rails) {
         // Bez šinica: slova tačno od -REACH do +REACH (po crtežu slova), da krajevi sigurno uđu u obruč.
-        var bb = fpath.getBoundingBox(), REACH = 97.5;
+        var bb = fpath.getBoundingBox(), REACH = parseFloat(f.reach || '97') + 0.5;
         var k = (2 * REACH - 1.2) / (bb.x2 - bb.x1), cx0 = (bb.x1 + bb.x2) / 2;
         tx = function (x) { return CX + (x - cx0) * k; };
       } else {
@@ -549,6 +549,8 @@
       glyphs.forEach(function (sub) { sub.pts.forEach(function (q) { q[0] = tx(q[0]); }); });
       var name = grow(fill(glyphs, 'nonzero'), parseFloat(f.sw || '1.2') / 2); // kao linija oko slova na sajtu
       if (f.rails) name = union(name, stroke(parsePath(f.rails), parseFloat(f.railW)));
+      // Ime nikad van spoljne ivice obruča (npr. rep slova J u fontu Great Vibes), isto kao na sajtu (orn-cn).
+      name = inter(name, circle(CX, CY, 103.5));
 
       if (OKR) name = okrFitName(name, p);
       // Tačke na i/j, kvačice (č, ć, š, ž) i slova koja se ne dodiruju: spoje se mostićem sa najbližim delom.

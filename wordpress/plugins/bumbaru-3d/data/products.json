@@ -97,7 +97,7 @@
    "jelka"
   ],
   "custom": true,
-  "price": 390,
+  "price": 290,
   "priceFrom": false,
   "images": [
    {
@@ -223,7 +223,7 @@
    "jelka"
   ],
   "custom": true,
-  "price": 1590,
+  "price": 1090,
   "priceFrom": true,
   "images": [
    {
@@ -245,7 +245,7 @@
   "og": "og/ukras-set.jpg",
   "config": {
    "type": "set",
-   "set_extra": 390,
+   "set_extra": 190,
    "options": ""
   }
  },

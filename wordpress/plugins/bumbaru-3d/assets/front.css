@@ -48,3 +48,7 @@
 .font-chips .font-chip { flex-direction: column; gap: 0; min-width: 84px; padding-top: 6px; padding-bottom: 6px; line-height: 1.1; }
 .font-chip .font-ex { font-size: 24px; line-height: 1.25; }
 .font-chip small { font-size: 11px; opacity: .75; }
+.mm-set { margin: 8px 0 0; padding: 8px 12px; border-radius: 10px; background: var(--honey-soft, #fff4d6); font-size: 14px; }
+.mm-set a { font-weight: 700; }
+/* Ime na ukrasu: bez ukrasnih varijanti slova (calt/swsh), isto kao generator 3MF-a */
+.orn-name { font-feature-settings: "calt" 0, "swsh" 0, "salt" 0; }

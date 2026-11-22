@@ -62,3 +62,13 @@ Novo u 2.5
   odvojeno i posle štampe se okreću oko osovine; u sredini je pahuljica sa imenom (umesto pločice).
   Stalna veličina 108 mm i debljina 8 mm (mere iz generatora ne važe za ovaj ukras, da bi se obruči okretali).
   Posle štampe obruče lagano zavrnite rukom da se odvoje. Probni fajl: okretni-test-Mila.3mf u paketu.
+– Pregled uživo: ime ide tačno od jedne do druge strane obruča (računa se po stvarnom crtežu prvog i poslednjeg
+  slova, ne po širini slova), pa kraj imena više ne visi u vazduhu. Ništa ne izlazi van obruča (ni rep slova J).
+– Cene po kalkulatoru: u proizvodu → Kalkulator cene je štiklirano „Cena prati kalkulator”. Posle „Ažuriraj” cena
+  na sajtu je predlog kalkulatora, a kad promenite cenu filamenta, struje, rada ili zaradu, cene se promene same.
+  Ukras sa imenom: 290 din (10 g, 28 min, 10 min rada, zarada 80%). Novogodišnja akcija −10% i dalje važi
+  (na sajtu 260 din, precrtano 290); akciju menjate u Podešavanjima.
+– Popust za više pojedinačnih ukrasa: 5 kom −10%, 7 kom −15%, 10 kom −20%.
+  Porodični set: 4 imena 1.090 din (272 po ukrasu), 5. ukras +190 din. Set je uvek povoljniji od 3–4 pojedinačna,
+  a kad kupac stavi 2–4 ukrasa, ispod pčelice piše predlog „Za 4 imena je povoljniji Porodični set…”.
+  (Menja se samo ono što je bilo podrazumevano: 390/1.590/+390 i popust 2/3/5.)

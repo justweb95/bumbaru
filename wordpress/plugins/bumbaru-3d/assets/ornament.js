@@ -21,25 +21,36 @@
   // Kraća imena dobiju veći font i blago razvučena slova (sx); šinice ostaju samo za imena od 1–2 slova.
   // Traka/pločica (motiv.ime.traka): ime leži na delu ukrasa, pa se samo smesti u širinu w i visinu fs.
   var REACH = 97, FS_MAX = 70, SX_MAX = 1.6;
+  function ink(id) {
+    var f = FM && (FM.fonts[id] || FM.fonts.pacifico), m = {};
+    if (f && f.l) Array.from(FM.chars).forEach(function (ch, i) { if (f.w[i] !== null) m[ch] = [f.l[i], f.r[i]]; });
+    return m;
+  }
+  var INKS = {};
   function fitName(raw, fallback, M, fontId) {
     var cfg = (M && M.ime) || {};
     var name = String(raw || '').trim().slice(0, 12) || fallback || 'Mila';
-    var F = nameFont(fontId, name), ADV = adv(F.id), fm = (FM && FM.fonts[F.id]) || { ik: 1, yk: 0.23, dxk: 0.07 };
-    var sum = 0;
-    Array.from(name).forEach(function (ch) { sum += ADV[ch] !== undefined ? ADV[ch] : 520; });
+    var F = nameFont(fontId, name), ADV = adv(F.id), INK = INKS[F.id] || (INKS[F.id] = ink(F.id));
+    var fm = (FM && FM.fonts[F.id]) || { yk: 0.23 };
+    var chars = Array.from(name), sum = 0;
+    chars.forEach(function (ch) { sum += ADV[ch] !== undefined ? ADV[ch] : 520; });
+    // Stvarni crtež: od početka crteža prvog slova do kraja crteža poslednjeg (repovi slova prelaze širinu slova).
+    var first = INK[chars[0]] || [0, 0], last = INK[chars[chars.length - 1]] || [0, 0];
+    var inkEm = Math.max(0.2, (sum - first[0] - last[1]) / 1000), c0 = (first[0] - last[1]) / 2000;
+    var sw = +F.sw || 1.2;
     var traka = !!cfg.traka;
     var reach = traka ? +cfg.w : (cfg.reach || REACH);
-    var em = sum * fm.ik / 1000 + 0.1;
+    var W = 2 * reach - sw; // širina crteža slova (linija oko slova dodaje sw/2 sa svake strane)
     var CY = 182, RI = cfg.ri || 94, yc = cfg.y || CY + 6;
-    var fs = traka ? Math.max(16, Math.min(+cfg.fs, 2 * reach / em)) : Math.max(22, Math.min(FS_MAX, 2 * reach / em));
-    var sx = traka ? 1 : Math.max(1, Math.min(SX_MAX, 2 * reach / (em * fs)));
+    var fs = traka ? Math.max(16, Math.min(+cfg.fs, W / inkEm)) : Math.max(22, Math.min(FS_MAX, W / inkEm));
+    var sx = traka ? 1 : Math.max(1, Math.min(SX_MAX, W / (inkEm * fs)));
     var y = yc + fm.yk * fs;
-    var w = em * fs * sx;
-    var dx = fm.dxk * fs * sx; // slova sa repom: crtež je malo desno od širine slova
+    var w = inkEm * fs * sx + sw;
+    var dx = sx * c0 * fs; // pomeri crtež tako da mu je sredina tačno na sredini ukrasa
     var rails = '';
     var r = function (v) { return v.toFixed(1); };
     var r3 = function (v) { return (Math.round(v * 1000) / 1000).toString(); };
-    if (!traka && reach - w / 2 > 3) {
+    if (!traka && 2 * reach - w > 6) {
       var yr = y - 0.05 * fs;
       var hr = Math.sqrt(RI * RI - (yr - CY) * (yr - CY));
       rails = 'M' + r(120 - hr - 4) + ' ' + r(yr) + 'L' + r(120 - w / 2 + 0.18 * fs) + ' ' + r(yr) +

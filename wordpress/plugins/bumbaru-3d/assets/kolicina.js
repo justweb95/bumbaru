@@ -9,6 +9,7 @@
   var qtyIn = form.querySelector('input[name="quantity"]');
   var tiers = D.tiers, max = tiers[tiers.length - 1].od, korpa = D.korpa || 0, last = -1, lastPct = 0;
   var $ = function (s) { return box.querySelector(s); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var pop = function (el) { if (el) { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); } };
   var din = function (n) { return Math.round(n).toLocaleString('sr-RS').replace(/,/g, '.') + ' din'; };
   var snizi = function (n, p) { return p ? Math.round(n * (1 - p / 100) / 10) * 10 : n; };
@@ -44,6 +45,13 @@
     if (tot && D.cena) {
       tot.hidden = !p;
       tot.innerHTML = p ? 'Cena po ' + D.rec[0] + 'u sa popustom: <strong>' + din(snizi(D.cena, p)) + '</strong><s>' + din(D.cena) + '</s>' + (korpa ? ' <small>(važi i za ' + korpa + ' u korpi)</small>' : '') : '';
+    }
+    var setEl = $('[data-mm-set]');
+    if (setEl && D.set) {
+      // 2–4 ukrasa: porodični set od 4 imena je povoljniji po komadu.
+      var showSet = n >= 2 && n <= 4 && D.cena && D.set.po < D.cena;
+      setEl.hidden = !showSet;
+      if (showSet) setEl.innerHTML = 'Za ' + D.set.kom + ' imena je povoljniji <a href="' + esc(D.set.url) + '">' + esc(D.set.naziv) + '</a>: ' + din(D.set.cena) + ' (' + din(D.set.po) + ' po ukrasu umesto ' + din(D.cena) + ').';
     }
     last = n; lastPct = p;
   }

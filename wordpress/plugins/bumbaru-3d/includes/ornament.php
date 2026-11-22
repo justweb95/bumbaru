@@ -103,6 +103,24 @@ function bumbaru_glyph_widths( $font = 'pacifico' ) {
 	return $cache[ $font ] = $adv;
 }
 
+/** Početak i kraj crteža slova (1/1000 em od ivica širine slova): [levo, desno]. */
+function bumbaru_glyph_ink( $font = 'pacifico' ) {
+	static $cache = array();
+	if ( isset( $cache[ $font ] ) ) {
+		return $cache[ $font ];
+	}
+	$m   = bumbaru_font_metrics();
+	$f   = isset( $m['fonts'][ $font ] ) ? $m['fonts'][ $font ] : $m['fonts']['pacifico'];
+	$chs = preg_split( '//u', $m['chars'], -1, PREG_SPLIT_NO_EMPTY );
+	$ink = array();
+	foreach ( $chs as $i => $c ) {
+		if ( isset( $f['l'] ) && null !== $f['w'][ $i ] ) {
+			$ink[ $c ] = array( $f['l'][ $i ], $f['r'][ $i ] );
+		}
+	}
+	return $cache[ $font ] = $ink;
+}
+
 /**
  * Veličina i položaj imena (isto kao fitName u assets/ornament.js).
  * Obruč: ime ide od jedne do druge strane obruča i krajevima ulazi u njega; kraća imena dobiju veći font
@@ -118,22 +136,30 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila', $m = null, $font = 'pacific
 	$fo  = bumbaru_name_font( $font, $name );
 	$mt  = bumbaru_font_metrics();
 	$fm  = isset( $mt['fonts'][ $fo['id'] ] ) ? $mt['fonts'][ $fo['id'] ] : $mt['fonts']['pacifico'];
-	$adv = bumbaru_glyph_widths( $fo['id'] );
-	$sum = 0;
-	foreach ( preg_split( '//u', $name, -1, PREG_SPLIT_NO_EMPTY ) as $c ) {
+	$adv   = bumbaru_glyph_widths( $fo['id'] );
+	$ink   = bumbaru_glyph_ink( $fo['id'] );
+	$chars = preg_split( '//u', $name, -1, PREG_SPLIT_NO_EMPTY );
+	$sum   = 0;
+	foreach ( $chars as $c ) {
 		$sum += isset( $adv[ $c ] ) ? $adv[ $c ] : 520;
 	}
+	// Stvarni crtež: od početka crteža prvog slova do kraja crteža poslednjeg.
+	$first = isset( $ink[ $chars[0] ] ) ? $ink[ $chars[0] ] : array( 0, 0 );
+	$last  = isset( $ink[ end( $chars ) ] ) ? $ink[ end( $chars ) ] : array( 0, 0 );
+	$inkem = max( 0.2, ( $sum - $first[0] - $last[1] ) / 1000 );
+	$c0    = ( $first[0] - $last[1] ) / 2000;
+	$sw    = (float) $fo['sw'];
 	$traka = ! empty( $cfg['traka'] );
 	$reach = $traka ? (float) $cfg['w'] : ( isset( $cfg['reach'] ) ? (float) $cfg['reach'] : 97 );
-	$em    = $sum * $fm['ik'] / 1000 + 0.1;
+	$wt    = 2 * $reach - $sw;
 	$cy    = 182;
 	$ri    = isset( $cfg['ri'] ) ? (float) $cfg['ri'] : 94;
 	$yc    = isset( $cfg['y'] ) ? (float) $cfg['y'] : $cy + 6;
-	$fs    = $traka ? max( 16, min( (float) $cfg['fs'], 2 * $reach / $em ) ) : max( 22, min( 70, 2 * $reach / $em ) );
-	$sx    = $traka ? 1 : max( 1, min( 1.6, 2 * $reach / ( $em * $fs ) ) );
+	$fs    = $traka ? max( 16, min( (float) $cfg['fs'], $wt / $inkem ) ) : max( 22, min( 70, $wt / $inkem ) );
+	$sx    = $traka ? 1 : max( 1, min( 1.6, $wt / ( $inkem * $fs ) ) );
 	$y     = $yc + $fm['yk'] * $fs;
-	$w     = $em * $fs * $sx;
-	$dx    = $fm['dxk'] * $fs * $sx;
+	$w     = $inkem * $fs * $sx + $sw;
+	$dx    = $sx * $c0 * $fs;
 	$r     = function ( $v ) {
 		return number_format( $v, 1, '.', '' );
 	};
@@ -141,7 +167,7 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila', $m = null, $font = 'pacific
 		return (string) ( round( $v * 1000 ) / 1000 );
 	};
 	$rails = '';
-	if ( ! $traka && $reach - $w / 2 > 3 ) {
+	if ( ! $traka && 2 * $reach - $w > 6 ) {
 		$yr    = $y - 0.05 * $fs;
 		$hr    = sqrt( $ri * $ri - ( $yr - $cy ) * ( $yr - $cy ) );
 		$rails = 'M' . $r( 120 - $hr - 4 ) . ' ' . $r( $yr ) . 'L' . $r( 120 - $w / 2 + 0.18 * $fs ) . ' ' . $r( $yr )
@@ -175,7 +201,7 @@ function bumbaru_ornament_g( $o ) {
 	$n  = ( ! $o['nameColor'] || 'ista' === $o['nameColor'] ) ? $b : bumbaru_color( $o['nameColor'] );
 	$f  = bumbaru_fit_name( $o['name'], $o['fallback'], $m, $o['font'] );
 	$nl = function ( $cls, $col, $tf = '' ) use ( $f ) {
-		return '<g class="' . $cls . '"' . $tf . ' fill="' . esc_attr( $col ) . '" stroke="' . esc_attr( $col ) . '">'
+		return '<g class="' . $cls . '"' . $tf . ' clip-path="url(#orn-cn)" fill="' . esc_attr( $col ) . '" stroke="' . esc_attr( $col ) . '">'
 			. '<path class="orn-rail" d="' . esc_attr( $f['rails'] ) . '" fill="none" stroke-width="' . $f['railW'] . '" stroke-linecap="round"></path>'
 			. '<text class="orn-name" x="120" y="' . $f['y'] . '" transform="' . esc_attr( $f['tf'] ) . '" text-anchor="middle" font-family="' . esc_attr( $f['css'] ) . '" font-size="' . $f['fs'] . '" stroke-width="' . $f['sw'] . '" stroke-linejoin="round">' . esc_html( $f['name'] ) . '</text></g>';
 	};

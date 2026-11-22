@@ -613,6 +613,13 @@ function bumbaru_kolicina_html( $product ) {
 	$unit = bumbaru_eff( $product, bumbaru_base_price( $product ) );
 	$rec  = 'ukras' === $c['type'] ? array( 'ukras', 'ukrasa' ) : array( 'komad', 'komada' );
 	$data = array( 'tiers' => $tiers, 'korpa' => $korp, 'cena' => $unit, 'pid' => $product->get_id(), 'rec' => $rec );
+	// Ukras sa imenom: za 2–4 komada predloži porodični set (povoljniji po komadu).
+	if ( 'ukras' === $c['type'] ) {
+		$set = bumbaru_set_ponuda();
+		if ( $set ) {
+			$data['set'] = $set;
+		}
+	}
 	$o    = '<div class="field mot kol" data-kolicina="' . esc_attr( wp_json_encode( $data ) ) . '"><p class="flabel">Popust za više ' . esc_html( $rec[1] ) . '</p>'
 		. '<p class="hint mot-hint">' . ( 'ukras' === $c['type'] ? 'Svaki ukras može imati drugo ime: upišite ime, dodajte u korpu, pa sledeće. ' : '' ) . 'Sabiramo sve komade u korpi.</p>'
 		. '<div class="mm" aria-hidden="true"><div class="mm-track"><div class="mm-fill" data-mm-fill></div>';
@@ -622,11 +629,36 @@ function bumbaru_kolicina_html( $product ) {
 	$o .= '<img class="mm-bee" data-mm-bee src="' . esc_url( function_exists( 'bu_img' ) ? bu_img( 'brand/pcelica.webp' ) : '' ) . '" alt="" width="44" height="44" /></div></div>'
 		. '<p class="mm-msg" aria-live="polite"><span class="mm-count" data-mm-count>1 kom</span><span class="mm-badge" data-mm-badge hidden></span><span data-mm-text></span></p>'
 		. ( $unit ? '<p class="mm-total" data-mm-total hidden></p>' : '' )
+		. ( ! empty( $data['set'] ) ? '<p class="mm-set" data-mm-set hidden></p>' : '' )
 		. '</div>';
 	return $o;
 }
 
-/** Izbor motiva (npr. modlice) ili boja (npr. klipovi): pločice, brojač i traka popusta sa pčelicom. */
+/** Porodični set ukrasa za predlog uz pojedinačni ukras: { url, naziv, cena (za 4), po (po komadu), kom }. */
+function bumbaru_set_ponuda() {
+	static $r = false;
+	if ( false !== $r ) {
+		return $r;
+	}
+	$r   = null;
+	$ids = get_posts( array( 'post_type' => 'product', 'post_status' => 'publish', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => '_bu_config' ) ); // phpcs:ignore
+	foreach ( $ids as $id ) {
+		$raw = get_post_meta( $id, '_bu_config', true );
+		if ( ! is_array( $raw ) || empty( $raw['type'] ) || 'set' !== $raw['type'] ) {
+			continue;
+		}
+		$p = wc_get_product( $id );
+		if ( $p && $p->is_visible() ) {
+			$cena = bumbaru_eff( $p, bumbaru_base_price( $p ) );
+			if ( $cena > 0 ) {
+				$r = array( 'url' => get_permalink( $id ), 'naziv' => $p->get_name(), 'cena' => $cena, 'po' => round( $cena / 4 ), 'kom' => 4 );
+			}
+			break;
+		}
+	}
+	return $r;
+}
+
 /** Izbor fonta za ime na ukrasu: dugme sa primerom imena u tom fontu. */
 function bumbaru_font_picker( $set = false ) {
 	$o = '<fieldset class="field"><legend class="flabel">' . ( $set ? 'Slova za sva imena' : 'Slova' ) . '</legend><div class="chips font-chips">';
@@ -637,6 +669,7 @@ function bumbaru_font_picker( $set = false ) {
 	return $o . '</div><p class="hint">Ćirilicu imaju sva slova osim „Četkica” (tada ime štampamo okruglim slovima).</p></fieldset>';
 }
 
+/** Izbor motiva (npr. modlice) ili boja (npr. klipovi): pločice, brojač i traka popusta sa pčelicom. */
 function bumbaru_motivi_fields( $product ) {
 	$c     = bumbaru_config( $product );
 	$m     = $c['motivi'];

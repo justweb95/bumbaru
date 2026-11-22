@@ -229,7 +229,7 @@ add_action( 'woocommerce_process_product_meta', function ( $id ) {
 		'type'         => isset( $in['type'] ) && array_key_exists( $in['type'], bumbaru_config_types() ) ? $in['type'] : '',
 		'colors'       => array_values( array_intersect( (array) ( isset( $in['colors'] ) ? $in['colors'] : array() ), $ids ) ),
 		'name_color'   => isset( $in['name_color'] ) ? sanitize_key( $in['name_color'] ) : '',
-		'set_extra'    => isset( $in['set_extra'] ) ? max( 0, (float) $in['set_extra'] ) : 390,
+		'set_extra'    => isset( $in['set_extra'] ) ? max( 0, (float) $in['set_extra'] ) : 190,
 		'tree'         => isset( $in['tree'] ) && array_key_exists( $in['tree'], bumbaru_tree_styles() ) ? $in['tree'] : 'mini',
 		'tree_color'   => isset( $in['tree_color'] ) && in_array( $in['tree_color'], $ids, true ) ? $in['tree_color'] : '',
 		'star_colors'  => array_values( array_intersect( (array) ( isset( $in['star_colors'] ) ? $in['star_colors'] : array() ), $ids ) ),
@@ -305,3 +305,10 @@ add_action( 'woocommerce_process_product_meta', function ( $id ) {
 		update_post_meta( $id, '_bu_calc', bumbaru_calc_sanitize( wp_unslash( $_POST['bu_calc'] ) ) ); // phpcs:ignore
 	}
 } );
+
+// Cena prati kalkulator: posle čuvanja proizvoda (WooCommerce prvo upiše polja iz „Opšte”).
+add_action( 'woocommerce_process_product_meta', function ( $id ) {
+	if ( function_exists( 'bumbaru_calc_sync_price' ) ) {
+		bumbaru_calc_sync_price( $id );
+	}
+}, 99 );
