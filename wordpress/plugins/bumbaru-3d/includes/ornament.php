@@ -19,9 +19,9 @@ function bumbaru_motivi() {
 		array( 'id' => 'pahulje-masna', 'label' => 'Pahuljice i mašna', 'hy' => 69, 'ime' => array( 'ri' => 92 ) ),
 		array( 'id' => 'kapa', 'label' => 'Kapa Deda Mraza', 'hy' => 55, 'ime' => array( 'ri' => 92.5 ) ),
 		array( 'id' => 'pahulja', 'label' => 'Velika pahulja', 'hy' => 72, 'ime' => array( 'traka' => 1, 'w' => 80, 'y' => 189, 'fs' => 46 ) ),
-		// Okretni: tri obruča iz originala (1:1, štampaju se odvojeni i okreću se oko osovine), pahuljica u sredini.
-		// Stalna veličina 108 mm i debljina 8 mm (zbog razmaka za okretanje), ime mora da stane u unutrašnji obruč.
-		array( 'id' => 'okretni', 'label' => 'Okretna pahulja', 'hy' => 69, 'okretni' => true, 'ime' => array( 'traka' => 1, 'w' => 60, 'y' => 189, 'fs' => 36 ) ),
+		// Okretni (po ideji ArmenioMarques, Christmas Baubles Ball): tri obruča se posle štampe okreću oko osovine,
+		// pahuljica sa imenom u sredini. Obruči, rupe i osovina se prave u generatoru (okrBuild), debljina 4 mm.
+		array( 'id' => 'okretni', 'label' => 'Okretna pahulja', 'hy' => 69, 'okretni' => true, 'ime' => array( 'traka' => 1, 'w' => 56, 'y' => 189, 'fs' => 34 ) ),
 	);
 }
 

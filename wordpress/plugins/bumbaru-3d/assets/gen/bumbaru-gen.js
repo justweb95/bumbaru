@@ -423,16 +423,100 @@
 
   /* ——— Okretni ukras: obruči iz originala (1:1), osovina i pahuljica sa imenom u sredini ——— */
 
-  var OKR = { s: 54 / 104, T: 8, rod: { r: 2.7, y0: -52.5, y1: 52.5 }, sfera: 39.5 };
-  // Ime (sa reljefom) mora da prođe kroz unutrašnji obruč kad se okreće: sve tačke u kugli poluprečnika OKR.sfera.
-  function okrFitName(name, p) {
-    var up = Math.max(0, p.izdignuto || 0), zt = OKR.T / 2 + up;
-    var lim = Math.sqrt(OKR.sfera * OKR.sfera - zt * zt) / OKR.s, rmax = 0;
-    name.forEach(function (path) { path.forEach(function (q) { rmax = Math.max(rmax, Math.hypot(q.X / SC - 120, q.Y / SC - 182)); }); });
-    if (rmax <= lim) return name;
-    var k = lim / rmax * 0.995;
-    return name.map(function (path) { return path.map(function (q) { return { X: Math.round((q.X / SC - 120) * k * SC + 120 * SC), Y: Math.round((q.Y / SC - 182) * k * SC + 182 * SC) }; }); });
+  /*
+   * Okretni ukras: tri obruča koji se posle štampe okreću oko osovine (print-in-place), pahuljica sa imenom u sredini.
+   * Obruči, rupe i osovina se prave ovde po merama (mm), pa rade za svaki prečnik:
+   * debljina T, obruč širine BAND, razmak GAP, osovina Ø2·ROD, rupa Ø2·HOLE (zazor 0,4 mm), zid iznad/ispod rupe (T/2 − HOLE).
+   */
+  var OKRP = { T: 4, BAND: 3.5, GAP: 1, ROD: 1, HOLE: 1.4, FLAT: 2.4, ZAZOR: 0.6, FLAKE: 69.5 };
+
+  /** Mreža sa spajanjem istih tačaka (da ivice budu zajedničke). */
+  function meshBuilder() {
+    var v = [], t = [], idx = {};
+    function P(x, y, z) {
+      var k = x.toFixed(4) + ',' + y.toFixed(4) + ',' + z.toFixed(4);
+      if (idx[k] === undefined) { idx[k] = v.length / 3; v.push(x, y, z); }
+      return idx[k];
+    }
+    function tri(a, b, c, want) { // want = očekivana normala (spolja); okrene trougao ako treba
+      if (want) {
+        var A = [v[a * 3], v[a * 3 + 1], v[a * 3 + 2]], B = [v[b * 3], v[b * 3 + 1], v[b * 3 + 2]], C = [v[c * 3], v[c * 3 + 1], v[c * 3 + 2]];
+        var ux = B[0] - A[0], uy = B[1] - A[1], uz = B[2] - A[2], wx = C[0] - A[0], wy = C[1] - A[1], wz = C[2] - A[2];
+        var n = [uy * wz - uz * wy, uz * wx - ux * wz, ux * wy - uy * wx];
+        if (n[0] * want[0] + n[1] * want[1] + n[2] * want[2] < 0) { t.push(a, c, b); return; }
+      }
+      t.push(a, b, c);
+    }
+    return { P: P, tri: tri, mesh: function () { return { v: v, t: t }; } };
   }
+
+  /**
+   * Jedan obruč (ri…ro, debljina T) sa rupama za osovinu gore i dole (x = 0, z = T/2).
+   * prolaz = rupa kroz ceo obruč (srednji i unutrašnji), inače slepa rupa dubine dub od unutrašnje ivice (spoljni obruč).
+   */
+  function ringMesh(ri, ro, T, prolaz, dub, mb) {
+    var a = OKRP.FLAT, hr = OKRP.HOLE / Math.cos(Math.PI / 24), zc = T / 2, NH = 24;
+    function loop(r, chord, ccw) {
+      var N = Math.max(120, Math.ceil(2 * Math.PI * r / 0.8)), pts = [], ya = Math.sqrt(r * r - a * a);
+      for (var k = 0; k < N; k++) {
+        var th = 2 * Math.PI * k / N, x = r * Math.cos(th), y = r * Math.sin(th);
+        if (chord && Math.abs(x) < a + 1e-6) continue;
+        pts.push([x, y]);
+      }
+      if (chord) {
+        // ubaci krajeve tetive (ravni deo gde ulazi rupa) na pravo mesto po uglu
+        [[a, ya], [-a, ya], [-a, -ya], [a, -ya]].forEach(function (q) { pts.push(q); });
+        pts.sort(function (p1, p2) { return Math.atan2(p1[1], p1[0]) - Math.atan2(p2[1], p2[0]); });
+      }
+      return ccw ? pts : pts.slice().reverse();
+    }
+    var outer = loop(ro, prolaz, true), inner = loop(ri, true, false);
+    // gornja i donja površina
+    var flat = [], hole = [];
+    outer.forEach(function (q) { flat.push(q[0], q[1]); });
+    hole.push(outer.length);
+    inner.forEach(function (q) { flat.push(q[0], q[1]); });
+    var all = outer.concat(inner), tr = earcut(flat, hole, 2);
+    for (var k = 0; k < tr.length; k += 3) {
+      var A = all[tr[k]], B = all[tr[k + 1]], C = all[tr[k + 2]];
+      mb.tri(mb.P(A[0], A[1], T), mb.P(B[0], B[1], T), mb.P(C[0], C[1], T), [0, 0, 1]);
+      mb.tri(mb.P(A[0], A[1], 0), mb.P(B[0], B[1], 0), mb.P(C[0], C[1], 0), [0, 0, -1]);
+    }
+    var circ = []; // rupa u ravni xz
+    for (var j = 0; j < NH; j++) circ.push([hr * Math.cos(2 * Math.PI * j / NH), zc + hr * Math.sin(2 * Math.PI * j / NH)]);
+    // zidovi; tetive (|x| = a, isto y) dobiju površ sa rupom
+    function walls(L) {
+      for (var i = 0; i < L.length; i++) {
+        var p = L[i], q = L[(i + 1) % L.length];
+        var dx = q[0] - p[0], dy = q[1] - p[1], want = [dy, -dx, 0];
+        var isChord = Math.abs(Math.abs(p[0]) - a) < 1e-6 && Math.abs(Math.abs(q[0]) - a) < 1e-6 && Math.abs(p[1] - q[1]) < 1e-9 && p[0] * q[0] < 0;
+        if (!isChord) {
+          var p0 = mb.P(p[0], p[1], 0), q0 = mb.P(q[0], q[1], 0), q1 = mb.P(q[0], q[1], T), p1 = mb.P(p[0], p[1], T);
+          mb.tri(p0, q0, q1, want); mb.tri(p0, q1, p1, want);
+          continue;
+        }
+        var y = p[1], rect = [[-a, 0], [a, 0], [a, T], [-a, T]], f2 = [];
+        rect.concat(circ).forEach(function (c) { f2.push(c[0], c[1]); });
+        var tt = earcut(f2, [4], 2), pts = rect.concat(circ);
+        for (var m = 0; m < tt.length; m += 3) {
+          mb.tri(mb.P(pts[tt[m]][0], y, pts[tt[m]][1]), mb.P(pts[tt[m + 1]][0], y, pts[tt[m + 1]][1]), mb.P(pts[tt[m + 2]][0], y, pts[tt[m + 2]][1]), want);
+        }
+      }
+    }
+    walls(outer); walls(inner);
+    // tuneli (gore sg = 1, dole sg = −1)
+    [1, -1].forEach(function (sg) {
+      var y1 = sg * Math.sqrt(ri * ri - a * a), y2 = prolaz ? sg * Math.sqrt(ro * ro - a * a) : sg * (ri + dub);
+      for (var j = 0; j < NH; j++) {
+        var c = circ[j], d = circ[(j + 1) % NH];
+        var want = [-(c[0] + d[0]) / 2, 0, zc - (c[1] + d[1]) / 2]; // ka osi rupe
+        var A = mb.P(c[0], y1, c[1]), B = mb.P(d[0], y1, d[1]), C = mb.P(d[0], y2, d[1]), D = mb.P(c[0], y2, c[1]);
+        mb.tri(A, B, C, want); mb.tri(A, C, D, want);
+        if (!prolaz) mb.tri(mb.P(0, y2, zc), D, C, [0, -sg, 0]); // dno slepe rupe
+      }
+    });
+  }
+
   /** Valjak duž ose y (osovina), centar x = 0, z = zc. */
   function rodMesh(r, y0, y1, zc, n) {
     var v = [], t = [];
@@ -440,14 +524,32 @@
     for (i = 0; i < n; i++) { a = 2 * Math.PI * i / n; v.push(r * Math.cos(a), y1, zc + r * Math.sin(a)); }
     for (i = 0; i < n; i++) {
       var j = (i + 1) % n;
-      t.push(i, j, n + j, i, n + j, n + i); // omotač (normala ka spolja)
-      if (i > 0 && i < n - 1) { t.push(0, i + 1, i); t.push(n, n + i, n + i + 1); } // poklopci
+      t.push(i, j, n + j, i, n + j, n + i);
+      if (i > 0 && i < n - 1) { t.push(0, i + 1, i); t.push(n, n + i, n + i + 1); }
     }
     return { v: v, t: t };
   }
-  function okrBuild(p, ctx, f, body, name, parts) {
-    if (!ctx.okretni) throw new Error('Obruči okretnog ukrasa se još učitavaju.');
-    var s = OKR.s, T = OKR.T, up = Math.max(0, p.izdignuto || 0), top = Math.max(0, Math.min(T, p.vrh || 0));
+
+  /** Mere okretnog ukrasa za prečnik P (mm) i reljef imena up (mm). */
+  function okrDims(P, up) {
+    var T = OKRP.T, step = OKRP.BAND + OKRP.GAP, R = [];
+    for (var k = 0; k < 3; k++) R.push({ ro: P / 2 - k * step, ri: P / 2 - k * step - OKRP.BAND });
+    var rIn = R[2].ri - OKRP.ZAZOR, zt = T / 2 + up;
+    return { T: T, R: R, rotor: Math.sqrt(rIn * rIn - zt * zt), rod: R[0].ri + 1.5, dub: 2 };
+  }
+
+  // Ime mora da stane u pahuljicu (i da prođe kroz unutrašnji obruč kad se okreće).
+  function okrFitName(name) {
+    var lim = OKRP.FLAKE, rmax = 0;
+    name.forEach(function (path) { path.forEach(function (q) { rmax = Math.max(rmax, Math.hypot(q.X / SC - 120, q.Y / SC - 182)); }); });
+    if (rmax <= lim) return name;
+    var k = lim / rmax * 0.995;
+    return name.map(function (path) { return path.map(function (q) { return { X: Math.round((q.X / SC - 120) * k * SC + 120 * SC), Y: Math.round((q.Y / SC - 182) * k * SC + 182 * SC) }; }); });
+  }
+
+  function okrBuild(p, ctx, f, body, name) {
+    var up = Math.max(0, p.izdignuto || 0), top = Math.max(0, Math.min(OKRP.T, p.vrh || 0));
+    var D = okrDims(p.precnik || 80, up), T = D.T, s = D.rotor / OKRP.FLAKE; // jedinice crteža pahuljice → mm
     var mm = function (polys) {
       return exPolys(grow(grow(polys.map(function (e) { return [toPath(e.outer)].concat(e.holes.map(toPath)); }).reduce(function (a, b) { return a.concat(b); }, []), 0.03), -0.03)).map(function (e) {
         var t = function (r) { return r.map(function (q) { return [(q[0] - 120) * s, (182 - q[1]) * s]; }); };
@@ -455,13 +557,23 @@
       });
     };
     var B = p.boja, N = p.bojaImena, same = !N || N.id === B.id;
-    var ob = ctx.okretni, ring = { v: Array.prototype.slice.call(ob.v), t: Array.prototype.slice.call(ob.t) };
-    var ringShape = [];
-    parts.forEach(function (q) { if (q.part === 'obruci') ringShape = mm(exPolys(fill(parsePath(q.d), q.rule))); });
-    var rodShape = [{ outer: [[-OKR.rod.r, OKR.rod.y0], [OKR.rod.r, OKR.rod.y0], [OKR.rod.r, OKR.rod.y1], [-OKR.rod.r, OKR.rod.y1]], holes: [] }];
+    var mb = meshBuilder();
+    D.R.forEach(function (r, k) { ringMesh(r.ri, r.ro, T, k > 0, D.dub, mb); });
+    // kukica: karika iznad spoljnog obruča (poseban deo, slajser ga spoji sa obručem)
+    var hc = D.R[0].ro + 3.5, ring2D = [], hook2D = [];
+    var annulus = function (cx, cy, r1, r2) {
+      var o = [], h = [];
+      for (var k = 0; k < 96; k++) { var th = 2 * Math.PI * k / 96; o.push([cx + r2 * Math.cos(th), cy + r2 * Math.sin(th)]); h.push([cx + r1 * Math.cos(-th), cy + r1 * Math.sin(-th)]); }
+      return { outer: o, holes: [h] };
+    };
+    D.R.forEach(function (r) { ring2D.push(annulus(0, 0, r.ri, r.ro)); });
+    hook2D.push(annulus(0, hc, 2.5, 4.5));
+    var hook = extrude(hook2D, 0, T);
+    var rodShape = [{ outer: [[-OKRP.ROD, -D.rod], [OKRP.ROD, -D.rod], [OKRP.ROD, D.rod], [-OKRP.ROD, D.rod]], holes: [] }];
     var delovi = [
-      { naziv: 'Obruči (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: ring, oblik: ringShape },
-      { naziv: 'Osovina (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: rodMesh(OKR.rod.r, OKR.rod.y0, OKR.rod.y1, T / 2, 40), oblik: rodShape },
+      { naziv: 'Obruči (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: mb.mesh(), oblik: ring2D },
+      { naziv: 'Kukica (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: hook, oblik: hook2D },
+      { naziv: 'Osovina (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: rodMesh(OKRP.ROD, -D.rod, D.rod, T / 2, 24), oblik: rodShape },
     ];
     if (same) {
       var all = mm(exPolys(union(body, name))), m1 = extrude(all, 0, T);
@@ -472,24 +584,17 @@
       delovi.push({ naziv: 'Pahuljica (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: extrude(base, 0, T), oblik: base });
       delovi.push({ naziv: 'Ime (' + N.naziv + ')', boja: N.id, bojaNaziv: N.naziv, hex: N.hex, mesh: extrude(nr, T, T + up), oblik: nr, promenaBoje: T });
     } else {
-      var bo = mm(exPolys(diff(body, name))), nm = mm(exPolys(name)), mb = extrude(bo, 0, T), zN = top ? T - top : 0;
-      if (zN > 0) extrude(nm, 0, zN, mb);
-      delovi.push({ naziv: 'Pahuljica (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: mb, oblik: bo });
+      var bo = mm(exPolys(diff(body, name))), nm = mm(exPolys(name)), mbo = extrude(bo, 0, T), zN = top ? T - top : 0;
+      if (zN > 0) extrude(nm, 0, zN, mbo);
+      delovi.push({ naziv: 'Pahuljica (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: mbo, oblik: bo });
       delovi.push({ naziv: 'Ime (' + N.naziv + ')', boja: N.id, bojaNaziv: N.naziv, hex: N.hex, mesh: extrude(nm, zN, T), oblik: nm });
     }
     var upozorenje = '';
-    var nBody = exPolys(body).length, nAll = exPolys(union(body, name)).length;
-    if (nAll > nBody) upozorenje = f.name + ': deo imena nije spojen sa pahuljicom.';
-    var bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity;
-    for (var i = 0; i < ring.v.length; i += 3) { bx0 = Math.min(bx0, ring.v[i]); bx1 = Math.max(bx1, ring.v[i]); by0 = Math.min(by0, ring.v[i + 1]); by1 = Math.max(by1, ring.v[i + 1]); }
-    return { naziv: 'Okretni ukras ' + f.name, ime: f.name, upozorenje: upozorenje, napomena: 'Okretni ukras: stalna veličina ' + Math.round(bx1 - bx0) + ' mm i debljina ' + T + ' mm (ne menja se sa merama), obruči se okreću posle štampe.',
-      sirina: bx1 - bx0, visina: by1 - by0, ox: (bx0 + bx1) / 2, oy: (by0 + by1) / 2, delovi: delovi };
-  }
-
-  /** Obruči okretnog ukrasa iz data/okretni-obruci.bin (Uint32 nv, nt; Float32 xyz; Uint16 trouglovi). */
-  function readOkretni(buf) {
-    var dv = new DataView(buf), nv = dv.getUint32(0, true), nt = dv.getUint32(4, true);
-    return { v: new Float32Array(buf.slice(8, 8 + nv * 12)), t: new Uint16Array(buf.slice(8 + nv * 12, 8 + nv * 12 + nt * 6)) };
+    if (exPolys(union(body, name)).length > exPolys(body).length) upozorenje = f.name + ': deo imena nije spojen sa pahuljicom.';
+    var W = 2 * D.R[0].ro, top2 = hc + 4.5;
+    return { naziv: 'Okretni ukras ' + f.name, ime: f.name, upozorenje: upozorenje,
+      napomena: 'Okretni ukras: debljina ' + T + ' mm' + (up ? ' + ' + up + ' mm ime' : '') + ' (osovina Ø' + 2 * OKRP.ROD + ' mm u rupama Ø' + 2 * OKRP.HOLE + ' mm). Štampati bez podrške; posle štampe obruče lagano zavrnuti rukom.',
+      sirina: W, visina: top2 + D.R[0].ro, ox: 0, oy: (top2 - D.R[0].ro) / 2, delovi: delovi };
   }
 
   /* ——— Modeli ——— */
@@ -507,7 +612,7 @@
     build: function (p, ctx) {
       var CX = 120, CY = 182;
       var M = ctx.motiv ? ctx.motiv(p.motiv) : null;
-      var OKR = !!(M && M.okretni);
+      var OKR = !!(M && M.okretni); // okretni ukras (vidi okrBuild)
       var parts = readGroup(ctx.defs, 'orn-' + p.motiv);
       if (!parts) throw new Error('Nema motiva: ' + p.motiv);
       var okrParts = null;
@@ -552,10 +657,10 @@
       // Ime nikad van spoljne ivice obruča (npr. rep slova J u fontu Great Vibes), isto kao na sajtu (orn-cn).
       name = inter(name, circle(CX, CY, 103.5));
 
-      if (OKR) name = okrFitName(name, p);
+      if (OKR) name = okrFitName(name);
       // Tačke na i/j, kvačice (č, ć, š, ž) i slova koja se ne dodiruju: spoje se mostićem sa najbližim delom.
       name = connectIslands(body, name, 2.4);
-      if (OKR) return okrBuild(p, ctx, f, body, name, okrParts);
+      if (OKR) return okrBuild(p, ctx, f, body, name);
 
       var s = p.precnik / 208;
       var mm = function (polys) {
@@ -656,6 +761,6 @@
     fontPathToSubs: fontPathToSubs,
     fill: fill, union: union, diff: diff, inter: inter, grow: grow, stroke: stroke, circle: circle,
     exPolys: exPolys, extrude: extrude, arrange: arrange,
-    readOkretni: readOkretni, to3MF: to3MF, toSTL: toSTL, zip: zip, previewSVG: previewSVG, stats: stats, readGroup: readGroup,
+    okrDims: okrDims, to3MF: to3MF, toSTL: toSTL, zip: zip, previewSVG: previewSVG, stats: stats, readGroup: readGroup,
   };
 });

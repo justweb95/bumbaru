@@ -55,13 +55,13 @@ Novo u 2.5
 – Slova za ime: kupac bira Okrugla (Pacifico), Debela (Lobster), Elegantna (Great Vibes) ili Četkica (Kaushan Script).
   Pregled uživo, korpa („Slova: …”), porudžbina i generator koriste izabrana slova. Četkica nema ćirilicu:
   ime ćirilicom tada ide okruglim slovima (i na sajtu i u 3MF-u). Svi fontovi su SIL OFL (slobodni za prodaju).
-– Ime kao reljef (podrazumevano 1,2 mm iznad ukrasa): ukras se štampa ceo u boji ukrasa, a ime u drugoj boji
+– Ime kao reljef (podrazumevano 0,6 mm iznad ukrasa): ukras se štampa ceo u boji ukrasa, a ime u drugoj boji
   samo u reljefu, pa je potrebna samo JEDNA promena boje (na visini vrha ukrasa; bez AMS-a: pauza na tom sloju).
   Generator → Mere: „Ime kao reljef” (0 = ravno ime u ukrasu, kao ranije).
-– Okretna pahulja: tri obruča iz originalnog dizajna (1:1, sa rupama za osovinu i razmakom od 1 mm) se štampaju
-  odvojeno i posle štampe se okreću oko osovine; u sredini je pahuljica sa imenom (umesto pločice).
-  Stalna veličina 108 mm i debljina 8 mm (mere iz generatora ne važe za ovaj ukras, da bi se obruči okretali).
-  Posle štampe obruče lagano zavrnite rukom da se odvoje. Probni fajl: okretni-test-Mila.3mf u paketu.
+– Okretna pahulja: tri obruča (širine 3,5 mm, razmak 1 mm) se štampaju odvojeno i posle štampe se okreću oko
+  osovine Ø2 mm (rupe Ø2,8 mm); u sredini je pahuljica sa imenom. Debljina 4 mm + ime, prečnik po merama
+  iz generatora (80 mm kao ostali). Štampati BEZ podrške; posle štampe obruče lagano zavrnite rukom.
+  Probni fajl: okretni-test-Uros.3mf u paketu.
 – Pregled uživo: ime ide tačno od jedne do druge strane obruča (računa se po stvarnom crtežu prvog i poslednjeg
   slova, ne po širini slova), pa kraj imena više ne visi u vazduhu. Ništa ne izlazi van obruča (ni rep slova J).
 – Cene po kalkulatoru: u proizvodu → Kalkulator cene je štiklirano „Cena prati kalkulator”. Posle „Ažuriraj” cena

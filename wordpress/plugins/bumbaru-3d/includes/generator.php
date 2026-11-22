@@ -20,7 +20,7 @@ function bumbaru_gen_defaults() {
 	$d = array(
 		'precnik'   => 80,  // spoljni prečnik obruča, mm
 		'debljina'  => 3,   // debljina ukrasa, mm
-		'izdignuto' => 1.2, // ime kao reljef iznad ukrasa, mm (druga boja samo u reljefu = jedna promena boje)
+		'izdignuto' => 0.6, // ime kao reljef iznad ukrasa, mm (druga boja samo u reljefu = jedna promena boje)
 		'vrh'       => 0,   // druga boja imena samo u gornjih … mm (0 = cela debljina)
 		'ploca'     => 250, // širina ploče štampača, mm (raspored više ukrasa)
 	);
@@ -263,7 +263,6 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 		}, bumbaru_fontovi() ) ),
 		'fontovi'  => bumbaru_fontovi(),
 		'defs'     => BUMBARU3D_URL . 'data/ornament-defs.svg?v=' . $v,
-		'okretni'  => BUMBARU3D_URL . 'data/okretni-obruci.bin?v=' . $v,
 		'colors'   => $colors,
 		'motivi'   => bumbaru_motivi(),
 		'models'   => bumbaru_gen_models(),

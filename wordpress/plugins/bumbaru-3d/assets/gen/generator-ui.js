@@ -5,7 +5,7 @@
   var root = document.querySelector('[data-gen]');
   if (!C || !G || !root) return;
   var $ = function (s) { return root.querySelector(s); };
-  var font = null, defs = null, okretni = null, items = [], src = null, timer = 0;
+  var font = null, defs = null, items = [], src = null, timer = 0;
 
   var colors = {};
   C.colors.forEach(function (c) { colors[c.id] = c; });
@@ -210,7 +210,7 @@
       out.push(model.build({
         motiv: r.motiv, font: r.font || 'pacifico', ime: r.ime, precnik: d.precnik, debljina: d.debljina, izdignuto: d.izdignuto, vrh: d.vrh,
         boja: color(r.boja), bojaImena: bi,
-      }, { defs: defs, okretni: okretni, font: font.pacifico, fonts: font, fitName: window.BumbaruOrnament.fitName, motiv: window.BumbaruOrnament.motiv }));
+      }, { defs: defs, font: font.pacifico, fonts: font, fitName: window.BumbaruOrnament.fitName, motiv: window.BumbaruOrnament.motiv }));
     });
     return G.arrange(out, 6, d.ploca);
   }
@@ -291,9 +291,7 @@
     return new Promise(function (ok, no) { window.opentype.load(FURL[id], function (e, f) { if (e) no(e); else ok(f); }); });
   }).concat([
     fetch(C.defs, { credentials: 'same-origin' }).then(function (r) { return r.text(); }),
-    C.okretni ? fetch(C.okretni, { credentials: 'same-origin' }).then(function (x) { return x.arrayBuffer(); }).then(G.readOkretni) : null,
   ])).then(function (r) {
-    okretni = r[fids.length + 1];
     font = {}; fids.forEach(function (id, i) { font[id] = r[i]; }); defs = r[fids.length];
     var sel = C.sel || {};
     if (sel.order && loadItem(sel.order, sel.item)) {
