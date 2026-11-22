@@ -1,0 +1,79 @@
+BUMBARU – NOVA VERZIJA SAJTA (tema 2.0.0, plugin Bumbaru 3D 2.0.0)
+====================================================================
+
+U paketu
+--------
+1. bumbaru-tema.zip              – tema „Bumbaru” (novi dizajn)
+2. bumbaru-3d-plugin.zip         – plugin „Bumbaru 3D” (konfiguratori, cene, akcija, profil, uvoz)
+3. bumbaru-3d-fotografije.zip    – dodatak sa fotografijama za uvoz (54 MB)
+4. Bumbaru_proizvodi_i_cene.csv  – svih 62 proizvoda sa šiframa i cenama
+
+Postavljanje (preko postojećeg sajta)
+-------------------------------------
+Pre svega napravite rezervnu kopiju sajta (baza + fajlovi).
+
+1. Izgled → Teme → Dodaj → Otpremi temu → bumbaru-tema.zip → „Zameni postojeću”.
+2. Dodaci → Dodaj → Otpremi dodatak → bumbaru-3d-plugin.zip → „Zameni postojeći”.
+3. Dodaci → Dodaj → Otpremi dodatak → bumbaru-3d-fotografije.zip → Aktiviraj.
+   Ako hosting ne dozvoli fajl od 54 MB: raspakujte zip i preko FTP-a
+   (ili File Manager-a) stavite folder „bumbaru-3d-fotografije” u wp-content/plugins/,
+   pa ga aktivirajte u Dodacima.
+4. Bumbaru 3D → Prodavnica i uvoz → „Uvezi proizvode”.
+   – Postojeći proizvodi se osvežavaju (ne prave se duplikati).
+   – Cene koje ste već upisali u WooCommerce OSTAJU, nova cena se upisuje
+     samo gde je polje prazno.
+   – Novi proizvodi: slavske modlice (setovi po slavama, pojedinačne, „sastavite svoj set”),
+     dom i kuhinja (vaza, podmetači Monstera, klipovi), novi privesci sa imenom.
+5. Posle uvoza dodatak „Bumbaru 3D – fotografije” možete deaktivirati i obrisati
+   (fotografije su već u Medijima).
+6. Podešavanja → Stalne veze → samo kliknite „Sačuvaj” (osveži srpske adrese).
+
+Šta je novo
+-----------
+– Novi dizajn početne, kataloga, kategorija, strane proizvoda, pretrage i 404 strane.
+– Meni „Katalog” koji se otvara sa slikama kategorija, „Nedavno ste gledali”.
+– Strana proizvoda: privesci sa imenom (5 stilova slova, pregled uživo), izbor motiva
+  i boja sa popustom za više komada, slavski set u krug oko medaljona, crtež u izabranim
+  bojama, komplet „Uz ovo često uzimaju”, popusti za firme, traka „Poruči” na telefonu.
+– Dugmad: „Dodaj u korpu”, „Poruči odmah, plaćanje pouzećem” i „Poruči preko Messengera”.
+– AKCIJA: strana /akcija/ i odbrojavanje. Uključena je „Novogodišnja akcija −10%” na
+  kategoriju Nova godina do 31. 12. 2026.
+  Isključuje se ili menja u: Bumbaru 3D → Akcija.
+– Kviz „Nađi poklon” (/nadji-poklon/): 4 pitanja i predlozi iz kataloga.
+– MOJ NALOG (/moj-nalog/), ikonica profila u zaglavlju:
+  prijava, registracija, zaboravljena lozinka, porudžbine sa pregledom, adrese,
+  podaci naloga i odjava – sve na srpskom, latinicom, u Bumbaru dizajnu.
+  Kupovina bez naloga ostaje; na plaćanju kupac može da štiklira „Napravite nalog”.
+– Sve adrese na srpskom: /katalog/, /proizvod/, /korpa/, /placanje/,
+  /placanje/porudzbina-primljena/, /moj-nalog/porudzbine/, /moj-nalog/adrese/,
+  /moj-nalog/detalji-naloga/, /moj-nalog/odjava/, /moj-nalog/zaboravljena-lozinka/,
+  /strana/2/ … (nema više category, cart, my-account, page).
+  Stare engleske adrese (/cart/, /checkout/, /my-account/…, npr. iz starih emailova)
+  same preusmeravaju na nove srpske.
+
+Odluke kod razlika između starog i novog koda
+---------------------------------------------
+– Tekstovi, SEO naslovi i opisi i Post Express (besplatno od 2.000 din) ostali su sa
+  postojećeg WordPress sajta; nove proizvode sam dopisao u istom stilu (dužine po SEO auditu).
+– Svetle, vesele boje sajta su ostale. Ako želite boje kao na novom kodu (topla siva i krem):
+  Bumbaru 3D → Podešavanja sajta → Boje sajta → „Kao novi sajt”.
+– Mini jelka i jelka za sklapanje zadržale su postojeći konfigurator sa zvezdicom.
+– Spiralna jelka sa zvezdom ima šifru NG-16.
+
+Testirano na probnom WordPress-u (WordPress 6.8, WooCommerce 10.3), u pravom pregledaču,
+na računaru i telefonu:
+– uvoz svih 62 proizvoda; svaka strana sajta (početna, katalog, sve kategorije, svih
+  60 objavljenih proizvoda, akcija, kviz, pretraga, po meri, pomoć, 404) bez PHP grešaka
+  i bez grešaka u skriptama;
+– pregled uživo: ukras, porodični set, privezak sa imenom, jelka sa zvezdicom, slavski set,
+  izbor boja (klipovi) i motiva (modlice), komplet i kalkulator za firme;
+– dodavanje u korpu (cena se računa na serveru, sa akcijom −10% i popustom za količinu),
+  korpa, plaćanje pouzećem i strana „porudžbina primljena”;
+– Moj nalog: registracija, prijava, poslednje porudžbine, pregled porudžbine, adrese,
+  podaci naloga, odjava i zaboravljena lozinka; kućica „Napravite nalog” na plaćanju;
+– kviz (predlozi po odgovorima), pretraga dok kucate, filter ?filter=sv-nikola.
+
+Promene posle prvog paketa: Messenger dugme na proizvodu je sada drugo (svetlo) dugme,
+tekst „O proizvodu” je u pasusima, privezak ne počinje belim slovima na beloj osnovi,
+u korpi piše broj komada za izbor boja/motiva, lepši pozdrav u nalogu, prevod jačine
+lozinke, preusmerenje starih engleskih adresa, „Uncategorized” je sada „Ostalo”.

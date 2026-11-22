@@ -1,0 +1,290 @@
+[
+ {
+  "slug": "nova-godina",
+  "label": "Nova godina",
+  "title": "Novogodišnji ukrasi, dekoracija i pokloni",
+  "text": "Ukrasi za jelku sa imenom, porodični set, privesci i dekoracija za praznični sto. Porudžbine sa imenom primamo do 16. 12, a ostale do 20. 12.",
+  "seoTitle": "Novogodišnji ukrasi, dekoracija i pokloni | Bumbaru",
+  "meta": "Ukrasi za jelku sa imenom, mini i spiralne jelke, patuljak sa LED svećicom, prstenovi za salvete i privesci. Pouzećem, besplatna dostava od 2.000 din.",
+  "bg": "bg/hero-nova-godina.webp",
+  "bgPos": "right top",
+  "icon": "M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z",
+  "filters": [
+   "ime",
+   "privesci",
+   "sto",
+   "jelka"
+  ],
+  "about": {
+   "h2": "Ukrasi za jelku sa imenom, za celu porodicu",
+   "p": [
+    "Svaki ukras je kugla sa imenom ispisanim preko obruča, od PLA plastike, u jednom komadu. Birate jedan od četiri motiva i boju, a ime pišete latinicom ili ćirilicom, do 12 slova.",
+    "Za 4 ili 5 imena uzmite porodični set ukrasa sa imenima: svi ukrasi u istom motivu, u jednoj kutiji. Izrada traje 3–5 radnih dana, plaćate pouzećem, a porudžbine sa imenom primamo do 16. 12."
+   ]
+  },
+  "faq": [
+   {
+    "q": "Mogu li ime ćirilicom?",
+    "a": "Možete. Štampamo tačno kako upišete, latinicom ili ćirilicom."
+   },
+   {
+    "q": "Stiže li do Nove godine?",
+    "a": "Stiže ako poručite do 16. 12. Izrada traje 3–5 radnih dana, a kurir nosi 1–2 radna dana."
+   },
+   {
+    "q": "Mogu li da pošaljem poklon na drugu adresu?",
+    "a": "Možete, ali paket plaća onaj ko ga prima, jer je plaćanje pouzećem. Poruku za karticu u paketu upišite u napomenu, do 120 znakova."
+   }
+  ],
+  "order": 1,
+  "menuLabel": "Novogodišnji katalog",
+  "focus": "novogodišnji ukrasi"
+ },
+ {
+  "slug": "slavske-modlice",
+  "label": "Slavske modlice",
+  "title": "Slavske modlice za slavski kolač i česnicu",
+  "text": "Modlice sa pečatom za slavski kolač: medaljoni svetaca, krst, pečat ИС ХС НИ КА, kukuruz, žito, grožđe i još, plus božićne za česnicu. U tri veličine, kao gotov set za vašu slavu ili set koji složite sami.",
+  "seoTitle": "Slavske modlice za slavski kolač i česnicu | Bumbaru",
+  "meta": "Slavske modlice sa pečatom: Sveti Nikola, Georgije, Arhangel Mihailo, Jovan, Dimitrije, Sava i božićne. Setovi po slavama, pouzećem.",
+  "bg": "bg/slavske-modlice-foto.webp",
+  "bgPos": "72% center",
+  "icon": "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v10M8.5 10.5h7",
+  "filters": [
+   "sv-nikola",
+   "sv-georgije",
+   "arh-mihailo",
+   "sv-jovan",
+   "sv-dimitrije",
+   "sv-sava",
+   "bozic"
+  ],
+  "about": {
+   "h2": "Slavske modlice sa pečatom: kako rade",
+   "p": [
+    "Svaka modlica ima dva dela: sekač iseče oblik iz razvaljanog testa, a pečat se spusti u njega i utisne crtež. Ploča pečata zaustavi pritisak, pa je otisak svuda iste dubine. Polumesec na poleđini služi da pečat lako podignete sa testa.",
+    "Slavski set ima medaljon sveca i 8 modlica po izboru i jeftiniji je nego modlice pojedinačno. Ako želite više komada, složite svoj set: kupite 5, šesta je gratis, a popust raste sa brojem modlica. Za Božić su tu Rođenje Hristovo, Vitlejemska zvezda, badnjak i „Христос се роди”."
+   ]
+  },
+  "faq": [
+   {
+    "q": "Koju modlicu da uzmem za svoju slavu?",
+    "a": "Kliknite filter sa imenom svoje slave: tu su set, medaljon sveca i sve modlice koje idu uz njega. Ako vaše slave nema na spisku, pišite nam u Messenger-u."
+   },
+   {
+    "q": "Šta je u slavskom setu?",
+    "a": "Medaljon sveca i 8 modlica koje birate sami, može i dve iste: krst, golub, dva pečata ИС ХС НИ КА, „Срећна слава”, knjiga, kukuruz, žito, cvet, grožđe, bure i pletenica. Medaljon je uvek veličinu veći od ostalih modlica."
+   },
+   {
+    "q": "Koje veličine imate?",
+    "a": "Modlice i setove pravimo u tri veličine: velikoj, srednjoj i maloj. Medaljon sveca je Ø 9,5 ili 7,6 cm (manji ne pravimo, jer se lik ne bi video), a mere svake modlice su na njenoj strani."
+   },
+   {
+    "q": "Mogu li u mašinu za sudove?",
+    "a": "Ne. Perite ih ručno u mlakoj vodi, jer PLA plastika omekšava na toploti."
+   }
+  ],
+  "menuLabel": "Slavske modlice",
+  "focus": "slavske modlice",
+  "order": 2
+ },
+ {
+  "slug": "radionica",
+  "label": "Radionica",
+  "title": "Držači za Parkside baterije i aku alat",
+  "text": "Zidni držači za Parkside X20 V, držači za baterije drugih brendova, police za aku alat i distanceri za montažu kuhinje.",
+  "seoTitle": "Držači za Parkside baterije i aku alat | Bumbaru",
+  "meta": "Zidni držači za Parkside X20 V baterije i alat, držači za Einhell, Bosch i Makita baterije i distanceri za kuhinju. PETG, besplatna dostava od 2.000 din.",
+  "bg": "https://images.unsplash.com/photo-1671040690726-b78261eff126?ixlib=rb-4.1.0&auto=format&fit=crop&w=1800&q=70",
+  "icon": "M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z",
+  "about": {
+   "h2": "Držači za Parkside X20 V i alat drugih brendova",
+   "p": [
+    "Set držača za Parkside X20 V ima četiri komada: dva za alat i dva za baterije. Kače se na zid, dasku ili ploču sa rupama, pa alat visi sa baterijom, a rezervne baterije stoje pored njega. Štampamo ih od PETG plastike, koja ne puca od udaraca i podnosi toplotu u garaži.",
+    "Za Einhell, Bosch, Makita i drugi alat pravimo držač po meri: pošaljite fotografiju baterije u Messenger-u."
+   ]
+  },
+  "faq": [
+   {
+    "q": "Imam Einhell, Bosch ili Makita alat.",
+    "a": "Pošaljite nam fotografiju baterije u Messenger-u, pa javljamo cenu i rok."
+   },
+   {
+    "q": "Imate li distancere drugih debljina?",
+    "a": "Pravimo po meri; pošaljite upit."
+   },
+   {
+    "q": "Kada stiže?",
+    "a": "Proizvode na stanju šaljemo odmah po potvrdi porudžbine, a kurir nosi 1–2 radna dana."
+   }
+  ],
+  "order": 3,
+  "menuLabel": "Radionica",
+  "filters": [],
+  "focus": "držač za parkside bateriju"
+ },
+ {
+  "slug": "auto-i-moto",
+  "label": "Auto i moto",
+  "title": "Držač tablice, nosač nalepnice i oprema za motor",
+  "text": "Držač tablice bez okvira, nosač registracione nalepnice, nastavak za podmazivanje lanca i sitnice za auto i garažu.",
+  "seoTitle": "Držač tablice bez okvira, nosač nalepnice | Bumbaru",
+  "meta": "Držač tablice bez okvira, nosač registracione nalepnice za motor i nastavak za podmazivanje lanca. 3D štampa, pouzećem, besplatna dostava od 2.000 din.",
+  "bg": "https://images.unsplash.com/photo-1590523815031-8a4c011eae39?ixlib=rb-4.1.0&auto=format&fit=crop&w=1800&q=70",
+  "icon": "M5 16h14v-4l-2-5H7l-2 5zM8 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM16 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
+  "about": {
+   "h2": "Držač tablice bez okvira: kako se postavlja",
+   "p": [
+    "Držač tablice bez okvira dolazi u paru. Oba držača idu na postojeće rupe za tablicu, bez bušenja, a tablica se utisne u njih i drži čvrsto. Rama oko tablice nema, pa se vide sva slova i brojevi. Odgovara za standardnu tablicu 520 × 110 mm.",
+    "Za motor, skuter i kvad imamo nosač registracione nalepnice, okrugli ili pravougaoni, u crnoj ili beloj boji."
+   ]
+  },
+  "faq": [
+   {
+    "q": "Vidi li se cela tablica?",
+    "a": "Vidi. Držač ne prekriva nijedno slovo ni broj."
+   },
+   {
+    "q": "Odgovara li za moj auto?",
+    "a": "Odgovara za standardnu tablicu 520 × 110 mm sa dve rupe za šrafove. Ako niste sigurni, pošaljite fotografiju mesta za tablicu."
+   },
+   {
+    "q": "Može li za motor?",
+    "a": "Držač tablice je za auto. Za motor, skuter i kvad imamo nosač registracione nalepnice."
+   }
+  ],
+  "order": 4,
+  "menuLabel": "Auto i moto",
+  "filters": [],
+  "focus": "držač tablice bez okvira"
+ },
+ {
+  "slug": "pokloni-sa-imenom",
+  "label": "Pokloni sa imenom",
+  "title": "Personalizovani pokloni sa imenom",
+  "text": "Ukrasi, porodični set i privesci sa imenima, latinicom ili ćirilicom. Izrada 3–5 radnih dana, a pre štampe proveravamo svako ime.",
+  "seoTitle": "Personalizovani pokloni sa imenom | Bumbaru",
+  "meta": "Personalizovani pokloni sa imenom, latinicom ili ćirilicom: ukrasi za jelku, porodični set i privesci. Izrada 3–5 dana, besplatna dostava od 2.000 din.",
+  "bg": "bg/kraft.webp",
+  "icon": "M3 9h18v12H3zM12 9v12M3 13h18M12 9c-2-4-6-4-6-1.5S10 9 12 9c2 0 6 0 6-1.5S14 5 12 9z",
+  "about": {
+   "h2": "Personalizovani pokloni sa imenom, latinicom ili ćirilicom",
+   "p": [
+    "Svaki poklon sa imenom štampamo posebno, tačno kako upišete ime, latinicom ili ćirilicom. Pre štampe proveravamo svako ime, a ako nešto nije jasno, javljamo vam se.",
+    "Ukras za jelku sa imenom je mali poklon za dete, kumče ili par, a porodični set ima 4 ili 5 imena u jednoj kutiji. Porodični privezak nosi 2–4 imena i ide uz ključeve cele godine. Izrada traje 3–5 radnih dana, a plaćate pouzećem."
+   ]
+  },
+  "faq": [
+   {
+    "q": "Mogu li ime ćirilicom?",
+    "a": "Možete. Štampamo tačno kako upišete, latinicom ili ćirilicom."
+   },
+   {
+    "q": "Koliko traje izrada?",
+    "a": "3–5 radnih dana, a kurir nosi 1–2 radna dana. Za Novu godinu porudžbine sa imenom primamo do 16. 12."
+   },
+   {
+    "q": "Mogu li da vratim poklon sa imenom?",
+    "a": "Ne zbog predomišljanja, jer ga pravimo samo za vas. Ako stigne oštećen ili sa našom greškom, šaljemo novi bez troška."
+   }
+  ],
+  "order": 5,
+  "menuLabel": "Pokloni sa imenom",
+  "filters": [],
+  "focus": "personalizovani pokloni"
+ },
+ {
+  "slug": "privesci",
+  "label": "Privesci",
+  "title": "Privesci za ključeve sa imenom i novogodišnji privesci",
+  "text": "Novogodišnji privesci, privezak sa imenom, pikselasti privezak za decu i privezak koji se rasklopi u stalak za telefon. Mali poklon koji se nosi svaki dan.",
+  "seoTitle": "Privesci za ključeve sa imenom | Bumbaru",
+  "meta": "Privezak za ključeve sa imenom, pikselasti privezak za decu, privezak i stalak za telefon, Deda Mraz i irvas. Pouzećem, besplatna dostava od 2.000 din.",
+  "bg": "bg/kraft.webp",
+  "icon": "M8 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM11.5 11.5L20 20M16 16l2.5-2.5M18.5 18.5l2.5-2.5",
+  "about": {
+   "h2": "Privesci sa imenom, za decu i odrasle",
+   "p": [
+    "Privezak je najmanji poklon koji se nosi svaki dan: na ključevima, rancu ili torbi. Ime štampamo latinicom ili ćirilicom, u dve boje.",
+    "Za decu imamo pikselasti privezak sa slovima od kockica, a za celu porodicu porodični privezak sa 2–4 imena. Za praznike tu su novogodišnji privesci Deda Mraz i irvas, spakovani kao mali poklon."
+   ]
+  },
+  "faq": [
+   {
+    "q": "Mogu li ime ćirilicom?",
+    "a": "Možete. Štampamo tačno kako upišete, latinicom ili ćirilicom."
+   },
+   {
+    "q": "Da li je privezak igračka?",
+    "a": "Nije. Sitni delovi nisu za decu mlađu od 3 godine."
+   },
+   {
+    "q": "Mogu li da vratim privezak sa imenom?",
+    "a": "Ne zbog predomišljanja, jer ga pravimo samo za vas. Ako stigne oštećen ili sa našom greškom, šaljemo novi bez troška."
+   }
+  ],
+  "order": 6,
+  "menuLabel": "Privesci",
+  "filters": [],
+  "focus": "privezak za ključeve"
+ },
+ {
+  "slug": "dom-i-kuhinja",
+  "label": "Dom i kuhinja",
+  "title": "Dekoracija za dom i sitnice za kuhinju",
+  "text": "Rebrasta vaza sa tacnom i svećnjakom, podmetači u obliku monstere i klipovi za kesice u bojama koje birate sami.",
+  "seoTitle": "Dekoracija za dom i sitnice za kuhinju | Bumbaru",
+  "meta": "Rebrasta vaza sa tacnom i svećnjakom, podmetači za čaše u obliku monstere i klipovi za kesice. 3D štampa, pouzećem, besplatna dostava od 2.000 din.",
+  "bg": "bg/dom.webp",
+  "bgPos": "center 60%",
+  "icon": "M3 11l9-7 9 7M5 9.5V20h14V9.5M10 20v-6h4v6",
+  "filters": [
+   "kuhinja",
+   "dekoracija"
+  ],
+  "about": {
+   "h2": "Sitnice koje se koriste svaki dan",
+   "p": [
+    "Ovde su stvari koje stoje na polici, stolu i kuhinjskom pultu: vaza sa tacnom i svećnjakom koja izgleda kao keramika, podmetači koji se slože u saksiju kao biljka i klipovi koji drže kesu zatvorenom.",
+    "Sve štampamo od PLA plastike, u bojama koje imamo na stanju. Kod klipova birate više boja odjednom, a što više komada uzmete, veći je popust."
+   ]
+  },
+  "faq": [
+   {
+    "q": "Da li proizvodi dodiruju hranu?",
+    "a": "Ne. Klipovi se stavljaju spolja na kesu, a podmetači su za šolje i čaše."
+   },
+   {
+    "q": "Mogu li da biram boju?",
+    "a": "Možete, od boja koje trenutno imamo. Boju birate na strani proizvoda pre dodavanja u korpu."
+   },
+   {
+    "q": "Mogu li nešto što nije u katalogu?",
+    "a": "Pošaljite nam ideju, meru ili fotografiju na strani 3D štampa po meri, pa vam javljamo cenu."
+   }
+  ],
+  "menuLabel": "Dom i kuhinja",
+  "focus": "dekoracija za dom",
+  "order": 7
+ },
+ {
+  "slug": "igracke-za-decu",
+  "label": "Igračke za decu",
+  "title": "Igračke za decu",
+  "text": "Prve igračke od 3D štampe stižu uskoro. Igračke stavljamo u prodaju tek kad prođu proveru bezbednosti.",
+  "seoTitle": "Igračke za decu, uskoro | Bumbaru",
+  "meta": "Igračke od 3D štampe stižu uskoro. Pišite nam na Messenger-u šta vaše dete voli, pa vam javljamo kad krenu.",
+  "bg": "bg/kraft.webp",
+  "icon": "M4 14h7v7H4zM13 14h7v7h-7zM8.5 4.5h7v7h-7z",
+  "soon": true,
+  "about": {
+   "h2": "",
+   "p": []
+  },
+  "faq": [],
+  "order": 8,
+  "menuLabel": "Igračke za decu",
+  "filters": [],
+  "focus": ""
+ }
+]

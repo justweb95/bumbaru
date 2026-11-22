@@ -1,0 +1,312 @@
+/* Bumbaru tema: dodaci za prodavnicu (korpa u zaglavlju, akcija, korpa, plaćanje, obaveštenja)
+   i šareni donji deo strane proizvoda. Koristi iste boje i oblike kao main.css. */
+
+/* ——— Zaglavlje: broj u korpi ——— */
+.korpa-n { animation: bu-bump .45s cubic-bezier(.2,.9,.3,1.4); }
+@keyframes bu-bump { from { transform: scale(.4); } to { transform: none; } }
+
+/* ——— Akcija: okrugli bedž „−10%” i precrtana cena ——— */
+.sale-badge { position: absolute; right: 12px; top: 12px; z-index: 2; width: 60px; height: 60px; border-radius: 50%; background: var(--berry); color: #FFF6EE; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; transform: rotate(-10deg); box-shadow: 0 2px 0 rgba(49,32,24,.15), 0 10px 20px rgba(154,52,32,.32); pointer-events: none; }
+.sale-badge::before { content: ''; position: absolute; inset: 4px; border: 2px dashed rgba(255,240,224,.9); border-radius: 50%; }
+.sale-badge span { position: relative; }
+.card:hover .sale-badge { animation: bu-wiggle .6s ease-in-out; }
+@keyframes bu-wiggle { 0%, 100% { transform: rotate(-10deg); } 30% { transform: rotate(6deg) scale(1.08); } 60% { transform: rotate(-14deg); } }
+.sale-badge-lg { width: 86px; height: 86px; font-size: 23px; right: 18px; top: 18px; z-index: 3; }
+.sale-badge-lg::before { inset: 6px; border-width: 2.5px; }
+.sale-badge-lg.at-bottom { top: auto; right: auto; left: 18px; bottom: 18px; transform: rotate(8deg); }
+.price .od { font-weight: 800; }
+.price .was { color: var(--ink-muted); font-weight: 600; font-size: .82em; text-decoration-thickness: 2px; margin: 0 2px; }
+.price.on-sale .now { color: var(--berry); }
+.badge-sale { background: var(--berry); color: #FFF6EE; }
+@media (max-width: 760px) { .sale-badge { width: 50px; height: 50px; font-size: 14px; right: 8px; top: 8px; } .sale-badge-lg { width: 70px; height: 70px; font-size: 19px; } }
+
+/* ——— Kratko obaveštenje „Dodato u korpu” ——— */
+.bu-toast { position: fixed; right: 20px; bottom: 20px; z-index: 80; display: flex; align-items: center; gap: 6px 14px; flex-wrap: wrap; padding: 14px 16px 14px 20px; max-width: min(440px, calc(100vw - 32px)); background: var(--surface-paper); border: 2px solid var(--ink); border-radius: 18px; box-shadow: var(--shadow); animation: pop .25s var(--ease); transition: opacity .3s ease, transform .3s ease; }
+.bu-toast strong { display: block; }
+.bu-toast span { flex: 1 1 160px; color: var(--ink-muted); font-size: 14px; line-height: 20px; }
+.bu-toast.out { opacity: 0; transform: translateY(10px); }
+.quick.busy { opacity: .6; pointer-events: none; }
+
+/* ——— Obaveštenja WooCommerce-a ——— */
+.bu-notices:empty { display: none; }
+.bu-notices { padding-bottom: 8px; }
+.woocommerce-message, .woocommerce-info, .woocommerce-error, .woocommerce .woocommerce-message, .woocommerce .woocommerce-info, .woocommerce .woocommerce-error { list-style: none; position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 0 20px; padding: 14px 18px 14px 56px; border: 0; border-radius: var(--r-md); background: var(--leaf-soft); color: var(--ink); font-weight: 600; font-size: 15px; line-height: 22px; outline: 0; }
+.woocommerce-info, .woocommerce .woocommerce-info { background: var(--wing); }
+.woocommerce-error, .woocommerce .woocommerce-error { background: var(--berry-soft); flex-direction: column; align-items: flex-start; }
+.woocommerce-message::before, .woocommerce-info::before, .woocommerce-error::before, .woocommerce .woocommerce-message::before, .woocommerce .woocommerce-info::before, .woocommerce .woocommerce-error::before { content: '✓'; position: absolute; left: 16px; top: 50%; width: 26px; height: 26px; margin-top: -13px; border-radius: 50%; background: var(--leaf); color: #fff; font-family: var(--font); font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.woocommerce-info::before, .woocommerce .woocommerce-info::before { content: 'i'; background: var(--wing-ink); }
+.woocommerce-error::before, .woocommerce .woocommerce-error::before { content: '!'; background: var(--berry); top: 14px; margin-top: 0; }
+.woocommerce-message .button, .woocommerce-info .button { order: 2; margin-left: auto; }
+.woocommerce-message a:not(.button), .woocommerce-error a, .woocommerce-info a:not(.button) { color: var(--ink); font-weight: 700; }
+
+/* ——— Dugmad i polja u korpi i na plaćanju (isti izgled kao dugmad teme) ——— */
+.woocommerce a.button, .woocommerce button.button, .woocommerce input.button, .woocommerce #respond input#submit, .woocommerce-message .button, .woocommerce .wc-forward, #place_order, .woocommerce a.button.alt, .woocommerce button.button.alt { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 22px; border: 2px solid var(--ink); border-radius: var(--r-pill); background: var(--surface-paper); color: var(--ink); font-family: var(--font); font-size: 15px; font-weight: 700; line-height: 1.2; text-decoration: none; cursor: pointer; transition: background-color .2s ease, transform .2s ease; white-space: nowrap; box-shadow: none; text-shadow: none; }
+.woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover { background: var(--surface-raised); color: var(--ink); }
+.woocommerce a.button.alt, .woocommerce button.button.alt, #place_order, .woocommerce .checkout-button, .woocommerce-message .button { background: var(--honey); color: var(--ink); }
+.woocommerce a.button.alt:hover, .woocommerce button.button.alt:hover, #place_order:hover, .woocommerce .checkout-button:hover { background: var(--honey-hover); color: var(--ink); }
+.woocommerce button.button:disabled, .woocommerce button.button:disabled[disabled] { opacity: .5; padding: 0 22px; color: var(--ink); }
+.woocommerce form .form-row { padding: 0; margin: 0 0 16px; }
+.woocommerce form .form-row label { display: block; margin-bottom: 6px; font-size: 13px; line-height: 16px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.woocommerce form .form-row .optional { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-muted); }
+.woocommerce form .form-row .required { color: var(--berry); text-decoration: none; border: 0; }
+.woocommerce form .form-row input.input-text, .woocommerce form .form-row textarea, .woocommerce form .form-row select, .woocommerce .quantity .qty, .woocommerce-page form .form-row input.input-text { width: 100%; min-height: 48px; padding: 0 16px; border: 2px solid var(--line-strong); border-radius: var(--r-sm); background: var(--surface-paper); font-family: var(--font); font-size: 16px; color: var(--ink); line-height: 1.4; box-shadow: none; }
+.woocommerce form .form-row textarea { padding: 12px 16px; min-height: 110px; line-height: 24px; }
+.woocommerce form .form-row input.input-text:focus, .woocommerce form .form-row textarea:focus, .woocommerce form .form-row select:focus { outline: 2px solid var(--ink); outline-offset: 2px; border-color: var(--ink); }
+.woocommerce form .form-row.woocommerce-invalid input.input-text { border-color: var(--berry); }
+.woocommerce form .form-row.woocommerce-validated input.input-text { border-color: var(--leaf); }
+.woocommerce .quantity .qty { width: 84px; min-height: 44px; border-radius: var(--r-pill); text-align: center; font-weight: 700; padding: 0 10px; }
+.woocommerce form .form-row .woocommerce-input-wrapper { display: block; }
+
+/* ——— Strane korpe i plaćanja ——— */
+.page-wrap { padding-bottom: 24px; }
+.page-title { margin: 4px 0 24px; }
+.doc-panel { padding: 40px; max-width: 900px; }
+.doc-panel p, .doc-content p { color: var(--ink-muted); margin: 0 0 14px; }
+.checkout-perks { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: -6px 0 24px; }
+.checkout-perks li { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px; border-radius: var(--r-pill); background: var(--surface-paper); font-weight: 700; font-size: 14px; }
+.checkout-perks li:nth-child(1) { background: var(--leaf-soft); }
+.checkout-perks li:nth-child(2) { background: var(--honey-soft); }
+.checkout-perks li:nth-child(3) { background: var(--wing); }
+
+.woocommerce table.shop_table { border: 0; border-radius: var(--r-lg); background: var(--surface-paper); border-collapse: separate; border-spacing: 0; overflow: hidden; margin: 0 0 24px; }
+.woocommerce table.shop_table th { padding: 16px 20px; font-size: 13px; line-height: 16px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); border: 0; }
+.woocommerce table.shop_table td { padding: 18px 20px; border-top: 1px solid var(--line); vertical-align: middle; }
+.woocommerce table.shop_table td.product-name a { font-weight: 700; color: var(--ink); text-decoration: none; }
+.woocommerce table.shop_table td.product-name a:hover { text-decoration: underline; }
+.woocommerce table.cart img, .woocommerce-cart table.cart img { width: 84px; height: 84px; object-fit: cover; border-radius: 14px; }
+.bu-cart-ph { width: 84px; height: 84px; border-radius: 14px; background: var(--surface-raised); display: inline-flex; align-items: center; justify-content: center; }
+.woocommerce a.remove { width: 32px; height: 32px; line-height: 28px; font-size: 22px; font-weight: 400; color: var(--ink) !important; border: 2px solid var(--ink); border-radius: 50%; }
+.woocommerce a.remove:hover { background: var(--berry) !important; border-color: var(--berry); color: #fff !important; }
+.woocommerce td.product-name dl.variation, .woocommerce .wc-item-meta { margin: 8px 0 0; padding: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted); display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; }
+.woocommerce td.product-name dl.variation dt, .woocommerce td.product-name dl.variation dd { margin: 0; padding: 0; float: none; }
+.woocommerce td.product-name dl.variation dt { font-weight: 700; color: var(--ink); }
+.woocommerce td.product-name dl.variation dd p { margin: 0; }
+.woocommerce .wc-item-meta { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.woocommerce .wc-item-meta li { display: flex; gap: 6px; }
+.woocommerce .wc-item-meta p { margin: 0; display: inline; }
+.woocommerce table.shop_table td.actions { background: var(--surface-paper); }
+.woocommerce-cart .cart-collaterals .cart_totals, .woocommerce .cart-collaterals .cart_totals { width: 100%; max-width: 460px; float: right; background: var(--honey-soft); border-radius: var(--r-lg); padding: 24px; }
+.cart_totals h2 { font-size: 22px; line-height: 28px; margin-bottom: 12px; }
+.cart_totals table.shop_table { background: transparent; margin-bottom: 8px; }
+.cart_totals table.shop_table th, .cart_totals table.shop_table td { padding: 12px 0; border-top: 1px solid rgba(49,32,24,.14); background: transparent; }
+.cart_totals .order-total .amount, .woocommerce-checkout-review-order-table .order-total .amount { font-size: 22px; font-weight: 800; }
+.woocommerce .wc-proceed-to-checkout { padding: 8px 0 0; }
+.woocommerce .wc-proceed-to-checkout a.checkout-button { display: flex; width: 100%; min-height: 54px; font-size: 18px; margin: 0; }
+.woocommerce ul#shipping_method { margin: 0; padding: 0; list-style: none; }
+.woocommerce ul#shipping_method li label { font-weight: 700; }
+.woocommerce-shipping-destination, .woocommerce-shipping-calculator { font-size: 14px; color: var(--ink-muted); margin: 4px 0 0; }
+.cart-empty.woocommerce-info { font-size: 18px; }
+.return-to-shop { margin-top: 8px; }
+
+/* Plaćanje: podaci levo, porudžbina desno */
+.woocommerce form.checkout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 0 32px; align-items: start; }
+.woocommerce form.checkout > .woocommerce-NoticeGroup { grid-column: 1 / -1; }
+.woocommerce form.checkout #customer_details { grid-column: 1; grid-row: span 3; background: var(--surface-paper); border-radius: var(--r-lg); padding: 28px 32px 12px; }
+.woocommerce form.checkout #order_review_heading, .woocommerce form.checkout #order_review { grid-column: 2; }
+.woocommerce form.checkout #order_review_heading { margin: 0; padding: 24px 24px 4px; background: var(--honey-soft); border-radius: var(--r-lg) var(--r-lg) 0 0; font-size: 22px; line-height: 28px; }
+.woocommerce form.checkout #order_review { background: var(--honey-soft); border-radius: 0 0 var(--r-lg) var(--r-lg); padding: 8px 24px 24px; position: sticky; top: 100px; }
+.woocommerce .col2-set .col-1, .woocommerce .col2-set .col-2, .woocommerce-page .col2-set .col-1, .woocommerce-page .col2-set .col-2 { float: none; width: 100%; }
+.woocommerce .col2-set::before, .woocommerce .col2-set::after { display: none; }
+.woocommerce-billing-fields h3, .woocommerce-shipping-fields h3, .woocommerce-additional-fields h3 { font-size: 22px; line-height: 28px; margin: 0 0 16px; }
+#ship-to-different-address { font-size: 16px; font-weight: 700; margin: 12px 0 16px; }
+#ship-to-different-address label { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+#ship-to-different-address input { width: 20px; height: 20px; accent-color: var(--ink); }
+.woocommerce-checkout-review-order-table { background: transparent !important; }
+.woocommerce-checkout-review-order-table th, .woocommerce-checkout-review-order-table td { background: transparent !important; padding: 12px 0 !important; border-top: 1px solid rgba(49,32,24,.14) !important; }
+.woocommerce-checkout-review-order-table thead th { border-top: 0 !important; }
+.woocommerce-checkout #payment, .woocommerce #payment { background: var(--surface-paper); border-radius: var(--r-md); margin-top: 8px; }
+.woocommerce #payment ul.payment_methods { border: 0; padding: 16px 18px 6px; }
+.woocommerce #payment ul.payment_methods li { list-style: none; font-weight: 700; }
+.woocommerce #payment ul.payment_methods li input { accent-color: var(--ink); margin-right: 8px; }
+.woocommerce #payment div.payment_box { background: var(--surface-raised); color: var(--ink-muted); border-radius: var(--r-sm); font-weight: 400; font-size: 14px; line-height: 20px; margin: 10px 0 6px; }
+.woocommerce #payment div.payment_box::before { border-bottom-color: var(--surface-raised); }
+.woocommerce #payment div.form-row { padding: 14px 18px 18px; margin: 0; }
+.woocommerce #payment #place_order { width: 100%; min-height: 56px; font-size: 18px; float: none; }
+.woocommerce-privacy-policy-text p { font-size: 13px; line-height: 19px; color: var(--ink-muted); margin: 0 0 14px; }
+.woocommerce-privacy-policy-text a { color: var(--ink); font-weight: 700; }
+@media (max-width: 900px) {
+  .woocommerce form.checkout { grid-template-columns: 1fr; gap: 20px; }
+  .woocommerce form.checkout #customer_details, .woocommerce form.checkout #order_review_heading, .woocommerce form.checkout #order_review { grid-column: 1; grid-row: auto; }
+  .woocommerce form.checkout #order_review { position: static; }
+  .woocommerce form.checkout #order_review_heading { margin-bottom: -20px; }
+  .woocommerce form.checkout #customer_details { padding: 22px 18px 6px; }
+  .woocommerce-cart .cart-collaterals .cart_totals { float: none; max-width: none; }
+  .doc-panel { padding: 24px 20px; }
+}
+
+/* Potvrda porudžbine */
+.woocommerce-order { display: flex; flex-direction: column; gap: 20px; }
+.woocommerce-thankyou-order-received, .woocommerce-notice--success { background: var(--leaf-soft); border-radius: var(--r-lg); padding: 24px 28px; font-size: 20px; line-height: 28px; font-weight: 800; margin: 0; }
+ul.woocommerce-order-overview, .woocommerce ul.order_details { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0; padding: 0; }
+ul.woocommerce-order-overview li, .woocommerce ul.order_details li { float: none; margin: 0; padding: 16px 18px; border: 0; border-radius: var(--r-md); background: var(--surface-paper); font-size: 13px; line-height: 16px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--ink-muted); }
+ul.woocommerce-order-overview li strong, .woocommerce ul.order_details li strong { display: block; margin-top: 6px; font-size: 18px; line-height: 24px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+.woocommerce-order > p { background: var(--honey-soft); border-radius: var(--r-md); padding: 16px 20px; margin: 0; }
+.woocommerce-order-details__title, .woocommerce-column__title { font-size: 22px; line-height: 28px; margin: 12px 0 12px; }
+.woocommerce-customer-details address { border: 0 !important; background: var(--surface-paper); border-radius: var(--r-md); padding: 18px 20px !important; font-style: normal; line-height: 24px; }
+
+/* ——— Strana proizvoda: dugme dok se dodaje u korpu ——— */
+.tpl-product .busy { opacity: .7; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .korpa-n { animation: none !important; } }
+
+/* Koliko fali do besplatne dostave (korpa i plaćanje) */
+.woocommerce table.shop_table tr.bu-freeship td { padding: 14px 20px; background: var(--honey-soft); }
+.bu-freeship-msg { font-size: 15px; line-height: 20px; color: var(--ink); }
+.bu-freeship-bar { height: 8px; margin-top: 8px; border-radius: var(--r-pill); background: var(--surface-paper); overflow: hidden; }
+.bu-freeship-bar span { display: block; height: 100%; border-radius: inherit; background: var(--leaf); transition: width .4s var(--ease); }
+
+/* Obaveštenje „Dodato u korpu” sa slikom, greška i mesto iznad trake na telefonu */
+.bu-toast img { width: 48px; height: 48px; flex: none; border-radius: 10px; object-fit: cover; }
+.bu-toast > span { display: flex; flex-direction: column; }
+.bu-toast.err { border-color: var(--berry); }
+.bu-toast.err strong { color: var(--berry); }
+body.has-sbar .bu-toast { bottom: 88px; }
+@media (max-width: 760px) { .bu-toast { left: 12px; right: 12px; bottom: 12px; max-width: none; } }
+
+/* ——— Moj nalog: meni naloga levo (kartice sa ikonicama), sadržaj desno ——— */
+.shop-hero-acc { background: linear-gradient(115deg, var(--pop-rose, #FBDCD2) 0%, #FFF5D6 50%, var(--pop-honey, #FFE7A3) 100%); }
+.acc-page.acc-in > .woocommerce { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: start; }
+.acc-page .woocommerce::before, .acc-page .woocommerce::after { display: none; }
+.acc-page .woocommerce-MyAccount-navigation, .acc-page .woocommerce-MyAccount-content { float: none; width: auto; margin: 0; }
+.acc-nav { position: sticky; top: calc(var(--sticky-top, 96px) + 8px); padding: 10px; border: 2px solid var(--ink); border-radius: 24px; background: var(--surface-paper); box-shadow: var(--sticker, var(--shadow)); }
+.acc-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.acc-nav a { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 6px 12px; border-radius: 16px; color: var(--ink); font-weight: 700; text-decoration: none; transition: background-color .2s ease, transform .2s var(--ease); }
+.acc-nav a:hover { background: var(--surface-raised); transform: translateX(2px); }
+.acc-nav a[aria-current="page"] { background: var(--honey); }
+.acc-ic { width: 34px; height: 34px; flex: none; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--surface-raised); }
+.acc-nav a[aria-current="page"] .acc-ic { background: #fff; }
+.acc-nav .woocommerce-MyAccount-navigation-link--customer-logout { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
+.acc-nav .woocommerce-MyAccount-navigation-link--customer-logout a { color: var(--berry); }
+.acc-page .woocommerce-MyAccount-content { min-width: 0; padding: 28px 32px; border-radius: 24px; background: var(--surface-paper); }
+.acc-page .woocommerce-MyAccount-content > p:first-child:not(.acc-help) { margin-top: 0; }
+.acc-page .woocommerce-MyAccount-content h2, .acc-page .woocommerce-MyAccount-content h3 { margin: 0 0 12px; }
+.acc-page .woocommerce-MyAccount-content p { line-height: 26px; }
+.acc-page .woocommerce-MyAccount-content a:not(.button):not(.btn) { color: var(--ink); font-weight: 700; }
+
+.acc-hello { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
+.acc-hello img { width: 64px; height: auto; flex: none; }
+.acc-hello .h2 { margin: 0 0 4px; }
+.acc-hello p { margin: 0; }
+.acc-cards { list-style: none; margin: 0 0 26px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.acc-cards a { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 18px 20px; border: 2px solid var(--ink); border-radius: 20px; background: #fff; color: var(--ink); text-decoration: none; box-shadow: 4px 4px 0 var(--ink); transition: transform .25s var(--ease), box-shadow .25s var(--ease); }
+.acc-cards a:hover { transform: translate(-2px, -2px) rotate(-.6deg); box-shadow: 6px 6px 0 var(--ink); }
+.acc-cards b { font-size: 18px; line-height: 24px; }
+.acc-cards .small { color: var(--ink-muted); }
+.acc-cic { width: 42px; height: 42px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 4px; background: var(--honey-soft); }
+.acc-cards .tone-wing .acc-cic { background: var(--wing); }
+.acc-cards .tone-leaf .acc-cic { background: var(--leaf-soft); }
+.acc-cards .tone-berry .acc-cic { background: var(--berry-soft); }
+.acc-recent-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.acc-olist { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.acc-olist a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 16px; background: var(--surface-raised); color: var(--ink); text-decoration: none; }
+.acc-olist a:hover { background: var(--honey-soft); }
+.acc-on { font-weight: 800; }
+.acc-ot { display: flex; flex-direction: column; min-width: 0; }
+.acc-ot b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.acc-ou { white-space: nowrap; }
+.acc-help { margin: 8px 0 0; }
+
+/* Statusi porudžbina kao bedž */
+.acc-page mark.order-status, .acc-page .woocommerce-orders-table__cell-order-status { font-weight: 700; }
+.acc-page mark.order-status { display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 999px; background: var(--wing); color: var(--ink); font-size: 13px; white-space: nowrap; }
+.acc-page mark.status-processing { background: var(--honey-soft); }
+.acc-page mark.status-completed { background: var(--leaf-soft); }
+.acc-page mark.status-cancelled, .acc-page mark.status-failed, .acc-page mark.status-refunded { background: var(--berry-soft); }
+.acc-page .woocommerce-orders-table { width: 100%; }
+.acc-page .woocommerce-orders-table .button { min-height: 36px; padding: 0 14px; font-size: 14px; margin: 2px 4px 2px 0; }
+.acc-page .woocommerce-orders-table__cell-order-number a { font-weight: 800; }
+.acc-page .woocommerce-pagination { display: flex; gap: 10px; justify-content: space-between; margin-top: 12px; }
+.acc-page .woocommerce-MyAccount-content > p:has(> mark.order-status) { padding: 14px 18px; border-radius: 16px; background: var(--surface-raised); }
+.acc-page .woocommerce-OrderUpdates { list-style: none; padding: 0; }
+.acc-page .woocommerce-OrderUpdate { padding: 12px 16px; border-radius: 14px; background: var(--surface-raised); margin-bottom: 8px; }
+
+/* Adrese */
+.acc-page .woocommerce-Addresses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.acc-page .woocommerce-Addresses::before, .acc-page .woocommerce-Addresses::after { display: none; }
+.acc-page .woocommerce-Addresses .woocommerce-Address { float: none; width: auto; max-width: none; padding: 18px 20px; border: 2px solid var(--ink); border-radius: 20px; background: #fff; }
+.acc-page .woocommerce-Address-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.acc-page .woocommerce-Address-title::before, .acc-page .woocommerce-Address-title::after { display: none; }
+.acc-page .woocommerce-Address-title h2 { font-size: 20px; line-height: 26px; margin: 0; }
+.acc-page .woocommerce-Address-title .edit { float: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border: 2px solid var(--ink); border-radius: 999px; font-size: 14px; text-decoration: none; background: var(--honey); }
+.acc-page .woocommerce-Address address { font-style: normal; line-height: 26px; }
+.acc-page form .form-row-first, .acc-page form .form-row-last { width: 48.5%; }
+.acc-page fieldset { margin: 18px 0; padding: 18px 20px 4px; border: 2px dashed var(--line); border-radius: 18px; }
+.acc-page fieldset legend { padding: 0 8px; font-weight: 800; }
+.acc-page .woocommerce-form-row em, .acc-page .form-row em { display: block; margin-top: 6px; font-style: normal; font-size: 13px; color: var(--ink-muted); }
+.acc-page .woocommerce-MyAccount-content .button, .acc-page form .button[type="submit"] { background: var(--honey); }
+.acc-page .woocommerce-MyAccount-content .button:hover { background: var(--honey-hover); }
+.woocommerce-password-strength { margin-top: 8px; padding: 8px 12px; border-radius: 10px; font-size: 14px; font-weight: 600; }
+.woocommerce-password-strength.short, .woocommerce-password-strength.bad { background: var(--berry-soft); }
+.woocommerce-password-strength.good { background: var(--honey-soft); }
+.woocommerce-password-strength.strong { background: var(--leaf-soft); }
+.woocommerce-password-hint { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-muted); }
+.woocommerce form .show-password-input, .woocommerce-page form .show-password-input { top: 50%; transform: translateY(-50%); }
+
+/* Prijava i novi nalog */
+.acc-login { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.acc-login::before, .acc-login::after { display: none; }
+.acc-page .acc-login .u-column1, .acc-page .acc-login .u-column2 { float: none; width: auto; }
+.acc-login:not(.col2-set) { grid-template-columns: minmax(0, 520px); }
+.acc-box { position: relative; padding: 30px 32px 26px; border: 2px solid var(--ink); border-radius: 28px; background: var(--surface-paper); box-shadow: var(--sticker, var(--shadow)); }
+.acc-box-reg { background: #fff; }
+.acc-box .h2 { margin: 10px 0 6px; }
+.acc-box > p.muted { margin: 0 0 18px; }
+.acc-box-ic { width: 48px; height: 48px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--honey); border: 2px solid var(--ink); }
+.acc-box-reg .acc-box-ic { background: var(--leaf-soft); }
+.acc-page .acc-box form.login, .acc-page .acc-box form.register { margin: 0; padding: 0; border: 0; border-radius: 0; }
+.acc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.woocommerce form .acc-row label.woocommerce-form__label-for-checkbox { display: inline-flex; align-items: center; gap: 8px; margin: 0; text-transform: none; letter-spacing: 0; font-size: 15px; font-weight: 600; }
+.acc-lost { font-size: 14px; font-weight: 700; color: var(--ink); }
+.acc-box .button.btn-primary { background: var(--honey); width: 100%; min-height: 52px; font-size: 17px; }
+.acc-box .button.btn-primary:hover { background: var(--honey-hover); }
+.acc-box-reg .button { width: 100%; min-height: 52px; font-size: 17px; background: var(--ink) !important; color: var(--cream) !important; }
+.acc-box-reg .button:hover { background: var(--dark-raised, #312018) !important; }
+.acc-perks { list-style: none; margin: 4px 0 18px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.acc-perks li { display: flex; gap: 8px; align-items: flex-start; }
+.acc-perks svg { flex: none; margin-top: 3px; color: var(--leaf); }
+.acc-box .woocommerce-privacy-policy-text p { font-size: 13px; line-height: 19px; color: var(--ink-muted); }
+.acc-guest { margin-top: 20px; text-align: center; }
+.acc-guest a { color: var(--ink); font-weight: 700; }
+.acc-page .woocommerce-ResetPassword, .acc-page form.lost_reset_password { max-width: 560px; padding: 28px 30px; border: 2px solid var(--ink); border-radius: 28px; background: var(--surface-paper); box-shadow: var(--sticker, var(--shadow)); }
+.acc-page form.lost_reset_password .form-row-first { width: 100%; float: none; }
+
+/* Prijava na plaćanju */
+.woocommerce-form-login-toggle .woocommerce-info { background: var(--honey-soft); }
+.woocommerce form.checkout_coupon, .woocommerce form.login, .woocommerce form.register { border: 2px solid var(--line); border-radius: 20px; padding: 20px 22px; }
+.woocommerce-checkout .woocommerce-account-fields { margin-top: 8px; padding: 14px 18px; border-radius: 16px; background: var(--surface-raised); }
+.woocommerce-checkout .woocommerce-account-fields label.checkbox { display: flex; gap: 10px; align-items: center; text-transform: none; letter-spacing: 0; font-size: 15px; }
+
+.nalog-btn.is-in { background: var(--leaf-soft); }
+.nalog-btn[aria-current="page"] { background: var(--honey); }
+@media (max-width: 420px) { .nalog-btn { display: none; } }
+@media (max-width: 960px) {
+  .acc-page.acc-in > .woocommerce { grid-template-columns: 1fr; gap: 16px; }
+  .acc-nav { position: static; padding: 6px; border-radius: 20px; }
+  .acc-nav ul { flex-direction: row; overflow-x: auto; scrollbar-width: none; gap: 6px; }
+  .acc-nav ul::-webkit-scrollbar { display: none; }
+  .acc-nav li { flex: none; }
+  .acc-nav a { min-height: 44px; padding: 4px 14px 4px 6px; white-space: nowrap; }
+  .acc-nav a:hover { transform: none; }
+  .acc-nav .woocommerce-MyAccount-navigation-link--customer-logout { margin: 0; padding: 0; border: 0; }
+  .acc-ic { width: 30px; height: 30px; }
+  .acc-login { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .acc-page .woocommerce-MyAccount-content { padding: 20px 16px; }
+  .acc-cards, .acc-page .woocommerce-Addresses { grid-template-columns: 1fr; }
+  .acc-olist a { grid-template-columns: minmax(0, 1fr) auto; }
+  .acc-on { grid-column: 1 / -1; font-size: 14px; color: var(--ink-muted); }
+  .acc-box { padding: 24px 20px; }
+  .acc-page form .form-row-first, .acc-page form .form-row-last { width: 100%; float: none; }
+}
+.acc-page.acc-in > .woocommerce > :not(.woocommerce-MyAccount-navigation):not(.woocommerce-MyAccount-content) { grid-column: 1 / -1; }
+
+/* Strana proizvoda: tekst „O proizvodu” u pasusima, Messenger kao drugo dugme */
+.tpl-product .about-text { display: flex; flex-direction: column; gap: 14px; }
+.tpl-product .about-text p { margin: 0; color: var(--ink-muted); max-width: 60ch; }
+.tpl-product .btn-msg-order { margin-top: -10px; background: var(--surface-paper); }
+.tpl-product .btn-msg-order:hover { background: var(--surface-raised); }
+.acc-page .woocommerce-customer-details .woocommerce-column__title { margin-top: 20px; }
+.acc-page .woocommerce-customer-details address { padding: 16px 18px; border-radius: 16px; }
+.woocommerce ul.order_details::before, .woocommerce ul.order_details::after, .woocommerce-order-overview::before, .woocommerce-order-overview::after { display: none !important; content: none !important; }
+.woocommerce ul.order_details li strong, .woocommerce-order-overview li strong { overflow-wrap: anywhere; }
+.woocommerce-customer-details .woocommerce-column__title { margin-top: 20px; }

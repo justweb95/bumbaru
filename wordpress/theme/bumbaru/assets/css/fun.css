@@ -1,0 +1,255 @@
+/* Bumbaru: svetla, vesela verzija (bela pozadina, šarene površine, „nalepnice” sa senkom).
+   Učitava se posle main.css i shop.css, pa ovde menjamo samo izgled. */
+:root {
+  --surface: #FFFFFF;
+  --surface-paper: #FFF8EC;
+  --surface-raised: #F7EDDC;
+  --line: #E3D7C5;
+  --shadow: 0 2px 0 rgba(49,32,24,.06), 0 14px 32px rgba(49,32,24,.10);
+  --sticker: 5px 5px 0 var(--ink);
+  --pop-honey: #FFE7A3;
+  --pop-mint: #DDF0D0;
+  --pop-sky: #DDEEF7;
+  --pop-rose: #FBDCD2;
+}
+@keyframes bu-stripes { to { background-position: 28px 0; } }
+@keyframes bu-tilt { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+
+/* ——— Šareni naslovni blok: korpa, plaćanje, potvrda i katalog ——— */
+.shop-hero { position: relative; overflow: hidden; isolation: isolate; margin: 16px 0 22px; padding: 30px 40px 34px; border: 2px solid var(--ink); border-radius: 32px; background: linear-gradient(115deg, var(--pop-honey) 0%, #FFF5D6 48%, var(--pop-sky) 100%); box-shadow: var(--sticker); }
+.shop-hero-2 { background: linear-gradient(115deg, var(--pop-mint) 0%, #FFF5D6 52%, var(--pop-rose) 100%); }
+.shop-hero-3 { background: linear-gradient(115deg, var(--pop-mint) 0%, #F3FAEE 50%, var(--pop-sky) 100%); }
+.kat-hero { background: linear-gradient(115deg, var(--pop-sky) 0%, #FFF5D6 50%, var(--pop-honey) 100%); }
+.sh-blob { position: absolute; z-index: -1; border-radius: 50%; }
+.sh-b1 { width: 230px; height: 230px; right: 150px; top: -110px; background: var(--honey); opacity: .45; }
+.sh-b2 { width: 150px; height: 150px; right: -46px; bottom: -64px; background: var(--berry-soft); }
+.sh-b3 { width: 86px; height: 86px; right: 330px; bottom: -34px; background: var(--leaf-soft); }
+.sh-bee { position: absolute; right: 54px; top: 26px; width: 118px; z-index: 1; animation: fx-float 4.8s ease-in-out infinite; }
+.sh-bee img { display: block; width: 100%; height: auto; }
+.sh-text { position: relative; z-index: 1; max-width: 680px; }
+.shop-hero .crumbs { padding: 0 0 10px; }
+.shop-hero .page-title { margin: 0 0 8px; }
+.sh-sub { margin: 0 0 18px; max-width: 58ch; font-size: 17px; line-height: 26px; color: var(--ink-muted); }
+.sh-trail { position: absolute; left: 40px; right: 40px; bottom: 12px; opacity: .8; }
+.shop-steps { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 0; padding: 0; }
+.shop-steps li { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px 0 6px; border: 2px solid transparent; border-radius: var(--r-pill); background: rgba(255,255,255,.72); font-size: 14px; font-weight: 700; color: var(--ink-muted); }
+.shop-steps .n { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--surface-raised); color: var(--ink); font-size: 13px; font-weight: 800; }
+.shop-steps li.is-on { background: #fff; border-color: var(--ink); color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.shop-steps li.is-on .n { background: var(--honey); }
+.shop-steps li.is-done { color: var(--leaf); }
+.shop-steps li.is-done .n { background: var(--leaf); color: #fff; }
+.kat-jump { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
+.kat-jump a { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 2px solid var(--ink); border-radius: var(--r-pill); background: #fff; color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: none; transition: transform .25s var(--ease), box-shadow .25s ease; }
+.kat-jump a:hover { transform: translate(-2px, -2px) rotate(-1.5deg); box-shadow: 3px 3px 0 var(--ink); }
+.kat-jump .kj-c0 a { background: var(--honey-soft); } .kat-jump .kj-c1 a { background: var(--leaf-soft); } .kat-jump .kj-c2 a { background: var(--wing); } .kat-jump .kj-c3 a { background: var(--berry-soft); } .kat-jump .kj-c4 a { background: #fff; }
+
+/* Prednosti (pouzeće, dostava…) kao šarene nalepnice */
+.checkout-perks { margin: 0 0 24px; }
+.checkout-perks li { border: 2px solid var(--ink); background: #fff; }
+.checkout-perks li:nth-child(1) { background: var(--leaf-soft); transform: rotate(-1deg); }
+.checkout-perks li:nth-child(2) { background: var(--honey-soft); transform: rotate(1deg); }
+.checkout-perks li:nth-child(3) { background: var(--wing); transform: rotate(-.6deg); }
+.checkout-perks li:nth-child(4) { background: var(--berry-soft); transform: rotate(.8deg); }
+
+/* ——— Korpa ——— */
+.woocommerce-cart .woocommerce table.shop_table.cart { background: #fff; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--honey); }
+.woocommerce-cart table.shop_table.cart thead th { background: var(--wing); color: var(--ink); }
+.woocommerce-cart table.shop_table.cart td { border-top: 2px dashed var(--line); background: #fff; transition: background-color .2s ease; }
+.woocommerce-cart table.shop_table.cart tr.cart_item:hover td { background: #FFFBF1; }
+.woocommerce-cart table.cart td.product-thumbnail { width: 128px; }
+.woocommerce-cart table.cart img, .bu-cart-prev, .bu-cart-ph { width: 96px !important; height: 96px !important; border: 2px solid var(--ink); border-radius: 18px !important; transform: rotate(-3deg); transition: transform .35s var(--ease); }
+.woocommerce-cart table.cart tr.cart_item:nth-child(even) img, .woocommerce-cart table.cart tr.cart_item:nth-child(even) .bu-cart-prev { transform: rotate(3deg); }
+.woocommerce-cart table.cart tr.cart_item:hover img, .woocommerce-cart table.cart tr.cart_item:hover .bu-cart-prev { animation: bu-tilt .6s ease-in-out 1; }
+.bu-cart-prev { display: inline-flex; align-items: center; justify-content: center; gap: 2px; padding: 6px; overflow: hidden; background: var(--honey-soft); }
+tr.cart_item:nth-child(4n+2) .bu-cart-prev { background: var(--leaf-soft); }
+tr.cart_item:nth-child(4n+3) .bu-cart-prev { background: var(--wing); }
+tr.cart_item:nth-child(4n+4) .bu-cart-prev { background: var(--berry-soft); }
+.bu-cart-prev svg { flex: 1 1 0; min-width: 0; height: 100%; width: auto; overflow: visible; }
+.bu-cart-ph { background: var(--honey-soft); }
+.woocommerce-cart table.shop_table.cart td.product-name a { font-size: 17px; }
+.woocommerce-cart td.product-subtotal .amount { display: inline-block; padding: 4px 12px; border-radius: var(--r-pill); background: var(--honey-soft); font-weight: 800; }
+.woocommerce-cart .woocommerce a.remove { background: #fff; border-color: var(--ink); }
+.woocommerce-cart .woocommerce a.remove:hover { transform: rotate(90deg); transition: transform .25s ease; }
+.woocommerce-cart .quantity .qty { background: #fff; border-color: var(--ink); }
+.woocommerce-cart table.shop_table.cart td.actions { background: #FFFBF1; }
+.woocommerce-cart table.shop_table.cart td.actions .coupon { display: none; }
+
+/* Predlozi levo + zbir desno */
+.woocommerce-cart .woocommerce .cart-collaterals { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 28px; align-items: start; }
+.woocommerce-cart .woocommerce .cart-collaterals::before, .woocommerce-cart .woocommerce .cart-collaterals::after { display: none; }
+.woocommerce-cart .woocommerce .cart-collaterals .cart_totals { grid-column: 2; grid-row: 1; float: none; width: 100%; max-width: none; }
+.cart-suggest { grid-column: 1; grid-row: 1; position: relative; overflow: hidden; isolation: isolate; padding: 26px; border-radius: 28px; background: var(--wing); }
+.cart-suggest.is-empty { display: none; }
+.cart-suggest::before { content: ''; position: absolute; z-index: -1; right: -50px; top: -60px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,.55); }
+.cs-kicker { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; margin: 0 0 10px; border-radius: var(--r-pill); background: var(--honey); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.cs-title { margin: 0 0 16px; font-size: 24px; line-height: 30px; }
+.cs-list { list-style: none; display: grid; gap: 10px; margin: 0; padding: 0; }
+.cs-list a { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 10px 14px 10px 10px; border: 2px solid transparent; border-radius: 20px; background: #fff; color: var(--ink); text-decoration: none; transition: transform .25s var(--ease), box-shadow .25s ease, border-color .2s ease; }
+.cs-list a:hover { transform: translate(-2px, -2px) rotate(-.6deg); border-color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.cs-img { width: 72px; height: 72px; overflow: hidden; border-radius: 16px; background: var(--honey-soft); }
+.cs-c1 .cs-img { background: var(--leaf-soft); } .cs-c2 .cs-img { background: var(--berry-soft); }
+.cs-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cs-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cs-txt strong { font-size: 15px; line-height: 20px; }
+.cs-price { font-size: 14px; color: var(--ink-muted); font-weight: 700; }
+.cs-go { width: 38px; height: 38px; border: 2px solid var(--ink); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--honey); }
+
+.woocommerce-cart .cart_totals { position: relative; overflow: hidden; isolation: isolate; border: 2px solid var(--ink); background: #FFF3CC !important; box-shadow: var(--sticker); }
+.woocommerce-cart .cart_totals::after { content: ''; position: absolute; z-index: -1; right: -18px; top: -22px; width: 96px; height: 96px; background: url(../img/brand/pcelica.webp) center / contain no-repeat; transform: rotate(12deg); opacity: .9; }
+.cart_totals h2 { padding-bottom: 12px; background: radial-gradient(circle, var(--honey-hover) 2.2px, transparent 2.7px) left bottom / 12px 6px repeat-x; margin-right: 70px; }
+.woocommerce .wc-proceed-to-checkout a.checkout-button, .woocommerce #payment #place_order { border: 2px solid var(--ink); background: var(--honey); box-shadow: 4px 4px 0 var(--ink); transition: transform .2s var(--ease), box-shadow .2s ease, background-color .2s ease; }
+.woocommerce .wc-proceed-to-checkout a.checkout-button:hover, .woocommerce #payment #place_order:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+.woocommerce .wc-proceed-to-checkout a.checkout-button:active, .woocommerce #payment #place_order:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+
+/* Koliko fali do besplatne dostave */
+.woocommerce table.shop_table tr.bu-freeship td { padding: 14px 16px !important; border: 2px dashed var(--honey-hover) !important; border-radius: 18px; background: #fff !important; }
+.woocommerce table.shop_table tr.bu-freeship.is-free td { border-color: var(--leaf) !important; background: var(--leaf-soft) !important; }
+.bu-freeship-bar { height: 12px; margin-top: 10px; border: 2px solid var(--ink); background: #fff; }
+.bu-freeship-bar span { background: repeating-linear-gradient(45deg, var(--honey) 0 7px, var(--honey-hover) 7px 14px); animation: bu-stripes 1s linear infinite; }
+.bu-freeship.is-free .bu-freeship-bar span { background: repeating-linear-gradient(45deg, var(--leaf) 0 7px, #4C7A36 7px 14px); }
+
+/* Prazna korpa */
+.woocommerce-cart .wc-empty-cart-message { display: none; }
+.empty-cart { margin: 4px 0 18px; padding: 40px 24px 30px; text-align: center; border: 2px dashed var(--honey-hover); border-radius: 32px; background: #FFFBF1; }
+.ec-bee { width: 120px; height: auto; animation: fx-float 4.8s ease-in-out infinite; }
+.ec-title { margin: 10px 0 4px; font-size: 28px; line-height: 34px; font-weight: 800; }
+.ec-sub { margin: 0; color: var(--ink-muted); }
+.ec-cats { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0 0; padding: 0; }
+.ec-cats a { display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border: 2px solid var(--ink); border-radius: var(--r-pill); color: var(--ink); font-weight: 700; text-decoration: none; transition: transform .25s var(--ease), box-shadow .25s ease; }
+.ec-cats a:hover { transform: translate(-2px, -2px) rotate(-2deg); box-shadow: 3px 3px 0 var(--ink); }
+.ec-c0 a { background: var(--honey-soft); } .ec-c1 a { background: var(--leaf-soft); } .ec-c2 a { background: var(--wing); } .ec-c3 a { background: var(--berry-soft); } .ec-c4 a { background: #fff; }
+.woocommerce-cart .return-to-shop { text-align: center; }
+
+/* ——— Plaćanje ——— */
+.woocommerce form.checkout #customer_details { background: #fff; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--wing); }
+.woocommerce-billing-fields h3, .woocommerce-additional-fields h3 { display: flex; align-items: center; gap: 12px; }
+.woocommerce-billing-fields h3::before, .woocommerce-additional-fields h3::before { content: '1'; flex: none; width: 34px; height: 34px; border: 2px solid var(--ink); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--honey); font-size: 16px; font-weight: 800; }
+.woocommerce-additional-fields h3::before { content: '2'; background: var(--leaf-soft); }
+.woocommerce form .form-row input.input-text, .woocommerce form .form-row textarea, .woocommerce form .form-row select { background: #fff; border-color: #D9CCB8; border-radius: 14px; }
+.woocommerce form .form-row input.input-text:focus, .woocommerce form .form-row textarea:focus, .woocommerce form .form-row select:focus { outline: 0; border-color: var(--ink); box-shadow: 0 0 0 4px var(--honey-soft); }
+.woocommerce form.checkout #order_review_heading { border: 2px solid var(--ink); border-bottom: 0; background: #FFF3CC; box-shadow: 6px 6px 0 var(--ink); }
+.woocommerce form.checkout #order_review { border: 2px solid var(--ink); border-top: 0; background: #FFF3CC; box-shadow: 6px 6px 0 var(--ink); }
+.woocommerce-checkout #payment, .woocommerce #payment { background: #fff; border: 2px solid var(--ink); border-radius: 18px; }
+.woocommerce #payment div.payment_box { background: var(--pop-mint); color: var(--ink); }
+.woocommerce #payment div.payment_box::before { border-bottom-color: var(--pop-mint); }
+
+/* ——— Potvrda porudžbine ——— */
+.woocommerce-thankyou-order-received, .woocommerce-notice--success { border: 2px solid var(--ink); box-shadow: var(--sticker); }
+ul.woocommerce-order-overview li:nth-child(4n+1), .woocommerce ul.order_details li:nth-child(4n+1) { background: var(--honey-soft); }
+ul.woocommerce-order-overview li:nth-child(4n+2), .woocommerce ul.order_details li:nth-child(4n+2) { background: var(--leaf-soft); }
+ul.woocommerce-order-overview li:nth-child(4n+3), .woocommerce ul.order_details li:nth-child(4n+3) { background: var(--wing); }
+ul.woocommerce-order-overview li:nth-child(4n+4), .woocommerce ul.order_details li:nth-child(4n+4) { background: var(--berry-soft); }
+.woocommerce-order-details .shop_table, .woocommerce-customer-details address { background: #fff !important; border: 2px solid var(--ink) !important; }
+
+/* ——— Ostatak sajta: malo više boje ——— */
+/* Kartice bez fotografije: šarena pločica umesto sive */
+.grid > .card:nth-child(4n+1) .soon-photo { background: var(--honey-soft); }
+.grid > .card:nth-child(4n+2) .soon-photo { background: var(--leaf-soft); }
+.grid > .card:nth-child(4n+3) .soon-photo { background: var(--wing); }
+.grid > .card:nth-child(4n+4) .soon-photo { background: var(--berry-soft); }
+.soon-photo img { animation: fx-float 5s ease-in-out infinite; }
+.soon-photo span { padding: 5px 10px; border-radius: var(--r-pill); background: rgba(255,255,255,.8); color: var(--ink); }
+
+/* Početna: ikonice prednosti u boji */
+.tpl-home .trust { background: #fff; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--honey); }
+.tpl-home .trust li .ti { border: 2px solid var(--ink); }
+.tpl-home .trust li:nth-child(1) .ti { background: var(--leaf-soft); }
+.tpl-home .trust li:nth-child(2) .ti { background: var(--honey-soft); }
+.tpl-home .trust li:nth-child(3) .ti { background: var(--wing); }
+.tpl-home .trust li:nth-child(4) .ti { background: var(--berry-soft); }
+
+/* Katalog: šarene ikonice kategorija */
+.tpl-katalog .kat:nth-of-type(5n+1) .kicon { background: var(--honey-soft); }
+.tpl-katalog .kat:nth-of-type(5n+2) .kicon { background: var(--leaf-soft); }
+.tpl-katalog .kat:nth-of-type(5n+3) .kicon { background: var(--wing); }
+.tpl-katalog .kat:nth-of-type(5n+4) .kicon { background: var(--berry-soft); }
+
+/* Pomoć: šarene činjenice, tačke uz naslove i meni tema */
+.tpl-pomoc .facts li:nth-child(1) { background: var(--leaf-soft); }
+.tpl-pomoc .facts li:nth-child(2) { background: var(--honey-soft); }
+.tpl-pomoc .facts li:nth-child(3) { background: var(--wing); }
+.tpl-pomoc .toc { background: var(--honey-soft); }
+.tpl-pomoc .content section { border: 2px solid transparent; transition: border-color .2s ease; }
+.tpl-pomoc .content section:target { border-color: var(--ink); box-shadow: var(--sticker); }
+.tpl-pomoc .content section .h2::before { content: ''; display: inline-block; width: 16px; height: 16px; margin-right: 12px; border: 2px solid var(--ink); border-radius: 50%; background: var(--honey); vertical-align: 2px; }
+.tpl-pomoc .content section:nth-of-type(4n+2) .h2::before { background: var(--leaf-soft); }
+.tpl-pomoc .content section:nth-of-type(4n+3) .h2::before { background: var(--wing); }
+.tpl-pomoc .content section:nth-of-type(4n+4) .h2::before { background: var(--berry-soft); }
+
+/* Po meri: koraci u bojama */
+.tpl-pomeri .how li:nth-child(1) { background: var(--honey-soft); }
+.tpl-pomeri .how li:nth-child(2) { background: var(--wing); }
+.tpl-pomeri .how li:nth-child(3) { background: var(--leaf-soft); }
+
+@media (max-width: 900px) {
+  .woocommerce-cart .woocommerce .cart-collaterals { grid-template-columns: 1fr; }
+  .woocommerce-cart .woocommerce .cart-collaterals .cart_totals { grid-column: 1; grid-row: 1; }
+  .cart-suggest { grid-row: 2; }
+  .shop-hero { padding: 22px 20px 26px; border-radius: 24px; box-shadow: 4px 4px 0 var(--ink); }
+  .sh-bee { width: 70px; right: 14px; top: 14px; }
+  .sh-b1 { right: -60px; }
+  .sh-b3 { display: none; }
+  .shop-hero .page-title { padding-right: 70px; }
+  .sh-sub { font-size: 15px; line-height: 22px; }
+  .shop-steps li { height: 36px; padding-right: 12px; font-size: 13px; }
+  .shop-steps .n { width: 24px; height: 24px; }
+  .woocommerce form.checkout #order_review_heading { box-shadow: none; }
+  .woocommerce-cart table.cart img, .bu-cart-prev, .bu-cart-ph { width: 80px !important; height: 80px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sh-bee, .ec-bee, .soon-photo img, .bu-freeship-bar span { animation: none; }
+}
+
+/* Dorade */
+.ec-bee { display: block; margin: 0 auto; }
+.woocommerce-cart .return-to-shop .button { border: 2px solid var(--ink); background: var(--honey); box-shadow: 4px 4px 0 var(--ink); }
+.bu-cart-prev svg:only-child { transform: scale(1.32); transform-origin: 50% 46%; }
+.bu-cart-prev svg + svg, .bu-cart-prev svg:first-child:not(:only-child) { transform: scale(1.12); }
+
+/* Korpa na telefonu: svaki proizvod kao mala kartica (slika levo, naziv, količina i iznos) */
+@media (max-width: 768px) {
+  .checkout-perks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .checkout-perks li { height: auto; min-height: 40px; padding: 6px 12px; font-size: 13px; line-height: 17px; }
+  .woocommerce-cart table.shop_table_responsive.cart tr.cart_item { display: grid; grid-template-columns: 84px minmax(0, 1fr) auto; grid-template-areas: "thumb name remove" "thumb qty sub"; gap: 10px 14px; align-items: start; padding: 18px 16px; border-top: 2px dashed var(--line); }
+  .woocommerce-cart table.shop_table_responsive.cart tr.cart_item:first-child { border-top: 0; }
+  .woocommerce-cart table.shop_table_responsive.cart tr.cart_item td { display: block; padding: 0 !important; border: 0 !important; text-align: left !important; background: transparent !important; }
+  .woocommerce-cart table.shop_table_responsive.cart tr.cart_item td::before { display: none; }
+  .woocommerce-cart table.cart td.product-thumbnail { display: block !important; grid-area: thumb; width: auto; }
+  .woocommerce-cart table.cart img, .bu-cart-prev, .bu-cart-ph { width: 80px !important; height: 80px !important; }
+  .woocommerce-cart table.cart td.product-name { grid-area: name; }
+  .woocommerce-cart table.shop_table.cart td.product-name a { font-size: 16px; line-height: 21px; }
+  .woocommerce-cart td.product-name dl.variation { font-size: 13px; line-height: 18px; text-align: left; }
+  .woocommerce-cart table.cart td.product-remove { grid-area: remove; justify-self: end; }
+  .woocommerce-cart table.cart td.product-price { display: none !important; }
+  .woocommerce-cart table.cart td.product-quantity { grid-area: qty; align-self: center; }
+  .woocommerce-cart .quantity .qty { width: 72px; min-height: 40px; }
+  .woocommerce-cart table.cart td.product-subtotal { grid-area: sub; align-self: center; justify-self: end; }
+  .woocommerce-cart table.shop_table.cart td.actions { display: block; padding: 14px 16px !important; text-align: center !important; }
+  .woocommerce-cart table.shop_table.cart td.actions .button { width: 100%; }
+  .cart-suggest { padding: 20px 16px; }
+  .cs-list a { grid-template-columns: 60px minmax(0, 1fr) auto; }
+  .cs-img { width: 60px; height: 60px; }
+}
+.woocommerce table.shop_table_responsive tr.bu-freeship td::before { display: none; }
+.woocommerce-cart .cart_totals table.shop_table tr:not(.bu-freeship) td, .woocommerce-cart .cart_totals table.shop_table tr:not(.bu-freeship) th { background: transparent !important; }
+
+/* Pomoć: naslovni blok kao na korpi */
+.tpl-pomoc .intro { position: relative; overflow: hidden; isolation: isolate; margin-top: 4px; padding: 30px 40px; border: 2px solid var(--ink); border-radius: 32px; background: linear-gradient(115deg, var(--pop-mint) 0%, #FFF5D6 50%, var(--pop-sky) 100%); box-shadow: var(--sticker); }
+.tpl-pomoc .intro::before { content: ''; position: absolute; z-index: -1; right: 220px; top: -100px; width: 220px; height: 220px; border-radius: 50%; background: var(--honey); opacity: .4; }
+.tpl-pomoc .intro::after { content: ''; position: absolute; z-index: -1; right: -40px; bottom: -60px; width: 150px; height: 150px; border-radius: 50%; background: var(--berry-soft); }
+.tpl-pomoc .facts li { border: 2px solid var(--ink); }
+@media (max-width: 900px) { .tpl-pomoc .intro { padding: 22px 20px; border-radius: 24px; box-shadow: 4px 4px 0 var(--ink); } }
+.tpl-404 .nf { border: 2px solid var(--ink); background: linear-gradient(115deg, var(--pop-honey) 0%, #FFF5D6 50%, var(--pop-sky) 100%); box-shadow: var(--sticker); }
+.tpl-doc .doc-panel, .tpl-page .doc-panel { border: 2px solid var(--ink); background: #fff; box-shadow: 6px 6px 0 var(--wing); }
+
+/* Korpa na računaru: proizvodi levo, „Ukupno u korpi” desno u istom redu, predlozi ispod proizvoda */
+@media (min-width: 1000px) {
+  .woocommerce-cart .page-content > .woocommerce { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 400px); column-gap: 28px; align-items: start; }
+  .woocommerce-cart .page-content > .woocommerce > * { grid-column: 1 / -1; }
+  .woocommerce-cart .page-content > .woocommerce > .woocommerce-notices-wrapper { grid-row: 1; }
+  .woocommerce-cart .page-content > .woocommerce > form.woocommerce-cart-form { grid-column: 1; grid-row: 2; }
+  .woocommerce-cart .woocommerce .cart-collaterals { display: contents; }
+  .woocommerce-cart .woocommerce .cart-collaterals .cart_totals { grid-column: 2; grid-row: 2 / span 2; position: sticky; top: 100px; margin: 0; }
+  .woocommerce-cart .woocommerce .cart-collaterals .cart-suggest { grid-column: 1; grid-row: 3; margin-bottom: 24px; }
+  .woocommerce-cart .cart_totals table.shop_table th { width: 34%; }
+}

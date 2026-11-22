@@ -1,0 +1,30 @@
+/* Bumbaru 3D: dodaci za konfigurator (koristi boje i oblike teme). */
+.chip .add { font-size: 12px; font-weight: 700; color: var(--leaf, #335A22); background: var(--leaf-soft, #D5E3C6); border-radius: 999px; padding: 1px 8px; margin-left: 2px; }
+.sw-star { width: 24px; height: 24px; border: 0; border-radius: 0; background: linear-gradient(135deg, var(--sf) 52%, var(--se) 52%); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+.star-chips .chip:has(input:checked) .sw-star { animation: bu-spin .5s cubic-bezier(.2,.9,.3,1.3); }
+@keyframes bu-spin { from { transform: rotate(-72deg) scale(.6); } to { transform: none; } }
+
+/* Jelka: veličina u pregledu */
+.tree-body, [data-tree-shadow] { transition: transform .5s cubic-bezier(.2,.9,.3,1.15); }
+.chip .add.minus { color: var(--wing-ink, #2B4F5E); background: var(--wing, #CFE3EC); }
+
+/* Zvezdica na jelki */
+.tree-star { transform-box: view-box; }
+.tree-star.pop .tree-star-in { animation: bu-star-pop .7s cubic-bezier(.2,.9,.3,1.35); transform-box: fill-box; transform-origin: center; }
+@keyframes bu-star-pop { 0% { transform: scale(.55) rotate(-30deg); } 60% { transform: scale(1.16) rotate(6deg); } 100% { transform: none; } }
+.tree-star .spark { transform-box: fill-box; transform-origin: center; animation: bu-twinkle 2.6s ease-in-out infinite; opacity: .2; }
+.tree-star .sp2 { animation-delay: -.9s; }
+.tree-star .sp3 { animation-delay: -1.7s; }
+.tree-star.pop .spark { animation: bu-burst .8s ease-out, bu-twinkle 2.6s ease-in-out .8s infinite; }
+@keyframes bu-twinkle { 0%, 100% { opacity: .15; transform: scale(.6); } 50% { opacity: 1; transform: scale(1.1); } }
+@keyframes bu-burst { 0% { opacity: 0; transform: scale(.2); } 40% { opacity: 1; transform: scale(1.6) rotate(45deg); } 100% { opacity: .3; transform: scale(.7); } }
+.tree-svg { overflow: visible; }
+
+/* Dugme dok se dodaje u korpu */
+.buy-btn.busy { opacity: .75; pointer-events: none; }
+.buy-btn.busy::after { content: ''; width: 16px; height: 16px; border: 2.5px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: bu-rot .7s linear infinite; }
+@keyframes bu-rot { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tree-star .spark, .tree-star.pop .tree-star-in, .tree-star.pop .spark, .star-chips .chip:has(input:checked) .sw-star { animation: none !important; opacity: 1; }
+}

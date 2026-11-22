@@ -1,0 +1,470 @@
+{
+ "SILUETE": [
+  {
+   "id": "klip",
+   "label": "Klip za kesice",
+   "viewBox": "0 0 100 172",
+   "symbol": "<path id=\"sil-klip-p\" fill-rule=\"evenodd\" d=\"M 8 27 A 19 19 0 0 1 46 27  L 46 27 L 49.2 29.5 L 46 32 L 49.2 34.5 L 46 37 L 49.2 39.5 L 46 42 L 49.2 44.5 L 46 47 L 49.2 49.5 L 46 52 L 49.2 54.5 L 46 57 L 49.2 59.5 L 46 62 L 49.2 64.5 L 46 67 L 49.2 69.5 L 46 72 L 49.2 74.5 L 46 77 L 49.2 79.5 L 46 82 L 46 86 C 39 86 36 92 36 97 C 36 104 42 108 50 108 C 58 108 64 104 64 97 C 64 92 61 86 54 86 L 54 82  L 54 82 L 50.8 79.5 L 54 77 L 50.8 74.5 L 54 72 L 50.8 69.5 L 54 67 L 50.8 64.5 L 54 62 L 50.8 59.5 L 54 57 L 50.8 54.5 L 54 52 L 50.8 49.5 L 54 47 L 50.8 44.5 L 54 42 L 50.8 39.5 L 54 37 L 50.8 34.5 L 54 32 L 50.8 29.5 L 54 27 A 19 19 0 0 1 92 27 L 92 130  L 88.6 131 L 88.6 134 L 92 135 L 92 136 L 88.6 137 L 88.6 140 L 92 141 L 92 142 L 88.6 143 L 88.6 146 L 92 147 L 92 148 L 88.6 149 L 88.6 152 L 92 153 L 92 154 L 88.6 155 L 88.6 158 L 92 159 L 92 160 L 92 160 Q 92 164 88 164 L 68 164 Q 64 164 64 160 L 64 128 Q 64 122 58 122 L 42 122 Q 36 122 36 128 L 36 160 Q 36 164 32 164 L 12 164 Q 8 164 8 160  L 8 160 L 11.4 159 L 11.4 156 L 8 155 L 8 154 L 11.4 153 L 11.4 150 L 8 149 L 8 148 L 11.4 147 L 11.4 144 L 8 143 L 8 142 L 11.4 141 L 11.4 138 L 8 137 L 8 136 L 11.4 135 L 11.4 132 L 8 131 L 8 27 Z M 19 30 A 8 8 0 0 1 35 30 L 35 80 A 8 8 0 0 1 19 80 Z M 65 30 A 8 8 0 0 1 81 30 L 81 80 A 8 8 0 0 1 65 80 Z\" />\n    <use href=\"#sil-klip-p\" transform=\"translate(0 6)\" fill=\"currentColor\" />\n    <use href=\"#sil-klip-p\" transform=\"translate(0 6)\" fill=\"#1d130c\" fill-opacity=\".38\" />\n    <use href=\"#sil-klip-p\" fill=\"currentColor\" />\n    <use href=\"#sil-klip-p\" fill=\"url(#sil-hl)\" />\n    <use href=\"#sil-klip-p\" fill=\"none\" stroke=\"#1d130c\" stroke-opacity=\".16\" stroke-width=\"1\" />"
+  },
+  {
+   "id": "stalak",
+   "label": "Privezak-stalak za telefon",
+   "viewBox": "0 0 100 172",
+   "symbol": "<path id=\"sil-stalak-p\" fill-rule=\"evenodd\" d=\"M 26 44 H 74 A 12 12 0 0 1 86 56 V 152 A 12 12 0 0 1 74 164 H 26 A 12 12 0 0 1 14 152 V 56 A 12 12 0 0 1 26 44 Z M 50 50 A 5.5 5.5 0 1 0 50 61 A 5.5 5.5 0 1 0 50 50 Z\" />\n    <use href=\"#sil-stalak-p\" transform=\"translate(0 7)\" fill=\"currentColor\" />\n    <use href=\"#sil-stalak-p\" transform=\"translate(0 7)\" fill=\"#1d130c\" fill-opacity=\".38\" />\n    <use href=\"#sil-stalak-p\" fill=\"currentColor\" />\n    <use href=\"#sil-stalak-p\" fill=\"url(#sil-hl)\" />\n    <use href=\"#sil-stalak-p\" fill=\"none\" stroke=\"#1d130c\" stroke-opacity=\".16\" stroke-width=\"1\" />\n    <rect x=\"25\" y=\"72\" width=\"50\" height=\"36\" rx=\"5\" fill=\"#1d130c\" fill-opacity=\".12\" />\n    <rect x=\"25\" y=\"72\" width=\"50\" height=\"36\" rx=\"5\" fill=\"none\" stroke=\"#fff\" stroke-opacity=\".22\" stroke-width=\"1.2\" />\n    <path d=\"M 20 118 H 80\" stroke=\"#1d130c\" stroke-opacity=\".35\" stroke-width=\"2\" />\n    <path d=\"M 20 120.5 H 80\" stroke=\"#fff\" stroke-opacity=\".25\" stroke-width=\"1\" />\n    <rect x=\"24\" y=\"126\" width=\"52\" height=\"30\" rx=\"5\" fill=\"#fff\" fill-opacity=\".08\" />\n    <rect x=\"11.5\" y=\"113\" width=\"5\" height=\"12\" rx=\"2.5\" fill=\"#1d130c\" fill-opacity=\".3\" />\n    <rect x=\"83.5\" y=\"113\" width=\"5\" height=\"12\" rx=\"2.5\" fill=\"#1d130c\" fill-opacity=\".3\" />\n    <path d=\"M 50 55.5 C 30 55 24 36 32 22 C 40 8 62 8 69 22 C 75 34 68 50 56 54\" fill=\"none\" stroke=\"url(#sil-metal)\" stroke-width=\"4.2\" stroke-linecap=\"round\" />"
+  }
+ ],
+ "SILUETE_DEFS": "\n  <linearGradient id=\"sil-hl\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fff\" stop-opacity=\".42\" /><stop offset=\".5\" stop-color=\"#fff\" stop-opacity=\".06\" /><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\" /></linearGradient>\n  <linearGradient id=\"sil-metal\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E6E8EA\" /><stop offset=\".5\" stop-color=\"#9AA1A8\" /><stop offset=\"1\" stop-color=\"#5F666D\" /></linearGradient>",
+ "CRTEZI": [
+  {
+   "id": "vaza",
+   "label": "Vaza sa tacnom i svećnjakom",
+   "delovi": [
+    "vaza, tacna i svećnjak"
+   ],
+   "viewBox": "0 0 400 400",
+   "svg": "\n  <defs><linearGradient id=\"cr-v-g\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#fff\" stop-opacity=\".28\" /><stop offset=\".38\" stop-color=\"#fff\" stop-opacity=\".04\" /><stop offset=\".75\" stop-color=\"#000\" stop-opacity=\".1\" /><stop offset=\"1\" stop-color=\"#000\" stop-opacity=\".32\" /></linearGradient><clipPath id=\"cr-v-telo\"><path d=\"M140 98 C 140 122 84 124 82 170 L 84 298 Q 85 312 100 312 L 220 312 Q 235 312 236 298 L 238 170 C 236 124 180 122 180 98 Z\" /></clipPath><clipPath id=\"cr-v-sv\"><rect x=\"262\" y=\"252\" width=\"84\" height=\"62\" rx=\"7\" /></clipPath>\n  <radialGradient id=\"cr-v-plamen\"><stop offset=\"0\" stop-color=\"#FFF6D6\" /><stop offset=\".5\" stop-color=\"#FFD66B\" /><stop offset=\"1\" stop-color=\"#FFB13B\" stop-opacity=\"0\" /></radialGradient></defs>\n  <ellipse cx=\"200\" cy=\"352\" rx=\"172\" ry=\"14\" style=\"fill:#1d130c;opacity:.14\" />\n  <rect x=\"34\" y=\"308\" width=\"332\" height=\"38\" rx=\"19\" style=\"fill:var(--c1)\" />\n  <rect x=\"34\" y=\"308\" width=\"332\" height=\"38\" rx=\"19\" style=\"fill:#1d130c;opacity:.28\" />\n  <rect x=\"34\" y=\"304\" width=\"332\" height=\"30\" rx=\"15\" style=\"fill:var(--c1)\" />\n  <rect x=\"46\" y=\"306\" width=\"308\" height=\"18\" rx=\"9\" style=\"fill:#1d130c;opacity:.08\" />\n  <rect x=\"34\" y=\"304\" width=\"332\" height=\"30\" rx=\"15\" style=\"fill:url(#cr-v-g)\" />\n  <path d=\"M140 98 C 140 122 84 124 82 170 L 84 298 Q 85 312 100 312 L 220 312 Q 235 312 236 298 L 238 170 C 236 124 180 122 180 98 Z\" style=\"fill:var(--c1)\" />\n  <g clip-path=\"url(#cr-v-telo)\"><rect x=\"86\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"90\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"95.5\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"99.5\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"105\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"109\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"114.5\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"118.5\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"124\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"128\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"133.5\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"137.5\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"143\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"147\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"152.5\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"156.5\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"162\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"166\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"171.5\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"175.5\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"181\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"185\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"190.5\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"194.5\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"200\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"204\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"209.5\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"213.5\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"219\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"223\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /><rect x=\"228.5\" y=\"96\" width=\"4\" height=\"218\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"232.5\" y=\"96\" width=\"1.6\" height=\"218\" style=\"fill:#fff;opacity:.22\" /></g>\n  <path d=\"M140 98 C 140 122 84 124 82 170 L 84 298 Q 85 312 100 312 L 220 312 Q 235 312 236 298 L 238 170 C 236 124 180 122 180 98 Z\" style=\"fill:url(#cr-v-g)\" />\n  <rect x=\"141\" y=\"72\" width=\"38\" height=\"30\" style=\"fill:var(--c1)\" /><rect x=\"141\" y=\"72\" width=\"38\" height=\"30\" style=\"fill:url(#cr-v-g)\" />\n  <rect x=\"133\" y=\"62\" width=\"54\" height=\"16\" rx=\"6\" style=\"fill:var(--c1)\" /><rect x=\"133\" y=\"62\" width=\"54\" height=\"16\" rx=\"6\" style=\"fill:url(#cr-v-g)\" />\n  <ellipse cx=\"160\" cy=\"64\" rx=\"19\" ry=\"3.5\" style=\"fill:#1d130c;opacity:.35\" />\n  <rect x=\"262\" y=\"252\" width=\"84\" height=\"62\" rx=\"7\" style=\"fill:var(--c1)\" />\n  <g clip-path=\"url(#cr-v-sv)\"><rect x=\"264\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"267.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"272\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"275.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"280\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"283.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"288\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"291.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"296\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"299.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"304\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"307.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"312\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"315.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"320\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"323.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"328\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"331.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"336\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"339.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /><rect x=\"344\" y=\"252\" width=\"3.4\" height=\"62\" style=\"fill:#1d130c;opacity:.13\" /><rect x=\"347.4\" y=\"252\" width=\"1.6\" height=\"62\" style=\"fill:#fff;opacity:.22\" /></g>\n  <rect x=\"262\" y=\"252\" width=\"84\" height=\"62\" rx=\"7\" style=\"fill:url(#cr-v-g)\" />\n  <rect x=\"268\" y=\"248\" width=\"72\" height=\"12\" rx=\"6\" style=\"fill:var(--c1)\" /><rect x=\"268\" y=\"248\" width=\"72\" height=\"12\" rx=\"6\" style=\"fill:#1d130c;opacity:.3\" />\n  <rect x=\"286\" y=\"244\" width=\"36\" height=\"10\" rx=\"4\" style=\"fill:#F4EFE6\" /><rect x=\"286\" y=\"244\" width=\"36\" height=\"10\" rx=\"4\" style=\"fill:#1d130c;opacity:.08\" />\n  <circle cx=\"304\" cy=\"226\" r=\"26\" style=\"fill:url(#cr-v-plamen);opacity:.9\" />\n  <path d=\"M304 210 C 298 220 297 230 304 236 C 311 230 310 220 304 210 Z\" style=\"fill:#FFC34A\" />\n  <path d=\"M304 218 C 301 224 301 230 304 233 C 307 230 307 224 304 218 Z\" style=\"fill:#FFF3C4\" />\n  <rect x=\"303\" y=\"234\" width=\"2\" height=\"8\" style=\"fill:#4E3E33\" />"
+  },
+  {
+   "id": "jelka",
+   "label": "Spiralna jelka sa zvezdom",
+   "delovi": [
+    "jelka",
+    "zvezda"
+   ],
+   "viewBox": "0 0 400 400",
+   "svg": "<defs><linearGradient id=\"cr-j-g\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#fff\" stop-opacity=\".28\" /><stop offset=\".38\" stop-color=\"#fff\" stop-opacity=\".04\" /><stop offset=\".75\" stop-color=\"#000\" stop-opacity=\".1\" /><stop offset=\"1\" stop-color=\"#000\" stop-opacity=\".32\" /></linearGradient><linearGradient id=\"cr-j-z\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fff\" stop-opacity=\".45\" /><stop offset=\".55\" stop-color=\"#fff\" stop-opacity=\"0\" /><stop offset=\"1\" stop-color=\"#000\" stop-opacity=\".3\" /></linearGradient></defs>\n  <clipPath id=\"cr-j-1\"><path d=\"M158 82 L 262 350 Q 158 366 54 350 Z\" /></clipPath>\n    <ellipse cx=\"158\" cy=\"362\" rx=\"109.2\" ry=\"12.5\" style=\"fill:#1d130c;opacity:.16\" />\n    <path d=\"M158 82 L 262 350 Q 158 366 54 350 Z\" style=\"fill:var(--c1)\" /><g clip-path=\"url(#cr-j-1)\"><path d=\"M50 102.5 Q 158 96.8 266 70.6 L 266 93.4 Q 158 119.7 50 125.4 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M50 102.5 Q 158 96.8 266 70.6\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 125.4 Q 158 119.7 266 93.4 L 266 116.2 Q 158 142.5 50 148.2 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M50 125.4 Q 158 119.7 266 93.4\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 148.2 Q 158 142.5 266 116.3 L 266 139.1 Q 158 165.3 50 171.1 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M50 148.2 Q 158 142.5 266 116.3\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 171.1 Q 158 165.3 266 139.1 L 266 161.9 Q 158 188.2 50 193.9 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M50 171.1 Q 158 165.3 266 139.1\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 193.9 Q 158 188.2 266 161.9 L 266 184.8 Q 158 211 50 216.7 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M50 193.9 Q 158 188.2 266 161.9\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 216.7 Q 158 211 266 184.8 L 266 207.6 Q 158 233.8 50 239.6 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M50 216.7 Q 158 211 266 184.8\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 239.6 Q 158 233.8 266 207.6 L 266 230.4 Q 158 256.7 50 262.4 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M50 239.6 Q 158 233.8 266 207.6\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 262.4 Q 158 256.7 266 230.4 L 266 253.3 Q 158 279.5 50 285.2 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M50 262.4 Q 158 256.7 266 230.4\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 285.2 Q 158 279.5 266 253.2 L 266 276.1 Q 158 302.3 50 308 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M50 285.2 Q 158 279.5 266 253.2\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 308.1 Q 158 302.3 266 276.1 L 266 298.9 Q 158 325.2 50 330.9 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M50 308.1 Q 158 302.3 266 276.1\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 330.9 Q 158 325.2 266 298.9 L 266 321.8 Q 158 348 50 353.7 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M50 330.9 Q 158 325.2 266 298.9\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 353.7 Q 158 348 266 321.8 L 266 344.6 Q 158 370.8 50 376.5 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M50 353.7 Q 158 348 266 321.8\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 376.6 Q 158 370.8 266 344.6 L 266 367.4 Q 158 393.7 50 399.4 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M50 376.6 Q 158 370.8 266 344.6\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 399.4 Q 158 393.7 266 367.4 L 266 390.3 Q 158 416.5 50 422.2 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M50 399.4 Q 158 393.7 266 367.4\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M50 422.2 Q 158 416.5 266 390.3 L 266 413.1 Q 158 439.3 50 445 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M50 422.2 Q 158 416.5 266 390.3\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /></g><path d=\"M158 82 L 262 350 Q 158 366 54 350 Z\" style=\"fill:url(#cr-j-g)\" />\n    <rect x=\"152.8\" y=\"75\" width=\"10.4\" height=\"25.3\" style=\"fill:var(--c2)\" />\n    <path d=\"M158 38.5 L165.4 56.3 L184.7 57.9 L170 70.5 L174.5 89.3 L158 79.2 L141.5 89.3 L146 70.5 L131.3 57.9 L150.6 56.3 Z\" style=\"fill:var(--c2);stroke:var(--c2);stroke-width:3;stroke-linejoin:round\" />\n    <path d=\"M158 38.5 L165.4 56.3 L184.7 57.9 L170 70.5 L174.5 89.3 L158 79.2 L141.5 89.3 L146 70.5 L131.3 57.9 L150.6 56.3 Z\" style=\"fill:url(#cr-j-z);stroke:#1d130c;stroke-opacity:.22;stroke-width:1.2;stroke-linejoin:round\" /><clipPath id=\"cr-j-2\"><path d=\"M304 196 L 366 350 Q 304 366 242 350 Z\" /></clipPath>\n    <ellipse cx=\"304\" cy=\"362\" rx=\"65.1\" ry=\"7.4\" style=\"fill:#1d130c;opacity:.16\" />\n    <path d=\"M304 196 L 366 350 Q 304 366 242 350 Z\" style=\"fill:var(--c1)\" /><g clip-path=\"url(#cr-j-2)\"><path d=\"M238 208 Q 304 204.7 370 189.3 L 370 202.7 Q 304 218 238 221.3 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M238 208 Q 304 204.7 370 189.3\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 221.3 Q 304 218 370 202.7 L 370 216 Q 304 231.3 238 234.7 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M238 221.3 Q 304 218 370 202.7\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 234.7 Q 304 231.3 370 216 L 370 229.3 Q 304 244.7 238 248 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M238 234.7 Q 304 231.3 370 216\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 248 Q 304 244.7 370 229.3 L 370 242.7 Q 304 258 238 261.3 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M238 248 Q 304 244.7 370 229.3\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 261.3 Q 304 258 370 242.7 L 370 256 Q 304 271.3 238 274.7 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M238 261.3 Q 304 258 370 242.7\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 274.7 Q 304 271.3 370 256 L 370 269.3 Q 304 284.7 238 288 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M238 274.7 Q 304 271.3 370 256\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 288 Q 304 284.7 370 269.3 L 370 282.7 Q 304 298 238 301.3 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M238 288 Q 304 284.7 370 269.3\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 301.3 Q 304 298 370 282.7 L 370 296 Q 304 311.3 238 314.7 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M238 301.3 Q 304 298 370 282.7\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 314.7 Q 304 311.3 370 296 L 370 309.3 Q 304 324.7 238 328 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M238 314.7 Q 304 311.3 370 296\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 328 Q 304 324.7 370 309.3 L 370 322.7 Q 304 338 238 341.3 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M238 328 Q 304 324.7 370 309.3\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 341.3 Q 304 338 370 322.7 L 370 336 Q 304 351.3 238 354.7 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M238 341.3 Q 304 338 370 322.7\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 354.7 Q 304 351.3 370 336 L 370 349.3 Q 304 364.7 238 368 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M238 354.7 Q 304 351.3 370 336\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 368 Q 304 364.7 370 349.3 L 370 362.7 Q 304 378 238 381.3 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M238 368 Q 304 364.7 370 349.3\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 381.3 Q 304 378 370 362.7 L 370 376 Q 304 391.3 238 394.7 Z\" style=\"fill:#1d130c;opacity:.06\" /><path d=\"M238 381.3 Q 304 378 370 362.7\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /><path d=\"M238 394.7 Q 304 391.3 370 376 L 370 389.3 Q 304 404.7 238 408 Z\" style=\"fill:#1d130c;opacity:.17\" /><path d=\"M238 394.7 Q 304 391.3 370 376\" style=\"fill:none;stroke:#fff;stroke-opacity:.28;stroke-width:1.6\" /></g><path d=\"M304 196 L 366 350 Q 304 366 242 350 Z\" style=\"fill:url(#cr-j-g)\" />\n    <rect x=\"300.9\" y=\"191.8\" width=\"6.2\" height=\"15.1\" style=\"fill:var(--c2)\" />\n    <path d=\"M304 170.1 L308.4 180.7 L319.9 181.6 L311.2 189.1 L313.8 200.3 L304 194.3 L294.2 200.3 L296.8 189.1 L288.1 181.6 L299.6 180.7 Z\" style=\"fill:var(--c2);stroke:var(--c2);stroke-width:3;stroke-linejoin:round\" />\n    <path d=\"M304 170.1 L308.4 180.7 L319.9 181.6 L311.2 189.1 L313.8 200.3 L304 194.3 L294.2 200.3 L296.8 189.1 L288.1 181.6 L299.6 180.7 Z\" style=\"fill:url(#cr-j-z);stroke:#1d130c;stroke-opacity:.22;stroke-width:1.2;stroke-linejoin:round\" />"
+  },
+  {
+   "id": "monstera",
+   "label": "Monstera u saksiji (podmetači)",
+   "delovi": [
+    "listovi",
+    "saksija"
+   ],
+   "viewBox": "0 0 400 400",
+   "svg": "<defs><linearGradient id=\"cr-m-g\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#fff\" stop-opacity=\".28\" /><stop offset=\".38\" stop-color=\"#fff\" stop-opacity=\".04\" /><stop offset=\".75\" stop-color=\"#000\" stop-opacity=\".1\" /><stop offset=\"1\" stop-color=\"#000\" stop-opacity=\".32\" /></linearGradient><clipPath id=\"cr-m-s\"><path d=\"M128 258 L 272 258 C 276 300 268 340 236 356 L 164 356 C 132 340 124 300 128 258 Z\" /></clipPath>\n  <linearGradient id=\"cr-m-l\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fff\" stop-opacity=\".25\" /><stop offset=\".6\" stop-color=\"#fff\" stop-opacity=\"0\" /><stop offset=\"1\" stop-color=\"#000\" stop-opacity=\".18\" /></linearGradient></defs>\n  <ellipse cx=\"200\" cy=\"360\" rx=\"160\" ry=\"12\" style=\"fill:#1d130c;opacity:.14\" />\n  <path d=\"M200 262 Q 136.4 267 94 236\" style=\"fill:none;stroke:var(--c1);stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 136.4 267 94 236\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.25;stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 263.6 265 306 232\" style=\"fill:none;stroke:var(--c1);stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 263.6 265 306 232\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.25;stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 148.6 247 114.4 196\" style=\"fill:none;stroke:var(--c1);stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 148.6 247 114.4 196\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.25;stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 252.6 245 287.6 192\" style=\"fill:none;stroke:var(--c1);stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 252.6 245 287.6 192\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.25;stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 169.5 228 149.2 158\" style=\"fill:none;stroke:var(--c1);stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 169.5 228 149.2 158\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.25;stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 231.7 227 252.8 156\" style=\"fill:none;stroke:var(--c1);stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 231.7 227 252.8 156\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.25;stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 200 220 200 142\" style=\"fill:none;stroke:var(--c1);stroke-width:4.5;stroke-linecap:round\" /><path d=\"M200 262 Q 200 220 200 142\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.25;stroke-width:4.5;stroke-linecap:round\" />\n  \n  <g transform=\"translate(96 236) scale(1 1) rotate(-78) scale(0.66)\">\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:var(--c1)\" />\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:url(#cr-m-l)\" />\n    <path d=\"M0 -3 L 0 -96\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.22;stroke-width:2.2;stroke-linecap:round\" />\n    <path d=\"M0 -60 L -30 -78 M0 -45 L -38 -45 M0 -28 L -30 -22 M0 -62 L 30 -80 M0 -46 L 38 -47 M0 -29 L 30 -24\" style=\"fill:none;stroke:#fff;stroke-opacity:.14;stroke-width:1.2;stroke-linecap:round\" />\n  </g>\n  <g transform=\"translate(304 232) scale(1 1) rotate(78) scale(0.66)\">\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:var(--c1)\" />\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:url(#cr-m-l)\" />\n    <path d=\"M0 -3 L 0 -96\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.22;stroke-width:2.2;stroke-linecap:round\" />\n    <path d=\"M0 -60 L -30 -78 M0 -45 L -38 -45 M0 -28 L -30 -22 M0 -62 L 30 -80 M0 -46 L 38 -47 M0 -29 L 30 -24\" style=\"fill:none;stroke:#fff;stroke-opacity:.14;stroke-width:1.2;stroke-linecap:round\" />\n  </g>\n  <g transform=\"translate(116 196) scale(1 1) rotate(-52) scale(0.78)\">\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:var(--c1)\" />\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:url(#cr-m-l)\" />\n    <path d=\"M0 -3 L 0 -96\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.22;stroke-width:2.2;stroke-linecap:round\" />\n    <path d=\"M0 -60 L -30 -78 M0 -45 L -38 -45 M0 -28 L -30 -22 M0 -62 L 30 -80 M0 -46 L 38 -47 M0 -29 L 30 -24\" style=\"fill:none;stroke:#fff;stroke-opacity:.14;stroke-width:1.2;stroke-linecap:round\" />\n  </g>\n  <g transform=\"translate(286 192) scale(1 1) rotate(52) scale(0.78)\">\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:var(--c1)\" />\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:url(#cr-m-l)\" />\n    <path d=\"M0 -3 L 0 -96\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.22;stroke-width:2.2;stroke-linecap:round\" />\n    <path d=\"M0 -60 L -30 -78 M0 -45 L -38 -45 M0 -28 L -30 -22 M0 -62 L 30 -80 M0 -46 L 38 -47 M0 -29 L 30 -24\" style=\"fill:none;stroke:#fff;stroke-opacity:.14;stroke-width:1.2;stroke-linecap:round\" />\n  </g>\n  <g transform=\"translate(150 158) scale(1 1) rotate(-24) scale(0.84)\">\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:var(--c1)\" />\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:url(#cr-m-l)\" />\n    <path d=\"M0 -3 L 0 -96\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.22;stroke-width:2.2;stroke-linecap:round\" />\n    <path d=\"M0 -60 L -30 -78 M0 -45 L -38 -45 M0 -28 L -30 -22 M0 -62 L 30 -80 M0 -46 L 38 -47 M0 -29 L 30 -24\" style=\"fill:none;stroke:#fff;stroke-opacity:.14;stroke-width:1.2;stroke-linecap:round\" />\n  </g>\n  <g transform=\"translate(252 156) scale(1 1) rotate(24) scale(0.84)\">\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:var(--c1)\" />\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:url(#cr-m-l)\" />\n    <path d=\"M0 -3 L 0 -96\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.22;stroke-width:2.2;stroke-linecap:round\" />\n    <path d=\"M0 -60 L -30 -78 M0 -45 L -38 -45 M0 -28 L -30 -22 M0 -62 L 30 -80 M0 -46 L 38 -47 M0 -29 L 30 -24\" style=\"fill:none;stroke:#fff;stroke-opacity:.14;stroke-width:1.2;stroke-linecap:round\" />\n  </g>\n  <g transform=\"translate(200 142) scale(1 1) rotate(0) scale(0.88)\">\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:var(--c1)\" />\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:url(#cr-m-l)\" />\n    <path d=\"M0 -3 L 0 -96\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.22;stroke-width:2.2;stroke-linecap:round\" />\n    <path d=\"M0 -60 L -30 -78 M0 -45 L -38 -45 M0 -28 L -30 -22 M0 -62 L 30 -80 M0 -46 L 38 -47 M0 -29 L 30 -24\" style=\"fill:none;stroke:#fff;stroke-opacity:.14;stroke-width:1.2;stroke-linecap:round\" />\n  </g>\n  <path d=\"M128 258 L 272 258 C 276 300 268 340 236 356 L 164 356 C 132 340 124 300 128 258 Z\" style=\"fill:var(--c2)\" /><g clip-path=\"url(#cr-m-s)\"><path d=\"M8 360 C 38 320 38 300 88 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M12 360 C 42 320 42 300 92 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M22 360 C 52 320 52 300 102 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M26 360 C 56 320 56 300 106 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M36 360 C 66 320 66 300 116 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M40 360 C 70 320 70 300 120 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M50 360 C 80 320 80 300 130 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M54 360 C 84 320 84 300 134 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M64 360 C 94 320 94 300 144 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M68 360 C 98 320 98 300 148 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M78 360 C 108 320 108 300 158 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M82 360 C 112 320 112 300 162 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M92 360 C 122 320 122 300 172 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M96 360 C 126 320 126 300 176 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M106 360 C 136 320 136 300 186 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M110 360 C 140 320 140 300 190 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M120 360 C 150 320 150 300 200 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M124 360 C 154 320 154 300 204 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M134 360 C 164 320 164 300 214 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M138 360 C 168 320 168 300 218 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M148 360 C 178 320 178 300 228 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M152 360 C 182 320 182 300 232 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M162 360 C 192 320 192 300 242 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M166 360 C 196 320 196 300 246 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M176 360 C 206 320 206 300 256 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M180 360 C 210 320 210 300 260 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M190 360 C 220 320 220 300 270 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M194 360 C 224 320 224 300 274 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M204 360 C 234 320 234 300 284 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M208 360 C 238 320 238 300 288 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M218 360 C 248 320 248 300 298 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M222 360 C 252 320 252 300 302 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M232 360 C 262 320 262 300 312 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M236 360 C 266 320 266 300 316 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M246 360 C 276 320 276 300 326 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M250 360 C 280 320 280 300 330 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M260 360 C 290 320 290 300 340 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M264 360 C 294 320 294 300 344 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M274 360 C 304 320 304 300 354 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M278 360 C 308 320 308 300 358 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M288 360 C 318 320 318 300 368 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M292 360 C 322 320 322 300 372 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /><path d=\"M302 360 C 332 320 332 300 382 250\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.13;stroke-width:4\" /><path d=\"M306 360 C 336 320 336 300 386 250\" style=\"fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4\" /></g><path d=\"M128 258 L 272 258 C 276 300 268 340 236 356 L 164 356 C 132 340 124 300 128 258 Z\" style=\"fill:url(#cr-m-g)\" />\n  <rect x=\"122\" y=\"250\" width=\"156\" height=\"16\" rx=\"8\" style=\"fill:var(--c2)\" /><rect x=\"122\" y=\"250\" width=\"156\" height=\"16\" rx=\"8\" style=\"fill:url(#cr-m-g)\" />\n  <ellipse cx=\"200\" cy=\"254\" rx=\"70\" ry=\"4\" style=\"fill:#1d130c;opacity:.35\" />\n  \n  <g transform=\"translate(118 366) scale(1 0.42) rotate(-100) scale(0.6)\">\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:var(--c1)\" />\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:url(#cr-m-l)\" />\n    <path d=\"M0 -3 L 0 -96\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.22;stroke-width:2.2;stroke-linecap:round\" />\n    <path d=\"M0 -60 L -30 -78 M0 -45 L -38 -45 M0 -28 L -30 -22 M0 -62 L 30 -80 M0 -46 L 38 -47 M0 -29 L 30 -24\" style=\"fill:none;stroke:#fff;stroke-opacity:.14;stroke-width:1.2;stroke-linecap:round\" />\n  </g>\n  <g transform=\"translate(282 366) scale(1 0.42) rotate(100) scale(0.6)\">\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:var(--c1)\" />\n    <path d=\"M0 0 C -42 -4 -58 -40 -47 -70 C -39 -93 -15 -105 0 -100 C 15 -105 39 -93 47 -70 C 58 -40 42 -4 0 0 Z M-44 -58 L -14 -52 L -14 -49 L -46 -50 Z M-46 -34 L -12 -34 L -12 -31 L -44 -26 Z M-36 -14 L -9 -20 L -9 -17 L -30 -8 Z M44 -62 L 14 -55 L 14 -52 L 46 -54 Z M47 -38 L 12 -37 L 12 -34 L 45 -30 Z M38 -17 L 9 -22 L 9 -19 L 32 -10 Z M-20 -78 a4 7 -20 1 0 0.1 0 Z M22 -80 a4 7 20 1 0 0.1 0 Z\" fill-rule=\"evenodd\" style=\"fill:url(#cr-m-l)\" />\n    <path d=\"M0 -3 L 0 -96\" style=\"fill:none;stroke:#1d130c;stroke-opacity:.22;stroke-width:2.2;stroke-linecap:round\" />\n    <path d=\"M0 -60 L -30 -78 M0 -45 L -38 -45 M0 -28 L -30 -22 M0 -62 L 30 -80 M0 -46 L 38 -47 M0 -29 L 30 -24\" style=\"fill:none;stroke:#fff;stroke-opacity:.14;stroke-width:1.2;stroke-linecap:round\" />\n  </g>"
+  }
+ ],
+ "STILOVI": [
+  {
+   "id": "pisana",
+   "label": "Pisana slova",
+   "font": "'Playball', 'Lobster', cursive",
+   "weight": 400,
+   "slojevi": [
+    "slova",
+    "osnova"
+   ],
+   "def": {
+    "slova": "roze",
+    "okvir": "bela",
+    "osnova": "bela"
+   },
+   "osnovaW": 0.34,
+   "okvirW": 0,
+   "debljina": 0.035,
+   "join": "round",
+   "usica": "krug",
+   "primer": "Milica"
+  },
+  {
+   "id": "bajka",
+   "label": "Bajkovita slova",
+   "font": "'Mogra', 'Lobster', cursive",
+   "weight": 400,
+   "slojevi": [
+    "slova",
+    "okvir",
+    "osnova"
+   ],
+   "def": {
+    "slova": "bela",
+    "okvir": "plava",
+    "osnova": "crna"
+   },
+   "osnovaW": 0.4,
+   "okvirW": 0.17,
+   "debljina": 0.02,
+   "join": "round",
+   "usica": "pilula",
+   "srca": true,
+   "sareno": "okvir",
+   "primer": "Dijana"
+  },
+  {
+   "id": "kockice",
+   "label": "Slova kao od kockica",
+   "font": "'Nunito', system-ui, sans-serif",
+   "weight": 900,
+   "italic": true,
+   "slojevi": [
+    "slova",
+    "okvir",
+    "osnova"
+   ],
+   "def": {
+    "slova": "bela",
+    "okvir": "zuta",
+    "osnova": "crvena"
+   },
+   "osnovaW": 0.46,
+   "okvirW": 0.23,
+   "ivica": {
+    "boja": "#1d1a17",
+    "w": 0.12
+   },
+   "debljina": 0.02,
+   "join": "round",
+   "usica": "krug",
+   "usicaR": 0.3,
+   "primer": "Jovan"
+  },
+  {
+   "id": "pikseli",
+   "label": "Pikselasta slova",
+   "font": "'Bumbaru Mine', 'Bumbaru Piksel', monospace",
+   "weight": 400,
+   "mala": true,
+   "slojevi": [
+    "slova",
+    "osnova"
+   ],
+   "def": {
+    "slova": "svetlozelena",
+    "okvir": "crna",
+    "osnova": "crna"
+   },
+   "osnovaW": 0.22,
+   "okvirW": 0,
+   "join": "miter",
+   "usica": "krug",
+   "karika": "#2a2a2a",
+   "pukotine": true,
+   "primer": "Miloš"
+  },
+  {
+   "id": "stampana",
+   "label": "Štampana slova",
+   "font": "'Montserrat', 'Geologica', system-ui, sans-serif",
+   "weight": 800,
+   "slojevi": [
+    "slova",
+    "osnova"
+   ],
+   "def": {
+    "slova": "crna",
+    "okvir": "bela",
+    "osnova": "bela"
+   },
+   "osnovaW": 0.36,
+   "okvirW": 0,
+   "join": "round",
+   "usica": "krug",
+   "karika": "#B9BEC4",
+   "primer": "Milica"
+  }
+ ],
+ "PRIMERI": [
+  "Milica",
+  "Luka",
+  "Sara",
+  "Vuk",
+  "Ena",
+  "Mateo",
+  "Dunja",
+  "Pavle"
+ ],
+ "SLOJ_LABEL": {
+  "slova": "Boja slova",
+  "okvir": "Boja okvira",
+  "osnova": "Boja osnove"
+ },
+ "SET_MODLICE": [
+  {
+   "id": "krst",
+   "naziv": "Krst",
+   "slika": "/img/set/krst.webp",
+   "w": 346,
+   "h": 380
+  },
+  {
+   "id": "golub-u-letu",
+   "naziv": "Golub u letu",
+   "slika": "/img/set/golub-u-letu.webp",
+   "w": 380,
+   "h": 295
+  },
+  {
+   "id": "golub-sa-grancicom",
+   "naziv": "Golub sa grančicom",
+   "slika": "/img/set/golub-sa-grancicom.webp",
+   "w": 380,
+   "h": 345
+  },
+  {
+   "id": "srecna-slava",
+   "naziv": "Срећна слава",
+   "slika": "/img/set/srecna-slava.webp",
+   "w": 380,
+   "h": 288
+  },
+  {
+   "id": "pecat-krst",
+   "naziv": "Pečat sa krstom",
+   "slika": "/img/set/pecat-krst.webp",
+   "w": 380,
+   "h": 358
+  },
+  {
+   "id": "pecat-okrugli",
+   "naziv": "Pečat okrugli",
+   "slika": "/img/set/pecat-okrugli.webp",
+   "w": 380,
+   "h": 363
+  },
+  {
+   "id": "knjiga",
+   "naziv": "Knjiga",
+   "slika": "/img/set/knjiga.webp",
+   "w": 368,
+   "h": 314
+  },
+  {
+   "id": "kukuruz",
+   "naziv": "Kukuruz",
+   "slika": "/img/set/kukuruz.webp",
+   "w": 270,
+   "h": 380
+  },
+  {
+   "id": "zito",
+   "naziv": "Žito",
+   "slika": "/img/set/zito.webp",
+   "w": 360,
+   "h": 380
+  },
+  {
+   "id": "cvet",
+   "naziv": "Cvet",
+   "slika": "/img/set/cvet.webp",
+   "w": 380,
+   "h": 355
+  },
+  {
+   "id": "grozdje",
+   "naziv": "Grožđe sa listom",
+   "slika": "/img/set/grozdje.webp",
+   "w": 316,
+   "h": 380
+  },
+  {
+   "id": "bure",
+   "naziv": "Bure",
+   "slika": "/img/set/bure.webp",
+   "w": 347,
+   "h": 380
+  },
+  {
+   "id": "pletenica",
+   "naziv": "Pletenica",
+   "slika": "/img/set/pletenica.webp",
+   "w": 380,
+   "h": 123
+  }
+ ],
+ "SET_MEDALJONI": [
+  {
+   "id": "sv-nikola",
+   "naziv": "Sv. Nikola",
+   "slika": "/img/set/med-nikola.webp"
+  },
+  {
+   "id": "sv-georgije",
+   "naziv": "Sv. Georgije",
+   "slika": "/img/set/med-georgije.webp"
+  },
+  {
+   "id": "arh-mihailo",
+   "naziv": "Arh. Mihailo",
+   "slika": "/img/set/med-mihailo.webp"
+  },
+  {
+   "id": "sv-jovan",
+   "naziv": "Sv. Jovan",
+   "slika": "/img/set/med-jovan.webp"
+  },
+  {
+   "id": "sv-dimitrije",
+   "naziv": "Sv. Dimitrije",
+   "slika": "/img/set/med-dimitrije.webp"
+  },
+  {
+   "id": "sv-sava",
+   "naziv": "Sv. Sava",
+   "slika": "/img/set/med-sava.webp"
+  }
+ ],
+ "SET_POCETNI": [
+  "krst",
+  "golub-u-letu",
+  "pecat-krst",
+  "pecat-okrugli",
+  "srecna-slava",
+  "knjiga",
+  "kukuruz",
+  "grozdje"
+ ],
+ "SET_POZADINA": "/img/set/pozadina.webp",
+ "MOTIVI": [
+  {
+   "id": "zvezde",
+   "label": "Zvezde i jelke",
+   "hy": 64
+  },
+  {
+   "id": "planine",
+   "label": "Planine i šuma",
+   "hy": 64
+  },
+  {
+   "id": "masna",
+   "label": "Mašna i cvet",
+   "hy": 71
+  },
+  {
+   "id": "grancica",
+   "label": "Grančica",
+   "hy": 64
+  }
+ ],
+ "PITANJA": [
+  {
+   "id": "za",
+   "naslov": "Za koga je poklon?",
+   "odgovori": [
+    {
+     "id": "dete",
+     "label": "Za dete",
+     "slika": "pikselasti-privezak-sa-imenom",
+     "ikonica": "star"
+    },
+    {
+     "id": "ona",
+     "label": "Za nju",
+     "slika": "rebrasta-vaza-sa-tacnom-i-svecnjakom",
+     "ikonica": "sparkle"
+    },
+    {
+     "id": "on",
+     "label": "Za njega",
+     "slika": "privezak-i-stalak-za-telefon",
+     "ikonica": "tool"
+    },
+    {
+     "id": "porodica",
+     "label": "Za celu porodicu",
+     "slika": "porodicni-set-ukrasa-sa-imenima",
+     "ikonica": "gift"
+    },
+    {
+     "id": "kolege",
+     "label": "Za kolege ili firmu",
+     "slika": "mini-jelka-za-sto",
+     "ikonica": "box"
+    },
+    {
+     "id": "dom",
+     "label": "Za sebe i dom",
+     "slika": "podmetaci-monstera-sa-saksijom",
+     "ikonica": "bulb"
+    }
+   ]
+  },
+  {
+   "id": "povod",
+   "naslov": "Koji je povod?",
+   "odgovori": [
+    {
+     "id": "nova-godina",
+     "label": "Nova godina",
+     "slika": "novogodisnja-kucica-sa-led-svecicom",
+     "ikonica": "star"
+    },
+    {
+     "id": "rodjendan",
+     "label": "Rođendan",
+     "slika": "privezak-sa-imenom",
+     "ikonica": "gift"
+    },
+    {
+     "id": "useljenje",
+     "label": "Useljenje, novi stan",
+     "slika": "rebrasta-vaza-sa-tacnom-i-svecnjakom",
+     "ikonica": "bulb"
+    },
+    {
+     "id": "paznja",
+     "label": "Mali znak pažnje",
+     "slika": "irvas-lutkica-pleteni-izgled",
+     "ikonica": "sparkle"
+    }
+   ]
+  },
+  {
+   "id": "stil",
+   "naslov": "Šta bi ga najviše obradovalo?",
+   "odgovori": [
+    {
+     "id": "ime",
+     "label": "Nešto sa imenom",
+     "slika": "ukras-za-jelku-sa-imenom",
+     "ikonica": "pen"
+    },
+    {
+     "id": "korisno",
+     "label": "Nešto korisno",
+     "slika": "klipovi-za-kesice",
+     "ikonica": "tool"
+    },
+    {
+     "id": "lepo",
+     "label": "Lepa dekoracija",
+     "slika": "spiralna-jelka-sa-zvezdom",
+     "ikonica": "sparkle"
+    },
+    {
+     "id": "zabavno",
+     "label": "Nešto šareno i zabavno",
+     "slika": "snesko-lutkica-pleteni-izgled",
+     "ikonica": "palette"
+    }
+   ]
+  },
+  {
+   "id": "budzet",
+   "naslov": "Koliko želite da potrošite?",
+   "odgovori": [
+    {
+     "id": "do-500",
+     "label": "Do 500 din",
+     "ikonica": "cash"
+    },
+    {
+     "id": "do-1500",
+     "label": "500 do 1.500 din",
+     "ikonica": "cash"
+    },
+    {
+     "id": "preko-1500",
+     "label": "Preko 1.500 din",
+     "ikonica": "gift"
+    },
+    {
+     "id": "svejedno",
+     "label": "Svejedno",
+     "ikonica": "sparkle"
+    }
+   ]
+  }
+ ]
+}

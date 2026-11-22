@@ -1,0 +1,61 @@
+/* Bumbaru 3D: administracija, u bojama sajta. */
+.bu-admin { --honey: #F5C137; --honey-soft: #F5E2A8; --ink: #312018; --muted: #6E6155; --paper: #FBF8F3; --leaf-soft: #D5E3C6; --wing: #CFE3EC; --berry: #9A3420; max-width: 1240px; }
+.bu-admin h1 { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+.bu-admin h1 img { width: 40px; height: 40px; }
+.bu-admin .bu-lead { font-size: 14px; color: var(--muted); max-width: 760px; }
+.bu-card { background: #fff; border: 1px solid #E4DDD2; border-radius: 16px; padding: 20px 24px; margin: 16px 0; box-shadow: 0 1px 0 rgba(49,32,24,.04); }
+.bu-card h2 { margin-top: 0; font-size: 17px; }
+.bu-card.honey { background: var(--honey-soft); border-color: #EAD28A; }
+.bu-card.leaf { background: var(--leaf-soft); border-color: #BCD0A9; }
+.bu-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.bu-grid > .bu-card { margin: 0; }
+@media (max-width: 1100px) { .bu-grid { grid-template-columns: 1fr; } }
+.bu-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+.bu-row select { min-width: 220px; }
+.bu-row input[type=number] { width: 96px; }
+.bu-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px 16px; }
+.bu-fields label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: 13px; }
+.bu-fields label small { font-weight: 400; color: var(--muted); }
+.bu-fields input, .bu-fields select { width: 100%; }
+.bu-calc h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 18px 0 8px; }
+.bu-calc h3:first-child { margin-top: 0; }
+.bu-out { background: var(--honey-soft); border-radius: 14px; padding: 16px 18px; }
+.bu-out table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.bu-out th { text-align: left; font-weight: 400; color: var(--muted); padding: 4px 0; }
+.bu-out td { text-align: right; padding: 4px 0; font-variant-numeric: tabular-nums; }
+.bu-out tr.sum th, .bu-out tr.sum td { font-weight: 700; color: var(--ink); border-top: 1px solid rgba(49,32,24,.2); padding-top: 8px; }
+.bu-price { font-size: 30px; font-weight: 800; color: var(--ink); margin: 10px 0 2px; }
+.bu-profit { font-size: 13px; color: var(--muted); }
+.bu-btn.button { border-radius: 999px; border: 2px solid var(--ink); color: var(--ink); background: var(--honey); font-weight: 700; min-height: 36px; padding: 0 16px; }
+.bu-btn.button:hover, .bu-btn.button:focus { background: #DDA81C; color: var(--ink); border-color: var(--ink); }
+.bu-btn.button.secondary { background: #fff; }
+.bu-table { width: 100%; border-collapse: collapse; }
+.bu-table th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 8px 6px; border-bottom: 1px solid #E4DDD2; }
+.bu-table td { padding: 8px 6px; border-bottom: 1px solid #F0EBE3; vertical-align: middle; }
+.bu-table input[type=text], .bu-table input[type=number], .bu-table select { width: 100%; }
+.bu-table .w-s { width: 110px; }
+.bu-table .w-xs { width: 60px; }
+.bu-chip-preview { display: inline-block; width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(49,32,24,.25); vertical-align: middle; }
+.bu-table input[type=color] { width: 54px; height: 32px; padding: 2px; border-radius: 8px; }
+.bu-del { color: var(--berry); text-decoration: none; font-size: 18px; }
+.bu-note { font-size: 12px; color: var(--muted); }
+.bu-status li { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+.bu-status .ok { color: #335A22; font-weight: 700; }
+.bu-status .no { color: var(--berry); font-weight: 700; }
+.bu-bar { display: none; height: 12px; background: #EFE8DC; border-radius: 999px; overflow: hidden; margin: 12px 0; max-width: 520px; }
+.bu-bar span { display: block; height: 100%; width: 0; background: var(--honey); transition: width .3s; }
+.bu-log { display: none; max-height: 220px; overflow: auto; background: var(--paper); border-radius: 10px; padding: 10px 14px 10px 30px; font-size: 13px; max-width: 520px; }
+.bu-log .err { color: var(--berry); font-weight: 700; }
+.bu-checks { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.bu-checks label { display: inline-flex; align-items: center; gap: 6px; }
+.bu-checks .sw { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,.2); display: inline-block; }
+#bumbaru_product_data .form-field textarea, #bumbaru_config_data .form-field textarea { min-height: 96px; }
+#bumbaru_product_data .form-field .description, #bumbaru_config_data .form-field .description { display: block; clear: both; margin-left: 0; }
+#bumbaru_config_data .bu-checks { padding: 4px 0; }
+.bu-mini-preview svg { width: 120px; height: 120px; background: radial-gradient(circle at 50% 40%, #F7F3EC, #E4DDD2 75%); border-radius: 12px; display: block; margin: 6px 0; }
+.bu-sizes-tip { background: var(--wing); border-radius: 10px; padding: 8px 12px; font-size: 12px; }
+#bumbaru_config_data p.bu-checks { padding: 4px 20px 8px 162px !important; margin: 0; display: flex; }
+#bumbaru_config_data .bu-checks label { float: none !important; width: auto !important; margin: 0 !important; padding: 0 !important; display: inline-flex !important; align-items: center; gap: 6px; font-weight: 500; line-height: 22px; }
+#bumbaru_config_data .bu-checks input[type=checkbox] { float: none !important; margin: 0 !important; width: 16px; }
+#bumbaru_config_data .bu-mini-preview svg { width: 160px; height: 160px; }
+@media (max-width: 1280px) { #bumbaru_config_data p.bu-checks { padding-left: 12px !important; } }
