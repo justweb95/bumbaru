@@ -75,55 +75,150 @@
   }
 
   /* ——— Porudžbine ——— */
+  var tab = 'nove';
+  function pendingRows(o) {
+    var n = 0;
+    o.items.forEach(function (it) { if (!it.skinuto) n += it.rows.length; });
+    return n;
+  }
+  function visibleOrders() {
+    return C.orders.filter(function (o) { return tab === 'sve' || (o.aktivna && pendingRows(o)); });
+  }
   function renderOrders() {
-    var box = $('[data-gen-orders]');
-    if (!C.orders.length) { box.innerHTML = '<p>Još nema porudžbina sa ukrasima.</p>'; return; }
-    box.innerHTML = C.orders.map(function (o) {
+    var box = $('[data-gen-orders]'), list = visibleOrders();
+    var nove = 0, noveItems = 0;
+    C.orders.forEach(function (o) { if (o.aktivna) { var k = pendingRows(o); nove += k; if (k) noveItems++; } });
+    $('[data-gen-ceka]').textContent = nove ? '(' + nove + ')' : '';
+    var all = $('[data-gen-allnew]');
+    all.hidden = !(tab === 'nove' && nove > 1 && noveItems > 0);
+    $('[data-gen-skini-sve]').textContent = 'Skini sve nove u jedan 3MF (' + nove + ' ' + (nove === 1 ? 'ukras' : 'ukrasa') + ')';
+    if (!list.length) {
+      box.innerHTML = '<p class="bg-empty">' + (tab === 'nove' ? 'Nema novih ukrasa za štampu. 🐝' : 'Još nema porudžbina sa ukrasima.') + '</p>';
+      return;
+    }
+    box.innerHTML = list.map(function (o) {
+      var items = o.items.filter(function (it) { return tab === 'sve' || !it.skinuto; });
       return '<div class="bg-order"><div class="bg-order-h"><strong>#' + esc(o.broj) + '</strong> ' + esc(o.kupac) + ' <span>' + esc(o.datum) + ' · ' + esc(o.status) + '</span></div>'
-        + o.items.map(function (it) {
+        + items.map(function (it) {
           var names = it.rows.map(function (r) { return r.ime; }).join(', ');
-          return '<button type="button" class="bg-item" data-o="' + o.id + '" data-i="' + it.id + '"><b>' + esc(it.naziv) + (it.kom > 1 ? ' × ' + it.kom : '') + '</b><small>' + esc(names) + '</small></button>';
+          return '<div class="bg-item' + (it.skinuto ? ' is-done' : '') + '" data-o="' + o.id + '" data-i="' + it.id + '">'
+            + '<div class="bg-item-t"><b>' + esc(it.naziv) + (it.kom > 1 ? ' × ' + it.kom : '') + '</b>'
+            + (it.skinuto ? '<span class="bg-badge bg-badge-done">Skinuto ' + esc(it.skinuto) + '</span>' : '<span class="bg-badge bg-badge-new">Novo</span>') + '</div>'
+            + '<small>' + esc(names) + '</small>'
+            + '<div class="bg-item-a"><button type="button" class="button button-small button-primary" data-skini>' + (it.skinuto ? 'Skini ponovo' : 'Skini 3MF') + '</button>'
+            + '<button type="button" class="button button-small" data-otvori>Otvori</button></div></div>';
         }).join('')
-        + (o.items.length > 1 || o.items[0].rows.length > 1 ? '<button type="button" class="button button-small bg-all" data-o="' + o.id + '">Cela porudžbina u jedan 3MF</button>' : '')
+        + (items.length > 1 ? '<button type="button" class="button button-small bg-all" data-o="' + o.id + '" data-skini-sve-o>Skini celu porudžbinu u jedan 3MF</button>' : '')
         + '</div>';
     }).join('');
   }
   function findOrder(id) { return C.orders.filter(function (o) { return o.id === id; })[0]; }
+  /** Ukrasi i oznake stavki za porudžbinu (iid = jedna stavka, 0 = sve; samoNove = samo neskinute). */
+  function collect(o, iid, samoNove) {
+    var list = [], keys = [];
+    o.items.forEach(function (it) {
+      if (iid && it.id !== iid) return;
+      if (samoNove && it.skinuto) return;
+      it.rows.forEach(function (r) { list.push(r); });
+      keys.push(o.id + ':' + it.id);
+    });
+    return { rows: list, keys: keys };
+  }
   function loadItem(oid, iid) {
     var o = findOrder(oid);
     if (!o) return false;
-    var list = [];
-    o.items.forEach(function (it) {
-      if (iid && it.id !== iid) return;
-      it.rows.forEach(function (r) { list.push(r); });
-    });
-    if (!list.length) return false;
-    root.querySelectorAll('.bg-item,.bg-all').forEach(function (b) { b.classList.toggle('is-on', +b.getAttribute('data-o') === oid && (!iid || +b.getAttribute('data-i') === iid) && (!!iid === b.classList.contains('bg-item'))); });
-    setRows(list, '#' + o.broj + (o.kupac ? ' (' + o.kupac + ')' : ''));
+    var c = collect(o, iid, false);
+    if (!c.rows.length) return false;
+    setRows(c.rows, '#' + o.broj + (o.kupac ? ' (' + o.kupac + ')' : ''));
     src = { order: o.broj };
     return true;
   }
+  // Oznaka „Skinuto” na serveru i u listi.
+  function mark(keys) {
+    if (!keys.length) return;
+    var body = new FormData();
+    body.append('action', 'bumbaru_gen_mark');
+    body.append('_ajax_nonce', C.nonce);
+    keys.forEach(function (k) { body.append('stavke[]', k); });
+    fetch(C.ajax, { method: 'POST', body: body, credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || !j.success) return;
+      j.data.stavke.forEach(function (k) {
+        var p = k.split(':'), o = findOrder(+p[0]);
+        if (o) o.items.forEach(function (it) { if (it.id === +p[1]) it.skinuto = j.data.skinuto; });
+      });
+      document.querySelectorAll('.bu-gen-count').forEach(function (el) {
+        el.textContent = j.data.ceka;
+        if (!j.data.ceka) el.parentNode.style.display = 'none';
+      });
+      renderOrders();
+    });
+  }
+  function quick(c, base) {
+    if (!font || !defs) { $('[data-gen-err]').textContent = 'Font i motivi se još učitavaju, sačekajte sekund.'; return; }
+    try {
+      var built = buildItems(c.rows);
+      save(G.to3MF(built, { naslov: base }), base + '.3mf', 'model/3mf');
+      mark(c.keys);
+    } catch (ex) {
+      $('[data-gen-err]').textContent = 'Greška: ' + ex.message;
+    }
+  }
+  function nameFor(o, c) {
+    return 'porudzbina-' + o.broj + '-' + (c.rows.length === 1 ? 'ukras-' + slug(c.rows[0].ime) + '-' + c.rows[0].motiv : c.rows.length + '-ukrasa');
+  }
   $('[data-gen-orders]').addEventListener('click', function (e) {
-    var b = e.target.closest('.bg-item,.bg-all');
-    if (b) loadItem(+b.getAttribute('data-o'), b.classList.contains('bg-item') ? +b.getAttribute('data-i') : 0);
+    var card = e.target.closest('[data-o]');
+    if (!card) return;
+    var o = findOrder(+card.getAttribute('data-o')), iid = +card.getAttribute('data-i') || 0;
+    if (!o) return;
+    if (e.target.closest('[data-skini]') || e.target.closest('[data-skini-sve-o]')) {
+      var c = collect(o, iid, false);
+      quick(c, nameFor(o, c));
+    } else if (e.target.closest('[data-otvori]')) {
+      loadItem(o.id, iid);
+      root.querySelectorAll('.bg-item').forEach(function (b) { b.classList.toggle('is-on', b === card); });
+      $('[data-gen-rows]').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+  $('[data-gen-skini-sve]').addEventListener('click', function () {
+    var rowsAll = [], keys = [];
+    C.orders.forEach(function (o) {
+      if (!o.aktivna) return;
+      var c = collect(o, 0, true);
+      rowsAll = rowsAll.concat(c.rows); keys = keys.concat(c.keys);
+    });
+    if (!rowsAll.length) return;
+    var d = new Date(), dd = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    quick({ rows: rowsAll, keys: keys }, 'za-stampu-' + dd + '-' + rowsAll.length + '-ukrasa');
+  });
+  root.querySelectorAll('[data-gen-tab]').forEach(function (t) {
+    t.addEventListener('click', function () {
+      tab = t.getAttribute('data-gen-tab');
+      root.querySelectorAll('[data-gen-tab]').forEach(function (x) { x.classList.toggle('is-on', x === t); });
+      renderOrders();
+    });
   });
 
   /* ——— Pravljenje modela ——— */
   function schedule() { clearTimeout(timer); timer = setTimeout(rebuild, 250); }
+  /** Ukrasi (redovi) → gotovi 3D predmeti raspoređeni po ploči. */
+  function buildItems(list) {
+    var d = dims(), model = G.models[$('[data-gen-model]').value] || G.models.ukras, out = [];
+    list.forEach(function (r) {
+      var bi = r.bojaImena === 'ista' ? null : color(r.bojaImena);
+      out.push(model.build({
+        motiv: r.motiv, ime: r.ime, precnik: d.precnik, debljina: d.debljina, izdignuto: d.izdignuto, vrh: d.vrh,
+        boja: color(r.boja), bojaImena: bi,
+      }, { defs: defs, font: font, fitName: window.BumbaruOrnament.fitName }));
+    });
+    return G.arrange(out, 6, d.ploca);
+  }
   function rebuild() {
     if (!font || !defs) return;
-    var err = $('[data-gen-err]'), list = rows(), d = dims(), model = G.models[$('[data-gen-model]').value] || G.models.ukras;
+    var err = $('[data-gen-err]'), d = dims();
     err.textContent = '';
-    items = [];
     try {
-      list.forEach(function (r) {
-        var bi = r.bojaImena === 'ista' ? null : color(r.bojaImena);
-        items.push(model.build({
-          motiv: r.motiv, ime: r.ime, precnik: d.precnik, debljina: d.debljina, izdignuto: d.izdignuto, vrh: d.vrh,
-          boja: color(r.boja), bojaImena: bi,
-        }, { defs: defs, font: font, fitName: window.BumbaruOrnament.fitName }));
-      });
-      G.arrange(items, 6, d.ploca);
+      items = buildItems(rows());
     } catch (ex) {
       err.textContent = 'Greška: ' + ex.message;
       items = [];
@@ -190,7 +285,11 @@
     font = r[0]; defs = r[1];
     var sel = C.sel || {};
     if (sel.order && loadItem(sel.order, sel.item)) {
-      if (sel.download === '3mf') export3MF();
+      if (sel.download === '3mf') {
+        export3MF();
+        var so = findOrder(sel.order);
+        if (so) mark(collect(so, sel.item, false).keys);
+      }
     } else {
       rebuild();
     }

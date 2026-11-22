@@ -57,46 +57,143 @@ function bumbaru_gen_item_rows( $item ) {
 	return $rows;
 }
 
-/** Poslednje porudžbine sa ukrasima, za listu u generatoru. */
-function bumbaru_gen_orders( $limit = 40 ) {
+/** Statusi porudžbina koje čekaju izradu (ulaze u „Za štampu” i u brojač u meniju). */
+function bumbaru_gen_active_statuses() {
+	return apply_filters( 'bumbaru_gen_active_statuses', array( 'pending', 'on-hold', 'processing' ) );
+}
+
+/** Jedna porudžbina za generator: stavke sa ukrasima, sa oznakom kad je model skinut. */
+function bumbaru_gen_order_data( $o ) {
+	$items = array();
+	foreach ( $o->get_items() as $iid => $it ) {
+		$rows = bumbaru_gen_item_rows( $it );
+		if ( $rows ) {
+			$sk      = (string) $it->get_meta( '_bu_gen_skinuto' );
+			$items[] = array(
+				'id'      => (int) $iid,
+				'naziv'   => $it->get_name(),
+				'kom'     => (int) $it->get_quantity(),
+				'rows'    => $rows,
+				'skinuto' => $sk ? mysql2date( 'j. n. \u H:i', $sk ) : '',
+			);
+		}
+	}
+	if ( ! $items ) {
+		return null;
+	}
+	return array(
+		'id'      => $o->get_id(),
+		'broj'    => $o->get_order_number(),
+		'kupac'   => trim( $o->get_billing_first_name() . ' ' . $o->get_billing_last_name() ),
+		'datum'   => $o->get_date_created() ? $o->get_date_created()->date_i18n( 'j. n. Y. \u H:i' ) : '',
+		'status'  => wc_get_order_status_name( $o->get_status() ),
+		'aktivna' => in_array( $o->get_status(), bumbaru_gen_active_statuses(), true ),
+		'items'   => $items,
+	);
+}
+
+/** Poslednje porudžbine sa ukrasima, za listu u generatoru (bez otkazanih, vraćenih i neuspelih). */
+function bumbaru_gen_orders( $limit = 60 ) {
 	if ( ! function_exists( 'wc_get_orders' ) ) {
 		return array();
 	}
+	$statuses = array_diff( array_map( function ( $s ) {
+		return 0 === strpos( $s, 'wc-' ) ? substr( $s, 3 ) : $s;
+	}, array_keys( wc_get_order_statuses() ) ), array( 'cancelled', 'refunded', 'failed', 'checkout-draft' ) );
 	$orders = wc_get_orders( array(
 		'limit'   => $limit * 2,
 		'orderby' => 'date',
 		'order'   => 'DESC',
-		'status'  => array_keys( wc_get_order_statuses() ),
+		'status'  => array_values( $statuses ),
 	) );
 	$out = array();
 	foreach ( $orders as $o ) {
 		if ( ! is_a( $o, 'WC_Order' ) ) {
 			continue;
 		}
-		$items = array();
-		foreach ( $o->get_items() as $iid => $it ) {
-			$rows = bumbaru_gen_item_rows( $it );
-			if ( $rows ) {
-				$items[] = array( 'id' => (int) $iid, 'naziv' => $it->get_name(), 'kom' => (int) $it->get_quantity(), 'rows' => $rows );
-			}
+		$d = bumbaru_gen_order_data( $o );
+		if ( $d ) {
+			$out[] = $d;
 		}
-		if ( ! $items ) {
-			continue;
-		}
-		$out[] = array(
-			'id'     => $o->get_id(),
-			'broj'   => $o->get_order_number(),
-			'kupac'  => trim( $o->get_billing_first_name() . ' ' . $o->get_billing_last_name() ),
-			'datum'  => $o->get_date_created() ? $o->get_date_created()->date_i18n( 'j. n. Y.' ) : '',
-			'status' => wc_get_order_status_name( $o->get_status() ),
-			'items'  => $items,
-		);
 		if ( count( $out ) >= $limit ) {
 			break;
 		}
 	}
 	return $out;
 }
+
+/** Koliko ukrasa čeka štampu (stavke u aktivnim porudžbinama čiji model još nije skinut). Kešira se. */
+function bumbaru_gen_pending_count() {
+	$n = get_transient( 'bumbaru_gen_pending' );
+	if ( false !== $n ) {
+		return (int) $n;
+	}
+	$n = 0;
+	if ( function_exists( 'wc_get_orders' ) ) {
+		foreach ( wc_get_orders( array( 'limit' => 200, 'status' => bumbaru_gen_active_statuses(), 'orderby' => 'date', 'order' => 'DESC' ) ) as $o ) {
+			if ( ! is_a( $o, 'WC_Order' ) ) {
+				continue;
+			}
+			foreach ( $o->get_items() as $it ) {
+				if ( ! $it->get_meta( '_bu_gen_skinuto' ) ) {
+					$n += count( bumbaru_gen_item_rows( $it ) );
+				}
+			}
+		}
+	}
+	set_transient( 'bumbaru_gen_pending', $n, HOUR_IN_SECONDS );
+	return $n;
+}
+
+function bumbaru_gen_flush_count() {
+	delete_transient( 'bumbaru_gen_pending' );
+}
+add_action( 'woocommerce_new_order', 'bumbaru_gen_flush_count' );
+add_action( 'woocommerce_checkout_order_processed', 'bumbaru_gen_flush_count' );
+add_action( 'woocommerce_order_status_changed', 'bumbaru_gen_flush_count' );
+add_action( 'woocommerce_update_order', 'bumbaru_gen_flush_count' );
+
+// Model je skinut: oznaka na stavkama i beleška u porudžbini (status porudžbine se ne menja).
+add_action( 'wp_ajax_bumbaru_gen_mark', function () {
+	check_ajax_referer( 'bumbaru_gen' );
+	if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		wp_send_json_error( 'Nemate dozvolu.', 403 );
+	}
+	$pairs = isset( $_POST['stavke'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['stavke'] ) ) : array();
+	$by    = array();
+	foreach ( $pairs as $p ) {
+		if ( preg_match( '/^(\d+):(\d+)$/', $p, $m ) ) {
+			$by[ (int) $m[1] ][] = (int) $m[2];
+		}
+	}
+	$now  = current_time( 'mysql' );
+	$done = array();
+	foreach ( $by as $oid => $iids ) {
+		$o = wc_get_order( $oid );
+		if ( ! $o ) {
+			continue;
+		}
+		$names = array();
+		foreach ( $iids as $iid ) {
+			$it = $o->get_item( $iid );
+			if ( ! $it || ! bumbaru_gen_item_rows( $it ) ) {
+				continue;
+			}
+			$first = ! $it->get_meta( '_bu_gen_skinuto' );
+			$it->update_meta_data( '_bu_gen_skinuto', $now );
+			$it->save();
+			if ( $first ) {
+				$names = array_merge( $names, wp_list_pluck( bumbaru_gen_item_rows( $it ), 'ime' ) );
+			}
+			$done[] = $oid . ':' . $iid;
+		}
+		if ( $names ) {
+			$o->add_order_note( '3D model preuzet iz generatora: ' . implode( ', ', $names ) . '.' );
+		}
+	}
+	bumbaru_gen_flush_count();
+	wp_send_json_success( array( 'stavke' => $done, 'skinuto' => mysql2date( 'j. n. \u H:i', $now ), 'ceka' => bumbaru_gen_pending_count() ) );
+} );
 
 function bumbaru_gen_url( $order_id = 0, $item_id = 0, $download = false ) {
 	$args = array( 'page' => 'bumbaru-generator' );
@@ -113,7 +210,18 @@ function bumbaru_gen_url( $order_id = 0, $item_id = 0, $download = false ) {
 }
 
 add_action( 'admin_menu', function () {
-	add_submenu_page( 'bumbaru-3d', 'Generator modela (3MF)', 'Generator modela', 'manage_woocommerce', 'bumbaru-generator', 'bumbaru_page_generator', 1 );
+	global $menu;
+	$n      = current_user_can( 'manage_woocommerce' ) ? bumbaru_gen_pending_count() : 0;
+	$bubble = $n ? ' <span class="awaiting-mod count-' . $n . '"><span class="bu-gen-count">' . $n . '</span></span>' : '';
+	add_submenu_page( 'bumbaru-3d', 'Generator modela (3MF)', 'Generator modela' . $bubble, 'manage_woocommerce', 'bumbaru-generator', 'bumbaru_page_generator', 1 );
+	// Broj ukrasa koji čekaju štampu vidi se i na glavnom meniju „Bumbaru 3D”.
+	if ( $n && is_array( $menu ) ) {
+		foreach ( $menu as $k => $m ) {
+			if ( isset( $m[2] ) && 'bumbaru-3d' === $m[2] ) {
+				$menu[ $k ][0] .= $bubble; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			}
+		}
+	}
 }, 20 );
 
 add_action( 'admin_enqueue_scripts', function ( $hook ) {
@@ -142,17 +250,9 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 	// Porudžbina iz linka može biti starija od liste: dodaj je.
 	if ( $sel_order && ! in_array( $sel_order, wp_list_pluck( $orders, 'id' ), true ) ) {
 		$o = wc_get_order( $sel_order );
-		if ( $o ) {
-			$items = array();
-			foreach ( $o->get_items() as $iid => $it ) {
-				$rows = bumbaru_gen_item_rows( $it );
-				if ( $rows ) {
-					$items[] = array( 'id' => (int) $iid, 'naziv' => $it->get_name(), 'kom' => (int) $it->get_quantity(), 'rows' => $rows );
-				}
-			}
-			if ( $items ) {
-				array_unshift( $orders, array( 'id' => $o->get_id(), 'broj' => $o->get_order_number(), 'kupac' => trim( $o->get_billing_first_name() . ' ' . $o->get_billing_last_name() ), 'datum' => '', 'status' => wc_get_order_status_name( $o->get_status() ), 'items' => $items ) );
-			}
+		$d = $o ? bumbaru_gen_order_data( $o ) : null;
+		if ( $d ) {
+			array_unshift( $orders, $d );
 		}
 	}
 	wp_localize_script( 'bumbaru-gen-ui', 'BUMBARU_GEN', array(
@@ -166,6 +266,7 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 		'sel'      => array( 'order' => $sel_order, 'item' => $sel_item, 'download' => $download ),
 		'ajax'     => admin_url( 'admin-ajax.php' ),
 		'nonce'    => wp_create_nonce( 'bumbaru_gen' ),
+		'ceka'     => bumbaru_gen_pending_count(),
 	) );
 	// ornament.js (fitName) čita boje i motive iz BUMBARU3D
 	wp_add_inline_script( 'bumbaru-ornament', 'window.BUMBARU3D = window.BUMBARU3D || { colors: {}, motivi: ' . wp_json_encode( bumbaru_motivi() ) . ' };', 'before' );
@@ -194,7 +295,12 @@ function bumbaru_page_generator() {
 	<div class="bg-wrap" data-gen>
 		<aside class="bu-card bg-orders">
 			<h2>Porudžbine sa ukrasima</h2>
-			<p class="description">Poslednjih 40. Klik na stavku učita imena, motiv i boje.</p>
+			<p class="description">Nove porudžbine se pojave ovde same, sa imenima, motivom i bojama. „Skini 3MF” odmah preuzme model; „Otvori” ga učita ispod da ga pregledate ili izmenite.</p>
+			<div class="bg-tabs" role="tablist">
+				<button type="button" class="bg-tab is-on" data-gen-tab="nove" role="tab">Za štampu <span data-gen-ceka></span></button>
+				<button type="button" class="bg-tab" data-gen-tab="sve" role="tab">Sve</button>
+			</div>
+			<p data-gen-allnew hidden><button type="button" class="button button-primary bg-allnew" data-gen-skini-sve></button></p>
 			<div data-gen-orders><p>Učitavam…</p></div>
 		</aside>
 		<section class="bu-card bg-main">
@@ -247,7 +353,9 @@ add_action( 'woocommerce_after_order_itemmeta', function ( $item_id, $item ) {
 		return;
 	}
 	$oid = $item->get_order_id();
-	echo '<p class="bu-gen-links" style="margin:8px 0 0;display:flex;gap:6px;flex-wrap:wrap">'
+	$sk  = (string) $item->get_meta( '_bu_gen_skinuto' );
+	echo '<p class="bu-gen-links" style="margin:8px 0 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center">'
+		. ( $sk ? '<span style="background:#e3efe5;color:#2f5b3b;font-weight:700;font-size:11px;padding:2px 8px;border-radius:999px">3D model skinut ' . esc_html( mysql2date( 'j. n. \\u H:i', $sk ) ) . '</span>' : '<span style="background:#F5C137;color:#312018;font-weight:700;font-size:11px;padding:2px 8px;border-radius:999px">Model još nije skinut</span>' )
 		. '<a class="button button-small button-primary" target="_blank" href="' . esc_url( bumbaru_gen_url( $oid, $item_id, true ) ) . '">Preuzmi 3MF</a>'
 		. '<a class="button button-small" target="_blank" href="' . esc_url( bumbaru_gen_url( $oid, $item_id ) ) . '">Otvori u generatoru</a></p>';
 }, 20, 2 );

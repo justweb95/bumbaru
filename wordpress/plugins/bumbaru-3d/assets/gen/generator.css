@@ -27,3 +27,15 @@
 .bg-stats { color: #5b4d40; }
 .bg-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .bg-err { color: #b32d2e; font-weight: 600; }
+.bg-tabs { display: flex; gap: 6px; margin: 10px 0; }
+.bg-tab { border: 1px solid #d9cfbf; background: #fff; border-radius: 999px; padding: 5px 12px; cursor: pointer; font-weight: 600; }
+.bg-tab.is-on { background: #312018; color: #fff; border-color: #312018; }
+.bg-allnew { width: 100%; justify-content: center; white-space: normal; height: auto !important; padding: 6px 10px !important; line-height: 1.3 !important; }
+.bg-item { cursor: default; }
+.bg-item.is-done { opacity: .75; background: #f7f5f1; }
+.bg-item-t { display: flex; justify-content: space-between; gap: 8px; width: 100%; align-items: center; }
+.bg-item-a { display: flex; gap: 6px; margin-top: 6px; }
+.bg-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.bg-badge-new { background: #F5C137; color: #312018; }
+.bg-badge-done { background: #e3efe5; color: #2f5b3b; }
+.bg-empty { color: #5b4d40; font-weight: 600; }

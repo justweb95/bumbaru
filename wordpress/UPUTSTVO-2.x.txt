@@ -1,7 +1,7 @@
-BUMBARU 2.1 – tema 2.1.0 i plugin Bumbaru 3D 2.1.0
+BUMBARU 2.2 – tema 2.2.0 i plugin Bumbaru 3D 2.2.0
 ==================================================
 
-Postavljanje (preko verzije 2.0; napravite rezervnu kopiju)
+Postavljanje (preko verzije 2.0 ili 2.1; napravite rezervnu kopiju)
 1. Izgled → Teme → Dodaj → Otpremi temu → bumbaru-tema.zip → „Zameni postojeću”.
 2. Dodaci → Dodaj → Otpremi dodatak → bumbaru-3d-plugin.zip → „Zameni postojeći”.
 3. Otvorite bilo koju stranu u administraciji: sajt sam pređe na srpski (latinica) i preuzme prevode
@@ -22,3 +22,11 @@ Postavljanje (preko verzije 2.0; napravite rezervnu kopiju)
 – Ukras za jelku sa imenom: popust za više komada 2 kom −5%, 3 kom −10%, 5 kom −15% (sabiraju se svi ukrasi
   u korpi, svaki sa svojim imenom) i traka sa pčelicom koja pokazuje koliko još do popusta.
   Menja se u Proizvod → Konfigurator → „Popust za više komada” (prazno = bez popusta).
+
+Novo u 2.2: porudžbine same stižu u generator
+– Bumbaru 3D → Generator modela, kartica „Za štampu”: svaka nova porudžbina sa ukrasom se pojavi sama, sa imenima,
+  motivima i bojama. Dugme „Skini 3MF” odmah preuzme model, bez ikakvog drugog klika.
+– „Skini sve nove u jedan 3MF”: svi ukrasi koji čekaju štampu u jednom fajlu, raspoređeni po ploči.
+– Posle preuzimanja stavka dobije oznaku „Skinuto” (i u porudžbini), a u porudžbini se upiše beleška
+  „3D model preuzet iz generatora”. Status porudžbine se ne menja sam. Kartica „Sve” prikazuje i skinute (Skini ponovo).
+– Broj ukrasa koji čekaju štampu piše u meniju pored „Bumbaru 3D” i „Generator modela”.
