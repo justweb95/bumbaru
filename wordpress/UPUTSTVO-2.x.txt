@@ -1,4 +1,4 @@
-BUMBARU 2.3 – tema 2.3.0 i plugin Bumbaru 3D 2.3.0
+BUMBARU 2.4 – tema 2.4.0 i plugin Bumbaru 3D 2.4.0
 ==================================================
 
 Postavljanje (preko verzije 2.0, 2.1 ili 2.2; napravite rezervnu kopiju)
@@ -42,3 +42,11 @@ Novo u 2.3
 – Obaveštenje „Dodato u korpu” je popravljeno (vidi se naziv, za komplet piše „Komplet: … + …”).
 – Besplatna dostava od 2.500 din: podešavanje dostave, tekstovi proizvoda, traka na vrhu i SEO opisi
   (posle otpremanja plugina se promeni samo; iznos koji ste sami promenili u WooCommerce dostavi ostaje).
+
+Novo u 2.4: pet novih dizajna ukrasa
+– Na strani ukrasa sa imenom (i u porodičnom setu) birate i: Pahuljice, Pahuljice i mašna, Kapa Deda Mraza,
+  Velika pahulja i Pločica sa imenom. Pregled uživo radi za sve, a generator pravi 3MF/STL kao i do sada.
+  (Dizajni sa MakerWorld-a: Mr.Fusible, purocrypto, Galai i ArmenioMarques, uz dogovorenu komercijalnu licencu.)
+– Kod Velike pahulje ime leži na traci preko sredine, a kod Pločice na pločici; ne razvlači se do obruča.
+– Prečnik u generatoru (80 mm) je spoljni prečnik obruča; kapa i mašna su van toga (ukras je malo širi/viši).
+– Popravka: mostići za tačke na i/j sada stvarno ulaze u 3MF i idu do najbližeg slova (ne do obruča).

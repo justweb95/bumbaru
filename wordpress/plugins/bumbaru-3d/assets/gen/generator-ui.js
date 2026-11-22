@@ -209,7 +209,7 @@
       out.push(model.build({
         motiv: r.motiv, ime: r.ime, precnik: d.precnik, debljina: d.debljina, izdignuto: d.izdignuto, vrh: d.vrh,
         boja: color(r.boja), bojaImena: bi,
-      }, { defs: defs, font: font, fitName: window.BumbaruOrnament.fitName }));
+      }, { defs: defs, font: font, fitName: window.BumbaruOrnament.fitName, motiv: window.BumbaruOrnament.motiv }));
     });
     return G.arrange(out, 6, d.ploca);
   }

@@ -174,6 +174,9 @@
   /** Clipper putanje → poligoni sa rupama [{ outer:[[x,y]], holes:[[[x,y]]] }], u jedinicama crteža. */
   function exPolys(paths) {
     var c = new CL.Clipper();
+    // StrictlySimple: rupa koja dodiruje spoljnu ivicu (npr. pahulja uz obruč) postane poseban deo,
+    // inače triangulacija ostavi „T” spoj i mreža nije zatvorena.
+    c.StrictlySimple = true;
     c.AddPaths(CL.Clipper.CleanPolygons(paths, SC * 0.01), CL.PolyType.ptSubject, true);
     var tree = new CL.PolyTree();
     c.Execute(CL.ClipType.ctUnion, tree, CL.PolyFillType.pftNonZero, CL.PolyFillType.pftNonZero);
@@ -183,6 +186,7 @@
       node.Childs().forEach(function (outer) {
         var e = { outer: conv(outer.Contour()), holes: [] };
         outer.Childs().forEach(function (hole) {
+          if (Math.abs(CL.Clipper.Area(hole.Contour())) < 0.02 * SC * SC) { walk(hole); return; } // mrvica
           e.holes.push(conv(hole.Contour()));
           walk(hole);
         });
@@ -400,10 +404,13 @@
       var best = Infinity, P = null, Q = null;
       comps.forEach(function (c) {
         if (c === island) return;
-        island.outer.forEach(function (p) {
-          c.outer.forEach(function (q) {
-            var d = (p[0] - q[0]) * (p[0] - q[0]) + (p[1] - q[1]) * (p[1] - q[1]);
-            if (d < best) { best = d; P = p; Q = q; }
+        // i spoljna ivica i rupe: slova obično leže na ivici rupe (unutrašnjost obruča), ne na spoljnoj ivici
+        [c.outer].concat(c.holes).forEach(function (ring) {
+          island.outer.forEach(function (p) {
+            ring.forEach(function (q) {
+              var d = (p[0] - q[0]) * (p[0] - q[0]) + (p[1] - q[1]) * (p[1] - q[1]);
+              if (d < best) { best = d; P = p; Q = q; }
+            });
           });
         });
       });
@@ -439,16 +446,24 @@
       });
       var body = union([].concat.apply([], free));
       if (clipped.length) body = union(body, inter(union([].concat.apply([], clipped)), circle(CX, CY, 96.5)));
+      // Zatvori prorez nulte širine (rupa koja ivicom leži na spoljnoj ivici), da mreža bude zatvorena.
+      body = grow(grow(body, 0.05), -0.05);
 
       // Ime: slova fonta Pacifico (stroke 1.2 kao na sajtu) i „šinice” koje ga spajaju sa obručem.
-      var f = ctx.fitName(p.ime);
+      var M = ctx.motiv ? ctx.motiv(p.motiv) : null;
+      var f = ctx.fitName(p.ime, undefined, M);
       var fs = parseFloat(f.fs), y = parseFloat(f.y);
       var adv = ctx.font.getAdvanceWidth(f.name, fs, { kerning: true });
       var fpath = ctx.font.getPath(f.name, CX - adv / 2, y, fs, { kerning: true });
       var glyphs = fontPathToSubs(fpath);
       var sx = parseFloat(f.sx || '1'), dx = parseFloat(f.dx || '0');
       var tx;
-      if (!f.rails) {
+      if (f.mode === 'traka') {
+        // Traka/pločica: ime na sredini, najviše širine 2·reach (po crtežu slova).
+        var bt = fpath.getBoundingBox(), RT = parseFloat(f.reach);
+        var kt = Math.min(1, (2 * RT) / (bt.x2 - bt.x1)), ct = (bt.x1 + bt.x2) / 2;
+        tx = function (x) { return CX + (x - ct) * kt; };
+      } else if (!f.rails) {
         // Bez šinica: slova tačno od -REACH do +REACH (po crtežu slova), da krajevi sigurno uđu u obruč.
         var bb = fpath.getBoundingBox(), REACH = 97.5;
         var k = (2 * REACH - 1.2) / (bb.x2 - bb.x1), cx0 = (bb.x1 + bb.x2) / 2;
@@ -459,6 +474,9 @@
       glyphs.forEach(function (sub) { sub.pts.forEach(function (q) { q[0] = tx(q[0]); }); });
       var name = grow(fill(glyphs, 'nonzero'), 0.6);
       if (f.rails) name = union(name, stroke(parsePath(f.rails), parseFloat(f.railW)));
+
+      // Tačke na i/j, kvačice (č, ć, š, ž) i slova koja se ne dodiruju: spoje se mostićem sa najbližim delom.
+      name = connectIslands(body, name, 2.4);
 
       var s = p.precnik / 208;
       var mm = function (polys) {
@@ -485,13 +503,16 @@
         delovi.push({ naziv: 'Telo (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: mb, oblik: bodyOnly });
         delovi.push({ naziv: 'Ime (' + N.naziv + ')', boja: N.id, bojaNaziv: N.naziv, hex: N.hex, mesh: extrude(nm, zName, T + up), oblik: nm });
       }
-      // Tačke na i/j, kvačice (č, ć, š, ž) i slova koja se ne dodiruju: spoje se mostićem sa najbližim delom.
-      name = connectIslands(body, name, 2.4);
       // Provera: da li je ime spojeno sa ukrasom (slovo koje ne dodiruje ništa bi otpalo posle štampe).
       var upozorenje = '';
       var nBody = exPolys(body).length, nAll = exPolys(union(body, name)).length;
       if (nAll > nBody) upozorenje = f.name + ': deo imena nije spojen sa ukrasom (' + (nAll - nBody) + ' odvojen' + (nAll - nBody === 1 ? ' deo' : 'a dela') + ').';
-      return { naziv: 'Ukras ' + f.name, ime: f.name, upozorenje: upozorenje, sirina: 208 * s, visina: (CY + 104 - 49) * s, delovi: delovi };
+      // Širina i visina po stvarnom obrisu (kukica, mašna i kapa nisu iste kod svih motiva).
+      var bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity;
+      delovi.forEach(function (d) { d.oblik.forEach(function (e) { e.outer.forEach(function (q) {
+        if (q[0] < bx0) bx0 = q[0]; if (q[0] > bx1) bx1 = q[0]; if (q[1] < by0) by0 = q[1]; if (q[1] > by1) by1 = q[1];
+      }); }); });
+      return { naziv: 'Ukras ' + f.name, ime: f.name, upozorenje: upozorenje, sirina: bx1 - bx0, visina: by1 - by0, ox: (bx0 + bx1) / 2, oy: (by0 + by1) / 2, delovi: delovi };
     },
   };
 
@@ -509,8 +530,8 @@
     items.forEach(function (it, k) {
       var c = k % cols, r = Math.floor(k / cols);
       var nc = Math.min(cols, items.length - r * cols);
-      it.x = c0 + (c - (nc - 1) / 2) * w;
-      it.y = c0 + ((rows - 1) / 2 - r) * h;
+      it.x = c0 + (c - (nc - 1) / 2) * w - (it.ox || 0);
+      it.y = c0 + ((rows - 1) / 2 - r) * h - (it.oy || 0);
     });
     return items;
   }

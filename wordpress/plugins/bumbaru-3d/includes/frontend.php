@@ -495,7 +495,7 @@ function bumbaru_config_fields( $product ) {
 		$out .= '<fieldset class="field"><legend class="flabel">' . ( 'set' === $type ? 'Motiv za sve ukrase' : 'Motiv' ) . '</legend><div class="tile-grid">';
 		foreach ( bumbaru_motivi() as $i => $m ) {
 			$out .= '<label class="tile"><input type="radio" name="motiv" value="' . esc_attr( $m['id'] ) . '"' . ( 0 === $i ? ' checked' : '' ) . ' data-label="' . esc_attr( $m['label'] ) . '" />'
-				. '<svg viewBox="0 40 240 250" aria-hidden="true"><use href="#orn-' . esc_attr( $m['id'] ) . '" fill="#7A6A5A" stroke="#7A6A5A" /></svg>' . esc_html( $m['label'] ) . '</label>';
+				. '<svg viewBox="-12 34 264 256" aria-hidden="true"><use href="#orn-' . esc_attr( $m['id'] ) . '" fill="#7A6A5A" stroke="#7A6A5A" /></svg>' . esc_html( $m['label'] ) . '</label>';
 		}
 		$out .= '</div></fieldset>';
 		$out .= bumbaru_color_picker( 'boja', 'Boja ukrasa', 'bela', array( 'mix' => 'set' === $type ? 'Šareno' : '', 'mix_default' => 'set' === $type ) );

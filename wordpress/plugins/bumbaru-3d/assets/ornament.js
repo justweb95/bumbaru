@@ -9,31 +9,35 @@
   var ADV = {};
   for (var i = 0; i < CH.length; i++) ADV[CH[i]] = W[i];
 
-  // Ime ide od jedne do druge strane obruča i krajevima ulazi u njega, pa ga drži bez šinica.
+  // Obruč: ime ide od jedne do druge strane obruča i krajevima ulazi u njega, pa ga drži bez šinica.
   // Kraća imena dobiju veći font i blago razvučena slova (sx); šinice ostaju samo za imena od 1–2 slova.
+  // Traka/pločica (motiv.ime.traka): ime leži na delu ukrasa, pa se samo smesti u širinu w i visinu fs.
   var REACH = 97, FS_MAX = 70, SX_MAX = 1.6;
-  function fitName(raw, fallback) {
+  function fitName(raw, fallback, M) {
+    var cfg = (M && M.ime) || {};
     var name = String(raw || '').trim().slice(0, 12) || fallback || 'Mila';
     var sum = 0;
     Array.from(name).forEach(function (ch) { sum += ADV[ch] !== undefined ? ADV[ch] : 520; });
+    var traka = !!cfg.traka;
+    var reach = traka ? +cfg.w : (cfg.reach || REACH);
     var em = sum / 1000 + 0.1;
-    var CY = 182, RI = 94, yc = CY + 6;
-    var fs = Math.max(22, Math.min(FS_MAX, 2 * REACH / em));
-    var sx = Math.max(1, Math.min(SX_MAX, 2 * REACH / (em * fs)));
+    var CY = 182, RI = cfg.ri || 94, yc = cfg.y || CY + 6;
+    var fs = traka ? Math.max(16, Math.min(+cfg.fs, 2 * reach / em)) : Math.max(22, Math.min(FS_MAX, 2 * reach / em));
+    var sx = traka ? 1 : Math.max(1, Math.min(SX_MAX, 2 * reach / (em * fs)));
     var y = yc + 0.23 * fs;
     var w = em * fs * sx;
     var dx = 0.07 * fs * sx; // slova sa repom: crtež je malo desno od širine slova
     var rails = '';
     var r = function (v) { return v.toFixed(1); };
     var r3 = function (v) { return (Math.round(v * 1000) / 1000).toString(); };
-    if (REACH - w / 2 > 3) {
+    if (!traka && reach - w / 2 > 3) {
       var yr = y - 0.05 * fs;
       var hr = Math.sqrt(RI * RI - (yr - CY) * (yr - CY));
       rails = 'M' + r(120 - hr - 4) + ' ' + r(yr) + 'L' + r(120 - w / 2 + 0.18 * fs) + ' ' + r(yr) +
         'M' + r(120 + w / 2 - 0.22 * fs) + ' ' + r(yr) + 'L' + r(120 + hr + 4) + ' ' + r(yr);
     }
     var tf = 'matrix(' + r3(sx) + ' 0 0 1 ' + r3(120 - 120 * sx - dx) + ' 0)';
-    return { name: name, fs: r(fs), y: r(y), rails: rails, railW: r(Math.max(4.2, 0.085 * fs)), sx: r3(sx), dx: r3(dx), tf: tf };
+    return { name: name, fs: r(fs), y: r(y), rails: rails, railW: r(Math.max(4.2, 0.085 * fs)), sx: r3(sx), dx: r3(dx), tf: tf, mode: traka ? 'traka' : 'obruc', reach: r(reach) };
   }
 
   var ids = Object.keys(D.colors);
@@ -58,7 +62,8 @@
     var ne = g.querySelector('.orn-ne'), nf = g.querySelector('.orn-nf');
     ne.setAttribute('fill', N.edge); ne.setAttribute('stroke', N.edge);
     nf.setAttribute('fill', N.face); nf.setAttribute('stroke', N.face);
-    setName(g, fitName(o.name, o.fallback));
+    g.setAttribute('data-motif', M.id); g.setAttribute('data-hy', M.hy);
+    setName(g, fitName(o.name, o.fallback, M));
     return M;
   }
 
@@ -70,7 +75,7 @@
     var fallback = { a: 'Luka', b: 'Sofija', c: 'Mila' };
     input.addEventListener('input', function () {
       document.querySelectorAll('.ukr-stage [data-orn]').forEach(function (g) {
-        setName(g, fitName(input.value, fallback[g.getAttribute('data-orn')] || 'Sofija'));
+        setName(g, fitName(input.value, fallback[g.getAttribute('data-orn')] || 'Sofija', motiv(g.getAttribute('data-motif'))));
       });
     });
   }

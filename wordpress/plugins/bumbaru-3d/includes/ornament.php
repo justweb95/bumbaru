@@ -12,6 +12,14 @@ function bumbaru_motivi() {
 		array( 'id' => 'planine', 'label' => 'Planine i šuma', 'hy' => 64 ),
 		array( 'id' => 'masna', 'label' => 'Mašna i cvet', 'hy' => 71 ),
 		array( 'id' => 'grancica', 'label' => 'Grančica', 'hy' => 64 ),
+		// Dizajni sa MakerWorld-a (komercijalna licenca dogovorena sa autorima), prevedeni u naš crtež:
+		// Mr.Fusible (Customizable Name Ornament), purocrypto (Esferas personalizables),
+		// Galai (Bola de navidad personalizable), ArmenioMarques (Christmas Baubles Ball).
+		array( 'id' => 'pahulje', 'label' => 'Pahuljice', 'hy' => 53, 'ime' => array( 'ri' => 92 ) ),
+		array( 'id' => 'pahulje-masna', 'label' => 'Pahuljice i mašna', 'hy' => 69, 'ime' => array( 'ri' => 92 ) ),
+		array( 'id' => 'kapa', 'label' => 'Kapa Deda Mraza', 'hy' => 55, 'ime' => array( 'ri' => 92.5 ) ),
+		array( 'id' => 'pahulja', 'label' => 'Velika pahulja', 'hy' => 72, 'ime' => array( 'traka' => 1, 'w' => 80, 'y' => 189, 'fs' => 46 ) ),
+		array( 'id' => 'plocica', 'label' => 'Pločica sa imenom', 'hy' => 69, 'ime' => array( 'traka' => 1, 'w' => 63, 'y' => 187, 'fs' => 42 ) ),
 	);
 }
 
@@ -51,11 +59,13 @@ function bumbaru_glyph_widths() {
 }
 
 /**
- * Veličina i položaj imena na obruču (isto kao fitName u assets/ornament.js).
- * Ime ide od jedne do druge strane obruča i krajevima ulazi u njega; kraća imena dobiju veći font
+ * Veličina i položaj imena (isto kao fitName u assets/ornament.js).
+ * Obruč: ime ide od jedne do druge strane obruča i krajevima ulazi u njega; kraća imena dobiju veći font
  * i blago razvučena slova (sx). Šinice ostaju samo za imena od 1–2 slova.
+ * Traka/pločica ($m['ime']['traka']): ime leži na delu ukrasa (traka, pločica), pa se samo smesti u širinu w i visinu fs.
  */
-function bumbaru_fit_name( $raw, $fallback = 'Mila' ) {
+function bumbaru_fit_name( $raw, $fallback = 'Mila', $m = null ) {
+	$cfg  = is_array( $m ) && ! empty( $m['ime'] ) ? $m['ime'] : array();
 	$name = mb_substr( trim( (string) $raw ), 0, 12, 'UTF-8' );
 	if ( '' === $name ) {
 		$name = $fallback;
@@ -65,13 +75,14 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila' ) {
 	foreach ( preg_split( '//u', $name, -1, PREG_SPLIT_NO_EMPTY ) as $c ) {
 		$sum += isset( $adv[ $c ] ) ? $adv[ $c ] : 520;
 	}
-	$reach = 97;
+	$traka = ! empty( $cfg['traka'] );
+	$reach = $traka ? (float) $cfg['w'] : ( isset( $cfg['reach'] ) ? (float) $cfg['reach'] : 97 );
 	$em    = $sum / 1000 + 0.1;
 	$cy    = 182;
-	$ri    = 94;
-	$yc    = $cy + 6;
-	$fs    = max( 22, min( 70, 2 * $reach / $em ) );
-	$sx    = max( 1, min( 1.6, 2 * $reach / ( $em * $fs ) ) );
+	$ri    = isset( $cfg['ri'] ) ? (float) $cfg['ri'] : 94;
+	$yc    = isset( $cfg['y'] ) ? (float) $cfg['y'] : $cy + 6;
+	$fs    = $traka ? max( 16, min( (float) $cfg['fs'], 2 * $reach / $em ) ) : max( 22, min( 70, 2 * $reach / $em ) );
+	$sx    = $traka ? 1 : max( 1, min( 1.6, 2 * $reach / ( $em * $fs ) ) );
 	$y     = $yc + 0.23 * $fs;
 	$w     = $em * $fs * $sx;
 	$dx    = 0.07 * $fs * $sx;
@@ -82,7 +93,7 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila' ) {
 		return (string) ( round( $v * 1000 ) / 1000 );
 	};
 	$rails = '';
-	if ( $reach - $w / 2 > 3 ) {
+	if ( ! $traka && $reach - $w / 2 > 3 ) {
 		$yr    = $y - 0.05 * $fs;
 		$hr    = sqrt( $ri * $ri - ( $yr - $cy ) * ( $yr - $cy ) );
 		$rails = 'M' . $r( 120 - $hr - 4 ) . ' ' . $r( $yr ) . 'L' . $r( 120 - $w / 2 + 0.18 * $fs ) . ' ' . $r( $yr )
@@ -97,6 +108,8 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila' ) {
 		'sx'    => $r3( $sx ),
 		'dx'    => $r3( $dx ),
 		'tf'    => 'matrix(' . $r3( $sx ) . ' 0 0 1 ' . $r3( 120 - 120 * $sx - $dx ) . ' 0)',
+		'mode'  => $traka ? 'traka' : 'obruc',
+		'reach' => $r( $reach ),
 	);
 }
 
@@ -109,13 +122,13 @@ function bumbaru_ornament_g( $o ) {
 	$m  = bumbaru_motiv( $o['motif'] );
 	$b  = bumbaru_color( $o['color'] );
 	$n  = ( ! $o['nameColor'] || 'ista' === $o['nameColor'] ) ? $b : bumbaru_color( $o['nameColor'] );
-	$f  = bumbaru_fit_name( $o['name'], $o['fallback'] );
+	$f  = bumbaru_fit_name( $o['name'], $o['fallback'], $m );
 	$nl = function ( $cls, $col, $tf = '' ) use ( $f ) {
 		return '<g class="' . $cls . '"' . $tf . ' fill="' . esc_attr( $col ) . '" stroke="' . esc_attr( $col ) . '">'
 			. '<path class="orn-rail" d="' . esc_attr( $f['rails'] ) . '" fill="none" stroke-width="' . $f['railW'] . '" stroke-linecap="round"></path>'
 			. '<text class="orn-name" x="120" y="' . $f['y'] . '" transform="' . esc_attr( $f['tf'] ) . '" text-anchor="middle" font-family="Pacifico, cursive" font-size="' . $f['fs'] . '" stroke-width="1.2" stroke-linejoin="round">' . esc_html( $f['name'] ) . '</text></g>';
 	};
-	return '<g class="orn"' . ( $o['key'] ? ' data-orn="' . esc_attr( $o['key'] ) . '"' : '' ) . ' data-hy="' . (int) $m['hy'] . '">'
+	return '<g class="orn"' . ( $o['key'] ? ' data-orn="' . esc_attr( $o['key'] ) . '"' : '' ) . ' data-hy="' . (int) $m['hy'] . '" data-motif="' . esc_attr( $m['id'] ) . '">'
 		. '<use class="orn-edge" href="#orn-' . esc_attr( $m['id'] ) . '" transform="translate(1.4 3.2)" fill="' . esc_attr( $b['edge'] ) . '" stroke="' . esc_attr( $b['edge'] ) . '"></use>'
 		. '<use class="orn-face" href="#orn-' . esc_attr( $m['id'] ) . '" fill="' . esc_attr( $b['face'] ) . '" stroke="' . esc_attr( $b['face'] ) . '"></use>'
 		. $nl( 'orn-ne', $n['edge'], ' transform="translate(1.1 2.6)"' )
