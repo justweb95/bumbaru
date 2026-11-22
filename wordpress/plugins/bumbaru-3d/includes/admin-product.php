@@ -186,6 +186,7 @@ add_action( 'woocommerce_product_data_panels', function () {
 			woocommerce_wp_text_input( array( 'id' => 'bu_km_uz', 'name' => 'bu_config[komplet][uz]', 'label' => 'Komplet: uz ovo', 'value' => implode( ', ', $km['uz'] ), 'placeholder' => 'adresa-drugog-proizvoda', 'description' => 'Adrese proizvoda (slug), odvojene zarezom. Prazno = nema kompleta.', 'desc_tip' => false ) );
 			woocommerce_wp_text_input( array( 'id' => 'bu_km_p', 'name' => 'bu_config[komplet][popust]', 'label' => 'Popust za komplet, %', 'type' => 'number', 'value' => $km['popust'], 'custom_attributes' => array( 'min' => 0, 'max' => 90 ) ) );
 			woocommerce_wp_text_input( array( 'id' => 'bu_kol', 'name' => 'bu_config[kolicina]', 'label' => 'Popust za više komada', 'value' => $cfg['kolicina_txt'], 'placeholder' => '2=5, 3=10, 5=15', 'description' => 'Od koliko komada = procenat. Sabiraju se svi komadi ovog proizvoda u korpi (npr. ukrasi sa različitim imenima). Na strani proizvoda pčelica na traci pokazuje koliko još do popusta. Prazno = nema popusta. Ne važi za izbor motiva/boja i slavski set (oni imaju svoj popust).', 'desc_tip' => false ) );
+			woocommerce_wp_text_input( array( 'id' => 'bu_km_pp', 'name' => 'bu_config[komplet][popusti]', 'label' => 'Komplet po izboru: popust po broju', 'value' => isset( $km['popusti'] ) ? bumbaru_tiers_to_text( $km['popusti'] ) : '', 'placeholder' => '2=10, 3=15, 4=20', 'description' => 'Ako je upisano, kupac kućicama bira šta ide u komplet (prva dva su štiklirana), a popust zavisi od broja proizvoda u kompletu, računajući i ovaj. Prazno = uvek ceo komplet sa popustom iznad.', 'desc_tip' => false ) );
 			$fm = $cfg['firme'] ? $cfg['firme'] : array( 'popusti' => array(), 'tekst' => '' );
 			woocommerce_wp_text_input( array( 'id' => 'bu_fm_p', 'name' => 'bu_config[firme][popusti]', 'label' => 'Popusti za firme', 'value' => bumbaru_tiers_to_text( $fm['popusti'] ), 'placeholder' => '25=35, 50=40, 100=45', 'description' => 'Kartica „Za firme i veće količine” sa kalkulatorom. Prazno = nema kartice.', 'desc_tip' => false ) );
 			woocommerce_wp_textarea_input( array( 'id' => 'bu_fm_t', 'name' => 'bu_config[firme][tekst]', 'label' => 'Tekst za firme', 'value' => $fm['tekst'], 'rows' => 2 ) );
@@ -289,7 +290,11 @@ add_action( 'woocommerce_process_product_meta', function ( $id ) {
 		$cfg['poziv'] = array( 'tekst' => sanitize_textarea_field( $in['poziv']['tekst'] ), 'dugme' => sanitize_text_field( $in['poziv']['dugme'] ), 'poruka' => sanitize_text_field( $in['poziv']['poruka'] ) );
 	}
 	if ( ! empty( $in['komplet']['uz'] ) ) {
-		$cfg['komplet'] = array( 'uz' => array_values( array_filter( array_map( 'sanitize_title', explode( ',', $in['komplet']['uz'] ) ) ) ), 'popust' => (float) $in['komplet']['popust'] );
+		$cfg['komplet'] = array(
+			'uz'      => array_values( array_filter( array_map( 'sanitize_title', explode( ',', $in['komplet']['uz'] ) ) ) ),
+			'popust'  => (float) $in['komplet']['popust'],
+			'popusti' => bumbaru_tiers_to_text( bumbaru_parse_tiers( isset( $in['komplet']['popusti'] ) ? sanitize_text_field( $in['komplet']['popusti'] ) : '' ) ),
+		);
 	}
 	if ( ! empty( $in['firme']['popusti'] ) ) {
 		$cfg['firme'] = array( 'popusti' => bumbaru_parse_tiers( sanitize_text_field( $in['firme']['popusti'] ) ), 'tekst' => sanitize_textarea_field( $in['firme']['tekst'] ) );

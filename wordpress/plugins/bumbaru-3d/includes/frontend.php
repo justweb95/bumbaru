@@ -44,6 +44,10 @@ add_action( 'wp_enqueue_scripts', function () {
 			wp_enqueue_style( 'bumbaru-privesci-fontovi', BUMBARU3D_URL . 'assets/fonts/privesci.css', array(), BUMBARU3D_VERSION );
 		}
 		wp_enqueue_script( 'bumbaru-product', BUMBARU3D_URL . 'assets/product.js', array( 'bumbaru-ornament' ), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+		$kp = $p ? bumbaru_komplet( $p ) : null;
+		if ( $kp && $kp['biranje'] ) {
+			wp_enqueue_script( 'bumbaru-komplet', BUMBARU3D_URL . 'assets/komplet.js', array(), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+		}
 		if ( $p && bumbaru_config( $p )['kolicina'] ) {
 			wp_enqueue_script( 'bumbaru-kolicina', BUMBARU3D_URL . 'assets/kolicina.js', array(), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 		}
@@ -156,7 +160,7 @@ function bumbaru_product_data( $product ) {
 		);
 	}
 	$k = bumbaru_komplet( $product );
-	if ( $k ) {
+	if ( $k && ! $k['biranje'] ) {
 		$d['km'] = $k;
 	}
 	if ( $c['firme'] && $base ) {
@@ -165,13 +169,32 @@ function bumbaru_product_data( $product ) {
 	return $d;
 }
 
-/** Komplet „Uz ovo često uzimaju”: samo za proizvode bez konfiguratora, i kad svi imaju cenu. */
-function bumbaru_komplet( $product ) {
+/** Cena izabrane vrednosti opcije sa cenom po nazivu vrednosti (npr. „Srednji”), za komplet iste veličine. */
+function bumbaru_komplet_velicine( $p ) {
+	$c  = bumbaru_config( $p );
+	$oi = bumbaru_price_option_index( $c );
+	$v  = array();
+	if ( $oi >= 0 ) {
+		foreach ( $c['options'][ $oi ]['values'] as $val ) {
+			$n                  = bumbaru_value_price( $p, $val );
+			$v[ $val['label'] ] = array( 'cena' => $n, 'eff' => bumbaru_eff( $p, $n ) );
+		}
+	}
+	return array( 'opcija' => $oi >= 0 ? $c['options'][ $oi ]['label'] : '', 'v' => $v );
+}
+
+/**
+ * Komplet „Uz ovo često uzimaju”: samo za proizvode bez konfiguratora, i kad svi imaju cenu.
+ * $sel = izabrani proizvodi (ID-jevi) kad kupac bira komplet; $vel = naziv izabrane veličine glavnog proizvoda
+ * (proizvodi u kompletu sa istom opcijom dobijaju istu veličinu).
+ */
+function bumbaru_komplet( $product, $sel = null, $vel = '' ) {
 	$c = bumbaru_config( $product );
 	if ( empty( $c['komplet'] ) || ! bumbaru_base_price( $product ) || in_array( $c['type'], array( 'ukras', 'set', 'privezak', 'ime', 'imena', 'motivi', 'boje' ), true ) ) {
 		return null;
 	}
-	$uz = array();
+	$opt_main = bumbaru_komplet_velicine( $product )['opcija'];
+	$uz       = array();
 	foreach ( $c['komplet']['uz'] as $slug ) {
 		$post = get_page_by_path( $slug, OBJECT, 'product' );
 		$x    = $post && 'publish' === $post->post_status ? wc_get_product( $post->ID ) : null;
@@ -186,25 +209,45 @@ function bumbaru_komplet( $product ) {
 		if ( ! $all ) {
 			continue;
 		}
+		$vx   = bumbaru_komplet_velicine( $x );
+		$same = $opt_main && $vx['opcija'] === $opt_main;
+		$cena = $all[0];
+		$izv  = '';
+		if ( $same && $vel && isset( $vx['v'][ $vel ] ) ) {
+			$cena = $vx['v'][ $vel ]['cena'];
+			$izv  = $vel;
+		}
 		$izbor = array();
 		foreach ( $xc['izbor_boja'] as $b ) {
 			$izbor[] = $b['label'] . ': ' . bumbaru_color( bumbaru_pick_color( $b['def'] ) )['label'];
 		}
 		foreach ( $xc['options'] as $o ) {
-			$izbor[] = $o['label'] . ': ' . $o['values'][0]['label'];
+			$izbor[] = $o['label'] . ': ' . ( $izv && $o['label'] === $vx['opcija'] ? $izv : $o['values'][0]['label'] );
 		}
 		$uz[] = array(
-			'pid'   => $x->get_id(),
-			'id'    => $x->get_sku() ? $x->get_sku() : (string) $x->get_id(),
-			'naziv' => $x->get_name(),
-			'url'   => get_permalink( $x->get_id() ),
-			'slika' => function_exists( 'bu_card_img' ) ? bu_card_img( $x ) : '',
-			'cena'  => $all[0],
-			'eff'   => bumbaru_eff( $x, $all[0] ),
-			'izbor' => $izbor,
+			'pid'      => $x->get_id(),
+			'id'       => $x->get_sku() ? $x->get_sku() : (string) $x->get_id(),
+			'naziv'    => $x->get_name(),
+			'url'      => get_permalink( $x->get_id() ),
+			'slika'    => function_exists( 'bu_card_img' ) ? bu_card_img( $x ) : '',
+			'cena'     => $cena,
+			'eff'      => bumbaru_eff( $x, $cena ),
+			'izbor'    => $izbor,
+			'velicine' => $same ? $vx['v'] : array(),
 		);
 	}
-	return $uz ? array( 'popust' => $c['komplet']['popust'], 'uz' => $uz ) : null;
+	$tiers = ! empty( $c['komplet']['popusti'] ) ? $c['komplet']['popusti'] : array();
+	if ( $tiers && is_array( $sel ) ) {
+		$sel = array_map( 'intval', $sel );
+		$uz  = array_values( array_filter( $uz, function ( $x ) use ( $sel ) {
+			return in_array( $x['pid'], $sel, true );
+		} ) );
+	}
+	if ( ! $uz ) {
+		return null;
+	}
+	$popust = $tiers ? bumbaru_popust_za( $tiers, 1 + count( $uz ) ) : $c['komplet']['popust'];
+	return array( 'popust' => $popust, 'uz' => $uz, 'popusti' => $tiers, 'biranje' => (bool) $tiers );
 }
 
 /** Pregled uživo (prvi slajd galerije): ukras, set, jelka, privezak sa imenom. */
@@ -661,6 +704,9 @@ function bumbaru_komplet_html( $product ) {
 	if ( ! $k ) {
 		return '';
 	}
+	if ( $k['biranje'] ) {
+		return bumbaru_komplet_izbor_html( $product, $k );
+	}
 	$c     = bumbaru_config( $product );
 	$oi    = bumbaru_price_option_index( $c );
 	$a     = $oi >= 0 ? bumbaru_value_price( $product, $c['options'][ $oi ]['values'][0] ) : bumbaru_base_price( $product );
@@ -682,6 +728,40 @@ function bumbaru_komplet_html( $product ) {
 	$o .= '</div><div class="km-foot"><p class="km-cena">Komplet: <s data-km-puna>' . esc_html( bumbaru_din( $puna ) ) . '</s> <b data-km-cena>' . esc_html( bumbaru_din( $cena ) ) . '</b></p>'
 		. '<button class="btn btn-primary" type="button" data-km-add>' . bumbaru_icon( 'bag' ) . 'Dodaj komplet u korpu</button></div>'
 		. '<p class="small muted">Za ' . esc_html( implode( ' i ', $names ) ) . ' uzimamo osnovnu veličinu i boju; drugačije napišite u napomeni.</p></div>';
+	return $o;
+}
+
+/** Komplet po izboru: kupac kućicama bira šta ide uz ovaj proizvod, popust raste sa brojem proizvoda. */
+function bumbaru_komplet_izbor_html( $product, $k ) {
+	$vm   = bumbaru_komplet_velicine( $product );
+	$base = bumbaru_base_price( $product );
+	$main = $vm['v'] ? $vm['v'] : array( '' => array( 'cena' => $base, 'eff' => bumbaru_eff( $product, $base ) ) );
+	$img  = function_exists( 'bu_card_img' ) ? bu_card_img( $product ) : '';
+	$data = array(
+		'popusti' => $k['popusti'],
+		'opcija'  => $vm['opcija'],
+		'main'    => $main,
+		'uz'      => array_map( function ( $x ) {
+			return array( 'pid' => $x['pid'], 'naziv' => $x['naziv'], 'cena' => $x['cena'], 'eff' => $x['eff'], 'v' => $x['velicine'] );
+		}, $k['uz'] ),
+		'pid'     => $product->get_id(),
+		'naziv'   => $product->get_name(),
+		'slika'   => $img,
+	);
+	$tiers = array();
+	foreach ( $k['popusti'] as $t ) {
+		$tiers[] = (int) $t['od'] . ' kom −' . (float) $t['procenat'] . '%';
+	}
+	$o = '<div class="komplet km-izbor" data-komplet2="' . esc_attr( wp_json_encode( $data ) ) . '"><div class="km-head"><h2 class="h3">Napravite komplet</h2><span class="badge badge-leaf" data-km-badge>' . esc_html( implode( ' · ', $tiers ) ) . '</span></div>'
+		. '<p class="small muted km-hint">Štiklirajte šta ide uz ' . esc_html( $product->get_name() ) . '. Što više u kompletu, veći popust.</p><div class="km-row km-grid">'
+		. '<span class="km-item km-main"><span class="km-img">' . ( $img ? '<img src="' . esc_url( $img ) . '" alt="" width="120" height="120" loading="lazy" />' : '' ) . '</span><span class="km-name">' . esc_html( $product->get_name() ) . '</span><span class="km-tag">ovaj proizvod</span></span>';
+	foreach ( $k['uz'] as $i => $x ) {
+		$o .= '<label class="km-item km-pick"><input type="checkbox" value="' . (int) $x['pid'] . '" data-km-pick' . ( $i < 2 ? ' checked' : '' ) . ' /><span class="km-img">' . ( $x['slika'] ? '<img src="' . esc_url( $x['slika'] ) . '" alt="" width="120" height="120" loading="lazy" />' : '' ) . '<span class="km-check" aria-hidden="true">' . bumbaru_icon( 'check', 14, 3 ) . '</span></span><span class="km-name">' . esc_html( $x['naziv'] ) . '</span></label>';
+	}
+	$o .= '</div><p class="mm-msg km-msg" aria-live="polite"><span class="mm-count" data-km-n></span><span class="mm-badge" data-km-pct hidden></span><span data-km-text></span></p>'
+		. '<div class="km-foot"><p class="km-cena">Komplet: <s data-km-puna></s> <b data-km-cena></b></p>'
+		. '<button class="btn btn-primary" type="button" data-km2-add>' . bumbaru_icon( 'bag' ) . 'Dodaj komplet u korpu</button></div>'
+		. ( $vm['opcija'] ? '<p class="small muted">' . esc_html( $vm['opcija'] ) . ' iz izbora iznad važi za ceo komplet.</p>' : '' ) . '</div>';
 	return $o;
 }
 

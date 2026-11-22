@@ -28,3 +28,19 @@
 @media (prefers-reduced-motion: reduce) {
   .tree-star .spark, .tree-star.pop .tree-star-in, .tree-star.pop .spark, .star-chips .chip:has(input:checked) .sw-star { animation: none !important; opacity: 1; }
 }
+
+/* Komplet po izboru (kućice) */
+.km-izbor .km-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 10px; align-items: start; }
+.km-izbor .km-item { position: relative; }
+.km-izbor .km-pick { cursor: pointer; }
+.km-izbor .km-pick input { position: absolute; opacity: 0; pointer-events: none; }
+.km-izbor .km-pick .km-img { position: relative; outline: 3px solid transparent; outline-offset: 2px; transition: outline-color .2s, opacity .2s; opacity: .55; }
+.km-izbor .km-pick.on .km-img { outline-color: var(--leaf, #3f7d4e); opacity: 1; }
+.km-izbor .km-pick input:focus-visible + .km-img { outline-color: var(--ink, #312018); }
+.km-izbor .km-check { position: absolute; right: 6px; top: 6px; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 2px solid var(--ink, #312018); display: inline-flex; align-items: center; justify-content: center; color: transparent; }
+.km-izbor .km-pick.on .km-check { background: var(--leaf, #3f7d4e); color: #fff; border-color: var(--leaf, #3f7d4e); }
+.km-izbor .km-main .km-img { outline: 3px solid var(--honey, #F5C137); outline-offset: 2px; }
+.km-izbor .km-tag { font-size: 11px; font-weight: 700; color: var(--ink-muted, #6b5d4f); }
+.km-izbor .km-hint { margin: 4px 0 12px; }
+.km-izbor .km-msg { margin: 12px 0 4px; }
+.km-izbor [data-km2-add][disabled] { opacity: .5; cursor: not-allowed; }

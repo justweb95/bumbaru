@@ -50,7 +50,11 @@ function bumbaru_glyph_widths() {
 	return $adv;
 }
 
-/** Veličina i položaj imena na obruču (isto kao fitName u ornament.ts). */
+/**
+ * Veličina i položaj imena na obruču (isto kao fitName u assets/ornament.js).
+ * Ime ide od jedne do druge strane obruča i krajevima ulazi u njega; kraća imena dobiju veći font
+ * i blago razvučena slova (sx). Šinice ostaju samo za imena od 1–2 slova.
+ */
 function bumbaru_fit_name( $raw, $fallback = 'Mila' ) {
 	$name = mb_substr( trim( (string) $raw ), 0, 12, 'UTF-8' );
 	if ( '' === $name ) {
@@ -61,19 +65,24 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila' ) {
 	foreach ( preg_split( '//u', $name, -1, PREG_SPLIT_NO_EMPTY ) as $c ) {
 		$sum += isset( $adv[ $c ] ) ? $adv[ $c ] : 520;
 	}
-	$em   = $sum / 1000 + 0.1;
-	$cy   = 182;
-	$ri   = 94;
-	$yc   = $cy + 6;
-	$half = sqrt( $ri * $ri - 36 );
-	$fs   = max( 22, min( 60, ( 2 * $half + 6 ) / $em ) );
-	$y    = $yc + 0.23 * $fs;
-	$w    = $em * $fs;
-	$r    = function ( $v ) {
+	$reach = 97;
+	$em    = $sum / 1000 + 0.1;
+	$cy    = 182;
+	$ri    = 94;
+	$yc    = $cy + 6;
+	$fs    = max( 22, min( 70, 2 * $reach / $em ) );
+	$sx    = max( 1, min( 1.6, 2 * $reach / ( $em * $fs ) ) );
+	$y     = $yc + 0.23 * $fs;
+	$w     = $em * $fs * $sx;
+	$dx    = 0.07 * $fs * $sx;
+	$r     = function ( $v ) {
 		return number_format( $v, 1, '.', '' );
 	};
+	$r3    = function ( $v ) {
+		return (string) ( round( $v * 1000 ) / 1000 );
+	};
 	$rails = '';
-	if ( $half - $w / 2 > 3 ) {
+	if ( $reach - $w / 2 > 3 ) {
 		$yr    = $y - 0.05 * $fs;
 		$hr    = sqrt( $ri * $ri - ( $yr - $cy ) * ( $yr - $cy ) );
 		$rails = 'M' . $r( 120 - $hr - 4 ) . ' ' . $r( $yr ) . 'L' . $r( 120 - $w / 2 + 0.18 * $fs ) . ' ' . $r( $yr )
@@ -85,6 +94,9 @@ function bumbaru_fit_name( $raw, $fallback = 'Mila' ) {
 		'y'     => $r( $y ),
 		'rails' => $rails,
 		'railW' => $r( max( 4.2, 0.085 * $fs ) ),
+		'sx'    => $r3( $sx ),
+		'dx'    => $r3( $dx ),
+		'tf'    => 'matrix(' . $r3( $sx ) . ' 0 0 1 ' . $r3( 120 - 120 * $sx - $dx ) . ' 0)',
 	);
 }
 
@@ -101,7 +113,7 @@ function bumbaru_ornament_g( $o ) {
 	$nl = function ( $cls, $col, $tf = '' ) use ( $f ) {
 		return '<g class="' . $cls . '"' . $tf . ' fill="' . esc_attr( $col ) . '" stroke="' . esc_attr( $col ) . '">'
 			. '<path class="orn-rail" d="' . esc_attr( $f['rails'] ) . '" fill="none" stroke-width="' . $f['railW'] . '" stroke-linecap="round"></path>'
-			. '<text class="orn-name" x="120" y="' . $f['y'] . '" text-anchor="middle" font-family="Pacifico, cursive" font-size="' . $f['fs'] . '" stroke-width="1.2" stroke-linejoin="round">' . esc_html( $f['name'] ) . '</text></g>';
+			. '<text class="orn-name" x="120" y="' . $f['y'] . '" transform="' . esc_attr( $f['tf'] ) . '" text-anchor="middle" font-family="Pacifico, cursive" font-size="' . $f['fs'] . '" stroke-width="1.2" stroke-linejoin="round">' . esc_html( $f['name'] ) . '</text></g>';
 	};
 	return '<g class="orn"' . ( $o['key'] ? ' data-orn="' . esc_attr( $o['key'] ) . '"' : '' ) . ' data-hy="' . (int) $m['hy'] . '">'
 		. '<use class="orn-edge" href="#orn-' . esc_attr( $m['id'] ) . '" transform="translate(1.4 3.2)" fill="' . esc_attr( $b['edge'] ) . '" stroke="' . esc_attr( $b['edge'] ) . '"></use>'

@@ -326,7 +326,12 @@ function bumbaru_config( $product ) {
 	if ( ! empty( $raw['komplet']['uz'] ) ) {
 		$uz = array_values( array_filter( array_map( 'sanitize_title', (array) $raw['komplet']['uz'] ) ) );
 		if ( $uz ) {
-			$c['komplet'] = array( 'uz' => $uz, 'popust' => max( 0, min( 90, isset( $raw['komplet']['popust'] ) ? (float) $raw['komplet']['popust'] : 10 ) ) );
+			$c['komplet'] = array(
+				'uz'      => $uz,
+				'popust'  => max( 0, min( 90, isset( $raw['komplet']['popust'] ) ? (float) $raw['komplet']['popust'] : 10 ) ),
+				// Popust po broju proizvoda u kompletu (npr. 2=10, 3=15, 4=20): kupac sam bira šta ide u komplet.
+				'popusti' => bumbaru_parse_tiers( isset( $raw['komplet']['popusti'] ) ? $raw['komplet']['popusti'] : '' ),
+			);
 		}
 	}
 	if ( ! empty( $raw['firme']['popusti'] ) ) {

@@ -305,7 +305,8 @@ function bumbaru_read_choice( $product, $src ) {
 
 	// Komplet: ovaj proizvod + proizvodi uz njega, sa popustom na ukupnu cenu
 	if ( $get( 'komplet' ) ) {
-		$k = bumbaru_komplet( $product );
+		$ksel = $get( 'kompletUz' );
+		$k   = bumbaru_komplet( $product, is_array( $ksel ) ? $ksel : null, $oi >= 0 ? $c['options'][ $oi ]['values'][ $vel ]['label'] : '' );
 		if ( $k && null === $price ) {
 			$mine  = array();
 			foreach ( $lines as $l ) {
@@ -523,9 +524,11 @@ function bumbaru_ajax_add() {
 		wp_send_json( array( 'ok' => false, 'msg' => 'Proizvod nije pronađen.' ) );
 	}
 	wc_clear_notices();
-	$ok = false;
+	$ok  = false;
+	$key = false;
 	if ( apply_filters( 'woocommerce_add_to_cart_validation', true, $pid, $qty ) ) {
-		$ok  = false !== WC()->cart->add_to_cart( $pid, $qty );
+		$key = WC()->cart->add_to_cart( $pid, $qty );
+		$ok  = false !== $key;
 	}
 	$errs = wc_get_notices( 'error' );
 	wc_clear_notices();
@@ -539,6 +542,7 @@ function bumbaru_ajax_add() {
 		'ok'        => true,
 		'count'     => WC()->cart->get_cart_contents_count(),
 		'u_korpi'   => bumbaru_u_korpi( $pid ),
+		'naziv'     => $key && ! empty( WC()->cart->cart_contents[ $key ]['bumbaru']['name'] ) ? WC()->cart->cart_contents[ $key ]['bumbaru']['name'] : $product->get_name(),
 		'fragments' => $frag,
 		'cart'      => wc_get_cart_url(),
 		'checkout'  => wc_get_checkout_url(),

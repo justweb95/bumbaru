@@ -1,6 +1,6 @@
 <?php
 /**
- * Pomoć (preneto iz pomoc.astro, tekst prilagođen korpi, pouzeću i besplatnoj dostavi od 2.000 din).
+ * Pomoć (preneto iz pomoc.astro, tekst prilagođen korpi, pouzeću i besplatnoj dostavi od 2.500 din).
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -30,7 +30,7 @@ foreach ( $faq as $f ) {
 	$faq_ld['mainEntity'][] = array( '@type' => 'Question', 'name' => $f['q'], 'acceptedAnswer' => array( '@type' => 'Answer', 'text' => wp_strip_all_tags( $f['a'] ) ) );
 }
 bu_add_jsonld( $faq_ld );
-bu_set_seo( 'Pomoć: poručivanje, dostava i plaćanje pouzećem | Bumbaru', 'Kako se poručuje preko sajta ili Messengera, plaćanje pouzećem, besplatna dostava od 2.000 din, rokovi za Novu godinu i povraćaj.' );
+bu_set_seo( 'Pomoć: poručivanje, dostava i plaćanje pouzećem | Bumbaru', 'Kako se poručuje preko sajta ili Messengera, plaćanje pouzećem, besplatna dostava od 2.500 din, rokovi za Novu godinu i povraćaj.' );
 get_header();
 ?>
 <div class="wrap">

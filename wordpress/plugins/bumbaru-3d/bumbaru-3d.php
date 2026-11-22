@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       Bumbaru 3D
- * Description:       Generator 3MF/STL modela za štampu, sajt na srpskom (latinica), konfiguratori proizvoda (ukras sa imenom, porodični set, privesci sa imenom u 5 stilova, slavske modlice i slavski set, izbor boja i motiva sa popustom, komplet, jelke sa zvezdicom), akcija za kategoriju, boje, filamenti i kalkulator cene 3D štampe, uvoz proizvoda i podešavanje prodavnice (plaćanje pouzećem, Post Express, besplatna dostava od 2.000 din).
- * Version:           2.2.0
+ * Description:       Generator 3MF/STL modela za štampu, sajt na srpskom (latinica), konfiguratori proizvoda (ukras sa imenom, porodični set, privesci sa imenom u 5 stilova, slavske modlice i slavski set, izbor boja i motiva sa popustom, komplet, jelke sa zvezdicom), akcija za kategoriju, boje, filamenti i kalkulator cene 3D štampe, uvoz proizvoda i podešavanje prodavnice (plaćanje pouzećem, Post Express, besplatna dostava od 2.500 din).
+ * Version:           2.3.0
  * Author:            Bumbaru
  * Requires at least: 6.5
  * Requires PHP:      7.4
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BUMBARU3D_VERSION', '2.2.0' );
+define( 'BUMBARU3D_VERSION', '2.3.0' );
 define( 'BUMBARU3D_FILE', __FILE__ );
 define( 'BUMBARU3D_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BUMBARU3D_URL', plugin_dir_url( __FILE__ ) );
@@ -72,6 +72,7 @@ add_action( 'init', function () {
 	if ( get_option( 'bumbaru_import_done' ) ) {
 		update_option( 'bumbaru_update_notice', 1 );
 	}
+	bumbaru_migrate_23();
 	update_option( 'bumbaru3d_db', BUMBARU3D_VERSION );
 } );
 

@@ -1,7 +1,7 @@
-BUMBARU 2.2 – tema 2.2.0 i plugin Bumbaru 3D 2.2.0
+BUMBARU 2.3 – tema 2.3.0 i plugin Bumbaru 3D 2.3.0
 ==================================================
 
-Postavljanje (preko verzije 2.0 ili 2.1; napravite rezervnu kopiju)
+Postavljanje (preko verzije 2.0, 2.1 ili 2.2; napravite rezervnu kopiju)
 1. Izgled → Teme → Dodaj → Otpremi temu → bumbaru-tema.zip → „Zameni postojeću”.
 2. Dodaci → Dodaj → Otpremi dodatak → bumbaru-3d-plugin.zip → „Zameni postojeći”.
 3. Otvorite bilo koju stranu u administraciji: sajt sam pređe na srpski (latinica) i preuzme prevode
@@ -30,3 +30,15 @@ Novo u 2.2: porudžbine same stižu u generator
 – Posle preuzimanja stavka dobije oznaku „Skinuto” (i u porudžbini), a u porudžbini se upiše beleška
   „3D model preuzet iz generatora”. Status porudžbine se ne menja sam. Kartica „Sve” prikazuje i skinute (Skini ponovo).
 – Broj ukrasa koji čekaju štampu piše u meniju pored „Bumbaru 3D” i „Generator modela”.
+
+Novo u 2.3
+– Ime na ukrasu ide od jedne do druge strane obruča i krajevima ulazi u obruč, bez linija levo i desno.
+  Kraća imena su veća i blago razvučena. Linije ostaju samo kod vrlo kratkih imena (1–3 slova, npr. Bo, Ivo).
+  Generator sam spoji tačke na i/j i kvačice (č, ć, š, ž) sa slovom mostićem od ~1 mm, da ne otpadnu,
+  i upozori ako je nešto ostalo nespojeno.
+– Lutkice u pletenom izgledu: „Napravite komplet”. Uz irvasa su štiklirani Sneško i Deda Mraz (komplet od 3),
+  a može i Jelkica ili samo jedna. Popust: 2 lutkice −10%, 3 −15%, 4 −20%; izabrana veličina važi za sve.
+  Menja se u Proizvod → Konfigurator → „Komplet po izboru: popust po broju”.
+– Obaveštenje „Dodato u korpu” je popravljeno (vidi se naziv, za komplet piše „Komplet: … + …”).
+– Besplatna dostava od 2.500 din: podešavanje dostave, tekstovi proizvoda, traka na vrhu i SEO opisi
+  (posle otpremanja plugina se promeni samo; iznos koji ste sami promenili u WooCommerce dostavi ostaje).

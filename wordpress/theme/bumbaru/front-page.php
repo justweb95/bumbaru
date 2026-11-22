@@ -13,7 +13,7 @@ $faq = array(
 	array( 'q' => 'Mogu li da pošaljem poklon na drugu adresu?', 'a' => 'Možete, ali primalac plaća kuriru, jer je plaćanje pouzećem.' ),
 	array( 'q' => 'Mogu li da vratim proizvod?', 'a' => 'Proizvode bez imena u roku od 14 dana od prijema. Proizvode sa imenom samo zbog greške ili oštećenja. <a href="' . esc_url( bu_page_url( 'pomoc' ) ) . '#reklamacije-i-povracaj">Više u Pomoći</a>' ),
 );
-bu_set_seo( 'Ukrasi za jelku sa imenom, personalizovani pokloni | Bumbaru', 'Personalizovani ukrasi za jelku sa imenom, latinicom ili ćirilicom, novogodišnja dekoracija i privesci iz 3D štampe. Pouzećem, besplatna dostava od 2.000 din.' );
+bu_set_seo( 'Ukrasi za jelku sa imenom, personalizovani pokloni | Bumbaru', 'Personalizovani ukrasi za jelku sa imenom, latinicom ili ćirilicom, novogodišnja dekoracija i privesci iz 3D štampe. Pouzećem, besplatna dostava od 2.500 din.' );
 $faq_ld = array( '@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => array() );
 foreach ( $faq as $f ) {
 	$faq_ld['mainEntity'][] = array( '@type' => 'Question', 'name' => $f['q'], 'acceptedAnswer' => array( '@type' => 'Answer', 'text' => wp_strip_all_tags( $f['a'] ) ) );

@@ -223,6 +223,8 @@
       err.textContent = 'Greška: ' + ex.message;
       items = [];
     }
+    var warn = items.map(function (i) { return i.upozorenje; }).filter(Boolean);
+    if (warn.length) err.textContent = 'Pažnja: ' + warn.join(' ');
     var ok = items.length > 0;
     $('[data-gen-3mf]').disabled = !ok;
     $('[data-gen-stl]').disabled = !ok;

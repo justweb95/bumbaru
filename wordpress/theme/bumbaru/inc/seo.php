@@ -50,7 +50,7 @@ function bu_seo_data() {
 		$d['desc']  = bu_tmeta( $t, 'seo_desc' ) ? bu_tmeta( $t, 'seo_desc' ) : wp_strip_all_tags( term_description( $t ) );
 	} elseif ( function_exists( 'is_shop' ) && is_shop() && ! $d['title'] ) {
 		$d['title'] = 'Katalog: ukrasi, pokloni sa imenom, radionica | Bumbaru';
-		$d['desc']  = 'Ceo Bumbaru katalog: novogodišnji ukrasi i dekoracija, personalizovani pokloni, držači za Parkside alat i oprema za auto. Besplatna dostava od 2.000 din.';
+		$d['desc']  = 'Ceo Bumbaru katalog: novogodišnji ukrasi i dekoracija, personalizovani pokloni, držači za Parkside alat i oprema za auto. Besplatna dostava od 2.500 din.';
 	} elseif ( is_singular() && ! $d['title'] ) {
 		$id         = get_queried_object_id();
 		$d['title'] = get_post_meta( $id, '_bu_seo_title', true ) ? get_post_meta( $id, '_bu_seo_title', true ) : get_the_title( $id ) . ' | Bumbaru';
@@ -165,7 +165,7 @@ if ( ! bu_seo_plugin_active() ) {
 				'name'                   => 'Bumbaru',
 				'url'                    => home_url( '/' ),
 				'logo'                   => bu_img( 'brand/favicon-512.png' ),
-				'description'            => 'Ukrasi za jelku sa imenom, personalizovani pokloni i 3D štampa po meri. Plaćanje pouzećem, besplatna dostava od 2.000 din.',
+				'description'            => 'Ukrasi za jelku sa imenom, personalizovani pokloni i 3D štampa po meri. Plaćanje pouzećem, besplatna dostava od 2.500 din.',
 				'address'                => array( '@type' => 'PostalAddress', 'addressLocality' => 'Leskovac', 'addressCountry' => 'RS' ),
 				'areaServed'             => 'RS',
 				'sameAs'                 => array_values( array_filter( array( bu_site( 'facebook_url' ), bu_site( 'instagram_url' ) ) ) ),
@@ -207,7 +207,7 @@ function bu_return_policy( $custom ) {
 
 /** Iznos za besplatnu dostavu (podešava se u WooCommerce → Dostava; plugin Bumbaru 3D ga čita). */
 function bu_free_ship_min() {
-	return function_exists( 'bumbaru_free_ship_min' ) ? (float) bumbaru_free_ship_min() : 2000.0;
+	return function_exists( 'bumbaru_free_ship_min' ) ? (float) bumbaru_free_ship_min() : 2500.0;
 }
 
 /** „2.000 din” */

@@ -1,7 +1,7 @@
 <?php
 /**
  * Podešavanje prodavnice jednim klikom:
- * dinari, Srbija, plaćanje pouzećem, Post Express (besplatno od 2.000 din), stranice i linkovi kao na Astro sajtu.
+ * dinari, Srbija, plaćanje pouzećem, Post Express (besplatno od 2.500 din), stranice i linkovi kao na Astro sajtu.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -139,7 +139,7 @@ function bumbaru_setup_store( $opts = array() ) {
 	if ( ! $paid ) {
 		$paid = $zone->add_shipping_method( 'flat_rate' );
 	}
-	$min = (int) get_option( 'bumbaru_free_ship_min', 2000 );
+	$min = (int) get_option( 'bumbaru_free_ship_min', 2500 );
 	if ( $free ) {
 		$old = (array) get_option( 'woocommerce_free_shipping_' . $free . '_settings', array() );
 		// Iznos koji ste sami promenili u WooCommerce → Dostava ostaje.
@@ -259,3 +259,68 @@ add_action( 'init', function () {
 add_filter( 'woocommerce_currency_symbol', function ( $symbol, $currency ) {
 	return 'RSD' === $currency ? 'din' : $symbol;
 }, 10, 2 );
+
+/**
+ * Nadogradnja na 2.3: besplatna dostava od 2.500 din (podešavanje, WooCommerce dostava i tekstovi proizvoda i strana)
+ * i komplet po izboru za lutkice u pletenom izgledu (irvas, Sneško, Deda Mraz, jelkica).
+ */
+function bumbaru_migrate_23() {
+	global $wpdb;
+	if ( get_option( 'bumbaru_migrate_23' ) ) {
+		return;
+	}
+	// Prag za besplatnu dostavu (samo ako je bio 2.000, iznos koji ste sami promenili ostaje).
+	if ( 2000 === (int) get_option( 'bumbaru_free_ship_min', 2000 ) ) {
+		update_option( 'bumbaru_free_ship_min', 2500 );
+	}
+	if ( class_exists( 'WC_Shipping_Zones' ) ) {
+		foreach ( WC_Shipping_Zones::get_zones() as $z ) {
+			foreach ( $z['shipping_methods'] as $m ) {
+				if ( 'free_shipping' !== $m->id ) {
+					continue;
+				}
+				$key = 'woocommerce_free_shipping_' . $m->get_instance_id() . '_settings';
+				$s   = (array) get_option( $key, array() );
+				if ( isset( $s['min_amount'] ) && 2000 === (int) $s['min_amount'] ) {
+					$s['min_amount'] = '2500';
+					update_option( $key, $s );
+				}
+			}
+		}
+	}
+	// Tekstovi: „od 2.000 din” → „od 2.500 din” (ista dužina, pa i serijalizovani podaci ostaju ispravni).
+	$types = "'product','page'";
+	$wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'od 2.000 din', 'od 2.500 din'), post_excerpt = REPLACE(post_excerpt, 'od 2.000 din', 'od 2.500 din') WHERE post_type IN ($types)" ); // phpcs:ignore
+	$wpdb->query( "UPDATE {$wpdb->postmeta} pm JOIN {$wpdb->posts} p ON p.ID = pm.post_id SET pm.meta_value = REPLACE(pm.meta_value, 'od 2.000 din', 'od 2.500 din') WHERE p.post_type IN ($types) AND pm.meta_value LIKE '%od 2.000 din%'" ); // phpcs:ignore
+	$wpdb->query( "UPDATE {$wpdb->termmeta} SET meta_value = REPLACE(meta_value, 'od 2.000 din', 'od 2.500 din') WHERE meta_value LIKE '%od 2.000 din%'" ); // phpcs:ignore
+	$wpdb->query( "UPDATE {$wpdb->term_taxonomy} SET description = REPLACE(description, 'od 2.000 din', 'od 2.500 din') WHERE description LIKE '%od 2.000 din%'" ); // phpcs:ignore
+	$site = get_option( 'bumbaru_site', array() );
+	if ( is_array( $site ) && isset( $site['ribbon_3'] ) && 'Besplatna dostava od 2.000 din' === $site['ribbon_3'] ) {
+		$site['ribbon_3'] = 'Besplatna dostava od 2.500 din';
+		update_option( 'bumbaru_site', $site );
+	}
+
+	// Lutkice: komplet po izboru (prva dva su štiklirana = komplet od 3), popust po broju lutkica.
+	$lutkice = array(
+		'irvas-lutkica-pleteni-izgled'     => array( 'snesko-lutkica-pleteni-izgled', 'deda-mraz-lutkica-pleteni-izgled', 'jelkica-pleteni-izgled' ),
+		'snesko-lutkica-pleteni-izgled'    => array( 'irvas-lutkica-pleteni-izgled', 'deda-mraz-lutkica-pleteni-izgled', 'jelkica-pleteni-izgled' ),
+		'deda-mraz-lutkica-pleteni-izgled' => array( 'snesko-lutkica-pleteni-izgled', 'irvas-lutkica-pleteni-izgled', 'jelkica-pleteni-izgled' ),
+		'jelkica-pleteni-izgled'           => array( 'deda-mraz-lutkica-pleteni-izgled', 'snesko-lutkica-pleteni-izgled', 'irvas-lutkica-pleteni-izgled' ),
+	);
+	foreach ( $lutkice as $slug => $uz ) {
+		$post = get_page_by_path( $slug, OBJECT, 'product' );
+		if ( ! $post ) {
+			continue;
+		}
+		$cfg = get_post_meta( $post->ID, '_bu_config', true );
+		$cfg = is_array( $cfg ) ? $cfg : array();
+		// Komplet koji ste sami podesili (sa popustom po broju) ostaje.
+		if ( ! empty( $cfg['komplet']['popusti'] ) ) {
+			continue;
+		}
+		$cfg['komplet'] = array( 'uz' => $uz, 'popust' => isset( $cfg['komplet']['popust'] ) ? $cfg['komplet']['popust'] : 10, 'popusti' => '2=10, 3=15, 4=20' );
+		update_post_meta( $post->ID, '_bu_config', $cfg );
+	}
+	wp_cache_flush();
+	update_option( 'bumbaru_migrate_23', 1 );
+}

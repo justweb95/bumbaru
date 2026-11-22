@@ -382,6 +382,38 @@
     return out;
   }
 
+  /**
+   * Delovi imena koji ne dodiruju ostatak (tačka na i, kvačica, odvojeno slovo) dobiju mostić širine w
+   * do najbližeg dela ukrasa ili imena. Vraća ime sa mostićima.
+   */
+  function connectIslands(body, name, w) {
+    for (var guard = 0; guard < 16; guard++) {
+      var comps = exPolys(union(body, name));
+      if (comps.length <= 1) break;
+      comps.forEach(function (c) { c.a = Math.abs(area(c.outer)); });
+      comps.sort(function (a, b) { return b.a - a.a; });
+      var island = null;
+      for (var i = 1; i < comps.length && !island; i++) {
+        if (inter([toPath(comps[i].outer)], name).length) island = comps[i];
+      }
+      if (!island) break;
+      var best = Infinity, P = null, Q = null;
+      comps.forEach(function (c) {
+        if (c === island) return;
+        island.outer.forEach(function (p) {
+          c.outer.forEach(function (q) {
+            var d = (p[0] - q[0]) * (p[0] - q[0]) + (p[1] - q[1]) * (p[1] - q[1]);
+            if (d < best) { best = d; P = p; Q = q; }
+          });
+        });
+      });
+      if (!P) break;
+      var L = Math.sqrt(best) || 1, ux = (Q[0] - P[0]) / L, uy = (Q[1] - P[1]) / L, e = w * 0.6;
+      name = union(name, stroke([{ pts: [[P[0] - ux * e, P[1] - uy * e], [Q[0] + ux * e, Q[1] + uy * e]], closed: false }], w));
+    }
+    return name;
+  }
+
   /* ——— Modeli ——— */
 
   var models = {};
@@ -412,7 +444,19 @@
       var f = ctx.fitName(p.ime);
       var fs = parseFloat(f.fs), y = parseFloat(f.y);
       var adv = ctx.font.getAdvanceWidth(f.name, fs, { kerning: true });
-      var glyphs = fontPathToSubs(ctx.font.getPath(f.name, CX - adv / 2, y, fs, { kerning: true }));
+      var fpath = ctx.font.getPath(f.name, CX - adv / 2, y, fs, { kerning: true });
+      var glyphs = fontPathToSubs(fpath);
+      var sx = parseFloat(f.sx || '1'), dx = parseFloat(f.dx || '0');
+      var tx;
+      if (!f.rails) {
+        // Bez šinica: slova tačno od -REACH do +REACH (po crtežu slova), da krajevi sigurno uđu u obruč.
+        var bb = fpath.getBoundingBox(), REACH = 97.5;
+        var k = (2 * REACH - 1.2) / (bb.x2 - bb.x1), cx0 = (bb.x1 + bb.x2) / 2;
+        tx = function (x) { return CX + (x - cx0) * k; };
+      } else {
+        tx = function (x) { return sx * (x - CX) + CX - dx; };
+      }
+      glyphs.forEach(function (sub) { sub.pts.forEach(function (q) { q[0] = tx(q[0]); }); });
       var name = grow(fill(glyphs, 'nonzero'), 0.6);
       if (f.rails) name = union(name, stroke(parsePath(f.rails), parseFloat(f.railW)));
 
@@ -441,7 +485,13 @@
         delovi.push({ naziv: 'Telo (' + B.naziv + ')', boja: B.id, bojaNaziv: B.naziv, hex: B.hex, mesh: mb, oblik: bodyOnly });
         delovi.push({ naziv: 'Ime (' + N.naziv + ')', boja: N.id, bojaNaziv: N.naziv, hex: N.hex, mesh: extrude(nm, zName, T + up), oblik: nm });
       }
-      return { naziv: 'Ukras ' + f.name, ime: f.name, sirina: 208 * s, visina: (CY + 104 - 49) * s, delovi: delovi };
+      // Tačke na i/j, kvačice (č, ć, š, ž) i slova koja se ne dodiruju: spoje se mostićem sa najbližim delom.
+      name = connectIslands(body, name, 2.4);
+      // Provera: da li je ime spojeno sa ukrasom (slovo koje ne dodiruje ništa bi otpalo posle štampe).
+      var upozorenje = '';
+      var nBody = exPolys(body).length, nAll = exPolys(union(body, name)).length;
+      if (nAll > nBody) upozorenje = f.name + ': deo imena nije spojen sa ukrasom (' + (nAll - nBody) + ' odvojen' + (nAll - nBody === 1 ? ' deo' : 'a dela') + ').';
+      return { naziv: 'Ukras ' + f.name, ime: f.name, upozorenje: upozorenje, sirina: 208 * s, visina: (CY + 104 - 49) * s, delovi: delovi };
     },
   };
 

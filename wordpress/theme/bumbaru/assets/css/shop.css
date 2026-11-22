@@ -23,7 +23,9 @@
 /* ——— Kratko obaveštenje „Dodato u korpu” ——— */
 .bu-toast { position: fixed; right: 20px; bottom: 20px; z-index: 80; display: flex; align-items: center; gap: 6px 14px; flex-wrap: wrap; padding: 14px 16px 14px 20px; max-width: min(440px, calc(100vw - 32px)); background: var(--surface-paper); border: 2px solid var(--ink); border-radius: 18px; box-shadow: var(--shadow); animation: pop .25s var(--ease); transition: opacity .3s ease, transform .3s ease; }
 .bu-toast strong { display: block; }
-.bu-toast span { flex: 1 1 160px; color: var(--ink-muted); font-size: 14px; line-height: 20px; }
+.bu-toast > span { flex: 1 1 calc(100% - 64px); min-width: 0; color: var(--ink-muted); font-size: 14px; line-height: 20px; }
+.bu-toast > span > span { display: block; color: var(--ink-muted); }
+.bu-toast > a.btn { flex: 1 1 0; justify-content: center; }
 .bu-toast.out { opacity: 0; transform: translateY(10px); }
 .quick.busy { opacity: .6; pointer-events: none; }
 

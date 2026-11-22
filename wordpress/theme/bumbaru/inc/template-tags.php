@@ -21,7 +21,7 @@ function bu_site_defaults() {
 		'ribbon_ng'      => 'Sa imenom do 16. 12, ostale porudžbine do 20. 12.',
 		'ribbon_stalna'  => 'Proizvodi na stanju šalju se isti dan.',
 		'ribbon_2'       => 'Plaćanje pouzećem',
-		'ribbon_3'       => 'Besplatna dostava od 2.000 din',
+		'ribbon_3'       => 'Besplatna dostava od 2.500 din',
 		'ng_deadline'    => 'Poručite do 16. 12. i stiže pre Nove godine.',
 	);
 }

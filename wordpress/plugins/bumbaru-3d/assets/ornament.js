@@ -9,25 +9,31 @@
   var ADV = {};
   for (var i = 0; i < CH.length; i++) ADV[CH[i]] = W[i];
 
+  // Ime ide od jedne do druge strane obruča i krajevima ulazi u njega, pa ga drži bez šinica.
+  // Kraća imena dobiju veći font i blago razvučena slova (sx); šinice ostaju samo za imena od 1–2 slova.
+  var REACH = 97, FS_MAX = 70, SX_MAX = 1.6;
   function fitName(raw, fallback) {
     var name = String(raw || '').trim().slice(0, 12) || fallback || 'Mila';
     var sum = 0;
     Array.from(name).forEach(function (ch) { sum += ADV[ch] !== undefined ? ADV[ch] : 520; });
     var em = sum / 1000 + 0.1;
     var CY = 182, RI = 94, yc = CY + 6;
-    var half = Math.sqrt(RI * RI - 36);
-    var fs = Math.max(22, Math.min(60, (2 * half + 6) / em));
+    var fs = Math.max(22, Math.min(FS_MAX, 2 * REACH / em));
+    var sx = Math.max(1, Math.min(SX_MAX, 2 * REACH / (em * fs)));
     var y = yc + 0.23 * fs;
-    var w = em * fs;
+    var w = em * fs * sx;
+    var dx = 0.07 * fs * sx; // slova sa repom: crtež je malo desno od širine slova
     var rails = '';
     var r = function (v) { return v.toFixed(1); };
-    if (half - w / 2 > 3) {
+    var r3 = function (v) { return (Math.round(v * 1000) / 1000).toString(); };
+    if (REACH - w / 2 > 3) {
       var yr = y - 0.05 * fs;
       var hr = Math.sqrt(RI * RI - (yr - CY) * (yr - CY));
       rails = 'M' + r(120 - hr - 4) + ' ' + r(yr) + 'L' + r(120 - w / 2 + 0.18 * fs) + ' ' + r(yr) +
         'M' + r(120 + w / 2 - 0.22 * fs) + ' ' + r(yr) + 'L' + r(120 + hr + 4) + ' ' + r(yr);
     }
-    return { name: name, fs: r(fs), y: r(y), rails: rails, railW: r(Math.max(4.2, 0.085 * fs)) };
+    var tf = 'matrix(' + r3(sx) + ' 0 0 1 ' + r3(120 - 120 * sx - dx) + ' 0)';
+    return { name: name, fs: r(fs), y: r(y), rails: rails, railW: r(Math.max(4.2, 0.085 * fs)), sx: r3(sx), dx: r3(dx), tf: tf };
   }
 
   var ids = Object.keys(D.colors);
@@ -38,7 +44,7 @@
   }
 
   function setName(g, f) {
-    g.querySelectorAll('.orn-name').forEach(function (t) { t.textContent = f.name; t.setAttribute('font-size', f.fs); t.setAttribute('y', f.y); });
+    g.querySelectorAll('.orn-name').forEach(function (t) { t.textContent = f.name; t.setAttribute('font-size', f.fs); t.setAttribute('y', f.y); t.setAttribute('transform', f.tf); });
     g.querySelectorAll('.orn-rail').forEach(function (p) { p.setAttribute('d', f.rails); p.setAttribute('stroke-width', f.railW); });
   }
 

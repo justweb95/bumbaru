@@ -1,6 +1,6 @@
 <?php
 /**
- * Dostava: Post Express je besplatan od 2.000 din (iznos se menja u WooCommerce → Podešavanja → Dostava → Srbija).
+ * Dostava: Post Express je besplatan od 2.500 din (iznos se menja u WooCommerce → Podešavanja → Dostava → Srbija).
  * Ispod tog iznosa kupac plaća kuriru po cenovniku pošte, pa ta dostava u korpi nema cenu.
  * U korpi i na plaćanju stoji koliko još fali do besplatne dostave.
  */
@@ -15,7 +15,7 @@ function bumbaru_free_ship_min() {
 	if ( null !== $min ) {
 		return $min;
 	}
-	$min = (float) get_option( 'bumbaru_free_ship_min', 2000 );
+	$min = (float) get_option( 'bumbaru_free_ship_min', 2500 );
 	if ( class_exists( 'WC_Shipping_Zones' ) ) {
 		foreach ( WC_Shipping_Zones::get_zones() as $z ) {
 			foreach ( $z['shipping_methods'] as $m ) {
