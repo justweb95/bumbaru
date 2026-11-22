@@ -79,10 +79,10 @@ Novo u 2.5
   • Uklonjene stalne precrtane cene kod slavskih i božićnih modlica, medaljona i gotovih slavskih setova
     (npr. 300 umesto „350”, set 1.300 umesto „2.590”): precrtana cena mora biti stvarna ranija cena.
     Prave akcije (akcija kategorije, akcijska cena u proizvodu) i dalje prikazuju precrtanu cenu.
-  • Popusti se više ne sabiraju sa akcijom: važi veći od dva (akcija ILI popust za komplet / broj komada /
-    motive). Npr. tokom akcije −10%: 5 ukrasa = 260 din (akcija), 7 ukrasa = 250 (−15% na 290);
-    komplet 3 lutkice = 1.500 (−15% na 1.770), a ne 1.350 kao ranije. Pragovi koji nisu veći od akcije
-    se tokom akcije ne prikazuju (posle akcije se vrate sami).
+  • Popusti za komplet / broj komada / motive idu na cenu sa akcijom (akcija + popust), kao i do sada.
+    Npr. 3 male lutkice: 3 × 490 = 1.470, sa akcijom 1.320, −15% za komplet = 1.120 din.
+  • Lutkice u pletenom izgledu: mala 490 din (bila 590); srednja 890 i velika 1.290 ostaju dok ne
+    dobijemo grame i vreme iz slicera za 150% i 200%.
   • Proizvodi bez cene (privesci sa imenom, Zlatna i Mini jelka, Jelkica za punjenje, Patuljak, Prstenovi za
     salvete, Nastavak za lanac, Polica i Zidni držač, privesci Irvas i Deda Mraz) i dalje se poručuju preko
     Messengera; upišite im cenu u proizvodu ako želite da se kupuju na sajtu.

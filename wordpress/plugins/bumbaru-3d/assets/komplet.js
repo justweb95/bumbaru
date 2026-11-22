@@ -44,8 +44,7 @@
       puna += v.cena; zbir += v.eff;
     });
     var n = 1 + sel.length, p = sel.length ? pct(n) : 0;
-    // važi veći popust: akcija (u eff) ili popust za komplet na redovne cene, ne zbir
-    return { n: n, sel: sel, pct: p, puna: puna, cena: Math.min(Math.round(zbir / 10) * 10, Math.round(puna * (1 - p / 100) / 10) * 10) };
+    return { n: n, sel: sel, pct: p, puna: puna, cena: Math.round(zbir * (1 - p / 100) / 10) * 10 };
   }
 
   function update() {

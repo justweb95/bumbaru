@@ -152,7 +152,7 @@ function bumbaru_product_data( $product ) {
 			}
 		}
 		$sil       = bumbaru_silueta( $m['silueta'] );
-		$d['mot']  = array( 'boje' => 'boje' === $c['type'], 'sil' => $sil ? $sil['id'] : '', 'vb' => $sil ? $sil['viewBox'] : '', 'lista' => $lista, 'popusti' => bumbaru_tiers_iznad_akcije( $product, $m['popusti'] ), 'cena' => $base );
+		$d['mot']  = array( 'boje' => 'boje' === $c['type'], 'sil' => $sil ? $sil['id'] : '', 'vb' => $sil ? $sil['viewBox'] : '', 'lista' => $lista, 'popusti' => $m['popusti'], 'cena' => $base );
 	}
 	if ( 'sastav' === $c['type'] ) {
 		$list = array();
@@ -604,7 +604,7 @@ function bumbaru_u_korpi( $product_id ) {
 /** Popust za više komada (npr. ukrasi sa imenom): traka sa pčelicom koja pokazuje koliko još do popusta. */
 function bumbaru_kolicina_html( $product ) {
 	$c     = bumbaru_config( $product );
-	$tiers = bumbaru_tiers_iznad_akcije( $product, $c['kolicina'] );
+	$tiers = $c['kolicina'];
 	if ( ! $tiers ) {
 		return '';
 	}
@@ -612,7 +612,7 @@ function bumbaru_kolicina_html( $product ) {
 	$korp = bumbaru_u_korpi( $product->get_id() );
 	$unit = bumbaru_eff( $product, bumbaru_base_price( $product ) );
 	$rec  = 'ukras' === $c['type'] ? array( 'ukras', 'ukrasa' ) : array( 'komad', 'komada' );
-	$data = array( 'tiers' => $tiers, 'korpa' => $korp, 'cena' => $unit, 'lista' => bumbaru_base_price( $product ), 'pid' => $product->get_id(), 'rec' => $rec );
+	$data = array( 'tiers' => $tiers, 'korpa' => $korp, 'cena' => $unit, 'pid' => $product->get_id(), 'rec' => $rec );
 	// Ukras sa imenom: za 2–4 komada predloži porodični set (povoljniji po komadu).
 	if ( 'ukras' === $c['type'] ) {
 		$set = bumbaru_set_ponuda();
@@ -632,17 +632,6 @@ function bumbaru_kolicina_html( $product ) {
 		. ( ! empty( $data['set'] ) ? '<p class="mm-set" data-mm-set hidden></p>' : '' )
 		. '</div>';
 	return $o;
-}
-
-/**
- * Pragovi popusta koji donose nešto preko akcije: važi veći popust (akcija ili popust za komade/komplet), ne zbir,
- * pa prag koji nije veći od akcije ne nudimo (tokom akcije −10% prag „5 kom −10%” ne menja cenu).
- */
-function bumbaru_tiers_iznad_akcije( $product, $tiers ) {
-	$ak = bumbaru_discount_pct( $product );
-	return array_values( array_filter( (array) $tiers, function ( $t ) use ( $ak ) {
-		return (float) $t['procenat'] > $ak;
-	} ) );
 }
 
 /** Porodični set ukrasa za predlog uz pojedinačni ukras: { url, naziv, cena (za 4), po (po komadu), kom }. */
@@ -700,7 +689,7 @@ function bumbaru_motivi_fields( $product ) {
 			$items[] = array( 'id' => $it['id'], 'naziv' => $it['naziv'], 'hex' => '', 'cena' => $it['cena'] && $it['cena'] != $base ? $it['cena'] : 0, 'cene' => $it['cene'], 'img' => $it['img'] );
 		}
 	}
-	$tiers = bumbaru_tiers_iznad_akcije( $product, $m['popusti'] );
+	$tiers = $m['popusti'];
 	$max   = $tiers ? end( $tiers )['od'] : 0;
 	$rec   = $boje ? 'boje' : 'motive';
 	$o     = '<fieldset class="field mot" data-motivi' . ( $boje ? ' data-boje' : '' ) . '><legend class="flabel">' . ( $boje ? 'Izaberite boje i broj komada' : 'Izaberite motive' ) . '</legend>'
@@ -802,7 +791,7 @@ function bumbaru_komplet_izbor_html( $product, $k ) {
 	$main = $vm['v'] ? $vm['v'] : array( '' => array( 'cena' => $base, 'eff' => bumbaru_eff( $product, $base ) ) );
 	$img  = function_exists( 'bu_card_img' ) ? bu_card_img( $product ) : '';
 	$data = array(
-		'popusti' => bumbaru_tiers_iznad_akcije( $product, $k['popusti'] ),
+		'popusti' => $k['popusti'],
 		'opcija'  => $vm['opcija'],
 		'main'    => $main,
 		'uz'      => array_map( function ( $x ) {
@@ -813,7 +802,7 @@ function bumbaru_komplet_izbor_html( $product, $k ) {
 		'slika'   => $img,
 	);
 	$tiers = array();
-	foreach ( bumbaru_tiers_iznad_akcije( $product, $k['popusti'] ) as $t ) {
+	foreach ( $k['popusti'] as $t ) {
 		$tiers[] = (int) $t['od'] . ' kom −' . (float) $t['procenat'] . '%';
 	}
 	$o = '<div class="komplet km-izbor" data-komplet2="' . esc_attr( wp_json_encode( $data ) ) . '"><div class="km-head"><h2 class="h3">Napravite komplet</h2><span class="badge badge-leaf" data-km-badge>' . esc_html( implode( ' · ', $tiers ) ) . '</span></div>'

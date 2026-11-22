@@ -44,7 +44,7 @@
     var tot = $('[data-mm-total]');
     if (tot && D.cena) {
       tot.hidden = !p;
-      tot.innerHTML = p ? 'Cena po ' + D.rec[0] + 'u sa popustom: <strong>' + din(Math.min(D.cena, snizi(D.lista || D.cena, p))) + '</strong><s>' + din(D.lista || D.cena) + '</s>' + (korpa ? ' <small>(važi i za ' + korpa + ' u korpi)</small>' : '') : '';
+      tot.innerHTML = p ? 'Cena po ' + D.rec[0] + 'u sa popustom: <strong>' + din(snizi(D.cena, p)) + '</strong><s>' + din(D.cena) + '</s>' + (korpa ? ' <small>(važi i za ' + korpa + ' u korpi)</small>' : '') : '';
     }
     var setEl = $('[data-mm-set]');
     if (setEl && D.set) {

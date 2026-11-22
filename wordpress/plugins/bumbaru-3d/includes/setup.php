@@ -383,5 +383,19 @@ function bumbaru_migrate_25b() {
 			}
 		}
 	}
+	// Lutkice u pletenom izgledu: mala 490 din (bila 590).
+	foreach ( array( 'irvas-lutkica-pleteni-izgled', 'snesko-lutkica-pleteni-izgled', 'jelkica-pleteni-izgled', 'deda-mraz-lutkica-pleteni-izgled' ) as $slug ) {
+		$post = get_page_by_path( $slug, OBJECT, 'product' );
+		$cfg  = $post ? get_post_meta( $post->ID, '_bu_config', true ) : null;
+		if ( is_array( $cfg ) && isset( $cfg['options'] ) && is_string( $cfg['options'] ) && false !== strpos( $cfg['options'], 'Mali [590]' ) ) {
+			$cfg['options'] = str_replace( 'Mali [590]', 'Mali [490]', $cfg['options'] );
+			update_post_meta( $post->ID, '_bu_config', $cfg );
+			$p = wc_get_product( $post->ID );
+			if ( $p && 590 === (int) $p->get_regular_price( 'edit' ) ) {
+				$p->set_regular_price( '490' );
+				$p->save();
+			}
+		}
+	}
 	update_option( 'bumbaru_migrate_25b', 1 );
 }
