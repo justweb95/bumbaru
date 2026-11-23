@@ -29,14 +29,14 @@ function bumbaru_modlice_mere() {
 		'bozicna-modlica-vitlejemska-zvezda' => array( '6,4 × 6,4', '5,1 × 5,1', '4,2 × 4,2' ),
 		'bozicna-modlica-badnjak'            => array( '4,5 × 8,2', '3,6 × 6,6', '2,9 × 5,4' ),
 		'bozicna-modlica-hristos-se-rodi'    => array( '8,1 × 5,6', '6,5 × 4,5', '5,3 × 3,7' ),
-		// Medaljoni: velika Ø 9,5, srednja Ø 7,5 (mala Ø 6,2 se ne prodaje posebno).
-		'modlica-sveti-nikola'               => array( 'Ø 9,5', 'Ø 7,5' ),
-		'modlica-sveti-georgije'             => array( 'Ø 9,5', 'Ø 7,5' ),
-		'modlica-arhangel-mihailo'           => array( 'Ø 9,5', 'Ø 7,5' ),
-		'modlica-sveti-jovan'                => array( 'Ø 9,5', 'Ø 7,5' ),
-		'modlica-sveti-dimitrije'            => array( 'Ø 9,5', 'Ø 7,5' ),
-		'modlica-sveti-sava'                 => array( 'Ø 9,5', 'Ø 7,5' ),
-		'bozicna-modlica-rodjenje-hristovo'  => array( 'Ø 9,5', 'Ø 7,5' ),
+		// Medaljoni: velika Ø 9,5 (100%), srednja Ø 7,5 (80%), mala Ø 6,2 (65%).
+		'modlica-sveti-nikola'               => array( 'Ø 9,5', 'Ø 7,5', 'Ø 6,2' ),
+		'modlica-sveti-georgije'             => array( 'Ø 9,5', 'Ø 7,5', 'Ø 6,2' ),
+		'modlica-arhangel-mihailo'           => array( 'Ø 9,5', 'Ø 7,5', 'Ø 6,2' ),
+		'modlica-sveti-jovan'                => array( 'Ø 9,5', 'Ø 7,5', 'Ø 6,2' ),
+		'modlica-sveti-dimitrije'            => array( 'Ø 9,5', 'Ø 7,5', 'Ø 6,2' ),
+		'modlica-sveti-sava'                 => array( 'Ø 9,5', 'Ø 7,5', 'Ø 6,2' ),
+		'bozicna-modlica-rodjenje-hristovo'  => array( 'Ø 9,5', 'Ø 7,5', 'Ø 6,2' ),
 	);
 }
 
@@ -60,6 +60,7 @@ function bumbaru_modlice_crno_zlatne() {
 
 const BUMBARU_MODLICE_ODSTUPA = 'Mere su okvirne i mogu da odstupe par milimetara.';
 const BUMBARU_MODLICE_BOJA    = 'Boja = Svejedno | Crvena | Bela';
+const BUMBARU_MEDALJON_MALI   = 300; // cena malog medaljona (Ø 6,2 cm), menja se u proizvodu
 
 /** „Ø 9,5 cm” → „oko Ø 9,5 cm”, „Ø 7,6 cm” → „oko Ø 7,5 cm” (samo jednom). */
 function bumbaru_modlice_oko( $val ) {
@@ -91,6 +92,10 @@ function bumbaru_modlice_izmeni( $slug, $p ) {
 		$line = preg_replace( '/,\s*medaljon\s+Ø\s*[\d.,]+\s*cm/u', '', $line );
 		$line = preg_replace( '/,?\s*Ø\s*[\d.,]+\s*cm/u', '', $line );
 		$line = preg_replace( '/,\s*[\d.,]+\s*×\s*[\d.,]+\s*cm/u', '', $line );
+		// Medaljon: dodaj malu veličinu ako je bilo samo Velika i Srednja.
+		if ( isset( $mere[ $slug ][2] ) && 2 === substr_count( $line, '[' ) && ! preg_match( '/\bMala\b/u', $line ) ) {
+			$line = rtrim( $line ) . ' | Mala [' . BUMBARU_MEDALJON_MALI . ']';
+		}
 		$lines[ $k ] = $line;
 	}
 	if ( ! $ima_b && ! $cz ) {
@@ -132,6 +137,8 @@ function bumbaru_modlice_izmeni( $slug, $p ) {
 	// 3) Opis: mere više nisu pored izbora; boja se bira.
 	$p['about'] = str_replace(
 		array(
+			'Medaljon pravimo u dve veličine: velikoj (Ø 9,5 cm) za kolač od oko 30 cm i srednjoj (Ø 7,6 cm) za manji kolač ili česnicu. Manji ne pravimo, jer se lik i natpis u testu ne bi videli.',
+			'Medaljon pravimo u dve veličine: velikoj (oko Ø 9,5 cm) za kolač od oko 30 cm i srednjoj (oko Ø 7,5 cm) za manji kolač ili česnicu. Manji ne pravimo, jer se lik i natpis u testu ne bi videli.',
 			'Mere svake veličine su pored izbora.',
 			'velikoj (Ø 9,5 cm)',
 			'srednjoj (Ø 7,6 cm)',
@@ -140,6 +147,8 @@ function bumbaru_modlice_izmeni( $slug, $p ) {
 			'u boji kao na fotografijama (crvena ili bela). Ako želite drugu boju, napišite je u napomeni uz porudžbinu.',
 		),
 		array(
+			'Medaljon pravimo u tri veličine: velikoj (oko Ø 9,5 cm) za kolač od oko 30 cm, srednjoj (oko Ø 7,5 cm) za manji kolač ili česnicu i maloj (oko Ø 6,2 cm) za mali kolač. Na maloj su lik i natpis sitniji, ali se i dalje lepo vide.',
+			'Medaljon pravimo u tri veličine: velikoj (oko Ø 9,5 cm) za kolač od oko 30 cm, srednjoj (oko Ø 7,5 cm) za manji kolač ili česnicu i maloj (oko Ø 6,2 cm) za mali kolač. Na maloj su lik i natpis sitniji, ali se i dalje lepo vide.',
 			'Okvirne mere svake veličine su ispod, u kartici „Veličine”.',
 			'velikoj (oko Ø 9,5 cm)',
 			'srednjoj (oko Ø 7,5 cm)',
@@ -184,4 +193,16 @@ function bumbaru_migrate_modlice() {
 	}
 	wp_cache_flush();
 	update_option( 'bumbaru_migrate_modlice', 1 );
+}
+
+/** 2.5.6: mali medaljon (Ø 6,2 cm) za sajtove na kojima je 2.5.5 već prošla. */
+function bumbaru_migrate_medaljon_mali() {
+	if ( get_option( 'bumbaru_migrate_medaljon_mali' ) || ! function_exists( 'wc_get_product' ) ) {
+		return;
+	}
+	if ( get_option( 'bumbaru_migrate_modlice' ) ) {
+		delete_option( 'bumbaru_migrate_modlice' ); // izmene su takve da drugi prolaz menja samo ono što nedostaje
+		bumbaru_migrate_modlice();
+	}
+	update_option( 'bumbaru_migrate_medaljon_mali', 1 );
 }
