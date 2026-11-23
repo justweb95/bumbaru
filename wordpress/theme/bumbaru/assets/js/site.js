@@ -69,23 +69,24 @@
   }
   if (mBg) mBg.addEventListener('click', function () { postavi(false); });
 
-  // ——— Zaglavlje: senka posle skrola; na računaru se skrolom nadole sakrije, nagore vrati ———
+  // ——— Zaglavlje: senka posle skrola; skrolom nadole se sakrije, nagore vrati (i na telefonu) ———
   var header = $('[data-header]') || $('.header');
-  // Samo na računaru sa mišem; na telefonu i tabletu zaglavlje uvek stoji na vrhu.
-  var racunar = window.matchMedia('(min-width: 1201px) and (hover: hover) and (pointer: fine)');
+  var dodir = window.matchMedia('(hover: none), (pointer: coarse)');
+  // Na telefonu dok se kuca (otvorena tastatura) zaglavlje miruje: tastatura sama pomera stranu.
+  var kuca = function () { var a = document.activeElement; return dodir.matches && !!a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && !/^(checkbox|radio|button|submit|range|color|file)$/i.test(a.type))); };
   var poslednji = window.scrollY;
   var sakrij = function (v) { if (header) header.classList.toggle('h-skriven', v); html.classList.toggle('hdr-skriven', v); };
   var onScroll = function () {
     var y = window.scrollY;
     if (header) header.classList.toggle('scrolled', y > 40);
-    if (!racunar.matches || y < 160 || otvoren() || (header && header.querySelector(':focus-visible'))) { sakrij(false); poslednji = y; return; }
+    if (y < 160 || otvoren() || (header && header.querySelector(':focus-visible'))) { sakrij(false); poslednji = y; return; }
+    if (kuca()) { poslednji = y; return; }
     var d = y - poslednji;
-    if (Math.abs(d) < 8) return;
+    if (Math.abs(d) < (dodir.matches ? 12 : 8)) return;
     sakrij(d > 0);
     poslednji = y;
   };
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
-  if (racunar.addEventListener) racunar.addEventListener('change', function () { sakrij(false); });
   if (header) header.addEventListener('focusin', function (e) { try { if (e.target.matches(':focus-visible')) sakrij(false); } catch (x) { sakrij(false); } });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
@@ -107,7 +108,7 @@
     band.className = 'mini-band'; band.hidden = true; band.setAttribute('aria-hidden', 'true');
     band.innerHTML = '<button type="button" class="mini-x" aria-label="Sakrij pregled" tabindex="-1">×</button><button type="button" class="mini-up" tabindex="-1">Veći pregled ↑</button>';
     document.body.appendChild(band);
-    var on = false, ugasen = false, raf = 0;
+    var on = false, ugasen = false, raf = 0, visina = 0, vracam = 0;
     var postavi = function (v) {
       if (v === on) return;
       on = v;
@@ -117,9 +118,14 @@
     };
     var proveri = function () {
       raf = 0;
-      if (!mob.matches || ugasen) { postavi(false); return; }
-      var hb = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
-      var vis = Math.round(Math.min(window.innerHeight * 0.25, 260));
+      if (!mob.matches || ugasen || vracam) { postavi(false); return; }
+      // Vrh trake prati stanje zaglavlja (ne trenutni položaj dok klizi), pa traka klizi zajedno sa njim.
+      var hb = header && !header.classList.contains('h-skriven') ? header.offsetHeight : 0;
+      // Visina ekrana bez tastature: pamti se najveća, da traka ne skače kad se tastatura otvori.
+      var vv = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      visina = Math.max(visina, window.innerHeight);
+      var tast = kuca() && vv < visina * 0.8;
+      var vis = tast ? Math.round(Math.max(110, Math.min(vv * 0.3, 180))) : Math.round(Math.min(visina * 0.25, 260));
       html.style.setProperty('--mini-top', hb + 'px');
       html.style.setProperty('--mini-h', vis + 'px');
       var a = (on ? ph : st).getBoundingClientRect();
@@ -129,11 +135,22 @@
     var zakazi = function () { if (!raf) raf = requestAnimationFrame(proveri); };
     window.addEventListener('scroll', zakazi, { passive: true });
     window.addEventListener('resize', zakazi);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', zakazi);
+    document.addEventListener('focusin', zakazi); document.addEventListener('focusout', function () { setTimeout(zakazi, 60); });
+    // Zaglavlje klizi bez skrola (posle 8 px) – osveži položaj trake i kad se ono pomeri.
+    if (header && window.MutationObserver) new MutationObserver(zakazi).observe(header, { attributes: true, attributeFilter: ['class'] });
     if (mob.addEventListener) mob.addEventListener('change', zakazi);
     $('.mini-x', band).addEventListener('click', function () { ugasen = true; postavi(false); });
-    var gore = function () { var y = g.getBoundingClientRect().top + window.scrollY - (header ? header.offsetHeight : 0) - 12; postavi(false); window.scrollTo({ top: y, behavior: reduce.matches ? 'auto' : 'smooth' }); };
+    // ↑ vraća na veliki pregled; dok strana klizi gore traka se ne pali ponovo (inače trepne).
+    var gore = function () {
+      var y = g.getBoundingClientRect().top + window.scrollY - (header ? header.offsetHeight : 0) - 12;
+      clearTimeout(vracam); vracam = setTimeout(function () { vracam = 0; zakazi(); }, reduce.matches ? 50 : 1200);
+      postavi(false);
+      window.scrollTo({ top: Math.max(0, y), behavior: reduce.matches ? 'auto' : 'smooth' });
+    };
     $('.mini-up', band).addEventListener('click', gore);
-    st.addEventListener('click', function (e) { if (on) { e.preventDefault(); e.stopPropagation(); gore(); } }, true);
+    // Dodir na sličicu u traci ne radi ništa (kupac ostaje kod izbora).
+    st.addEventListener('click', function (e) { if (on) { e.preventDefault(); e.stopPropagation(); } }, true);
     zakazi();
   })();
 
