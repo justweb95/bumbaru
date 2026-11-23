@@ -25,7 +25,7 @@ Sajt je statički, osim jedne male serverske funkcije za admin panel (`/api/cms/
 **Vercel**
 1. vercel.com → Add New → Project → izaberite GitHub repozitorijum `justweb95/bumbaru` → Import.
 2. Framework: Astro (prepozna sam). Build: `npm run build`. → Deploy.
-3. Settings → Domains → dodajte `bumbaru.sajt.net`; Vercel prikaže DNS zapis (obično CNAME na `cname.vercel-dns.com`).
+3. Settings → Domains → dodajte `bumbaru.rs`; Vercel prikaže DNS zapis (obično CNAME na `cname.vercel-dns.com`).
 
 > Napomena: besplatni Vercel Hobby plan je po pravilima Vercel-a samo za nekomercijalnu upotrebu, a sajt koji
 > oglašava proizvode za prodaju se računa kao komercijalni. Za besplatan hosting koji to dozvoljava koristite
@@ -34,10 +34,10 @@ Sajt je statički, osim jedne male serverske funkcije za admin panel (`/api/cms/
 **Cloudflare Pages** (besplatno, dozvoljena komercijalna upotreba)
 1. dash.cloudflare.com → Workers & Pages → Create → Pages → Connect to Git → `justweb95/bumbaru`.
 2. Framework preset: Astro. Build command: `npm run build`. Output directory: `dist`. → Save and Deploy.
-3. Custom domains → `bumbaru.sajt.net` → Cloudflare prikaže CNAME (na `<projekat>.pages.dev`).
+3. Custom domains → `bumbaru.rs` → Cloudflare prikaže CNAME (na `<projekat>.pages.dev`).
 
-**Domen bumbaru.sajt.net**: u panelu sajt.net dodajte DNS zapis koji prikaže Vercel ili Cloudflare
-(CNAME `bumbaru` → adresa iz koraka 3). Ako se domen promeni, promenite i `site` u `astro.config.mjs`
+**Domen bumbaru.rs**: kod registra domena dodajte DNS zapis koji prikaže Vercel ili Cloudflare
+(adresa iz koraka 3). Ako se domen promeni, promenite i `site` u `astro.config.mjs`
 i `url` u `src/data/site.ts`.
 
 Svaki `git push` na granu `main` posle toga sam objavljuje novu verziju.

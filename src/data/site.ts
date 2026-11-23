@@ -13,7 +13,7 @@ const AKCIJA = ak && ak.ukljucena && Date.now() <= Date.parse(akKraj)
 
 export const SITE = {
   name: 'Bumbaru',
-  url: 'https://bumbaru.sajt.net',
+  url: 'https://bumbaru.rs',
   lang: 'sr-Latn',
   description:
     'Ukrasi za jelku sa imenom, novogodišnji privesci i dekoracija, delovi za radionicu i auto. 3D štampa iz Leskovca, dostava kurirom širom Srbije.',
