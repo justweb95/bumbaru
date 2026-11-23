@@ -106,14 +106,51 @@
     st.parentNode.insertBefore(ph, st);
     var band = document.createElement('div');
     band.className = 'mini-band'; band.hidden = true; band.setAttribute('aria-hidden', 'true');
-    band.innerHTML = '<button type="button" class="mini-x" aria-label="Sakrij pregled" tabindex="-1">×</button><button type="button" class="mini-up" tabindex="-1">Veći pregled ↑</button>';
+    band.innerHTML = '<div class="mini-izbor"></div><button type="button" class="mini-x" aria-label="Sakrij pregled" tabindex="-1">×</button><button type="button" class="mini-up" tabindex="-1" aria-label="Veći pregled">↑</button>';
     document.body.appendChild(band);
+    // Pored sličice: šta je izabrano (motiv, boja, slova, veličina…; u setu motivi sa brojem komada).
+    var izbor = $('.mini-izbor', band);
+    var order = $('.order', info) || info;
+    var stavka = function (k, v, dot, n) {
+      // kratka oznaka: „Motiv za sve ukrase” → Motiv, „Boja imena” ostaje, „Broj ukrasa” se ne piše (vrednost je „4 ukrasa”)
+      var w = String(k || '').trim().split(/\s+/);
+      var kk = /^broj$/i.test(w[0]) ? '' : (/^boja$/i.test(w[0]) && w[1] ? w[0] + ' ' + w[1] : w[0]);
+      return '<span class="mi">' + (dot || '') + (kk ? '<small>' + esc(kk) + '</small>' : '') + '<span>' + esc(v) + '</span>' + (n ? '<i>×' + n + '</i>' : '') + '</span>';
+    };
+    var popuni = function () {
+      var out = [], vise = 0;
+      $$('.field', order).forEach(function (f) {
+        var lg = $('.flabel, legend', f);
+        var k = lg ? lg.textContent.split(':')[0].trim() : '';
+        if ($('[data-mot-grid]', f)) {
+          var picks = $$('.mot-pick[aria-pressed="true"]', f);
+          if (!picks.length) { out.push(stavka('', 'Izaberite motive')); return; }
+          picks.forEach(function (b) {
+            var t = b.closest('.mot-tile'), nEl = t && $('[data-mot-n]', t), nm = $('.mot-name', b);
+            out.push(stavka('', nm ? nm.textContent : b.getAttribute('aria-label'), '', nEl ? nEl.textContent : ''));
+          });
+          return;
+        }
+        var ch = $$('input:checked', f).filter(function (i) { return i.dataset.label; });
+        var sel = $('select', f);
+        if (ch.length) {
+          var dot = $('.cp-dot', ch[0].closest('label') || f);
+          out.push(stavka(k, ch.map(function (i) { return i.dataset.label; }).join(', '), dot ? dot.outerHTML : ''));
+        } else if (sel && sel.selectedOptions[0] && sel.value) out.push(stavka(k, sel.selectedOptions[0].text));
+      });
+      if (out.length > 4) { vise = out.length - 3; out = out.slice(0, 3); out.push('<span class="mi mi-vise">+ još ' + vise + '</span>'); }
+      izbor.innerHTML = out.join('');
+    };
+    var pt = 0;
+    var kasnije = function () { if (!on) return; clearTimeout(pt); pt = setTimeout(popuni, 60); };
+    order.addEventListener('change', kasnije); order.addEventListener('click', kasnije); order.addEventListener('input', kasnije);
     var on = false, ugasen = false, raf = 0, visina = 0, vracam = 0;
     var postavi = function (v) {
       if (v === on) return;
       on = v;
       if (v) { ph.style.height = st.offsetHeight + 'px'; ph.hidden = false; }
       else { ph.hidden = true; ph.style.height = ''; }
+      if (v) popuni();
       g.classList.toggle('is-mini', v); band.hidden = !v; html.classList.toggle('ima-mini', v);
     };
     var proveri = function () {

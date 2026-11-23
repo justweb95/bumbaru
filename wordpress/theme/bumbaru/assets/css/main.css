@@ -994,14 +994,20 @@ body.has-sbar .kp-toast { bottom: 88px !important; }
   .mini-band { display: none; }
   @media (max-width: 960px) {
     .tpl-product .mini-ph { border-radius: var(--r-lg); background: var(--surface-raised); }
-    .tpl-product .gallery.is-mini .stage { position: fixed; z-index: 39; top: calc(var(--mini-top, 64px) + 8px); left: 50%; width: calc(var(--mini-h, 200px) - 16px); height: calc(var(--mini-h, 200px) - 16px); aspect-ratio: auto; margin-left: calc((var(--mini-h, 200px) - 16px) / -2); border: 2px solid var(--ink); border-radius: 18px; background: #fff; box-shadow: 4px 4px 0 var(--ink); cursor: default; animation: mini-in .25s var(--ease); transition: top .3s var(--ease), width .2s ease, height .2s ease, margin-left .2s ease; }
+    .tpl-product .gallery.is-mini .stage { position: fixed; z-index: 39; top: calc(var(--mini-top, 64px) + 8px); left: 12px; width: calc(var(--mini-h, 200px) - 16px); height: calc(var(--mini-h, 200px) - 16px); aspect-ratio: auto; border: 2px solid var(--ink); border-radius: 18px; background: #fff; box-shadow: 4px 4px 0 var(--ink); cursor: default; animation: mini-in .25s var(--ease); transition: top .3s var(--ease), width .2s ease, height .2s ease; }
     .tpl-product .gallery.is-mini .stage .live-badge, .tpl-product .gallery.is-mini .stage .mix-hint, .tpl-product .gallery.is-mini .stage .soon-photo span { display: none; }
     .mini-band:not([hidden]) { display: block; position: fixed; z-index: 38; left: 0; right: 0; top: var(--mini-top, 64px); height: var(--mini-h, 200px); background: linear-gradient(115deg, #FFE7A3 0%, #FFF5D6 50%, #DDEEF7 100%); border-bottom: 2px solid var(--ink); box-shadow: 0 10px 24px rgba(49,32,24,.14); animation: mini-band-in .25s var(--ease); transition: top .3s var(--ease), height .2s ease; }
     /* polje u koje se kuca ne sme da ostane ispod trake */
     .ima-mini .tpl-product .info :is(input, textarea, select) { scroll-margin-top: calc(var(--mini-top, 64px) + var(--mini-h, 200px) + 16px); }
     .mini-band .mini-x { position: absolute; right: 12px; top: 10px; width: 36px; height: 36px; border: 2px solid var(--ink); border-radius: 50%; background: #fff; color: var(--ink); font: 700 22px/1 var(--font); cursor: pointer; }
-    .mini-band .mini-up { position: absolute; left: 12px; bottom: 10px; height: 32px; padding: 0 12px; border: 2px solid var(--ink); border-radius: var(--r-pill); background: #fff; color: var(--ink); font: 700 12px/1 var(--font); cursor: pointer; }
-    @media (max-width: 420px) { .mini-band .mini-up { font-size: 0; width: 36px; height: 36px; padding: 0; } .mini-band .mini-up::before { content: '↑'; font-size: 18px; } }
+    .mini-band .mini-up { position: absolute; right: 12px; bottom: 12px; width: 36px; height: 36px; padding: 0; border: 2px solid var(--ink); border-radius: 50%; background: #fff; color: var(--ink); font: 700 18px/1 var(--font); cursor: pointer; }
+    .mini-izbor { position: absolute; left: calc(var(--mini-h, 200px) + 6px); right: 56px; top: 8px; bottom: 8px; display: flex; flex-direction: column; justify-content: center; gap: 5px; overflow: hidden; }
+    .mini-izbor .mi { display: flex; align-items: baseline; gap: 5px; min-width: 0; flex: none; padding: 3px 10px; border: 2px solid var(--ink); border-radius: var(--r-pill); background: #fff; font-size: 13px; line-height: 18px; font-weight: 800; color: var(--ink); }
+    .mini-izbor .mi > span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .mini-izbor small { flex: none; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-muted); }
+    .mini-izbor i { flex: none; margin-left: auto; font-style: normal; font-size: 12px; color: var(--leaf); }
+    .mini-izbor .cp-dot { flex: none; align-self: center; width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--ink); transform: none; }
+    .mini-izbor .mi-vise { border: 0; background: none; padding: 0 4px; font-size: 12px; font-weight: 700; color: var(--ink-muted); }
   }
   @keyframes mini-in { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
   @keyframes mini-band-in { from { transform: translateY(-100%); } to { transform: none; } }
