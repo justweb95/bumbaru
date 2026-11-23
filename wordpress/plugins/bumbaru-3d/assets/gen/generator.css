@@ -41,3 +41,5 @@
 .bg-empty { color: #5b4d40; font-weight: 600; }
 .bg-sec-t { margin: 18px 0 8px; font-size: 14px; }
 .bg-wrap [hidden] { display: none !important; }
+.bg-item, .bg-all, .bg-allnew { box-sizing: border-box; max-width: 100%; }
+.bg-all { width: 100%; white-space: normal; height: auto !important; line-height: 1.3 !important; padding: 4px 8px !important; }

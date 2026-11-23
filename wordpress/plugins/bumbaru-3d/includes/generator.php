@@ -25,6 +25,7 @@ function bumbaru_gen_defaults() {
 		'vrh'       => 0,   // druga boja imena samo u gornjih … mm (0 = cela debljina)
 		'ploca'     => 250, // širina ploče štampača, mm (raspored više ukrasa)
 		'kc_vel'    => 20,  // privezak: veličina slova, mm (visina priveska je oko 1,2 × ovo)
+		'kc_duz'    => 80,  // privezak: najveća dužina sa ušicom, mm (duža imena se smanje)
 		'kc_osnova' => 2,   // privezak: debljina osnove, mm
 		'kc_sloj'   => 0.8, // privezak: debljina okvira, mm (tanka ivica je pola od toga)
 		'kc_slova'  => 1,   // privezak: visina slova iznad, mm
@@ -364,7 +365,7 @@ add_action( 'wp_ajax_bumbaru_gen_defaults', function () {
 	}
 	$out = array();
 	$lim = array( 'precnik' => array( 20, 250 ), 'debljina' => array( 0.6, 20 ), 'izdignuto' => array( 0, 10 ), 'vrh' => array( 0, 20 ), 'ploca' => array( 100, 600 ),
-		'kc_vel' => array( 8, 60 ), 'kc_osnova' => array( 0.6, 10 ), 'kc_sloj' => array( 0.2, 5 ), 'kc_slova' => array( 0.2, 5 ) );
+		'kc_vel' => array( 8, 60 ), 'kc_duz' => array( 0, 250 ), 'kc_osnova' => array( 0.6, 10 ), 'kc_sloj' => array( 0.2, 5 ), 'kc_slova' => array( 0.2, 5 ) );
 	foreach ( $lim as $k => $l ) {
 		$v         = isset( $_POST[ $k ] ) ? (float) str_replace( ',', '.', sanitize_text_field( wp_unslash( $_POST[ $k ] ) ) ) : 0;
 		$out[ $k ] = max( $l[0], min( $l[1], $v ) );
@@ -425,6 +426,7 @@ function bumbaru_page_generator() {
 					<label>Ime kao reljef iznad ukrasa (mm, 0 = ravno u ukrasu; reljef = samo jedna promena boje)<input type="number" step="0.1" min="0" max="10" data-gen-dim="izdignuto" value="<?php echo esc_attr( $d['izdignuto'] ); ?>" /></label>
 					<label>Ravno ime: boja imena samo gornjih (mm, 0 = cela debljina)<input type="number" step="0.1" min="0" max="20" data-gen-dim="vrh" value="<?php echo esc_attr( $d['vrh'] ); ?>" /></label>
 					<label data-kc-dim>Privezak: veličina slova (mm; privezak je visok oko 1,2 × ovo)<input type="number" step="0.5" min="8" max="60" data-gen-dim="kc_vel" value="<?php echo esc_attr( $d['kc_vel'] ); ?>" /></label>
+					<label data-kc-dim>Privezak: najveća dužina sa ušicom (mm; duža imena se smanje, 0 = bez ograničenja)<input type="number" step="1" min="0" max="250" data-gen-dim="kc_duz" value="<?php echo esc_attr( $d['kc_duz'] ); ?>" /></label>
 					<label data-kc-dim>Privezak: debljina osnove (mm)<input type="number" step="0.1" min="0.6" max="10" data-gen-dim="kc_osnova" value="<?php echo esc_attr( $d['kc_osnova'] ); ?>" /></label>
 					<label data-kc-dim>Privezak: debljina okvira (mm; tanka ivica je pola)<input type="number" step="0.1" min="0.2" max="5" data-gen-dim="kc_sloj" value="<?php echo esc_attr( $d['kc_sloj'] ); ?>" /></label>
 					<label data-kc-dim>Privezak: slova iznad (mm)<input type="number" step="0.1" min="0.2" max="5" data-gen-dim="kc_slova" value="<?php echo esc_attr( $d['kc_slova'] ); ?>" /></label>

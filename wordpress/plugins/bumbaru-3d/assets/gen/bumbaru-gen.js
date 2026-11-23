@@ -788,7 +788,7 @@
   }
 
   /**
-   * p: { ime, stil (iz STILOVI), vel (mm, veličina slova), osnova (mm), sloj (mm, okvir), slova (mm),
+   * p: { ime, stil (iz STILOVI), vel (mm, veličina slova), duz (mm, najveća dužina priveska; 0 = bez ograničenja), osnova (mm), sloj (mm, okvir), slova (mm),
    *      boje: { slova, okvir, osnova, ivica } = {id, naziv, hex} }
    * ctx: { fonts: [glavni font, rezervni…] (opentype.Font) }
    */
@@ -832,7 +832,9 @@
       if (s.ivica) sl.push({ v: 'Ivica', o: diff(layer(s.ivica.w * KFS), rupa), t: Math.max(0.4, p.sloj / 2), b: p.boje.ivica });
       sl.push({ v: 'Slova', o: diff(layer((s.debljina || 0) * KFS), rupa), t: p.slova, b: p.boje.slova });
 
-      var k = p.vel / KFS;
+      // Veličina: slova p.vel mm, ali ceo privezak (sa ušicom) najviše p.duz mm dug (duža imena se smanje).
+      var W = bbox(sl[0].o), k = p.vel / KFS;
+      if (p.duz > 0 && (W.x1 - W.x0) * k > p.duz) k = p.duz / (W.x1 - W.x0);
       var mm = function (paths) {
         // Malo zatvaranje (pikseli koji se dodiruju samo uglom postanu spojeni), pa rupe koje ivicom leže na spoljnoj
         // ivici (pikselasta slova) postanu useci: inače mreža na tom mestu nije zatvorena.

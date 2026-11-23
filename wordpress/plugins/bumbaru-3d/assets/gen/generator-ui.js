@@ -287,7 +287,7 @@
         if (!fl.length) throw new Error('Font za stil „' + st.label + '” nije učitan.');
         var iv = st.ivica ? (colors.crna || { id: 'crna', naziv: 'Crna', hex: st.ivica.boja }) : null;
         out.push(G.models.privezak.build({
-          ime: r.ime, stil: st, vel: d.kc_vel || 20, osnova: d.kc_osnova || 2, sloj: d.kc_sloj || 0.8, slova: d.kc_slova || 1,
+          ime: r.ime, stil: st, vel: d.kc_vel || 20, duz: d.kc_duz || 0, osnova: d.kc_osnova || 2, sloj: d.kc_sloj || 0.8, slova: d.kc_slova || 1,
           boje: { slova: color(r.slova), okvir: color(r.okvir), osnova: color(r.osnova), ivica: iv },
         }, { fonts: fl }));
         return;
