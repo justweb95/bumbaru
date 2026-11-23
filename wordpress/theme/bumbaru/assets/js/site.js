@@ -1,4 +1,5 @@
-/* Bumbaru tema (nova verzija): meni i padajući „Katalog”, zaglavlje koje se krije pri skrolu,
+/* Bumbaru tema (nova verzija): meni i padajući „Katalog”, zaglavlje koje se na računaru krije pri skrolu,
+   mali zalepljeni pregled proizvoda na telefonu dok se bira motiv/ime/boja,
    animacije pri pojavljivanju, pitanja koja se lagano otvaraju, odbrojavanje akcije,
    „Nedavno ste gledali”, filter kategorije, pretraga, kviz „Nađi poklon”, upit „Po meri”,
    brzo dodavanje u korpu i prozor za porudžbinu preko Messengera. */
@@ -70,7 +71,8 @@
 
   // ——— Zaglavlje: senka posle skrola; na računaru se skrolom nadole sakrije, nagore vrati ———
   var header = $('[data-header]') || $('.header');
-  var racunar = window.matchMedia('(min-width: 1201px)');
+  // Samo na računaru sa mišem; na telefonu i tabletu zaglavlje uvek stoji na vrhu.
+  var racunar = window.matchMedia('(min-width: 1201px) and (hover: hover) and (pointer: fine)');
   var poslednji = window.scrollY;
   var sakrij = function (v) { if (header) header.classList.toggle('h-skriven', v); html.classList.toggle('hdr-skriven', v); };
   var onScroll = function () {
@@ -90,6 +92,50 @@
     if (otvoren()) { postavi(false); if (mBtn) mBtn.focus(); }
     else if (menu && menu.classList.contains('open')) closeMenu();
   });
+
+  // ——— Telefon: dok kupac bira motiv, ime ili boju, pregled proizvoda ostaje gore u traci (oko 25% ekrana) ———
+  (function () {
+    var g = $('[data-gallery][data-mini]');
+    var st = g && $('.stage', g);
+    var info = $('.tpl-product .info');
+    if (!st || !info) return;
+    var mob = window.matchMedia('(max-width: 960px)');
+    var ph = document.createElement('div');
+    ph.className = 'mini-ph'; ph.hidden = true;
+    st.parentNode.insertBefore(ph, st);
+    var band = document.createElement('div');
+    band.className = 'mini-band'; band.hidden = true; band.setAttribute('aria-hidden', 'true');
+    band.innerHTML = '<button type="button" class="mini-x" aria-label="Sakrij pregled" tabindex="-1">×</button><button type="button" class="mini-up" tabindex="-1">Veći pregled ↑</button>';
+    document.body.appendChild(band);
+    var on = false, ugasen = false, raf = 0;
+    var postavi = function (v) {
+      if (v === on) return;
+      on = v;
+      if (v) { ph.style.height = st.offsetHeight + 'px'; ph.hidden = false; }
+      else { ph.hidden = true; ph.style.height = ''; }
+      g.classList.toggle('is-mini', v); band.hidden = !v; html.classList.toggle('ima-mini', v);
+    };
+    var proveri = function () {
+      raf = 0;
+      if (!mob.matches || ugasen) { postavi(false); return; }
+      var hb = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
+      var vis = Math.round(Math.min(window.innerHeight * 0.25, 260));
+      html.style.setProperty('--mini-top', hb + 'px');
+      html.style.setProperty('--mini-h', vis + 'px');
+      var a = (on ? ph : st).getBoundingClientRect();
+      var ib = info.getBoundingClientRect().bottom;
+      postavi(a.bottom < hb + 40 && ib > hb + vis + 140);
+    };
+    var zakazi = function () { if (!raf) raf = requestAnimationFrame(proveri); };
+    window.addEventListener('scroll', zakazi, { passive: true });
+    window.addEventListener('resize', zakazi);
+    if (mob.addEventListener) mob.addEventListener('change', zakazi);
+    $('.mini-x', band).addEventListener('click', function () { ugasen = true; postavi(false); });
+    var gore = function () { var y = g.getBoundingClientRect().top + window.scrollY - (header ? header.offsetHeight : 0) - 12; postavi(false); window.scrollTo({ top: y, behavior: reduce.matches ? 'auto' : 'smooth' }); };
+    $('.mini-up', band).addEventListener('click', gore);
+    st.addEventListener('click', function (e) { if (on) { e.preventDefault(); e.stopPropagation(); gore(); } }, true);
+    zakazi();
+  })();
 
   // ——— Pojavljivanje pri skrolu; beskonačne animacije rade samo dok su na ekranu ———
   (function () {

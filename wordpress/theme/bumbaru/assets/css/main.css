@@ -990,6 +990,20 @@ body.has-sbar .kp-toast { bottom: 88px !important; }
     .tpl-product .faq-box { padding: 4px 20px; }
     .tpl-product .howto::before { left: 20px; right: 20px; }
   }
+  /* Telefon: zalepljeni mini pregled (site.js dodaje .is-mini i traku .mini-band) */
+  .mini-band { display: none; }
+  @media (max-width: 960px) {
+    .tpl-product .mini-ph { border-radius: var(--r-lg); background: var(--surface-raised); }
+    .tpl-product .gallery.is-mini .stage { position: fixed; z-index: 39; top: calc(var(--mini-top, 64px) + 8px); left: 50%; width: calc(var(--mini-h, 200px) - 16px); height: calc(var(--mini-h, 200px) - 16px); aspect-ratio: auto; margin-left: calc((var(--mini-h, 200px) - 16px) / -2); border: 2px solid var(--ink); border-radius: 18px; background: #fff; box-shadow: 4px 4px 0 var(--ink); cursor: zoom-in; animation: mini-in .25s var(--ease); }
+    .tpl-product .gallery.is-mini .stage .live-badge, .tpl-product .gallery.is-mini .stage .mix-hint, .tpl-product .gallery.is-mini .stage .soon-photo span { display: none; }
+    .mini-band:not([hidden]) { display: block; position: fixed; z-index: 38; left: 0; right: 0; top: var(--mini-top, 64px); height: var(--mini-h, 200px); background: linear-gradient(115deg, #FFE7A3 0%, #FFF5D6 50%, #DDEEF7 100%); border-bottom: 2px solid var(--ink); box-shadow: 0 10px 24px rgba(49,32,24,.14); animation: mini-band-in .25s var(--ease); }
+    .mini-band .mini-x { position: absolute; right: 12px; top: 10px; width: 36px; height: 36px; border: 2px solid var(--ink); border-radius: 50%; background: #fff; color: var(--ink); font: 700 22px/1 var(--font); cursor: pointer; }
+    .mini-band .mini-up { position: absolute; left: 12px; bottom: 10px; height: 32px; padding: 0 12px; border: 2px solid var(--ink); border-radius: var(--r-pill); background: #fff; color: var(--ink); font: 700 12px/1 var(--font); cursor: pointer; }
+    @media (max-width: 420px) { .mini-band .mini-up { font-size: 0; width: 36px; height: 36px; padding: 0; } .mini-band .mini-up::before { content: '↑'; font-size: 18px; } }
+  }
+  @keyframes mini-in { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+  @keyframes mini-band-in { from { transform: translateY(-100%); } to { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .tpl-product .gallery.is-mini .stage, .mini-band:not([hidden]) { animation: none; } }
   @media (max-width: 520px) {
     .tpl-product .km-name { font-size: 12px; }
     .tpl-product .names { grid-template-columns: 1fr; }

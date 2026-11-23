@@ -191,7 +191,7 @@ get_header();
 	</div>
 	<div class="wrap pd">
 		<!-- Galerija -->
-		<div class="gallery" data-gallery>
+		<div class="gallery" data-gallery<?php echo ( $live || in_array( $type, array( 'motivi', 'sastav', 'boje', 'ukras', 'set', 'privezak' ), true ) ) ? ' data-mini' : ''; ?>>
 			<div class="stage">
 				<?php
 				if ( $live ) {
