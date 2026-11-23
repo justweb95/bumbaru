@@ -551,3 +551,40 @@ function bumbaru_ajax_add() {
 		'checkout'  => wc_get_checkout_url(),
 	) );
 }
+
+/*
+ * Plaćanje: ako neki dodatak (kurirska služba, SMTP, keš…) ili PHP upozorenje nešto ispiše dok se porudžbina obrađuje,
+ * odgovor pregledaču više nije čist JSON. Porudžbina se primi, ali kupac vidi „Došlo je do greške prilikom obrade…”.
+ * Taj višak se ovde skloni iz odgovora (kupac ide na potvrdu porudžbine) i upiše u
+ * WooCommerce → Status → Dnevnici, izvor „bumbaru-placanje”, da se vidi ko ga ispisuje.
+ */
+add_action( 'woocommerce_before_checkout_process', function () {
+	if ( ! wp_doing_ajax() || isset( $GLOBALS['bu_co_ob'] ) ) {
+		return;
+	}
+	ob_start();
+	$GLOBALS['bu_co_ob'] = ob_get_level();
+}, 0 );
+
+add_filter( 'wp_die_ajax_handler', function ( $handler ) {
+	return isset( $GLOBALS['bu_co_ob'] ) ? 'bumbaru_checkout_die' : $handler;
+}, 9999 );
+
+function bumbaru_checkout_die( $message, $title = '', $args = array() ) {
+	$lvl = (int) $GLOBALS['bu_co_ob'];
+	unset( $GLOBALS['bu_co_ob'] );
+	$buf = '';
+	while ( ob_get_level() >= $lvl && ob_get_level() > 0 ) {
+		$buf = ob_get_clean() . $buf;
+	}
+	$at = strpos( $buf, '{"result"' );
+	if ( $at ) {
+		$junk = substr( $buf, 0, $at );
+		$buf  = substr( $buf, $at );
+		if ( '' !== trim( $junk ) && function_exists( 'wc_get_logger' ) ) {
+			wc_get_logger()->warning( 'Višak ispisa pri slanju porudžbine (sklonjen iz odgovora): ' . substr( trim( wp_strip_all_tags( $junk ) ), 0, 3000 ), array( 'source' => 'bumbaru-placanje' ) );
+		}
+	}
+	echo $buf; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON odgovor WooCommerce-a
+	_ajax_wp_die_handler( $message, $title, $args );
+}

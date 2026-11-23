@@ -9,7 +9,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BUMBARU_THEME_VERSION', '2.0.0' );
+define( 'BUMBARU_THEME_VERSION', '2.5.1' );
 
 require_once __DIR__ . '/inc/template-tags.php';
 require_once __DIR__ . '/inc/seo.php';

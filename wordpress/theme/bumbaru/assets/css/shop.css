@@ -114,8 +114,27 @@
 #ship-to-different-address label { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
 #ship-to-different-address input { width: 20px; height: 20px; accent-color: var(--ink); }
 .woocommerce-checkout-review-order-table { background: transparent !important; }
-.woocommerce-checkout-review-order-table th, .woocommerce-checkout-review-order-table td { background: transparent !important; padding: 12px 0 !important; border-top: 1px solid rgba(49,32,24,.14) !important; }
-.woocommerce-checkout-review-order-table thead th { border-top: 0 !important; }
+/* Redovi kao trake: naziv i opis zauzmu celu širinu, iznos uvek desno do kraja (bez gužve u uskoj koloni). */
+.woocommerce table.shop_table.woocommerce-checkout-review-order-table { display: block; width: 100%; border-radius: 0; overflow: visible; margin: 0 0 16px; }
+.woocommerce-checkout-review-order-table thead, .woocommerce-checkout-review-order-table tbody, .woocommerce-checkout-review-order-table tfoot { display: block; }
+.woocommerce-checkout-review-order-table tr { display: flex; align-items: baseline; justify-content: space-between; gap: 6px 20px; padding: 14px 0; border-top: 1px solid rgba(49,32,24,.14); }
+.woocommerce-checkout-review-order-table thead tr { padding-top: 6px; border-top: 0; }
+.woocommerce-checkout-review-order-table th, .woocommerce-checkout-review-order-table td { display: block; background: transparent !important; padding: 0 !important; border: 0 !important; text-align: left; }
+.woocommerce-checkout-review-order-table .product-name { flex: 1 1 auto; min-width: 0; }
+.woocommerce-checkout-review-order-table .product-total { flex: none; text-align: right; white-space: nowrap; }
+.woocommerce-checkout-review-order-table tr.cart_item { align-items: flex-start; }
+.woocommerce-checkout-review-order-table tr.cart_item td.product-name { font-weight: 700; line-height: 22px; }
+.woocommerce-checkout-review-order-table tr.cart_item td.product-total { font-weight: 700; line-height: 22px; }
+.woocommerce-checkout-review-order-table td.product-name dl.variation { font-weight: 400; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 14px; }
+.woocommerce-checkout-review-order-table tfoot th { flex: none; }
+.woocommerce-checkout-review-order-table tfoot td { flex: 1 1 auto; min-width: 0; text-align: right; font-weight: 700; }
+/* Dostava: naziv ispod oznake, preko cele širine. */
+.woocommerce-checkout-review-order-table tr.woocommerce-shipping-totals { flex-direction: column; align-items: stretch; }
+.woocommerce-checkout-review-order-table tr.woocommerce-shipping-totals td { text-align: left; }
+.woocommerce-checkout-review-order-table tr.woocommerce-shipping-totals ul#shipping_method li label { font-weight: 600; font-size: 15px; line-height: 21px; }
+.woocommerce-checkout-review-order-table tr.bu-freeship { padding: 12px 0; }
+.woocommerce-checkout-review-order-table tr.bu-freeship td { flex: 1 1 auto; text-align: left; font-weight: 400; }
+.woocommerce-checkout-review-order-table tr.order-total { align-items: center; }
 .woocommerce-checkout #payment, .woocommerce #payment { background: var(--surface-paper); border-radius: var(--r-md); margin-top: 8px; }
 .woocommerce #payment ul.payment_methods { border: 0; padding: 16px 18px 6px; }
 .woocommerce #payment ul.payment_methods li { list-style: none; font-weight: 700; }
