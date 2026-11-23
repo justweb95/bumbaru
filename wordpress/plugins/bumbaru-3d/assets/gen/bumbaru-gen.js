@@ -713,6 +713,161 @@
     },
   };
 
+  /* ——— Privezak sa imenom (isti crtež kao pregled na sajtu, src/lib/keychain.ts) ——— */
+
+  /*
+   * Slojevi odozdo nagore: osnova sa ušicom i rupom za kariku, okvir (ako ga stil ima), tanka ivica (stil „kockice”), slova.
+   * Svaki sloj je manji od onog ispod, pa se štampa kao jedan predmet sa promenom boje na visini svakog sloja
+   * (bez AMS-a: pauza i promena filamenta).
+   * Sve mere crteža su u jedinicama veličine slova (FS = 100), kao na sajtu; vel = veličina slova u mm.
+   */
+  var KFS = 100;
+  var SRCE = 'M0 .92C-.22 .72-1 .28-1-.22-1-.68-.62-.96-.3-.96-.14-.96 0-.86 0-.68 0-.86.14-.96.3-.96.62-.96 1-.68 1-.22 1 .28.22 .72 0 .92Z';
+
+  function growJ(paths, r, join) {
+    if (!r) return paths;
+    var o = new CL.ClipperOffset(2, TOL * SC / 2);
+    o.AddPaths(paths, join === 'miter' ? CL.JoinType.jtMiter : CL.JoinType.jtRound, CL.EndType.etClosedPolygon);
+    var out = new CL.Paths();
+    o.Execute(out, r * SC);
+    return out;
+  }
+  function rect(x0, y0, x1, y1) { return [toPath([[x0, y0], [x1, y0], [x1, y1], [x0, y1]])]; }
+  function bbox(paths) {
+    var b = { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity };
+    paths.forEach(function (p) { p.forEach(function (q) {
+      var x = q.X / SC, y = q.Y / SC;
+      if (x < b.x0) b.x0 = x; if (x > b.x1) b.x1 = x; if (y < b.y0) b.y0 = y; if (y > b.y1) b.y1 = y;
+    }); });
+    return b;
+  }
+  /** Najlevlja tačka oblika na visini y (ili null). */
+  function leftAt(paths, y) {
+    var best = null, Y = y * SC;
+    paths.forEach(function (p) {
+      for (var i = 0, n = p.length; i < n; i++) {
+        var a = p[i], b = p[(i + 1) % n];
+        if ((a.Y <= Y && b.Y > Y) || (b.Y <= Y && a.Y > Y)) {
+          var x = (a.X + (Y - a.Y) / (b.Y - a.Y) * (b.X - a.X)) / SC;
+          if (best === null || x < best) best = x;
+        }
+      }
+    });
+    return best;
+  }
+
+  /** Slova imena jedno po jedno (font koji nema slovo, npr. ćirilicu, zameni rezervni). */
+  function kcGlyphs(text, fonts) {
+    var x = 0, out = [], prev = null, prevF = null;
+    Array.from(text).forEach(function (ch) {
+      var F = fonts.filter(function (f) { return f && f.charToGlyphIndex(ch) > 0; })[0] || fonts[0];
+      var g = F.charToGlyph(ch), k = KFS / F.unitsPerEm;
+      if (prev && prevF === F && F.getKerningValue) x += F.getKerningValue(prev, g) * k;
+      out.push({ ch: ch, x: x, subs: fontPathToSubs(g.getPath(x, 0, KFS)) });
+      x += g.advanceWidth * k;
+      prev = g; prevF = F;
+    });
+    return out;
+  }
+
+  /** Srce umesto tačke na i/j (stil „bajka”): tačka je najviši odvojeni deo slova. */
+  function kcHeart(glyph) {
+    var comps = exPolys(fill(glyph.subs, 'nonzero'));
+    if (comps.length < 2) return null;
+    var bb = comps.map(function (c) { return bbox([toPath(c.outer)]); });
+    var top = 0;
+    bb.forEach(function (b, i) { if (b.y0 < bb[top].y0) top = i; });
+    var d = bb[top], rest = Infinity;
+    bb.forEach(function (b, i) { if (i !== top) rest = Math.min(rest, b.y0); });
+    var w = d.x1 - d.x0, h = d.y1 - d.y0;
+    if (d.y1 > rest - 1 || h > 0.4 * KFS) return null; // nije odvojena tačka
+    var r = Math.min(Math.max(w, h) * 0.62, h * 0.95), cx = (d.x0 + d.x1) / 2, cy = (d.y0 + d.y1) / 2 - r * 0.05;
+    var subs = parsePath(SRCE);
+    subs.forEach(function (s) { s.pts = s.pts.map(function (q) { return [cx + q[0] * r, cy + q[1] * r]; }); });
+    return fill(subs, 'nonzero');
+  }
+
+  /**
+   * p: { ime, stil (iz STILOVI), vel (mm, veličina slova), osnova (mm), sloj (mm, okvir), slova (mm),
+   *      boje: { slova, okvir, osnova, ivica } = {id, naziv, hex} }
+   * ctx: { fonts: [glavni font, rezervni…] (opentype.Font) }
+   */
+  models.privezak = {
+    naziv: 'Privezak sa imenom',
+    build: function (p, ctx) {
+      var s = p.stil, fonts = ctx.fonts;
+      var text = s.caps ? p.ime.toLocaleUpperCase('sr') : s.mala ? p.ime.toLocaleLowerCase('sr') : p.ime;
+      var glyphs = kcGlyphs(text, fonts);
+      var hearts = [];
+      if (s.srca) glyphs.forEach(function (g) { if (g.ch === 'i' || g.ch === 'j') { var h = kcHeart(g); if (h) hearts.push(h); } });
+      var base = fill([].concat.apply([], glyphs.map(function (g) { return g.subs; })), 'nonzero');
+      if (hearts.length) base = union(base, [].concat.apply([], hearts));
+      if (!base.length) throw new Error('Nema slova za ime ' + p.ime);
+      var J = s.join, rO = s.osnovaW * KFS / 2;
+      var layer = function (w) { return growJ(base, w / 2, J); };
+
+      // Ušica: tamo gde slova levo najdalje sežu, između 38 % i 82 % visine slova (kao na sajtu).
+      var B = bbox(base), visina = B.y1 - B.y0;
+      var red = B.y0 + visina * 0.6, xNaRedu = B.x0, best = Infinity;
+      for (var yy = B.y0 + visina * 0.38; yy <= B.y0 + visina * 0.82; yy += 0.5) {
+        var x = leftAt(base, yy);
+        if (x !== null && x < best - 0.5) { best = x; red = yy; }
+      }
+      if (best < Infinity) xNaRedu = best;
+      var tab, rupa;
+      if (s.usica === 'pilula') {
+        var h = 0.5 * KFS, L = 0.62 * KFS, x1 = xNaRedu - rO - L, x2 = xNaRedu + 4;
+        tab = stroke([{ pts: [[x1 + h / 2, red], [x2 - h / 2, red]], closed: false }], h);
+        rupa = circle(x1 + h / 2, red, 0.14 * KFS);
+      } else {
+        var R = (s.usicaR || 0.25) * KFS, cx = xNaRedu - rO - R * 0.55;
+        tab = union(circle(cx, red, R), rect(cx, red - R * 0.8, xNaRedu + 4, red + R * 0.8));
+        rupa = circle(cx - R * 0.08, red, R * 0.42);
+      }
+
+      // Slojevi: [vrsta, oblik, debljina u mm, boja]
+      var sl = [];
+      sl.push({ v: 'Osnova', o: diff(union(layer(s.osnovaW * KFS), tab), rupa), t: p.osnova, b: p.boje.osnova });
+      if (s.okvirW) sl.push({ v: 'Okvir', o: diff(layer(s.okvirW * KFS), rupa), t: p.sloj, b: p.boje.okvir });
+      if (s.ivica) sl.push({ v: 'Ivica', o: diff(layer(s.ivica.w * KFS), rupa), t: Math.max(0.4, p.sloj / 2), b: p.boje.ivica });
+      sl.push({ v: 'Slova', o: diff(layer((s.debljina || 0) * KFS), rupa), t: p.slova, b: p.boje.slova });
+
+      var k = p.vel / KFS;
+      var mm = function (paths) {
+        // Malo zatvaranje (pikseli koji se dodiruju samo uglom postanu spojeni), pa rupe koje ivicom leže na spoljnoj
+        // ivici (pikselasta slova) postanu useci: inače mreža na tom mestu nije zatvorena.
+        var c = exPolys(growJ(growJ(paths, 0.4, 'round'), -0.4, 'round')), fixed = [];
+        c.forEach(function (e) {
+          var hs = e.holes.map(toPath);
+          fixed = fixed.concat(hs.length ? diff([toPath(e.outer)], growJ(hs, 0.02, 'miter')) : [toPath(e.outer)]);
+        });
+        return exPolys(fixed).map(function (e) {
+          var t = function (r) { return r.map(function (q) { return [q[0] * k, -q[1] * k]; }); };
+          return { outer: t(e.outer), holes: e.holes.map(t) };
+        });
+      };
+      var z = 0, delovi = [];
+      sl.forEach(function (L, i) {
+        var o = mm(L.o);
+        delovi.push({ naziv: L.v + ' (' + L.b.naziv + ')', boja: L.b.id, bojaNaziv: L.b.naziv, hex: L.b.hex, mesh: extrude(o, z, z + L.t), oblik: o, promenaBoje: i ? z : 0 });
+        z += L.t;
+      });
+      var upozorenje = '';
+      var nOsn = exPolys(sl[0].o).length;
+      if (nOsn > 1) upozorenje = p.ime + ': osnova ima ' + nOsn + ' odvojena dela (slova se ne dodiruju).';
+      var bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity;
+      delovi[0].oblik.forEach(function (e) { e.outer.forEach(function (q) {
+        if (q[0] < bx0) bx0 = q[0]; if (q[0] > bx1) bx1 = q[0]; if (q[1] < by0) by0 = q[1]; if (q[1] > by1) by1 = q[1];
+      }); });
+      var promene = delovi.slice(1).map(function (d) { return d.promenaBoje.toFixed(1).replace('.', ','); });
+      return {
+        naziv: 'Privezak ' + p.ime, ime: p.ime, upozorenje: upozorenje, debljina: z,
+        napomena: 'Privezak: promena boje na ' + promene.join(', ') + ' mm (pauza u slajseru na tim visinama).',
+        sirina: bx1 - bx0, visina: by1 - by0, ox: (bx0 + bx1) / 2, oy: (by0 + by1) / 2, delovi: delovi,
+      };
+    },
+  };
+
   /**
    * Raspored predmeta na ploči štampača (ploca = širina ploče u mm, 0 = bez ograničenja).
    * Koordinate su od ugla ploče, predmeti su na sredini ploče; ako ne staju, slajser ih rasporedi sam (Arrange).

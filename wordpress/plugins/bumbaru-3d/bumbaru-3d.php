@@ -33,6 +33,7 @@ require_once BUMBARU3D_DIR . 'includes/account.php';
 require_once BUMBARU3D_DIR . 'includes/importer.php';
 require_once BUMBARU3D_DIR . 'includes/seo-sync.php';
 require_once BUMBARU3D_DIR . 'includes/shipping.php';
+require_once BUMBARU3D_DIR . 'includes/mail.php';
 
 if ( is_admin() ) {
 	require_once BUMBARU3D_DIR . 'includes/admin-pages.php';

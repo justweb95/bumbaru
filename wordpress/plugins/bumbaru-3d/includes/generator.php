@@ -1,6 +1,6 @@
 <?php
 /**
- * Bumbaru 3D → Generator modela: 3MF i STL za štampu iz porudžbine (ukras sa imenom, porodični set).
+ * Bumbaru 3D → Generator modela: 3MF i STL za štampu iz porudžbine (ukras sa imenom, porodični set, privezak sa imenom).
  *
  * Model se pravi u pregledaču (assets/gen/bumbaru-gen.js): isti crtež motiva kao pregled na sajtu
  * (data/ornament-defs.svg) i slova izabranog fonta (bumbaru_fontovi()). Ovde su samo strana, podaci porudžbina i podešavanja.
@@ -12,7 +12,8 @@ defined( 'ABSPATH' ) || exit;
 /** Modeli koje generator ume da napravi (ključ = BumbaruGen.models u JS-u). */
 function bumbaru_gen_models() {
 	return apply_filters( 'bumbaru_gen_models', array(
-		'ukras' => array( 'naziv' => 'Ukras za jelku sa imenom', 'tipovi' => array( 'ukras', 'set' ) ),
+		'ukras'    => array( 'naziv' => 'Ukras za jelku sa imenom', 'tipovi' => array( 'ukras', 'set' ) ),
+		'privezak' => array( 'naziv' => 'Privezak sa imenom', 'tipovi' => array( 'privezak' ) ),
 	) );
 }
 
@@ -23,6 +24,10 @@ function bumbaru_gen_defaults() {
 		'izdignuto' => 0.6, // ime kao reljef iznad ukrasa, mm (druga boja samo u reljefu = jedna promena boje)
 		'vrh'       => 0,   // druga boja imena samo u gornjih … mm (0 = cela debljina)
 		'ploca'     => 250, // širina ploče štampača, mm (raspored više ukrasa)
+		'kc_vel'    => 20,  // privezak: veličina slova, mm (visina priveska je oko 1,2 × ovo)
+		'kc_osnova' => 2,   // privezak: debljina osnove, mm
+		'kc_sloj'   => 0.8, // privezak: debljina okvira, mm (tanka ivica je pola od toga)
+		'kc_slova'  => 1,   // privezak: visina slova iznad, mm
 	);
 	$s = get_option( 'bumbaru_gen', array() );
 	foreach ( $d as $k => $v ) {
@@ -33,9 +38,68 @@ function bumbaru_gen_defaults() {
 	return $d;
 }
 
-/** Ukrasi iz jedne stavke porudžbine: [{ ime, motiv, boja, bojaImena }] (set = više ukrasa, količina = više komada). */
+/** Boja po nazivu („roze”) → id, za starije porudžbine privezaka u kojima je boja samo u tekstu. */
+function bumbaru_gen_color_by_label( $label ) {
+	$label = mb_strtolower( trim( (string) $label ), 'UTF-8' );
+	foreach ( bumbaru_colors() as $c ) {
+		if ( mb_strtolower( $c['label'], 'UTF-8' ) === $label ) {
+			return $c['id'];
+		}
+	}
+	return '';
+}
+
+/** Privesci iz stavke: jedan red po imenu [{ model, ime, stil, slova, okvir, osnova }]. */
+function bumbaru_gen_kc_rows( $item, $raw ) {
+	$sid   = isset( $raw['stil'] ) ? (string) $raw['stil'] : 'pisana';
+	$st    = function_exists( 'bumbaru_kc_style' ) ? bumbaru_kc_style( $sid ) : null;
+	$sl    = isset( $raw['slojevi'] ) && is_array( $raw['slojevi'] ) ? $raw['slojevi'] : array();
+	$def   = $st && isset( $st['def'] ) ? $st['def'] : array( 'slova' => 'roze', 'okvir' => 'bela', 'osnova' => 'bela' );
+	$sar   = $st && ! empty( $st['sareno'] ) ? $st['sareno'] : 'slova';
+	$names = array_values( (array) ( isset( $raw['imena'] ) ? $raw['imena'] : array() ) );
+	$per   = isset( $raw['sareno_boje'] ) ? array_values( (array) $raw['sareno_boje'] ) : array();
+	$isSar = false;
+	foreach ( $sl as $v ) {
+		$isSar = $isSar || 'sareno' === $v;
+	}
+	if ( $isSar && ! $per ) {
+		// starije porudžbine: „Milica (roze), Luka (plava)” u opisu stavke
+		foreach ( $item->get_meta_data() as $m ) {
+			$d = $m->get_data();
+			if ( 0 === strpos( (string) $d['key'], 'Imena i boja' ) ) {
+				foreach ( explode( ',', (string) $d['value'] ) as $i => $part ) {
+					$per[ $i ] = preg_match( '/\(([^)]+)\)\s*$/u', $part, $mm ) ? bumbaru_gen_color_by_label( $mm[1] ) : '';
+				}
+			}
+		}
+		if ( ! array_filter( $per ) && function_exists( 'bumbaru_sareno' ) ) {
+			$per = bumbaru_sareno();
+		}
+	}
+	$qty  = max( 1, (int) $item->get_quantity() );
+	$rows = array();
+	for ( $q = 0; $q < $qty; $q++ ) {
+		foreach ( $names as $i => $ime ) {
+			$r = array( 'model' => 'privezak', 'ime' => (string) $ime, 'stil' => $sid );
+			foreach ( array( 'slova', 'okvir', 'osnova' ) as $L ) {
+				$v = isset( $sl[ $L ] ) ? (string) $sl[ $L ] : '';
+				if ( 'sareno' === $v ) {
+					$v = ! empty( $per[ $i % max( 1, count( $per ) ) ] ) ? $per[ $i % max( 1, count( $per ) ) ] : '';
+				}
+				$r[ $L ] = $v ? $v : $def[ $L ];
+			}
+			$rows[] = $r;
+		}
+	}
+	return $rows;
+}
+
+/** Predmeti iz jedne stavke porudžbine: ukrasi [{ ime, motiv, boja, bojaImena }] (set = više ukrasa, količina = više komada) ili privesci. */
 function bumbaru_gen_item_rows( $item ) {
 	$raw = $item->get_meta( '_bu_raw' );
+	if ( is_array( $raw ) && isset( $raw['type'] ) && 'privezak' === $raw['type'] ) {
+		return bumbaru_gen_kc_rows( $item, $raw );
+	}
 	if ( ! is_array( $raw ) || empty( $raw['type'] ) || ! in_array( $raw['type'], array( 'ukras', 'set' ), true ) ) {
 		return array();
 	}
@@ -45,17 +109,30 @@ function bumbaru_gen_item_rows( $item ) {
 	$font  = isset( $raw['font'] ) ? $raw['font'] : 'pacifico';
 	$rows  = array();
 	if ( 'ukras' === $raw['type'] ) {
-		$one = array( 'ime' => (string) $raw['ime'], 'motiv' => $motiv, 'boja' => $raw['boja'], 'bojaImena' => $nc, 'font' => $font );
+		$one = array( 'model' => 'ukras', 'ime' => (string) $raw['ime'], 'motiv' => $motiv, 'boja' => $raw['boja'], 'bojaImena' => $nc, 'font' => $font );
 		$rows = array_fill( 0, $qty, $one );
 	} else {
 		for ( $q = 0; $q < $qty; $q++ ) {
 			foreach ( array_values( (array) $raw['imena'] ) as $i => $ime ) {
 				$b      = 'sareno' === $raw['boja'] ? ( ! empty( $raw['sareno'][ $i ] ) ? $raw['sareno'][ $i ] : 'bela' ) : $raw['boja'];
-				$rows[] = array( 'ime' => (string) $ime, 'motiv' => $motiv, 'boja' => $b, 'bojaImena' => $nc, 'font' => $font );
+				$rows[] = array( 'model' => 'ukras', 'ime' => (string) $ime, 'motiv' => $motiv, 'boja' => $b, 'bojaImena' => $nc, 'font' => $font );
 			}
 		}
 	}
 	return $rows;
+}
+
+/** Fontovi za priveske (TTF u assets/gen): stil → [glavni, rezervni za slova koja glavni nema, npr. ćirilicu]. */
+function bumbaru_gen_kc_fonts() {
+	$u   = BUMBARU3D_URL . 'assets/gen/';
+	$lob = $u . 'Lobster-Regular.ttf';
+	return array(
+		'pisana'   => array( $u . 'Playball-Regular.ttf', $lob ),
+		'bajka'    => array( $u . 'Mogra-Regular.ttf', $lob ),
+		'kockice'  => array( $u . 'Nunito-BlackItalic.ttf', $lob ),
+		'pikseli'  => array( $u . 'BumbaruMine.ttf', $u . 'BumbaruPiksel.ttf', $lob ),
+		'stampana' => array( $u . 'Montserrat-ExtraBold.ttf', $lob ),
+	);
 }
 
 /** Statusi porudžbina koje čekaju izradu (ulaze u „Za štampu” i u brojač u meniju). */
@@ -262,6 +339,8 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 			return BUMBARU3D_URL . 'assets/gen/' . $f['ttf'];
 		}, bumbaru_fontovi() ) ),
 		'fontovi'  => bumbaru_fontovi(),
+		'stilovi'  => bumbaru_astro_data( 'STILOVI' ),
+		'kcFonts'  => bumbaru_gen_kc_fonts(),
 		'defs'     => BUMBARU3D_URL . 'data/ornament-defs.svg?v=' . $v,
 		'colors'   => $colors,
 		'motivi'   => bumbaru_motivi(),
@@ -284,7 +363,8 @@ add_action( 'wp_ajax_bumbaru_gen_defaults', function () {
 		wp_send_json_error( 'Nemate dozvolu.', 403 );
 	}
 	$out = array();
-	$lim = array( 'precnik' => array( 20, 250 ), 'debljina' => array( 0.6, 20 ), 'izdignuto' => array( 0, 10 ), 'vrh' => array( 0, 20 ), 'ploca' => array( 100, 600 ) );
+	$lim = array( 'precnik' => array( 20, 250 ), 'debljina' => array( 0.6, 20 ), 'izdignuto' => array( 0, 10 ), 'vrh' => array( 0, 20 ), 'ploca' => array( 100, 600 ),
+		'kc_vel' => array( 8, 60 ), 'kc_osnova' => array( 0.6, 10 ), 'kc_sloj' => array( 0.2, 5 ), 'kc_slova' => array( 0.2, 5 ) );
 	foreach ( $lim as $k => $l ) {
 		$v         = isset( $_POST[ $k ] ) ? (float) str_replace( ',', '.', sanitize_text_field( wp_unslash( $_POST[ $k ] ) ) ) : 0;
 		$out[ $k ] = max( $l[0], min( $l[1], $v ) );
@@ -294,13 +374,13 @@ add_action( 'wp_ajax_bumbaru_gen_defaults', function () {
 } );
 
 function bumbaru_page_generator() {
-	bumbaru_admin_head( 'Generator modela', 'Izaberite porudžbinu ili upišite ime: model se napravi odmah, pa ga preuzmete kao 3MF (delovi u bojama) ili STL. Crtež je isti kao pregled koji je kupac video na sajtu.' );
+	bumbaru_admin_head( 'Generator modela', 'Izaberite porudžbinu ili upišite ime: model ukrasa ili priveska se napravi odmah, pa ga preuzmete kao 3MF (delovi u bojama) ili STL. Crtež je isti kao pregled koji je kupac video na sajtu.' );
 	$d = bumbaru_gen_defaults();
 	?>
 	<div class="bg-wrap" data-gen>
 		<aside class="bu-card bg-orders">
-			<h2>Porudžbine sa ukrasima</h2>
-			<p class="description">Nove porudžbine se pojave ovde same, sa imenima, motivom i bojama. „Skini 3MF” odmah preuzme model; „Otvori” ga učita ispod da ga pregledate ili izmenite.</p>
+			<h2>Porudžbine sa ukrasima i privescima</h2>
+			<p class="description">Nove porudžbine se pojave ovde same, sa imenima, motivom (ili stilom slova) i bojama. „Skini 3MF” odmah preuzme model; „Otvori” ga učita ispod da ga pregledate ili izmenite.</p>
 			<div class="bg-tabs" role="tablist">
 				<button type="button" class="bg-tab is-on" data-gen-tab="nove" role="tab">Za štampu <span data-gen-ceka></span></button>
 				<button type="button" class="bg-tab" data-gen-tab="sve" role="tab">Sve</button>
@@ -320,11 +400,22 @@ function bumbaru_page_generator() {
 				<span class="bg-src" data-gen-src></span>
 			</div>
 
-			<table class="widefat bg-rows">
-				<thead><tr><th>#</th><th>Ime (do 12 slova)</th><th>Motiv</th><th>Slova</th><th>Boja ukrasa</th><th>Boja imena</th><th></th></tr></thead>
-				<tbody data-gen-rows></tbody>
-			</table>
-			<p><button type="button" class="button" data-gen-add>+ Još jedan ukras</button></p>
+			<div data-gen-sec="ukras">
+				<h3 class="bg-sec-t">Ukrasi za jelku</h3>
+				<table class="widefat bg-rows">
+					<thead><tr><th>#</th><th>Ime (do 12 slova)</th><th>Motiv</th><th>Slova</th><th>Boja ukrasa</th><th>Boja imena</th><th></th></tr></thead>
+					<tbody data-gen-rows></tbody>
+				</table>
+				<p><button type="button" class="button" data-gen-add>+ Još jedan ukras</button></p>
+			</div>
+			<div data-gen-sec="privezak" hidden>
+				<h3 class="bg-sec-t">Privesci</h3>
+				<table class="widefat bg-rows">
+					<thead><tr><th>#</th><th>Ime</th><th>Stil slova</th><th>Boja slova</th><th>Boja okvira</th><th>Boja osnove</th><th></th></tr></thead>
+					<tbody data-gen-kc-rows></tbody>
+				</table>
+				<p><button type="button" class="button" data-gen-kc-add>+ Još jedan privezak</button></p>
+			</div>
 
 			<details class="bg-dims" open>
 				<summary>Mere za štampu</summary>
@@ -333,6 +424,10 @@ function bumbaru_page_generator() {
 					<label>Debljina (mm)<input type="number" step="0.1" min="0.6" max="20" data-gen-dim="debljina" value="<?php echo esc_attr( $d['debljina'] ); ?>" /></label>
 					<label>Ime kao reljef iznad ukrasa (mm, 0 = ravno u ukrasu; reljef = samo jedna promena boje)<input type="number" step="0.1" min="0" max="10" data-gen-dim="izdignuto" value="<?php echo esc_attr( $d['izdignuto'] ); ?>" /></label>
 					<label>Ravno ime: boja imena samo gornjih (mm, 0 = cela debljina)<input type="number" step="0.1" min="0" max="20" data-gen-dim="vrh" value="<?php echo esc_attr( $d['vrh'] ); ?>" /></label>
+					<label data-kc-dim>Privezak: veličina slova (mm; privezak je visok oko 1,2 × ovo)<input type="number" step="0.5" min="8" max="60" data-gen-dim="kc_vel" value="<?php echo esc_attr( $d['kc_vel'] ); ?>" /></label>
+					<label data-kc-dim>Privezak: debljina osnove (mm)<input type="number" step="0.1" min="0.6" max="10" data-gen-dim="kc_osnova" value="<?php echo esc_attr( $d['kc_osnova'] ); ?>" /></label>
+					<label data-kc-dim>Privezak: debljina okvira (mm; tanka ivica je pola)<input type="number" step="0.1" min="0.2" max="5" data-gen-dim="kc_sloj" value="<?php echo esc_attr( $d['kc_sloj'] ); ?>" /></label>
+					<label data-kc-dim>Privezak: slova iznad (mm)<input type="number" step="0.1" min="0.2" max="5" data-gen-dim="kc_slova" value="<?php echo esc_attr( $d['kc_slova'] ); ?>" /></label>
 					<label>Ploča štampača (mm)<input type="number" step="1" min="100" max="600" data-gen-dim="ploca" value="<?php echo esc_attr( $d['ploca'] ); ?>" /></label>
 				</div>
 				<p><button type="button" class="button" data-gen-save>Zapamti ove mere</button> <span class="description" data-gen-saved></span></p>
@@ -344,7 +439,7 @@ function bumbaru_page_generator() {
 				<button type="button" class="button button-primary button-hero" data-gen-3mf disabled>Izvezi 3MF</button>
 				<button type="button" class="button button-hero" data-gen-stl disabled>Izvezi STL</button>
 			</p>
-			<p class="description">3MF: svaki ukras je jedan predmet sa delovima „Telo” i „Ime”, svaki u svojoj boji. U slajseru (Anycubic, Bambu, Orca, Prusa) dodelite filament svakom delu. STL: zip sa posebnim fajlom za svaki deo.</p>
+			<p class="description">3MF: svaki ukras je jedan predmet sa delovima „Telo” i „Ime”, svaki u svojoj boji. Privezak ima delove „Osnova”, „Okvir” i „Slova” jedan iznad drugog: dovoljna je promena boje na visini svakog dela (vidi napomenu ispod pregleda). U slajseru (Anycubic, Bambu, Orca, Prusa) dodelite filament svakom delu. STL: zip sa posebnim fajlom za svaki deo.</p>
 			<p class="bg-err" data-gen-err role="alert"></p>
 			<p class="description" data-gen-nap></p>
 		</section>

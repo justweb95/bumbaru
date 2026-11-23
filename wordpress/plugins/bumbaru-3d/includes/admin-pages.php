@@ -647,6 +647,7 @@ function bumbaru_page_site() {
 		</table>
 		<p><button class="button bu-btn" type="submit">Sačuvaj</button></p>
 	</form>
+	<?php if ( function_exists( 'bumbaru_mail_card' ) && current_user_can( 'manage_options' ) ) { bumbaru_mail_card(); } ?>
 	<?php $st = bumbaru_srpski_status(); ?>
 	<form class="bu-card" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 		<input type="hidden" name="action" value="bumbaru_srpski" />

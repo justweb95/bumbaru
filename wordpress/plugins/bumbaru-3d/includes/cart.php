@@ -201,6 +201,13 @@ function bumbaru_read_choice( $product, $src ) {
 		$raw['imena']   = $names;
 		$raw['stil']    = $sid;
 		$raw['slojevi'] = $layer;
+		if ( $sareno ) {
+			// boja promenljivog sloja za svako ime (za generator modela)
+			$raw['sareno_boje'] = array();
+			foreach ( $names as $i => $n ) {
+				$raw['sareno_boje'][] = bumbaru_valid_color( ! empty( $boje[ $i ] ) ? $boje[ $i ] : '', $s['def'][ $sar ] );
+			}
+		}
 		if ( $base ) {
 			$price = bumbaru_eff( $product, $unit_list ) * count( $names );
 		}
@@ -589,17 +596,3 @@ function bumbaru_checkout_die( $message, $title = '', $args = array() ) {
 	_ajax_wp_die_handler( $message, $title, $args );
 }
 
-/*
- * Svi mejlovi sa sajta (porudžbine, nalog, lozinka, kontakt) idu sa shop@bumbaru.rs, ime pošiljaoca „Bumbaru”.
- * Adresa ostaje ona iz WooCommerce → Podešavanja → Emailovi ako je tamo upisana druga adresa na bumbaru.rs.
- */
-define( 'BUMBARU_MAIL_FROM', 'shop@bumbaru.rs' );
-add_filter( 'wp_mail_from', function ( $from ) {
-	return preg_match( '/@bumbaru\.rs$/i', (string) $from ) ? $from : BUMBARU_MAIL_FROM;
-}, 99 );
-add_filter( 'wp_mail_from_name', function ( $name ) {
-	return ( '' === (string) $name || 'WordPress' === $name ) ? 'Bumbaru' : $name;
-}, 99 );
-add_filter( 'woocommerce_email_from_address', function ( $from ) {
-	return preg_match( '/@bumbaru\.rs$/i', (string) $from ) ? $from : BUMBARU_MAIL_FROM;
-}, 99 );

@@ -39,3 +39,5 @@
 .bg-badge-new { background: #F5C137; color: #312018; }
 .bg-badge-done { background: #e3efe5; color: #2f5b3b; }
 .bg-empty { color: #5b4d40; font-weight: 600; }
+.bg-sec-t { margin: 18px 0 8px; font-size: 14px; }
+.bg-wrap [hidden] { display: none !important; }

@@ -1,0 +1,11 @@
+Fontovi za generator privezaka (assets/gen)
+===========================================
+Playball-Regular.ttf      – Copyright 2011 The Playball Project Authors (https://github.com/googlefonts/play-ball), SIL Open Font License 1.1
+Mogra-Regular.ttf         – Copyright (c) 2015 Lipi Raval, SIL Open Font License 1.1
+Nunito-BlackItalic.ttf    – Copyright 2014 The Nunito Project Authors (https://github.com/googlefonts/nunito), SIL Open Font License 1.1
+Montserrat-ExtraBold.ttf  – Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat), SIL Open Font License 1.1
+BumbaruMine.ttf           – izmenjena verzija fonta „MineCrafter 2.0”, autor asherz08 (2011), CC BY-SA 3.0 (vidi assets/fonts/bumbaru-mine-LICENSE.txt)
+BumbaruPiksel.ttf         – Monocraft, Copyright (c) 2022 Idrees Hassan, SIL Open Font License 1.1 (vidi assets/fonts/bumbaru-piksel-LICENSE.txt)
+
+Pun tekst licence SIL OFL 1.1: https://openfontlicense.org (isti kao u Lobster-OFL.txt).
+TTF fajlovi su isti fontovi kao WOFF2 u assets/fonts (pregled na sajtu), da bi generator imao tačan crtež slova.

@@ -5,7 +5,9 @@
   var root = document.querySelector('[data-gen]');
   if (!C || !G || !root) return;
   var $ = function (s) { return root.querySelector(s); };
-  var font = null, defs = null, items = [], src = null, timer = 0;
+  var font = null, defs = null, items = [], src = null, timer = 0, kcFont = {};
+  var stilovi = {};
+  (C.stilovi || []).forEach(function (st) { stilovi[st.id] = st; });
 
   var colors = {};
   C.colors.forEach(function (c) { colors[c.id] = c; });
@@ -40,14 +42,86 @@
   }
   function number() { Array.prototype.forEach.call(tbody.rows, function (tr, i) { tr.cells[0].textContent = i + 1; }); }
   function rows() {
+    return ukRows().concat(kcRows());
+  }
+  function ukRows() {
     return Array.prototype.map.call(tbody.rows, function (tr) {
-      return { ime: tr.querySelector('.bg-ime').value.trim(), motiv: tr.querySelector('.bg-mot').value, font: tr.querySelector('.bg-font').value, boja: tr.querySelector('.bg-boja').value, bojaImena: tr.querySelector('.bg-bi').value };
+      return { model: 'ukras', ime: tr.querySelector('.bg-ime').value.trim(), motiv: tr.querySelector('.bg-mot').value, font: tr.querySelector('.bg-font').value, boja: tr.querySelector('.bg-boja').value, bojaImena: tr.querySelector('.bg-bi').value };
     }).filter(function (r) { return r.ime; });
   }
+  /* ——— Privesci (jedan red = jedan privezak) ——— */
+  var kcBody = $('[data-gen-kc-rows]');
+  function addKcRow(r) {
+    var first = (C.stilovi && C.stilovi[0]) || { id: 'pisana', def: { slova: 'roze', okvir: 'bela', osnova: 'bela' } };
+    r = r || { ime: '', stil: first.id, slova: first.def.slova, okvir: first.def.okvir, osnova: first.def.osnova };
+    var st = '<select class="kc-stil">' + (C.stilovi || []).map(function (x) { return '<option value="' + esc(x.id) + '"' + (x.id === r.stil ? ' selected' : '') + '>' + esc(x.label) + '</option>'; }).join('') + '</select>';
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td class="bg-n"></td><td><input type="text" class="kc-ime" maxlength="14" value="' + esc(r.ime) + '" placeholder="npr. Milica" /></td><td>' + st + '</td>'
+      + '<td>' + colorSelect('kc-slova', r.slova, false) + '</td><td>' + colorSelect('kc-okvir', r.okvir, false) + '</td><td>' + colorSelect('kc-osnova', r.osnova, false) + '</td>'
+      + '<td><button type="button" class="button-link bg-del" aria-label="Ukloni">✕</button></td>';
+    kcBody.appendChild(tr);
+    kcSync(tr);
+    numberKc();
+  }
+  // Okvir se bira samo kod stilova koji ga imaju.
+  function kcSync(tr) {
+    var st = stilovi[tr.querySelector('.kc-stil').value];
+    tr.querySelector('.kc-okvir').disabled = !(st && st.okvirW);
+  }
+  function numberKc() { Array.prototype.forEach.call(kcBody.rows, function (tr, i) { tr.cells[0].textContent = i + 1; }); }
+  function kcRows() {
+    return Array.prototype.map.call(kcBody.rows, function (tr) {
+      return { model: 'privezak', ime: tr.querySelector('.kc-ime').value.trim(), stil: tr.querySelector('.kc-stil').value, slova: tr.querySelector('.kc-slova').value, okvir: tr.querySelector('.kc-okvir').value, osnova: tr.querySelector('.kc-osnova').value };
+    }).filter(function (r) { return r.ime; });
+  }
+  kcBody.addEventListener('input', schedule);
+  kcBody.addEventListener('change', function (e) {
+    var tr = e.target.closest('tr');
+    if (tr && e.target.classList.contains('kc-stil')) {
+      var st = stilovi[e.target.value];
+      if (st) ['slova', 'okvir', 'osnova'].forEach(function (L) { tr.querySelector('.kc-' + L).value = st.def[L]; });
+      kcSync(tr);
+    }
+    schedule();
+  });
+  kcBody.addEventListener('click', function (e) {
+    if (e.target.classList.contains('bg-del')) {
+      e.target.closest('tr').remove();
+      numberKc(); showSections(); schedule();
+    }
+  });
+  $('[data-gen-kc-add]').addEventListener('click', function () {
+    var last = kcBody.rows[kcBody.rows.length - 1];
+    addKcRow(last ? { ime: '', stil: last.querySelector('.kc-stil').value, slova: last.querySelector('.kc-slova').value, okvir: last.querySelector('.kc-okvir').value, osnova: last.querySelector('.kc-osnova').value } : null);
+    kcBody.rows[kcBody.rows.length - 1].querySelector('.kc-ime').focus();
+  });
+  // Vidi se izabrani model i svaki koji ima redove (porudžbina sa ukrasom i priveskom).
+  function showSections() {
+    var m = $('[data-gen-model]').value;
+    var kc = m === 'privezak' || kcBody.rows.length > 0, uk = m === 'ukras' || tbody.rows.length > 0;
+    if (m === 'privezak' && !kcBody.rows.length) addKcRow();
+    if (m === 'ukras' && !tbody.rows.length) addRow();
+    root.querySelector('[data-gen-sec="privezak"]').hidden = !kc;
+    root.querySelector('[data-gen-sec="ukras"]').hidden = !uk;
+    root.querySelectorAll('[data-kc-dim]').forEach(function (l) { l.hidden = !kc; });
+  }
+  $('[data-gen-model]').addEventListener('change', function () {
+    // ručno upisani redovi drugog modela se sklone (redovi iz porudžbine ostaju)
+    if (!src) {
+      if ($('[data-gen-model]').value === 'privezak') tbody.innerHTML = ''; else kcBody.innerHTML = '';
+    }
+    showSections();
+  });
+
   function setRows(list, label) {
     tbody.innerHTML = '';
-    list.forEach(addRow);
+    kcBody.innerHTML = '';
+    var kc = list.filter(function (r) { return r.model === 'privezak'; });
+    list.filter(function (r) { return r.model !== 'privezak'; }).forEach(addRow);
+    kc.forEach(addKcRow);
+    $('[data-gen-model]').value = kc.length && kc.length === list.length ? 'privezak' : 'ukras';
     if (!list.length) addRow();
+    showSections();
     src = label || null;
     $('[data-gen-src]').textContent = label ? 'Iz porudžbine: ' + label : '';
     rebuild();
@@ -57,8 +131,7 @@
   tbody.addEventListener('click', function (e) {
     if (e.target.classList.contains('bg-del')) {
       e.target.closest('tr').remove();
-      if (!tbody.rows.length) addRow();
-      number(); schedule();
+      number(); showSections(); schedule();
     }
   });
   $('[data-gen-add]').addEventListener('click', function () {
@@ -92,9 +165,9 @@
     $('[data-gen-ceka]').textContent = nove ? '(' + nove + ')' : '';
     var all = $('[data-gen-allnew]');
     all.hidden = !(tab === 'nove' && nove > 1 && noveItems > 0);
-    $('[data-gen-skini-sve]').textContent = 'Skini sve nove u jedan 3MF (' + nove + ' ' + (nove === 1 ? 'ukras' : 'ukrasa') + ')';
+    $('[data-gen-skini-sve]').textContent = 'Skini sve nove u jedan 3MF (' + nove + ' kom)';
     if (!list.length) {
-      box.innerHTML = '<p class="bg-empty">' + (tab === 'nove' ? 'Nema novih ukrasa za štampu. 🐝' : 'Još nema porudžbina sa ukrasima.') + '</p>';
+      box.innerHTML = '<p class="bg-empty">' + (tab === 'nove' ? 'Nema ničeg novog za štampu. 🐝' : 'Još nema porudžbina sa ukrasima ili privescima.') + '</p>';
       return;
     }
     box.innerHTML = list.map(function (o) {
@@ -165,7 +238,9 @@
     }
   }
   function nameFor(o, c) {
-    return 'porudzbina-' + o.broj + '-' + (c.rows.length === 1 ? 'ukras-' + slug(c.rows[0].ime) + '-' + c.rows[0].motiv : c.rows.length + '-ukrasa');
+    var r0 = c.rows[0], kc = c.rows.every(function (r) { return r.model === 'privezak'; });
+    if (c.rows.length === 1) return 'porudzbina-' + o.broj + '-' + (kc ? 'privezak-' + slug(r0.ime) + '-' + r0.stil : 'ukras-' + slug(r0.ime) + '-' + r0.motiv);
+    return 'porudzbina-' + o.broj + '-' + c.rows.length + (kc ? '-privezaka' : '-kom');
   }
   $('[data-gen-orders]').addEventListener('click', function (e) {
     var card = e.target.closest('[data-o]');
@@ -190,7 +265,7 @@
     });
     if (!rowsAll.length) return;
     var d = new Date(), dd = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
-    quick({ rows: rowsAll, keys: keys }, 'za-stampu-' + dd + '-' + rowsAll.length + '-ukrasa');
+    quick({ rows: rowsAll, keys: keys }, 'za-stampu-' + dd + '-' + rowsAll.length + '-kom');
   });
   root.querySelectorAll('[data-gen-tab]').forEach(function (t) {
     t.addEventListener('click', function () {
@@ -204,8 +279,20 @@
   function schedule() { clearTimeout(timer); timer = setTimeout(rebuild, 250); }
   /** Ukrasi (redovi) → gotovi 3D predmeti raspoređeni po ploči. */
   function buildItems(list) {
-    var d = dims(), model = G.models[$('[data-gen-model]').value] || G.models.ukras, out = [];
+    var d = dims(), out = [];
     list.forEach(function (r) {
+      if (r.model === 'privezak') {
+        var st = stilovi[r.stil] || C.stilovi[0];
+        var fl = (kcFont[st.id] || []).filter(Boolean);
+        if (!fl.length) throw new Error('Font za stil „' + st.label + '” nije učitan.');
+        var iv = st.ivica ? (colors.crna || { id: 'crna', naziv: 'Crna', hex: st.ivica.boja }) : null;
+        out.push(G.models.privezak.build({
+          ime: r.ime, stil: st, vel: d.kc_vel || 20, osnova: d.kc_osnova || 2, sloj: d.kc_sloj || 0.8, slova: d.kc_slova || 1,
+          boje: { slova: color(r.slova), okvir: color(r.okvir), osnova: color(r.osnova), ivica: iv },
+        }, { fonts: fl }));
+        return;
+      }
+      var model = G.models.ukras;
       var bi = r.bojaImena === 'ista' ? null : color(r.bojaImena);
       out.push(model.build({
         motiv: r.motiv, font: r.font || 'pacifico', ime: r.ime, precnik: d.precnik, debljina: d.debljina, izdignuto: d.izdignuto, vrh: d.vrh,
@@ -235,7 +322,8 @@
     $('[data-gen-preview]').innerHTML = ok ? G.previewSVG(items) : '<p>Upišite ime.</p>';
     if (ok) {
       var s = G.stats(items), it = items[0];
-      $('[data-gen-stats]').textContent = items.length + (items.length === 1 ? ' ukras' : ' ukrasa') + ' · ' + it.sirina.toFixed(1) + ' × ' + it.visina.toFixed(1) + ' × ' + (d.debljina + d.izdignuto).toFixed(1) + ' mm · delovi: '
+      var z = it.debljina || (d.debljina + d.izdignuto);
+      $('[data-gen-stats]').textContent = items.length + ' kom · prvi: ' + it.sirina.toFixed(1) + ' × ' + it.visina.toFixed(1) + ' × ' + z.toFixed(1) + ' mm · delovi: '
         + it.delovi.map(function (p) { return p.naziv; }).join(', ') + ' · ' + s.trouglova.toLocaleString('sr-RS') + ' trouglova';
     } else {
       $('[data-gen-stats]').textContent = '';
@@ -243,9 +331,10 @@
   }
 
   function fileBase() {
-    var m = items.length === 1 ? rows()[0].motiv : 'mix';
-    var who = items.length === 1 ? slug(items[0].ime) : items.length + '-ukrasa';
-    return (src && src.order ? 'porudzbina-' + src.order + '-' : '') + 'ukras-' + who + '-' + m;
+    var rr = rows(), kc = rr.length && rr.every(function (r) { return r.model === 'privezak'; });
+    var m = items.length === 1 ? (kc ? rr[0].stil : rr[0].motiv) : 'mix';
+    var who = items.length === 1 ? slug(items[0].ime) : items.length + '-kom';
+    return (src && src.order ? 'porudzbina-' + src.order + '-' : '') + (kc ? 'privezak-' : 'ukras-') + who + '-' + m;
   }
   function save(data, name, type) {
     var url = URL.createObjectURL(new Blob([data], { type: type }));
@@ -284,15 +373,26 @@
   /* ——— Početak ——— */
   renderOrders();
   addRow({ ime: 'Mila', motiv: C.motivi[0].id, boja: 'bela', bojaImena: 'crvena' });
+  showSections();
   // Svi fontovi imena se učitaju odmah (model se pravi bez čekanja kad se promeni font u redu).
   var FURL = C.fonts || { pacifico: C.font };
   var fids = Object.keys(FURL);
+  var fcache = {};
+  function loadF(url) {
+    if (!fcache[url]) fcache[url] = new Promise(function (ok, no) { window.opentype.load(url, function (e, f) { if (e) no(e); else ok(f); }); });
+    return fcache[url];
+  }
+  // Fontovi privezaka: ako neki ne može da se učita, ostali stilovi i ukrasi rade.
+  var KC = C.kcFonts || {};
+  var kcLoad = Promise.all(Object.keys(KC).map(function (sid) {
+    return Promise.all(KC[sid].map(function (u) { return loadF(u).catch(function () { return null; }); })).then(function (fl) { kcFont[sid] = fl; });
+  }));
   Promise.all(fids.map(function (id) {
-    return new Promise(function (ok, no) { window.opentype.load(FURL[id], function (e, f) { if (e) no(e); else ok(f); }); });
-  }).concat([
+    return loadF(FURL[id]);
+  }).concat([kcLoad.then(function () { return null; }),
     fetch(C.defs, { credentials: 'same-origin' }).then(function (r) { return r.text(); }),
   ])).then(function (r) {
-    font = {}; fids.forEach(function (id, i) { font[id] = r[i]; }); defs = r[fids.length];
+    font = {}; fids.forEach(function (id, i) { font[id] = r[i]; }); defs = r[fids.length + 1];
     var sel = C.sel || {};
     if (sel.order && loadItem(sel.order, sel.item)) {
       if (sel.download === '3mf') {
