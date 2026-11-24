@@ -263,6 +263,9 @@ function bumbaru_config( $product ) {
 		'komplet'      => null,
 		'firme'        => null,
 		'crtez'        => isset( $raw['crtez'] ) && bumbaru_crtez( $raw['crtez'] ) ? $raw['crtez'] : '',
+		// Ukras sa imenom i set: koje motive kupac bira (prazno = svi); rotirajući ukras ima samo „okretni”.
+		'motivi_ukras' => array_values( array_intersect( isset( $raw['motivi_ukras'] ) ? (array) $raw['motivi_ukras'] : array(), wp_list_pluck( bumbaru_motivi(), 'id' ) ) ),
+		'ime_max'      => isset( $raw['ime_max'] ) ? max( 4, min( 12, (int) $raw['ime_max'] ) ) : 12,
 		// Popust za više komada istog proizvoda (svi komadi u korpi se sabiraju, npr. ukrasi sa različitim imenima).
 		'kolicina'     => in_array( $type, array( 'motivi', 'boje', 'sastav' ), true ) ? array() : bumbaru_parse_tiers( isset( $raw['kolicina'] ) ? $raw['kolicina'] : ( 'ukras' === $type ? bumbaru_kolicina_default() : '' ) ),
 		'kolicina_txt' => isset( $raw['kolicina'] ) ? (string) $raw['kolicina'] : ( 'ukras' === $type ? bumbaru_kolicina_default() : '' ),
@@ -347,6 +350,12 @@ function bumbaru_config( $product ) {
 /** Podrazumevani popust za više ukrasa sa imenom (menja se u proizvodu → Konfigurator). */
 function bumbaru_kolicina_default() {
 	return '5=10, 7=15, 10=20'; // do 4 komada je povoljniji porodični set (4 imena)
+}
+
+/** Motivi koje kupac bira za ukras sa imenom ili set (iz podešavanja proizvoda, inače svi). */
+function bumbaru_motivi_za( $config ) {
+	$ids = ! empty( $config['motivi_ukras'] ) ? $config['motivi_ukras'] : wp_list_pluck( bumbaru_motivi(), 'id' );
+	return array_values( array_map( 'bumbaru_motiv', $ids ) );
 }
 
 function bumbaru_has_live( $product ) {

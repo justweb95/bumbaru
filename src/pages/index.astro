@@ -8,20 +8,21 @@ import Odbrojavanje from '../components/Odbrojavanje.astro';
 import { productBySlug, productUrl, type Product } from '../data/products';
 import { SITE, messengerUrl } from '../data/site';
 import { ornamentG } from '../lib/ornament-svg';
+import { motiv } from '../lib/ornament';
 
 const ng = [
   'novogodisnja-kucica-sa-led-svecicom', 'privezak-deda-mraz', 'patuljak-sa-led-svecicom',
-  'spiralna-jelka-sa-zvezdom', 'ukras-za-jelku-sa-imenom', 'irvas-lutkica-pleteni-izgled',
+  'spiralna-jelka-sa-zvezdom', 'ukras-za-jelku-sa-imenom', 'rotirajuci-ukras-sa-imenom', 'irvas-lutkica-pleteni-izgled',
   'prstenovi-za-salvete-set-od-6', 'zlatna-jelka-za-sklapanje', 'mini-jelka-za-sto',
   'privezak-irvas', 'jelkica-za-punjenje', 'porodicni-set-ukrasa-sa-imenima',
 ].map((s) => productBySlug(s)).filter((x): x is Product => !!x); // sakriveni ili obrisani iz admina se preskaču
 
 const hang = [
-  { x: 110, hy: 180, rot: -3, s: 0.84, motif: 'planine', color: 'zelena', nameColor: 'ista', fb: 'Luka', key: 'a', cls: 'sway sway-1' },
-  { x: 530, hy: 225, rot: 3, s: 0.84, motif: 'masna', color: 'crvena', nameColor: 'ista', fb: 'Mila', key: 'c', cls: 'sway sway-3' },
-  { x: 330, hy: 110, rot: 0, s: 1.12, motif: 'zvezde', color: 'bela', nameColor: 'crvena', fb: 'Sofija', key: 'b', cls: 'sway' },
+  { x: 110, hy: 180, rot: -3, s: 0.84, motif: 'velika-pahulja', color: 'crvena', nameColor: 'bela', fb: 'Luka', key: 'a', cls: 'sway sway-1' },
+  { x: 530, hy: 225, rot: 3, s: 0.84, motif: 'masnica', color: 'crvena', nameColor: 'bela', fb: 'Neda', key: 'c', cls: 'sway sway-3' },
+  { x: 330, hy: 110, rot: 0, s: 1.12, motif: 'zvezdice-i-jelke', color: 'crvena', nameColor: 'bela', fb: 'Mila', key: 'b', cls: 'sway' },
 ];
-const hy = (m: string) => (m === 'masna' ? 71 : 64);
+const hy = (m: string) => motiv(m).hy;
 
 const prednosti = [
   { icon: 'cash', title: 'Plaćanje pouzećem', text: 'Plaćate kuriru kad paket stigne.' },
@@ -117,7 +118,7 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom');
         <div class="ukr-text">
           <span class="badge">Po meri</span>
           <h2 id="ukras-title" class="h1">Vaše ime na ukrasu za jelku</h2>
-          <p class="lead" style="color:var(--ink)">Upišite ime i odmah vidite kako izgleda na ukrasu. Četiri motiva, u jednoj ili dve boje, latinicom ili ćirilicom.</p>
+          <p class="lead" style="color:var(--ink)">Upišite ime i odmah vidite kako izgleda na ukrasu. Četiri motiva: zvezdice i jelke, mašnica, kapica Deda Mraza i velika pahulja. Latinicom ili ćirilicom.</p>
           <form class="ukr-form" action="/proizvod/ukras-za-jelku-sa-imenom/" method="get">
             <div class="field">
               <label for="home-ime">Ime na ukrasu</label>
@@ -165,14 +166,14 @@ const patuljak = productBySlug('patuljak-sa-led-svecicom');
           <span class="cat-icon"><Icon name="gift" size={22} /></span>
           <a class="polaroid" style="--r:-4deg;left:6%;top:20%" href="/proizvod/ukras-za-jelku-sa-imenom/"><img src="/img/c/ukras-sofija-sm.webp" alt="" width="640" height="640" loading="lazy" /><span>Sofija · bela</span></a>
           <a class="polaroid pol-lg" style="--r:2deg;left:33%;top:32%" href="/proizvod/porodicni-set-ukrasa-sa-imenima/"><img src="/img/c/ukras-set-sm.webp" alt="" width="640" height="640" loading="lazy" /><span>Porodični set</span></a>
-          <a class="polaroid" style="--r:4deg;right:6%;top:16%" href="/proizvod/ukras-za-jelku-sa-imenom/"><img src="/img/c/ukras-luka-sm.webp" alt="" width="640" height="640" loading="lazy" /><span>Luka · zelena</span></a>
+          <a class="polaroid" style="--r:4deg;right:6%;top:16%" href="/proizvod/rotirajuci-ukras-sa-imenom/"><img src="/img/c/ukras-mila-sm.webp" alt="" width="640" height="640" loading="lazy" /><span>Mila · crvena</span></a>
         </div>
         <div class="cat-body">
           <span class="badge badge-custom">Po meri · 3–5 dana</span>
           <h3 class="h2">Pokloni sa imenom</h3>
           <p class="muted">Ime upišete latinicom ili ćirilicom i odmah vidite kako izgleda. Pre štampe proveravamo svako ime.</p>
           <ul class="cat-list">
-            <li><a href="/proizvod/ukras-za-jelku-sa-imenom/"><span><strong>Ukras za jelku sa imenom</strong><span class="small muted">4 motiva, 4 boje</span></span><Icon name="arrow" /></a></li>
+            <li><a href="/proizvod/ukras-za-jelku-sa-imenom/"><span><strong>Ukras za jelku sa imenom</strong><span class="small muted">4 motiva, ime u drugoj boji</span></span><Icon name="arrow" /></a></li>
             <li><a href="/proizvod/porodicni-set-ukrasa-sa-imenima/"><span><strong>Porodični set ukrasa sa imenima</strong><span class="small muted">4 ili 5 imena u jednoj kutiji</span></span><Icon name="arrow" /></a></li>
             <li><a href="/proizvod/porodicni-privezak-sa-imenima/"><span><strong>Porodični set privezaka sa imenima</strong><span class="small muted">2 do 8 imena, 5 stilova slova</span></span><Icon name="arrow" /></a></li>
           </ul>

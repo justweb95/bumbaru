@@ -10,6 +10,7 @@ import { CRTEZI } from '../lib/crtezi';
 import { SET_MEDALJONI } from '../lib/set-modlice';
 import type { Category, Faq } from '../data/categories';
 import { STILOVI } from '../lib/keychain';
+import { MOTIVI } from '../lib/ornament';
 import { panelKalkulator } from './kalkulator';
 
 type Tab = 'proizvodi' | 'kategorije' | 'boje' | 'podesavanja' | 'kalkulator';
@@ -392,11 +393,14 @@ function slikeSekcija(p: Product) {
           i === 0 ? h('span', { class: 'tag imc-main' }, 'Glavna') : null),
         ulaz(im.alt, (v) => (im.alt = v), { placeholder: 'Opis fotografije (za Google)', 'aria-label': `Opis fotografije ${i + 1}`, maxlength: 200 }),
         (() => { const opc = (p.options || []).find((o) => o.cene?.some((c) => c > 0)); return opc ? izbor([['', 'Prikazuje: sve / ništa posebno'], ...opc.values.map((v, j): [string, string] => [String(j), `Prikazuje: ${v}`])], im.vel != null ? String(im.vel) : '', (v) => { if (v === '') delete im.vel; else im.vel = Number(v); }, { 'aria-label': `Koju vrednost prikazuje fotografija ${i + 1}` }) : null; })(),
+        // ukras sa imenom / set: koji motiv fotografija prikazuje (galerija je prikaže kad kupac izabere motiv)
+        p.personal === 'ukras' || p.personal === 'set' ? izbor([['', 'Motiv: nijedan posebno'], ...MOTIVI.map((m): [string, string] => [m.id, `Motiv: ${m.label}`])], im.motiv || '', (v) => { if (v) im.motiv = v; else delete im.motiv; }, { 'aria-label': `Koji motiv prikazuje fotografija ${i + 1}` }) : null,
+        prekidac(!!im.ai, (v) => { if (v) im.ai = true; else delete im.ai; }, 'Napravljena uz AI (napomena ispod)'),
         h('div', { class: 'imc-acts' },
           dugmeIkona('left', 'Pomeri levo', () => { [p.images[i - 1], p.images[i]] = [p.images[i], p.images[i - 1]]; crtaj(); izmena(); }, { disabled: i === 0 }),
           dugmeIkona('right', 'Pomeri desno', () => { [p.images[i + 1], p.images[i]] = [p.images[i], p.images[i + 1]]; crtaj(); izmena(); }, { disabled: i === p.images.length - 1 }),
           dugmeIkona('close', 'Obriši fotografiju', () => { p.images.splice(i, 1); crtaj(); izmena(); }, { class: 'del' })))),
-      ...(p.images.length < 12 ? [h('button', { type: 'button', class: 'imc imc-add', disabled: rad, onclick: () => fajl.click() },
+      ...(p.images.length < 20 ? [h('button', { type: 'button', class: 'imc imc-add', disabled: rad, onclick: () => fajl.click() },
         ikona('camera', 28), h('strong', null, rad ? 'Obrađujem…' : 'Dodaj fotografije'), h('span', { class: 'small muted' }, 'ili ih prevucite ovde'))] : []),
     );
   };
@@ -404,7 +408,7 @@ function slikeSekcija(p: Product) {
   async function dodaj(fajlovi: File[]) {
     if (rad || !fajlovi.length || !mozeOtpremanje(p, status)) return;
     rad = true; crtaj();
-    const slobodno = 12 - p.images.length;
+    const slobodno = 20 - p.images.length;
     const lista = fajlovi.slice(0, slobodno);
     let gotovo = 0;
     try {
@@ -416,7 +420,7 @@ function slikeSekcija(p: Product) {
         gotovo++;
         crtaj(); izmena();
       }
-      status.textContent = `Dodato: ${gotovo}.${fajlovi.length > slobodno ? ' Najviše 12 fotografija po proizvodu.' : ''} Fotografije se objavljuju kad kliknete „Sačuvaj i objavi”.`;
+      status.textContent = `Dodato: ${gotovo}.${fajlovi.length > slobodno ? ' Najviše 20 fotografija po proizvodu.' : ''} Fotografije se objavljuju kad kliknete „Sačuvaj i objavi”.`;
       status.dataset.tone = 'ok';
     } catch (e) {
       status.textContent = (gotovo ? `Dodato: ${gotovo}. ` : '') + ((e as Error).message || 'Greška pri obradi fotografije.');

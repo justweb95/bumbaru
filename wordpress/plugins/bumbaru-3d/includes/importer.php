@@ -196,6 +196,9 @@ function bumbaru_import_product( $i ) {
 	$gallery = array();
 	$card    = 0;
 	$vel     = array();
+	$imot    = array(); // fotografija → motiv ukrasa (galerija prikaže fotografije izabranog motiva)
+	$iboja   = array(); // fotografija → boja (galerija prikaže fotografiju izabrane boje)
+	$iai     = array(); // fotografije napravljene uz AI (napomena ispod fotografije)
 	foreach ( $p['images'] as $k => $im ) {
 		$full = bumbaru_import_image( $im['full'], $im['alt'], $pid );
 		if ( 0 === $k ) {
@@ -205,6 +208,15 @@ function bumbaru_import_product( $i ) {
 			$gallery[] = $full;
 			if ( isset( $im['vel'] ) ) {
 				$vel[ $full ] = (int) $im['vel'];
+			}
+			if ( ! empty( $im['motiv'] ) ) {
+				$imot[ $full ] = sanitize_key( $im['motiv'] );
+			}
+			if ( ! empty( $im['boja'] ) ) {
+				$iboja[ $full ] = sanitize_key( $im['boja'] );
+			}
+			if ( ! empty( $im['ai'] ) ) {
+				$iai[ $full ] = 1;
 			}
 		}
 	}
@@ -252,6 +264,9 @@ function bumbaru_import_product( $i ) {
 		'_bu_home_order'  => (int) $p['homeOrder'],
 		'_bu_config'      => bumbaru_import_config( $p['config'], $pid ),
 		'_bu_img_vel'     => $vel,
+		'_bu_img_mot'     => $imot,
+		'_bu_img_boja'    => $iboja,
+		'_bu_img_ai'      => $iai,
 	);
 	foreach ( $meta as $k => $v ) {
 		update_post_meta( $pid, $k, $v );

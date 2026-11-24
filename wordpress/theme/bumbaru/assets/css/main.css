@@ -910,6 +910,8 @@ body.has-sbar .kp-toast { bottom: 88px !important; }
   :is(.tpl-product, .cart-grupa) .mm-badge.pop { animation: mot-pop .55s cubic-bezier(.3,1.7,.5,1); }
   :is(.tpl-product, .cart-grupa) .mm-total { margin: 8px 0 0; font-size: 16px; }
   :is(.tpl-product, .cart-grupa) .mm-total s { color: var(--ink-muted); margin-left: 6px; font-weight: 500; }
+  /* Napomena na fotografiji napravljenoj uz AI */
+  .tpl-product .ai-note { position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 2; margin: 0; padding: 6px 10px; border-radius: 10px; background: rgba(255,250,240,.9); color: var(--ink); font-size: 12px; line-height: 16px; font-weight: 600; text-align: center; }
   /* Korpa: popust za različite proizvode (ista traka kao na strani proizvoda, plugin Bumbaru 3D) */
   .cart-grupa { margin: 0 0 18px; }
   .cart-grupa .cg-t { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin: 0; font-size: 16px; }

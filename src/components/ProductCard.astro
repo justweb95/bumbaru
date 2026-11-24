@@ -43,6 +43,7 @@ const popustDo = izborKomada(p) && p.motivi!.popusti.length ? Math.max(...p.moti
     <div class="row">
       <h3><a href={url}>{p.title}</a></h3>
       {cenaN > 0 && <span class="price" style="font-size:18px"><Cena n={cenaN} pct={ak} pre={cenaPre} posle={cenaPosle} stara={stara} /></span>}
+      {!cenaN && p.naUpit && <span class="price" style="font-size:16px">Cena na upit</span>}
     </div>
     <p class="note">{p.short}</p>
   </div>

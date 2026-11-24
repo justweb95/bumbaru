@@ -20,6 +20,7 @@ import Icon from './Icon.astro';
     </div>
     <ul class="kp-list" data-kp-list></ul>
     <div class="kp-foot" data-kp-foot hidden>
+      <div class="kp-grupa" data-kp-grupa hidden></div>
       <div class="kp-total"><span>Ukupno</span><b data-kp-total></b></div>
       <p class="small muted" data-kp-note>Dostavu i rok javljamo u odgovoru. Plaćate kuriru kad paket stigne.</p>
       <label class="sr-only" for="kp-nap">Napomena uz porudžbinu</label>
@@ -37,6 +38,10 @@ import Icon from './Icon.astro';
 
 <script>
   import { citaj, sacuvaj, din, ukupnoKomada, type Stavka } from '../lib/korpa';
+  import { grupaRacun, razlicitih, GRUPA_POPUSTI } from '../lib/grupa';
+  // Popust za različite proizvode: stavke iz grupe (komplet je već sa svojim popustom, pa se ne broji)
+  const grupa = (l: Stavka[]) => grupaRacun(l.filter((x) => x.cena && !x.id.includes(' + ')).map((x) => ({ slug: x.slug, cena: x.jed || x.cena / x.kol, kom: x.kol })));
+  const grupaTekst = (g: ReturnType<typeof grupa>) => `Popust za ${g.n} ${razlicitih(g.n)} proizvoda (−${g.pct}%)`;
   const dlg = document.getElementById('korpa') as HTMLDialogElement;
   const $ = <T extends HTMLElement>(s: string) => dlg.querySelector<T>(s)!;
   const list = $('[data-kp-list]');
@@ -64,8 +69,15 @@ import Icon from './Icon.astro';
         </div>
         <button type="button" class="kp-del" data-kp-del="${i}" aria-label="Ukloni: ${esc(x.naziv)}">×</button>
       </li>`).join('');
-    const zbir = l.reduce((a, x) => a + x.cena, 0);
+    const g = grupa(l);
+    const zbir = l.reduce((a, x) => a + x.cena, 0) - g.popust;
     const nepoznato = l.some((x) => !x.cena);
+    const gEl = $('[data-kp-grupa]');
+    const sled = GRUPA_POPUSTI.find((t) => t.od > g.n);
+    gEl.hidden = g.n === 0;
+    gEl.innerHTML = g.popust
+      ? `<span>${grupaTekst(g)}</span><b>−${din(g.popust)}</b>${sled ? `<small>Dodajte još jedan različit proizvod za −${sled.procenat}%.</small>` : ''}`
+      : sled ? `<small>Dodajte još ${sled.od - g.n === 1 ? 'jedan različit proizvod' : sled.od - g.n + ' različita proizvoda'} (lutkice, jelke, tacna) za −${sled.procenat}%.</small>` : '';
     $('[data-kp-total]').textContent = zbir ? (l.some((x) => x.od) ? 'od ' : '') + din(zbir) + (nepoznato ? ' +' : '') : 'javljamo u odgovoru';
     $('[data-kp-note]').textContent = (nepoznato && zbir ? 'Za neke proizvode cenu javljamo u odgovoru. ' : '') + 'Dostavu i rok javljamo u odgovoru. Plaćate kuriru kad paket stigne.';
   }
@@ -89,10 +101,11 @@ import Icon from './Icon.astro';
   const confirmClear = () => { const b = $('[data-kp-clear]'); if (b.dataset.sure) { delete b.dataset.sure; b.lastChild!.textContent = 'Isprazni korpu'; return true; } b.dataset.sure = '1'; b.lastChild!.textContent = 'Kliknite još jednom da ispraznite'; setTimeout(() => { delete b.dataset.sure; b.lastChild!.textContent = 'Isprazni korpu'; }, 3500); return false; };
   $('[data-kp-send]').addEventListener('click', () => {
     const l = citaj(); if (!l.length) return;
-    const zbir = l.reduce((a, x) => a + x.cena, 0);
+    const g = grupa(l);
+    const zbir = l.reduce((a, x) => a + x.cena, 0) - g.popust;
     const delovi = l.map((x, i) => [`${i + 1}. ${x.naziv} (šifra ${x.id})`, ...x.linije.map((t) => '   ' + t), `   Količina: ${x.kol}`, `   Cena: ${cenaTxt(x)}`, `   ${x.url}`].join('\n'));
     const nap = $<HTMLInputElement>('[data-kp-nap]').value.trim();
-    const text = ['Zdravo, želim da poručim (korpa sa sajta):', '', ...delovi, '', zbir ? `Ukupno: ${(l.some((x) => x.od) ? 'od ' : '') + din(zbir)}${l.some((x) => !x.cena) ? ' + proizvodi kojima cenu javljate' : ''} (bez dostave)` : '', nap ? 'Napomena: ' + nap : ''].filter((t, i, a) => t || a[i - 1]).join('\n').trim();
+    const text = ['Zdravo, želim da poručim (korpa sa sajta):', '', ...delovi, '', g.popust ? `${grupaTekst(g)}: −${din(g.popust)} (umesto ${din(g.puna)}, sa popustom ${din(g.ukupno)})` : '', zbir ? `Ukupno: ${(l.some((x) => x.od) ? 'od ' : '') + din(zbir)}${l.some((x) => !x.cena) ? ' + proizvodi kojima cenu javljate' : ''} (bez dostave)` : '', nap ? 'Napomena: ' + nap : ''].filter((t, i, a) => t || a[i - 1]).join('\n').trim();
     zatvori();
     (window as any).bumbaruMessage(text, 'korpa', { naslov: `Porudžbina iz korpe (${ukupnoKomada(l)} kom)`, slika: l[0].slika, korpa: true });
   });
@@ -141,6 +154,10 @@ import Icon from './Icon.astro';
   .kp-list :global(.kp-step b) { min-width: 22px; text-align: center; }
   .kp-list :global(.kp-kol) { font-size: 14px; font-weight: 600; color: var(--ink-muted); }
   .kp-list :global(.kp-cena) { white-space: nowrap; }
+  .kp-grupa { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; padding: 8px 12px; margin-bottom: 8px; border-radius: 10px; background: var(--honey-soft); font-size: 14px; font-weight: 700; }
+  .kp-grupa[hidden] { display: none; }
+  .kp-grupa :global(b) { color: var(--leaf); }
+  .kp-grupa :global(small) { flex-basis: 100%; font-weight: 600; color: var(--ink-muted); }
   .kp-list :global(.kp-del) { position: absolute; right: 0; top: 12px; width: 30px; height: 30px; border: 0; border-radius: 50%; background: var(--surface-raised); font-size: 18px; line-height: 1; cursor: pointer; color: var(--ink); }
   .kp-list :global(.kp-del:hover) { background: var(--berry-soft); color: var(--berry); }
   .kp-foot { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px 20px; border-top: 1px solid var(--line); background: var(--surface-raised); }

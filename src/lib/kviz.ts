@@ -52,11 +52,14 @@ const LUTKICA = P(['dete', 'ona', 'porodica', 'kolege'], ['nova-godina', 'paznja
 const IME = P(['dete', 'ona', 'on', 'kolege'], ['rodjendan', 'paznja', 'nova-godina'], ['ime', 'zabavno']);
 const PROFILI: Record<string, Profil> = {
   'ukras-za-jelku-sa-imenom': P(SVI_ZA, ['nova-godina'], ['ime', 'lepo']),
+  'rotirajuci-ukras-sa-imenom': P(SVI_ZA, ['nova-godina'], ['ime', 'lepo']),
   'porodicni-set-ukrasa-sa-imenima': P(['porodica', 'ona', 'dom'], ['nova-godina'], ['ime', 'lepo']),
   'privezak-deda-mraz': P(['dete', 'kolege', 'ona', 'on'], ['nova-godina', 'paznja'], ['zabavno']),
   'privezak-irvas': P(['dete', 'kolege', 'ona', 'on'], ['nova-godina', 'paznja'], ['zabavno']),
   'patuljak-sa-led-svecicom': P(['ona', 'porodica', 'dom', 'kolege'], ['nova-godina', 'paznja'], ['lepo']),
   'prstenovi-za-salvete-set-od-6': P(['dom', 'porodica', 'ona'], ['nova-godina'], ['lepo', 'korisno']),
+  'jelka-sa-postoljem': P(['kolege', 'dom', 'ona', 'on'], ['nova-godina', 'paznja'], ['lepo']),
+  'rebrasta-ovalna-tacna': P(['ona', 'dom', 'porodica'], ['nova-godina', 'useljenje', 'paznja'], ['lepo', 'korisno']),
   'mini-jelka-za-sto': P(['kolege', 'dom', 'ona', 'on'], ['nova-godina', 'paznja'], ['lepo']),
   'zlatna-jelka-za-sklapanje': P(['kolege', 'ona', 'dom'], ['nova-godina', 'paznja'], ['lepo', 'zabavno']),
   'jelkica-za-punjenje': P(['dete', 'porodica'], ['nova-godina'], ['zabavno']),

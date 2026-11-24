@@ -160,7 +160,7 @@ export function ocistiKategorije(ulaz: unknown): Category[] {
 export const IKONA_PODRAZUMEVANA = 'M3 7.5L12 3l9 4.5v9L12 21l-9-4.5zM3 7.5l9 4.5 9-4.5M12 12v9';
 
 // ——— proizvodi ———
-const PERSONAL: Personal[] = ['ukras', 'set', 'privezak'];
+const PERSONAL: Personal[] = ['ukras', 'set', 'privezak', 'rotirajuci'];
 
 function slika(im: Img, gde: string): Img {
   const src = String(im?.src ?? '').trim();
@@ -174,9 +174,12 @@ function slika(im: Img, gde: string): Img {
     alt: red(im?.alt, `${gde}: opis`, 200),
     ...(og ? { og } : {}),
     ...(Number.isInteger(im?.vel) && im.vel! >= 0 && im.vel! < 30 ? { vel: im.vel } : {}),
+    ...(im?.ai === true ? { ai: true } : {}),
+    ...(typeof im?.motiv === 'string' && SLUG.test(im.motiv) && im.motiv.length <= 40 ? { motiv: im.motiv } : {}),
+    ...(typeof im?.boja === 'string' && SLUG.test(im.boja) && im.boja.length <= 40 ? { boja: im.boja } : {}),
   };
 }
-const slike = (v: unknown, gde: string): Img[] => niz<Img>(v, `${gde}: slike`, 12).map((im, i) => slika(im, `${gde}: slika ${i + 1}`));
+const slike = (v: unknown, gde: string): Img[] => niz<Img>(v, `${gde}: slike`, 20).map((im, i) => slika(im, `${gde}: slika ${i + 1}`));
 
 function motivi(v: unknown, gde: string): MotiviCfg | undefined {
   if (v == null) return undefined;
@@ -349,6 +352,7 @@ export function ocistiProizvode(ulaz: unknown, kategorije: Category[]): Product[
       ...(p?.custom ? { custom: true } : {}),
       ...(price !== undefined ? { price } : {}),
       ...(price !== undefined && p?.priceFrom ? { priceFrom: true } : {}),
+      ...(p?.naUpit ? { naUpit: true } : {}),
       images: slike(p?.images, gde),
       ...(() => { const x = opcije(p?.options, gde); return x.length ? { options: x } : {}; })(),
       ...(() => { const x = izborBoja(p?.colors, gde); return x.length ? { colors: x } : {}; })(),

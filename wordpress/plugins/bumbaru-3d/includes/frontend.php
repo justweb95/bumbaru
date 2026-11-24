@@ -60,6 +60,9 @@ add_action( 'wp_enqueue_scripts', function () {
 		if ( $p && bumbaru_config( $p )['kolicina'] ) {
 			wp_enqueue_script( 'bumbaru-kolicina', BUMBARU3D_URL . 'assets/kolicina.js', array(), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 		}
+		// Galerija prati izbor: motiv ukrasa prikaže prave fotografije tog motiva (sličice drugih motiva se sklone),
+		// a boja prikaže fotografiju u toj boji (npr. crvena jelkica za punjenje).
+		wp_add_inline_script( 'bumbaru-product', "(function(){var f=document.querySelector('[data-order-form]'),g=document.querySelector('[data-gallery]');if(!f||!g)return;function mot(k){var m=f.querySelector('input[name=\"motiv\"]:checked');if(!m||!g.querySelector('[data-thumb][data-motiv]'))return;var ok=g.querySelector('[data-thumb][data-motiv=\"'+m.value+'\"]');if(!ok)return;g.querySelectorAll('[data-thumb][data-motiv]').forEach(function(t){t.hidden=t.getAttribute('data-motiv')!==m.value;});if(k)ok.click();}f.addEventListener('change',function(e){var t=e.target;if(t.name==='motiv')setTimeout(function(){mot(1);},0);else if(t.type==='radio'&&t.closest('[data-cp]')){var b=g.querySelector('[data-thumb][data-boja=\"'+t.value+'\"]');if(b&&!f.querySelector('[data-ime],[data-set-name]'))b.click();}});mot(0);})();" );
 		if ( $p && bumbaru_grupa_slug( $p ) ) {
 			wp_enqueue_script( 'bumbaru-grupa', BUMBARU3D_URL . 'assets/grupa.js', array(), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 		}
@@ -274,8 +277,8 @@ function bumbaru_live_slide( $product ) {
 		$hy   = 136;
 		$out .= '<div class="sway-box sway"><svg viewBox="0 0 600 600" role="img" aria-label="Pregled ukrasa sa vašim imenom" data-preview="ukras">'
 			. '<line x1="300" y1="0" x2="300" y2="' . $hy . '" stroke="#8E2A22" stroke-width="2.6" />'
-			. '<g transform="translate(300 ' . $hy . ') scale(1.62) translate(-120 -64)" filter="url(#orn-sh)" data-tf>'
-			. bumbaru_ornament_g( array( 'motif' => 'zvezde', 'color' => bumbaru_pick_color( 'bela' ), 'nameColor' => bumbaru_pick_color( 'crvena', 1 ), 'fallback' => 'Mila', 'key' => 'main' ) )
+			. '<g transform="translate(300 ' . $hy . ') scale(1.62) translate(-120 -' . (int) bumbaru_motivi_za( $c )[0]['hy'] . ')" filter="url(#orn-sh)" data-tf>'
+			. bumbaru_ornament_g( array( 'motif' => bumbaru_motivi_za( $c )[0]['id'], 'color' => bumbaru_pick_color( 'crvena' ), 'nameColor' => bumbaru_pick_color( 'bela', 1 ), 'fallback' => 'Mila', 'key' => 'main' ) )
 			. '</g></svg></div>';
 	} elseif ( 'set' === $c['type'] ) {
 		$sareno = bumbaru_sareno();
@@ -287,7 +290,7 @@ function bumbaru_live_slide( $product ) {
 			$out .= '<svg viewBox="0 0 600 600" role="img" aria-label="Pregled porodičnog seta od ' . $n . ' ukrasa" data-preview="set' . $n . '"' . ( 5 === $n ? ' hidden' : '' ) . '>';
 			foreach ( $l['pts'] as $i => $pt ) {
 				$out .= '<g transform="translate(' . $pt[0] . ' ' . $pt[1] . ') scale(' . $l['s'] . ') translate(-120 -49)" filter="url(#orn-sh)">'
-					. bumbaru_ornament_g( array( 'motif' => 'zvezde', 'color' => $sareno[ $i ], 'nameColor' => 'ista', 'fallback' => $names[ $i ], 'key' => 's' . $i ) )
+					. bumbaru_ornament_g( array( 'motif' => bumbaru_motivi_za( $c )[0]['id'], 'color' => bumbaru_pick_color( 'crvena' ), 'nameColor' => bumbaru_pick_color( 'bela', 1 ), 'fallback' => $names[ $i ], 'key' => 's' . $i ) )
 					. '</g>';
 			}
 			$out .= '</svg>';
@@ -428,9 +431,10 @@ function bumbaru_config_fields( $product ) {
 
 	// Ime na ukrasu (ili na jednostavnom privesku).
 	if ( 'ukras' === $type || 'ime' === $type ) {
+		$max  = (int) $c['ime_max'];
 		$out .= '<div class="field"><label for="f-ime">' . ( 'ukras' === $type ? 'Ime na ukrasu' : 'Ime na privesku' ) . '</label>'
-			. '<input id="f-ime" class="input" name="ime" maxlength="12" placeholder="npr. Mila ili Љубица" autocomplete="off" data-ime required />'
-			. '<p class="hint"><span data-err-ime>Latinicom ili ćirilicom. Štampamo tačno kako upišete.</span><span data-cnt>0/12</span></p></div>';
+			. '<input id="f-ime" class="input" name="ime" maxlength="' . $max . '" placeholder="npr. Mila ili Љубица" autocomplete="off" data-ime required />'
+			. '<p class="hint"><span data-err-ime>' . ( $max < 12 ? 'Do ' . $max . ' slova, latinicom ili ćirilicom. ' : 'Latinicom ili ćirilicom. ' ) . 'Štampamo tačno kako upišete.</span><span data-cnt>0/' . $max . '</span></p></div>';
 	}
 
 	// Privezak sa imenom: stil slova, imena, boje slojeva.
@@ -504,16 +508,19 @@ function bumbaru_config_fields( $product ) {
 	}
 	// Motiv i boje ukrasa.
 	if ( $orn ) {
-		$out .= '<fieldset class="field"><legend class="flabel">' . ( 'set' === $type ? 'Motiv za sve ukrase' : 'Motiv' ) . '</legend><div class="tile-grid">';
-		foreach ( bumbaru_motivi() as $i => $m ) {
+		$mot  = bumbaru_motivi_za( $c );
+		// Samo jedan motiv (rotirajući ukras): izbor se ne prikazuje, ali je izabran.
+		$out .= '<fieldset class="field"' . ( count( $mot ) < 2 ? ' hidden' : '' ) . '><legend class="flabel">' . ( 'set' === $type ? 'Motiv za sve ukrase' : 'Motiv' ) . '</legend><div class="tile-grid">';
+		foreach ( $mot as $i => $m ) {
 			$out .= '<label class="tile"><input type="radio" name="motiv" value="' . esc_attr( $m['id'] ) . '"' . ( 0 === $i ? ' checked' : '' ) . ' data-label="' . esc_attr( $m['label'] ) . '" />'
 				. '<svg viewBox="-12 34 264 256" aria-hidden="true"><use href="#orn-' . esc_attr( $m['id'] ) . '" fill="#7A6A5A" stroke="#7A6A5A" /></svg>' . esc_html( $m['label'] ) . '</label>';
 		}
 		$out .= '</div></fieldset>';
 		$out .= bumbaru_font_picker( 'set' === $type );
-		$out .= bumbaru_color_picker( 'boja', 'Boja ukrasa', 'bela', array( 'mix' => 'set' === $type ? 'Šareno' : '', 'mix_default' => 'set' === $type ) );
-		$out .= '<div>' . bumbaru_color_picker( 'bojaImena', 'Boja imena', 'crvena', array( 'extra' => array( array( 'value' => 'ista', 'label' => 'Kao ukras', 'css' => 'linear-gradient(135deg, #EEEAE3 50%, #ADA498 50%)', 'checked' => 'set' === $type ) ) ) )
-			. '<p class="hint" style="margin-top:8px">Ime u drugoj boji štampamo u istom komadu, bez lepljenja.</p></div>';
+		// Pravi ukrasi su crveni sa belim imenom (izdignutim preko podloge u boji ukrasa).
+		$out .= bumbaru_color_picker( 'boja', 'Boja ukrasa', 'crvena', array( 'mix' => 'set' === $type ? 'Šareno' : '' ) );
+		$out .= '<div>' . bumbaru_color_picker( 'bojaImena', 'Boja imena', 'bela', array( 'extra' => array( array( 'value' => 'ista', 'label' => 'Kao ukras', 'css' => 'linear-gradient(135deg, #EEEAE3 50%, #ADA498 50%)', 'checked' => false ) ) ) )
+			. '<p class="hint" style="margin-top:8px">Ime je izdignuto preko podloge u boji ukrasa i štampa se u istom komadu, bez lepljenja.</p></div>';
 	}
 
 	// Izbor motiva ili boja sa trakom popusta.

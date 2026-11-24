@@ -401,21 +401,26 @@ function bumbaru_migrate_25b() {
 }
 
 /**
- * 2.6 Novogodišnja ponuda: cene, Jelkica (pleteni izgled) skrivena, nova tacna za figure, popust za različite
- * proizvode (umesto kompleta kod lutkica i spiralne jelke), popust za ukrase sa imenom 2/3/4+ kom,
- * akcija −10% samo za ukras sa imenom (NG-01). Cene ovih proizvoda više ne prate kalkulator.
+ * 2.6 Novogodišnja ponuda: cene, popust za različite proizvode (lutkice, spiralna jelka, jelka sa postoljem, rebrasta
+ * tacna) umesto kompleta kod lutkica i spiralne jelke, popust za ukrase sa imenom 2/3/4+ kom, akcija −10% samo za
+ * ukrase sa imenom (NG-01, NG-17), mini jelka (NG-07) i jelkica u pletenom izgledu (NG-13) na upit.
+ * Cene ovih proizvoda više ne prate kalkulator. Nove proizvode (rotirajući ukras NG-17, jelka sa postoljem NG-18,
+ * rebrasta ovalna tacna DM-04), prave fotografije i tekstove upisuje uvoz (Bumbaru 3D → Uvoz), korak po korak.
  */
 function bumbaru_ng26_cene() {
 	return array(
-		// slug => [ redovna cena, opcije (null = ne menja se) ]
+		// slug => [ redovna cena ('' = na upit), opcije (null = ne menja se) ]
 		'irvas-lutkica-pleteni-izgled'     => array( 490, 'Veličina = Mali [490] | Srednji [890] | Veliki [1290] | Privezak [450]' ),
 		'snesko-lutkica-pleteni-izgled'    => array( 490, 'Veličina = Mali [490] | Srednji [890] | Veliki [1290] | Privezak [450]' ),
 		'deda-mraz-lutkica-pleteni-izgled' => array( 490, 'Veličina = Mali [490] | Srednji [890] | Veliki [1290] | Privezak [450]' ),
 		'spiralna-jelka-sa-zvezdom'        => array( 590, 'Veličina = Mala [590] | Velika [1490] | Par: mala i velika [2190]' ),
-		'mini-jelka-za-sto'                => array( 590, 'Veličina = 15 cm [590] | 10 cm [390] | 7 cm [290]' ),
+		'jelka-sa-postoljem'               => array( 590, 'Visina = 15 cm [590] | 10 cm [390] | 7 cm [290]' ),
+		'rebrasta-ovalna-tacna'            => array( 590, null ),
 		'ukras-za-jelku-sa-imenom'         => array( 390, null ),
+		'rotirajuci-ukras-sa-imenom'       => array( 590, null ),
 		'porodicni-set-ukrasa-sa-imenima'  => array( 1120, null ),
-		'novogodisnja-tacna-za-figure'     => array( 590, null ),
+		'mini-jelka-za-sto'                => array( '', 'Veličina = 15 cm | 10 cm | 7 cm' ),
+		'jelkica-pleteni-izgled'           => array( '', 'Veličina = Mali | Srednji | Veliki | Privezak' ),
 	);
 }
 
@@ -424,29 +429,33 @@ function bumbaru_migrate_ng26() {
 		return;
 	}
 	$log = array();
-	// Akcija −10% samo za ukras sa imenom.
+	// Akcija −10% samo za ukrase sa imenom.
 	$ak = get_option( 'bumbaru_akcija', null );
 	$ak = wp_parse_args( is_array( $ak ) ? $ak : array(), bumbaru_akcija_defaults() );
 	if ( '' === trim( (string) $ak['samo'] ) ) {
-		$ak['samo'] = 'NG-01';
+		$ak['samo'] = 'NG-01, NG-17';
 		update_option( 'bumbaru_akcija', $ak );
-		$log[] = 'Akcija: samo NG-01';
-	}
-	// Nova tacna za figure (iz products.json, bez fotografija).
-	$data = bumbaru_import_data( 'products.json' );
-	if ( ! get_page_by_path( 'novogodisnja-tacna-za-figure', OBJECT, 'product' ) ) {
-		foreach ( $data as $i => $p ) {
-			if ( 'novogodisnja-tacna-za-figure' === $p['slug'] ) {
-				$log[] = bumbaru_import_product( $i );
-				break;
-			}
-		}
+		$log[] = 'Akcija: samo NG-01, NG-17';
 	}
 	$id_of = function ( $slug ) {
 		$post = get_page_by_path( $slug, OBJECT, 'product' );
 		return $post ? (int) $post->ID : 0;
 	};
-	// Cene, opcije, konfigurator.
+	// Tacna iz prve verzije 2.6 (ako je napravljena) dobija novo ime, adresu i šifru; stara adresa se preusmerava.
+	$stara = $id_of( 'novogodisnja-tacna-za-figure' );
+	if ( $stara && ! $id_of( 'rebrasta-ovalna-tacna' ) ) {
+		wp_update_post( array( 'ID' => $stara, 'post_name' => 'rebrasta-ovalna-tacna', 'post_title' => 'Rebrasta ovalna tacna' ) );
+		$t = wc_get_product( $stara );
+		if ( $t ) {
+			try {
+				$t->set_sku( 'DM-04' );
+				$t->save();
+			} catch ( Exception $e ) { // phpcs:ignore
+			}
+		}
+		$log[] = 'Tacna: rebrasta-ovalna-tacna (DM-04)';
+	}
+	// Cene, opcije, konfigurator (proizvodi koji još ne postoje dobiju cenu pri uvozu).
 	foreach ( bumbaru_ng26_cene() as $slug => $v ) {
 		$id = $id_of( $slug );
 		$p  = $id ? wc_get_product( $id ) : null;
@@ -457,13 +466,16 @@ function bumbaru_migrate_ng26() {
 		$p->set_sale_price( '' );
 		$p->set_date_on_sale_from( null );
 		$p->set_date_on_sale_to( null );
+		if ( '' === $v[0] && 'publish' !== $p->get_status() ) {
+			$p->set_status( 'publish' ); // na upit, ali na sajtu
+		}
 		$p->save();
 		$cfg = get_post_meta( $id, '_bu_config', true );
 		$cfg = is_array( $cfg ) ? $cfg : array();
 		if ( null !== $v[1] ) {
 			$cfg['options'] = $v[1];
 		}
-		if ( bumbaru_grupa_slug( $id ) ) {
+		if ( bumbaru_grupa_slug( $id ) && 'rebrasta-ovalna-tacna' !== $slug ) {
 			unset( $cfg['komplet'] ); // umesto kompleta važi popust za različite proizvode
 		}
 		if ( 'ukras-za-jelku-sa-imenom' === $slug ) {
@@ -480,62 +492,13 @@ function bumbaru_migrate_ng26() {
 			update_post_meta( $id, '_bu_calc', $calc );
 			$log[] = 'Kalkulator ne prati: ' . $slug;
 		}
-		$log[] = $slug . ' = ' . $v[0];
-	}
-	// Jelkica (pleteni izgled): ne nudimo je (nacrt), fotografije ostaju; sklanja se iz preporuka i kompleta.
-	$jel = $id_of( 'jelkica-pleteni-izgled' );
-	if ( $jel ) {
-		wp_update_post( array( 'ID' => $jel, 'post_status' => 'draft' ) );
-		update_post_meta( $jel, '_bu_home_order', 0 );
-		$cfg = get_post_meta( $jel, '_bu_config', true );
-		if ( is_array( $cfg ) && isset( $cfg['komplet'] ) ) {
-			unset( $cfg['komplet'] );
-			update_post_meta( $jel, '_bu_config', $cfg );
-		}
-		$ids = get_posts( array( 'post_type' => 'product', 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1, 'fields' => 'ids' ) ); // phpcs:ignore
-		foreach ( $ids as $id ) {
-			$p = wc_get_product( $id );
-			if ( $p && in_array( $jel, array_map( 'intval', $p->get_upsell_ids() ), true ) ) {
-				$p->set_upsell_ids( array_values( array_diff( array_map( 'intval', $p->get_upsell_ids() ), array( $jel ) ) ) );
-				$p->save();
-			}
-			$cfg = get_post_meta( $id, '_bu_config', true );
-			if ( is_array( $cfg ) && ! empty( $cfg['komplet']['uz'] ) && in_array( 'jelkica-pleteni-izgled', (array) $cfg['komplet']['uz'], true ) ) {
-				$cfg['komplet']['uz'] = array_values( array_diff( (array) $cfg['komplet']['uz'], array( 'jelkica-pleteni-izgled' ) ) );
-				if ( ! $cfg['komplet']['uz'] ) {
-					unset( $cfg['komplet'] );
-				}
-				update_post_meta( $id, '_bu_config', $cfg );
-			}
-		}
-		$log[] = 'Jelkica: nacrt';
-	}
-	// „Uz ovo preporučujemo”: tacna uz lutkice i jelke i obrnuto (kao u products.json).
-	foreach ( $data as $p ) {
-		if ( ! in_array( $p['slug'], bumbaru_grupa()['slugs'], true ) ) {
-			continue;
-		}
-		$id = $id_of( $p['slug'] );
-		$pr = $id ? wc_get_product( $id ) : null;
-		if ( ! $pr ) {
-			continue;
-		}
-		$rel = array();
-		foreach ( $p['related'] as $s ) {
-			$r = $id_of( $s );
-			if ( $r && $r !== $jel ) {
-				$rel[] = $r;
-			}
-		}
-		$pr->set_upsell_ids( $rel );
-		$pr->save();
-	}
-	foreach ( array_merge( array_keys( bumbaru_ng26_cene() ), array( 'jelkica-pleteni-izgled' ) ) as $slug ) {
-		$id = $id_of( $slug );
-		if ( $id && function_exists( 'wc_delete_product_transients' ) ) {
+		if ( function_exists( 'wc_delete_product_transients' ) ) {
 			wc_delete_product_transients( $id );
 		}
+		$log[] = $slug . ' = ' . ( '' === $v[0] ? 'na upit' : $v[0] );
 	}
+	// Uvoz osvežava proizvode (nove proizvode, fotografije, tekstove): poruka u administraciji.
+	update_option( 'bumbaru_update_notice', 1 );
 	wp_cache_flush();
 	do_action( 'litespeed_purge_all' ); // keš stranica (LiteSpeed), ako postoji
 	update_option( 'bumbaru_migrate_ng26', 1 );

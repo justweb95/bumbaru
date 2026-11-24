@@ -1,6 +1,6 @@
 <?php
 /**
- * Popust za različite proizvode (2.6): lutkice u pletenom izgledu, spiralna i mini jelka i tacna za figure.
+ * Popust za različite proizvode (2.6): lutkice u pletenom izgledu, spiralna jelka, jelka sa postoljem i rebrasta tacna.
  *
  * Popust zavisi od broja RAZLIČITIH proizvoda iz grupe u korpi: 2 = −5%, 3 = −10%, 4 i više = −15%.
  * Svaki proizvod se broji jednom (različite veličine istog proizvoda = isti proizvod). Popust važi za po
@@ -27,8 +27,8 @@ function bumbaru_grupa() {
 			'snesko-lutkica-pleteni-izgled',
 			'deda-mraz-lutkica-pleteni-izgled',
 			'spiralna-jelka-sa-zvezdom',
-			'mini-jelka-za-sto',
-			'novogodisnja-tacna-za-figure',
+			'jelka-sa-postoljem',
+			'rebrasta-ovalna-tacna',
 		),
 		'popusti' => bumbaru_parse_tiers( ! empty( $s['popusti'] ) ? $s['popusti'] : '2=5, 3=10, 4=15' ),
 	);
@@ -91,7 +91,8 @@ function bumbaru_grupa_korpa( $cart = null ) {
 	}
 	foreach ( $cart->get_cart() as $item ) {
 		$slug = bumbaru_grupa_slug( $item['data'] );
-		if ( ! $slug ) {
+		// Komplet („Uz ovo često uzimaju”) već ima svoj popust, pa se ne broji.
+		if ( ! $slug || ! empty( $item['bumbaru']['raw']['komplet'] ) ) {
 			continue;
 		}
 		$izbor = array();
@@ -206,7 +207,7 @@ function bumbaru_grupa_html( $product ) {
 	$imam = array_unique( array_merge( wp_list_pluck( $korpa, 'slug' ), array( $slug ) ) );
 	$n    = count( $imam );
 	return '<div class="field mot kol grp" data-grupa="' . esc_attr( wp_json_encode( $data ) ) . '"><p class="flabel">Popust za različite proizvode</p>'
-		. '<p class="hint mot-hint">Lutkice, spiralna i mini jelka i tacna za figure: 2 različita −5%, 3 različita −10%, 4 i više −15%. Popust je na po jedan komad svakog različitog proizvoda u korpi.</p>'
+		. '<p class="hint mot-hint">Lutkice, spiralna jelka, jelka sa postoljem i rebrasta tacna: 2 različita −5%, 3 različita −10%, 4 i više −15%. Popust je na po jedan komad svakog različitog proizvoda u korpi.</p>'
 		. bumbaru_grupa_traka( $n )
 		. '<p class="mm-msg" aria-live="polite"><span class="mm-count" data-mm-count>' . esc_html( bumbaru_grupa_broj( $n ) ) . '</span><span class="mm-badge" data-mm-badge hidden></span><span data-mm-text>' . esc_html( bumbaru_grupa_poruka( $n ) ) . '</span></p>'
 		. '<p class="mm-total" data-mm-total hidden></p>'

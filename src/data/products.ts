@@ -9,13 +9,17 @@ import type { Faq } from './categories';
 import data from './proizvodi.json';
 
 // vel: fotografija prikazuje tu vrednost opcije sa cenom (npr. 0 = Velika); kad kupac izabere veličinu, galerija je prikaže
-export interface Img { src: string; w: number; h: number; alt: string; og?: string; vel?: number }
+// ai: fotografija je napravljena uz AI (ispod nje piše da pravi proizvod može malo da se razlikuje)
+// motiv: fotografija prikazuje taj motiv ukrasa (src/lib/ornament.ts); kad kupac izabere motiv, galerija je prikaže
+// boja: fotografija prikazuje proizvod u toj boji (id boje); kad kupac izabere boju, galerija je prikaže
+export interface Img { src: string; w: number; h: number; alt: string; og?: string; vel?: number; ai?: boolean; motiv?: string; boja?: string }
 // cene: cena za svaku vrednost (isti redosled kao values); 0 = važi osnovna cena proizvoda
 // stare: redovna (precrtana) cena za svaku vrednost; prikazuje se samo kad je veća od cene (akcijska cena)
 export interface Option { id: string; label: string; values: string[]; cene?: number[]; stare?: number[] }
 // Istaknut poziv na Messenger (npr. „pišite nam za celu kolekciju”)
 export interface Poziv { tekst: string; dugme: string; poruka?: string }
-export type Personal = 'ukras' | 'set' | 'privezak';
+// rotirajuci: ukras sa imenom u pahulji i dva prstena koji se okreću (ime, boja ukrasa i boja imena)
+export type Personal = 'ukras' | 'set' | 'privezak' | 'rotirajuci';
 // Izbor boje iz liste boja filamenta (admin panel); def = id podrazumevane boje
 export interface ColorChoice { id: string; label: string; def: string }
 // Privezak sa imenom: stilovi slova (src/lib/keychain.ts) i broj imena (svako ime je jedan privezak)
@@ -46,6 +50,7 @@ export interface Product {
   custom?: boolean; // pravi se po porudžbini (oznaka „Po meri · 3–5 dana”)
   price?: number;
   priceFrom?: boolean;
+  naUpit?: boolean; // „Cena na upit”: bez cene, poručuje se preko Messengera, van popusta
   images: Img[];
   options?: Option[];
   colors?: ColorChoice[];

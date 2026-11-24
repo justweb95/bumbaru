@@ -43,6 +43,13 @@ $orn      = in_array( $type, array( 'ukras', 'set' ), true );
 $is_key   = 'privezak' === $type;
 $pct      = bu_sale_pct( $product );
 $vel_map  = (array) get_post_meta( $product->get_id(), '_bu_img_vel', true );
+// Fotografija → motiv ukrasa / boja (galerija prati izbor) i fotografije napravljene uz AI (napomena)
+$mot_map  = (array) get_post_meta( $product->get_id(), '_bu_img_mot', true );
+$boja_map = (array) get_post_meta( $product->get_id(), '_bu_img_boja', true );
+$ai_map   = (array) get_post_meta( $product->get_id(), '_bu_img_ai', true );
+$img_attr = function ( $id ) use ( $mot_map, $boja_map ) {
+	return ( isset( $mot_map[ $id ] ) ? ' data-motiv="' . esc_attr( $mot_map[ $id ] ) . '"' : '' ) . ( isset( $boja_map[ $id ] ) ? ' data-boja="' . esc_attr( $boja_map[ $id ] ) . '"' : '' );
+};
 
 // Bez fotografija proizvoda (npr. „sastavite svoj set”): prva je fotografija prvog motiva.
 $mot_first = false;
@@ -206,11 +213,12 @@ get_header();
 					$eager  = 0 === $i && ! $first_hidden;
 					$vel    = isset( $vel_map[ $im['id'] ] ) ? (int) $vel_map[ $im['id'] ] : null;
 					?>
-					<div class="slide" data-slide="i<?php echo (int) $i; ?>"<?php echo null !== $vel ? ' data-vel="' . (int) $vel . '"' : ''; ?><?php echo $hidden ? ' hidden' : ''; ?>>
+					<div class="slide" data-slide="i<?php echo (int) $i; ?>"<?php echo null !== $vel ? ' data-vel="' . (int) $vel . '"' : ''; ?><?php echo $img_attr( $im['id'] ); // phpcs:ignore ?><?php echo $hidden ? ' hidden' : ''; ?>>
 						<?php if ( $im['w'] !== $im['h'] ) : ?>
 							<img class="backdrop" src="<?php echo esc_url( $im['sq'] ); ?>" alt="" width="900" height="900" loading="lazy" aria-hidden="true" />
 						<?php endif; ?>
 						<img class="full" src="<?php echo esc_url( $im['src'] ); ?>"<?php echo $im['srcset'] ? ' srcset="' . esc_attr( $im['srcset'] ) . '" sizes="(max-width: 960px) 100vw, 680px"' : ''; ?> alt="<?php echo esc_attr( $im['alt'] ? $im['alt'] : $title ); ?>" width="<?php echo (int) $im['w']; ?>" height="<?php echo (int) $im['h']; ?>" loading="<?php echo $eager ? 'eager' : 'lazy'; ?>"<?php echo $eager ? ' fetchpriority="high"' : ''; ?> decoding="async" />
+						<?php if ( ! empty( $ai_map[ $im['id'] ] ) ) : ?><p class="ai-note">Fotografija je napravljena uz AI: pravi proizvod može malo da se razlikuje.</p><?php endif; ?>
 					</div>
 				<?php endforeach; ?>
 				<?php
@@ -229,7 +237,7 @@ get_header();
 					foreach ( $images as $i => $im ) :
 						$vel = isset( $vel_map[ $im['id'] ] ) ? (int) $vel_map[ $im['id'] ] : null;
 						?>
-						<button type="button" class="thumb" data-thumb="i<?php echo (int) $i; ?>"<?php echo null !== $vel ? ' data-vel="' . (int) $vel . '"' : ''; ?> aria-pressed="<?php echo ( ! $first_hidden && 0 === $i ) ? 'true' : 'false'; ?>" aria-label="<?php echo esc_attr( 'Fotografija ' . ( $i + 1 ) . ': ' . ( $im['alt'] ? $im['alt'] : $title ) ); ?>"><img src="<?php echo esc_url( $im['sq'] ); ?>" alt="" width="120" height="120" loading="lazy" /></button>
+						<button type="button" class="thumb" data-thumb="i<?php echo (int) $i; ?>"<?php echo null !== $vel ? ' data-vel="' . (int) $vel . '"' : ''; ?><?php echo $img_attr( $im['id'] ); // phpcs:ignore ?> aria-pressed="<?php echo ( ! $first_hidden && 0 === $i ) ? 'true' : 'false'; ?>" aria-label="<?php echo esc_attr( 'Fotografija ' . ( $i + 1 ) . ': ' . ( $im['alt'] ? $im['alt'] : $title ) ); ?>"><img src="<?php echo esc_url( $im['sq'] ); ?>" alt="" width="120" height="120" loading="lazy" /></button>
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
@@ -255,6 +263,8 @@ get_header();
 			?>
 			<?php if ( $price_html ) : ?>
 				<p class="price" data-price-el><?php echo $price_html; // phpcs:ignore -- očišćeno u funkciji ?></p>
+			<?php elseif ( 'nova-godina' === ( $cat ? $cat->slug : '' ) || $plugin ) : ?>
+				<p class="price">Cena na upit <span class="muted" style="font-size:15px;font-weight:600">· javljamo u Messenger-u</span></p>
 			<?php endif; ?>
 			<?php if ( $lead ) : ?><p class="lead" style="color:var(--ink)"><?php echo esc_html( $lead ); ?></p><?php endif; ?>
 

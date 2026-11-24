@@ -14,23 +14,113 @@
         "ime",
         "jelka"
       ],
-      "short": "Kugla sa imenom koje upišete. 4 motiva, 4 boje, latinica ili ćirilica.",
-      "lead": "Kugla sa imenom koje upišete, ispisanim pisanim slovima preko obruča. Ime i ukras su jedan komad, pa nema lepljenja i ništa ne otpada.",
+      "short": "Ukras sa imenom koje upišete: 4 motiva, belo ime preko crvenog ukrasa, latinica ili ćirilica.",
+      "lead": "Ukras za jelku sa imenom koje upišete, ispisanim pisanim slovima preko obruča. Ime je izdignuto preko podloge koja prati oblik slova, a ime i ukras su jedan komad, pa nema lepljenja i ništa ne otpada.",
       "custom": true,
       "price": 390,
       "images": [
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u65520c53e",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Crveni ukras sa zvezdicama, jelkama i belim imenom Mila, na jelki",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u65520c53e-og.jpg",
+          "motiv": "zvezdice-i-jelke"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u49caa1346",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Ukras sa zvezdicama i jelkama, ime Mila, ukoso",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u49caa1346-og.jpg",
+          "motiv": "zvezdice-i-jelke"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u9ded8091f",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Ukras sa zvezdicama i jelkama i imenom Mila, na stolu",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u9ded8091f-og.jpg",
+          "motiv": "zvezdice-i-jelke"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u734f5792f",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Crveni ukras sa mašnicom i belim imenom Neda, na jelki",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u734f5792f-og.jpg",
+          "motiv": "masnica"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u25d24e75a",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Ukras sa mašnicom i imenom Neda, ukoso",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u25d24e75a-og.jpg",
+          "motiv": "masnica"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u968859024",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Ukras sa mašnicom i imenom Neda, na stolu",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u968859024-og.jpg",
+          "motiv": "masnica"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u8f579bf5d",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Crveni ukras sa kapicom Deda Mraza, pahuljama i belim imenom Jovan, na jelki",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u8f579bf5d-og.jpg",
+          "motiv": "kapica-deda-mraza"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u2691a11ac",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Ukras sa kapicom Deda Mraza i imenom Jovan, ukoso",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u2691a11ac-og.jpg",
+          "motiv": "kapica-deda-mraza"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u5a7366fa6",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Ukras sa kapicom Deda Mraza i imenom Jovan, na stolu",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u5a7366fa6-og.jpg",
+          "motiv": "kapica-deda-mraza"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u822298052",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Crveni ukras sa velikom pahuljom i belim imenom Luka, na jelki",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u822298052-og.jpg",
+          "motiv": "velika-pahulja"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/ud45f3b72e",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Ukras sa velikom pahuljom i imenom Luka, ukoso",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/ud45f3b72e-og.jpg",
+          "motiv": "velika-pahulja"
+        },
+        {
+          "src": "/img/p/ukras-za-jelku-sa-imenom/u1df76a489",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Ukras sa velikom pahuljom i imenom Luka, na stolu",
+          "og": "/img/p/ukras-za-jelku-sa-imenom/u1df76a489-og.jpg",
+          "motiv": "velika-pahulja"
+        },
         {
           "src": "/img/c/ukras-sofija",
           "w": 1200,
           "h": 1200,
           "alt": "Beli ukras za jelku sa imenom Sofija i crvenom mašnom",
           "og": "/img/og/ukras-sofija.jpg"
-        },
-        {
-          "src": "/img/c/ukras-luka",
-          "w": 1200,
-          "h": 1200,
-          "alt": "Zeleni ukras za jelku sa planinama, šumom i imenom Luka"
         },
         {
           "src": "/img/c/ukras-mila",
@@ -41,22 +131,22 @@
       ],
       "personal": "ukras",
       "about": [
-        "Birate jedan od četiri motiva i boju ukrasa, a ime može biti u istoj ili drugoj boji. Ime pišete latinicom ili ćirilicom, do 12 slova, i odmah vidite pregled na strani.",
+        "Birate jedan od četiri motiva: zvezdice i jelke, mašnicu, kapicu Deda Mraza ili veliku pahulju. Ukras je najlepši crven sa belim imenom, kao na fotografijama, a boje možete i da promenite. Ime pišete latinicom ili ćirilicom, do 12 slova, i odmah vidite pregled na strani.",
         "Izrada traje 3–5 radnih dana, zatim šaljemo kurirom širom Srbije, a plaćate pouzećem. Za Novu godinu porudžbine sa imenom primamo do 16. 12.",
         "Ukras stiže u maloj kutiji sa podlogom i karticom, spreman za poklon. Lagan je i ne lomi se kao staklena kugla. Pre štampe proveravamo svako ime, a ako nešto nije jasno, pišemo vam."
       ],
       "specs": [
         [
           "Motivi",
-          "Zvezde i jelke, Planine i šuma, Mašna sa cvetom, Grančica sa bobicama"
+          "Zvezdice i jelke, Mašnica, Kapica Deda Mraza, Velika pahulja"
         ],
         [
           "Boje ukrasa",
-          "bela, crvena, zelena, zlatna"
+          "crvena (kao na fotografijama) ili druga boja na stanju"
         ],
         [
           "Boja imena",
-          "kao ukras ili jedna od ostale tri boje, u istom komadu"
+          "bela (kao na fotografijama) ili druga boja; ime je izdignuto preko podloge u boji ukrasa"
         ],
         [
           "Ime",
@@ -99,6 +189,10 @@
       ],
       "faq": [
         {
+          "q": "Koji motivi postoje?",
+          "a": "Četiri: zvezdice i jelke, mašnica, kapica Deda Mraza i velika pahulja. Kad izaberete motiv, galerija pokazuje fotografije baš tog ukrasa."
+        },
+        {
           "q": "Mogu li ime da napišem ćirilicom?",
           "a": "Možete. Štampamo tačno kako upišete, latinicom ili ćirilicom."
         },
@@ -121,12 +215,143 @@
       ],
       "related": [
         "porodicni-set-ukrasa-sa-imenima",
+        "rotirajuci-ukras-sa-imenom",
         "privezak-deda-mraz",
-        "patuljak-sa-led-svecicom",
         "jelkica-za-punjenje"
       ],
       "seoTitle": "Ukras za jelku sa imenom, kugla po meri | Bumbaru",
-      "meta": "Ukras za jelku sa imenom koje upišete, latinicom ili ćirilicom. 4 motiva i 4 boje, pregled uživo. Izrada 3–5 radnih dana, plaćanje pouzećem."
+      "meta": "Ukras za jelku sa imenom koje upišete, latinicom ili ćirilicom. 4 motiva: zvezdice i jelke, mašnica, kapica Deda Mraza, velika pahulja. Pregled uživo, plaćanje pouzećem."
+    },
+    {
+      "id": "NG-17",
+      "slug": "rotirajuci-ukras-sa-imenom",
+      "title": "Rotirajući ukras sa imenom",
+      "category": "nova-godina",
+      "categories": [
+        "nova-godina",
+        "pokloni-sa-imenom"
+      ],
+      "tags": [
+        "ime",
+        "jelka"
+      ],
+      "short": "Pahulja sa imenom i dva prstena koji se okreću. Jedan komad, ništa se ne lepi.",
+      "lead": "Pahulja sa imenom u sredini i dva prstena oko nje. Delovi se okreću nezavisno, pa ukras na jelki stalno menja izgled.",
+      "custom": true,
+      "price": 590,
+      "images": [
+        {
+          "src": "/img/p/rotirajuci-ukras-sa-imenom/ub47d40004",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Crveni rotirajući ukras sa pahuljom i belim imenom Uroš, na jelki",
+          "og": "/img/p/rotirajuci-ukras-sa-imenom/ub47d40004-og.jpg"
+        },
+        {
+          "src": "/img/p/rotirajuci-ukras-sa-imenom/u3862a2a02",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Rotirajući ukras sa imenom Uroš, prstenovi malo zakrenuti",
+          "og": "/img/p/rotirajuci-ukras-sa-imenom/u3862a2a02-og.jpg"
+        },
+        {
+          "src": "/img/p/rotirajuci-ukras-sa-imenom/u1f1d62eb2",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Rotirajući ukras sa imenom Uroš, na stolu",
+          "og": "/img/p/rotirajuci-ukras-sa-imenom/u1f1d62eb2-og.jpg"
+        },
+        {
+          "src": "/img/p/rotirajuci-ukras-sa-imenom/ub180de7a4",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Rotirajući ukras dok se okreće: prstenovi i pahulja pod uglom",
+          "og": "/img/p/rotirajuci-ukras-sa-imenom/ub180de7a4-og.jpg"
+        },
+        {
+          "src": "/img/p/rotirajuci-ukras-sa-imenom/u079f305cf",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Rotirajući ukras sa imenom Uroš, prstenovi pod uglom",
+          "og": "/img/p/rotirajuci-ukras-sa-imenom/u079f305cf-og.jpg"
+        }
+      ],
+      "personal": "rotirajuci",
+      "about": [
+        "Pahulja sa imenom je u sredini, a oko nje su dva prstena. Svaki deo se okreće sam, pa ukras na jelki stalno menja izgled, čim ga dotakne vazduh ili ruka.",
+        "Ukras štampamo sklopljen, iz jednog komada: prstenovi se okreću odmah posle štampe i ništa se ne lepi. Ime upišete latinicom ili ćirilicom, do 10 slova, i birate boju ukrasa i boju imena.",
+        "Izrada traje 3–5 radnih dana, zatim šaljemo kurirom širom Srbije, a plaćate pouzećem. Za Novu godinu porudžbine sa imenom primamo do 16. 12."
+      ],
+      "specs": [
+        [
+          "Ime",
+          "do 10 slova, latinica ili ćirilica"
+        ],
+        [
+          "Boje",
+          "ukras i ime u bojama po izboru (početno crvena i bela)"
+        ],
+        [
+          "Izrada",
+          "štampa se sklopljen, iz jednog komada, delovi se okreću"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ],
+        [
+          "Rok",
+          "izrada 3–5 radnih dana; za Novu godinu poslednja porudžbina 16. 12."
+        ],
+        [
+          "Plaćanje",
+          "pouzećem, kuriru"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Pakovanje",
+          "a": "Stiže u maloj kutiji sa podlogom, nalepnicom i karticom, spremno za poklon. Poruku za karticu napišite nam u Messenger-u, do 120 znakova."
+        },
+        {
+          "q": "Rok izrade i dostava",
+          "a": "Izrada 3–5 radnih dana, zatim kurir za 1–2 radna dana. Za Novu godinu porudžbine sa imenom primamo do 16. 12."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod sa imenom pravimo samo za vas, pa ga ne primamo nazad zbog predomišljanja. Ako stigne oštećen ili sa našom greškom, šaljemo novi bez troška za vas."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Da li se delovi stvarno okreću?",
+          "a": "Okreću se. Pahulja i oba prstena se okreću nezavisno, a ukras je jedan komad, bez lepljenja."
+        },
+        {
+          "q": "Koliko slova može ime?",
+          "a": "Do 10 slova, latinicom ili ćirilicom. Za duže ime pišite nam u Messenger-u."
+        },
+        {
+          "q": "Stiže li do Nove godine?",
+          "a": "Stiže ako poručite do 16. 12. Izrada traje 3–5 radnih dana, a kurir nosi 1–2 radna dana."
+        },
+        {
+          "q": "Mogu li da ga pošaljem kao poklon na drugu adresu?",
+          "a": "Možete, ali paket plaća onaj ko ga prima, jer je plaćanje pouzećem. Ako to ne želite, pošaljite paket na svoju adresu."
+        }
+      ],
+      "related": [
+        "ukras-za-jelku-sa-imenom",
+        "porodicni-set-ukrasa-sa-imenima",
+        "privezak-deda-mraz",
+        "jelkica-za-punjenje"
+      ],
+      "seoTitle": "Rotirajući ukras za jelku sa imenom | Bumbaru",
+      "meta": "Rotirajući ukras za jelku: pahulja sa imenom i dva prstena koji se okreću, iz jednog komada. Ime do 10 slova, boje po izboru, plaćanje pouzećem."
     },
     {
       "id": "NG-02",
@@ -141,12 +366,19 @@
         "ime",
         "jelka"
       ],
-      "short": "4 ili 5 ukrasa sa imenima, u jednoj kutiji. Isti motiv, boje po izboru.",
+      "short": "4 ili 5 ukrasa sa imenima, u jednoj kutiji. Isti motiv za sve ili različit za svako ime.",
       "lead": "4 ili 5 ukrasa za jelku, svaki sa jednim imenom, u jednoj kutiji. Poklon za celu porodicu, za kumove ili za baku i deku koji žele imena unučadi na jelki.",
       "custom": true,
       "price": 1120,
       "priceFrom": true,
       "images": [
+        {
+          "src": "/img/p/porodicni-set-ukrasa-sa-imenima/u3229cbaa8",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Četiri crvena ukrasa sa imenima Jovan, Mila, Neda i Luka, svaki sa drugim motivom",
+          "og": "/img/p/porodicni-set-ukrasa-sa-imenima/u3229cbaa8-og.jpg"
+        },
         {
           "src": "/img/c/ukras-set",
           "w": 1200,
@@ -157,7 +389,7 @@
       ],
       "personal": "set",
       "about": [
-        "Svi ukrasi imaju isti motiv, a boje birate: svaki ukras u drugoj boji ili svi u istoj. Imena pišete latinicom ili ćirilicom, do 12 slova po imenu, i vidite ceo set u pregledu pre slanja poruke.",
+        "Birate motiv: isti za sve ukrase ili različit za svako ime (zvezdice i jelke, mašnica, kapica Deda Mraza, velika pahulja). Boje birate: svi u istoj boji ili svaki ukras u drugoj. Imena pišete latinicom ili ćirilicom, do 12 slova po imenu, i vidite ceo set u pregledu pre slanja poruke.",
         "Izrada traje 3–5 radnih dana, a plaćate pouzećem. Za Novu godinu porudžbine sa imenom primamo do 16. 12.",
         "Pre štampe proveravamo sva imena, a ako nešto nije jasno, pišemo vam. Svako ime je spojeno sa obručem, pa je svaki ukras jedan komad."
       ],
@@ -168,7 +400,7 @@
         ],
         [
           "Motiv",
-          "jedan za ceo set, od četiri ponuđena"
+          "isti za sve ili različit za svako ime: Zvezdice i jelke, Mašnica, Kapica Deda Mraza, Velika pahulja"
         ],
         [
           "Boje",
@@ -208,7 +440,7 @@
       "faq": [
         {
           "q": "Može li svaki ukras da ima drugi motiv?",
-          "a": "U setu svi imaju isti motiv. Za različite motive poručite pojedinačne ukrase."
+          "a": "Može. Izaberite „Različit za svako ime”, pa pored svakog imena izaberite motiv."
         },
         {
           "q": "Imamo 6 ili više imena. Šta da uradimo?",
@@ -225,12 +457,12 @@
       ],
       "related": [
         "ukras-za-jelku-sa-imenom",
+        "rotirajuci-ukras-sa-imenom",
         "porodicni-privezak-sa-imenima",
-        "patuljak-sa-led-svecicom",
-        "mini-jelka-za-sto"
+        "patuljak-sa-led-svecicom"
       ],
       "seoTitle": "Porodični set ukrasa za jelku sa imenima | Bumbaru",
-      "meta": "4 ili 5 ukrasa za jelku sa imenima cele porodice, u jednoj kutiji. Isti motiv, boje po izboru, pregled uživo. Izrada 3–5 radnih dana."
+      "meta": "4 ili 5 ukrasa za jelku sa imenima cele porodice, u jednoj kutiji. Isti motiv za sve ili različit za svako ime, pregled uživo. Izrada 3–5 radnih dana."
     },
     {
       "id": "NG-03",
@@ -625,6 +857,7 @@
       ],
       "short": "Mala jelka sa zvezdom za sto, policu ili radni sto.",
       "lead": "Mala zelena jelka sa zvezdom na vrhu, za praznični sto, policu ili radni sto. Ne treba joj ni voda ni struja, a svake godine izgleda isto.",
+      "naUpit": true,
       "images": [
         {
           "src": "/img/p/mini-jelka-za-sto/1",
@@ -638,6 +871,17 @@
           "w": 896,
           "h": 1195,
           "alt": "Mini jelka za sto sa kuglama i svećama"
+        }
+      ],
+      "options": [
+        {
+          "id": "velicina",
+          "label": "Veličina",
+          "values": [
+            "15 cm",
+            "10 cm",
+            "7 cm"
+          ]
         }
       ],
       "colors": [
@@ -682,30 +926,13 @@
         }
       ],
       "related": [
-        "novogodisnja-tacna-za-figure",
-        "patuljak-sa-led-svecicom",
+        "jelka-sa-postoljem",
+        "spiralna-jelka-sa-zvezdom",
         "zlatna-jelka-za-sklapanje",
-        "prstenovi-za-salvete-set-od-6"
+        "patuljak-sa-led-svecicom"
       ],
       "seoTitle": "Mini jelka za sto, novogodišnja dekoracija | Bumbaru",
-      "meta": "Mala zelena jelka sa zvezdom za praznični sto, policu ili radni sto. Novogodišnja dekoracija i mali poklon za kolege.",
-      "price": 590,
-      "options": [
-        {
-          "id": "velicina",
-          "label": "Veličina",
-          "values": [
-            "15 cm",
-            "10 cm",
-            "7 cm"
-          ],
-          "cene": [
-            590,
-            390,
-            290
-          ]
-        }
-      ]
+      "meta": "Mala zelena jelka sa zvezdom za praznični sto, policu ili radni sto. Novogodišnja dekoracija i mali poklon za kolege."
     },
     {
       "id": "NG-08",
@@ -812,23 +1039,34 @@
       "lead": "Jelkica od mrežaste plastike koja se kači na jelku ili stoji na stolu. Napunite je umotanim bombonama, sitnim poklonima ili porukama, pa deca imaju šta da otkriju za praznik.",
       "images": [
         {
+          "src": "/img/p/jelkica-za-punjenje/ued270cc49",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Crvena mrežasta jelkica za punjenje okačena na jelku",
+          "og": "/img/p/jelkica-za-punjenje/ued270cc49-og.jpg",
+          "boja": "crvena"
+        },
+        {
           "src": "/img/p/jelkica-za-punjenje/1",
           "w": 928,
           "h": 1152,
           "alt": "Tirkizna jelkica za punjenje napunjena bombonama, pored jelke",
-          "og": "/img/og/jelkica-za-punjenje.jpg"
+          "og": "/img/og/jelkica-za-punjenje.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/jelkica-za-punjenje/2",
           "w": 928,
           "h": 1152,
-          "alt": "Tirkizna jelkica za punjenje okačena na jelku"
+          "alt": "Tirkizna jelkica za punjenje okačena na jelku",
+          "ai": true
         },
         {
           "src": "/img/p/jelkica-za-punjenje/3",
           "w": 928,
           "h": 1152,
-          "alt": "Crvena jelkica za punjenje okačena na jelku"
+          "alt": "Crvena jelkica za punjenje okačena na jelku",
+          "ai": true
         }
       ],
       "colors": [
@@ -1163,32 +1401,78 @@
       "price": 490,
       "images": [
         {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/uc8516f4a0",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Irvas lutkica u pletenom izgledu sa crvenim nosem, spreda",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/uc8516f4a0-og.jpg"
+        },
+        {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/u5e4b95e37",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Irvas lutkica u pletenom izgledu, ukoso",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/u5e4b95e37-og.jpg"
+        },
+        {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/uaadd34a85",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Irvas lutkica u pletenom izgledu, sa strane",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/uaadd34a85-og.jpg"
+        },
+        {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/u95c624e48",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Irvas lutkica u pletenom izgledu, otpozadi",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/u95c624e48-og.jpg"
+        },
+        {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/u660afd099",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Irvas lutkica između dve jelke na tacni",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/u660afd099-og.jpg"
+        },
+        {
+          "src": "/img/p/irvas-lutkica-pleteni-izgled/u1cc4667ff",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Irvas i Deda Mraz lutkica pored spiralne jelke na tacni",
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/u1cc4667ff-og.jpg"
+        },
+        {
           "src": "/img/p/irvas-lutkica-pleteni-izgled/ud70341549",
           "w": 1024,
           "h": 1024,
           "alt": "Irvas u pletenom izgledu pored jelke sa kuglama i poklonima",
-          "og": "/img/p/irvas-lutkica-pleteni-izgled/ud70341549-og.jpg"
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/ud70341549-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/irvas-lutkica-pleteni-izgled/uf59348aca",
           "w": 1024,
           "h": 1024,
           "alt": "Irvas u pletenom izgledu sa crvenom mašnom i poklonima",
-          "og": "/img/p/irvas-lutkica-pleteni-izgled/uf59348aca-og.jpg"
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/uf59348aca-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/irvas-lutkica-pleteni-izgled/u1030d8bbe",
           "w": 1024,
           "h": 1024,
           "alt": "Irvas u pletenom izgledu na snegu, pored jelke",
-          "og": "/img/p/irvas-lutkica-pleteni-izgled/u1030d8bbe-og.jpg"
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/u1030d8bbe-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/irvas-lutkica-pleteni-izgled/ub21aebf77",
           "w": 1024,
           "h": 1024,
           "alt": "Irvas u crnoj poklon kutiji Bumbaru sa karticom",
-          "og": "/img/p/irvas-lutkica-pleteni-izgled/ub21aebf77-og.jpg"
+          "og": "/img/p/irvas-lutkica-pleteni-izgled/ub21aebf77-og.jpg",
+          "ai": true
         }
       ],
       "options": [
@@ -1278,7 +1562,7 @@
         }
       ],
       "related": [
-        "novogodisnja-tacna-za-figure",
+        "rebrasta-ovalna-tacna",
         "snesko-lutkica-pleteni-izgled",
         "deda-mraz-lutkica-pleteni-izgled",
         "privezak-deda-mraz"
@@ -1304,32 +1588,85 @@
       "price": 490,
       "images": [
         {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/u709275d9c",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Sneško lutkica u pletenom izgledu sa crvenom kapom i šalom, spreda",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/u709275d9c-og.jpg"
+        },
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/udc0488db7",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Sneško lutkica u pletenom izgledu, sa strane",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/udc0488db7-og.jpg"
+        },
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/uc58cae919",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Sneško lutkica u pletenom izgledu, otpozadi",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/uc58cae919-og.jpg"
+        },
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/u78ccdedb8",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Sneško lutkica u pletenom izgledu, sa druge strane",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/u78ccdedb8-og.jpg"
+        },
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/ubd5d231c8",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Sneško lutkica u pletenom izgledu, ukoso",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/ubd5d231c8-og.jpg"
+        },
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/u531f10f69",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Sneško lutkica između dve jelke na tacni",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/u531f10f69-og.jpg"
+        },
+        {
+          "src": "/img/p/snesko-lutkica-pleteni-izgled/u7430978be",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Sneško i Deda Mraz lutkica pored spiralne jelke na tacni",
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/u7430978be-og.jpg"
+        },
+        {
           "src": "/img/p/snesko-lutkica-pleteni-izgled/uf9871bde7",
           "w": 1024,
           "h": 1024,
           "alt": "Sneško u pletenom izgledu sa crvenom kapom i šalom, pored jelke",
-          "og": "/img/p/snesko-lutkica-pleteni-izgled/uf9871bde7-og.jpg"
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/uf9871bde7-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/snesko-lutkica-pleteni-izgled/u480f87c7b",
           "w": 1024,
           "h": 1024,
           "alt": "Sneško u pletenom izgledu sa crvenom kapom, šalom i mašnom",
-          "og": "/img/p/snesko-lutkica-pleteni-izgled/u480f87c7b-og.jpg"
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/u480f87c7b-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/snesko-lutkica-pleteni-izgled/u862ce339b",
           "w": 1024,
           "h": 1024,
           "alt": "Sneško u pletenom izgledu na snegu",
-          "og": "/img/p/snesko-lutkica-pleteni-izgled/u862ce339b-og.jpg"
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/u862ce339b-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/snesko-lutkica-pleteni-izgled/uc5e5a18ac",
           "w": 1024,
           "h": 1024,
           "alt": "Sneško privezak u crnoj poklon kutiji Bumbaru sa karticom",
-          "og": "/img/p/snesko-lutkica-pleteni-izgled/uc5e5a18ac-og.jpg"
+          "og": "/img/p/snesko-lutkica-pleteni-izgled/uc5e5a18ac-og.jpg",
+          "ai": true
         }
       ],
       "options": [
@@ -1419,7 +1756,7 @@
         }
       ],
       "related": [
-        "novogodisnja-tacna-za-figure",
+        "rebrasta-ovalna-tacna",
         "irvas-lutkica-pleteni-izgled",
         "deda-mraz-lutkica-pleteni-izgled",
         "privezak-deda-mraz"
@@ -1442,35 +1779,39 @@
       ],
       "short": "Izgleda kao pletena. Figura u 3 veličine ili privezak.",
       "lead": "Jelkica koja izgleda kao pletena od vune, a štampana je u 3D od PLA plastike. Izaberite malu, srednju ili veliku figuru za sto, policu ili prozor, ili je uzmite kao privezak za ključeve.",
-      "price": 590,
+      "naUpit": true,
       "images": [
         {
           "src": "/img/p/jelkica-pleteni-izgled/ue11ef5c57",
           "w": 1024,
           "h": 1024,
           "alt": "Zelena jelkica u pletenom izgledu sa zlatnom zvezdom, na drvenom stolu",
-          "og": "/img/p/jelkica-pleteni-izgled/ue11ef5c57-og.jpg"
+          "og": "/img/p/jelkica-pleteni-izgled/ue11ef5c57-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/jelkica-pleteni-izgled/u4ad42a196",
           "w": 1024,
           "h": 1024,
           "alt": "Zelena jelkica u pletenom izgledu sa zlatnom zvezdom, među poklonima",
-          "og": "/img/p/jelkica-pleteni-izgled/u4ad42a196-og.jpg"
+          "og": "/img/p/jelkica-pleteni-izgled/u4ad42a196-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/jelkica-pleteni-izgled/u2cb276f66",
           "w": 1024,
           "h": 1024,
           "alt": "Zelena jelkica u pletenom izgledu na snegu, pored jelke",
-          "og": "/img/p/jelkica-pleteni-izgled/u2cb276f66-og.jpg"
+          "og": "/img/p/jelkica-pleteni-izgled/u2cb276f66-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/jelkica-pleteni-izgled/u7172483af",
           "w": 1024,
           "h": 1024,
           "alt": "Jelkica privezak u crnoj poklon kutiji Bumbaru sa karticom",
-          "og": "/img/p/jelkica-pleteni-izgled/u7172483af-og.jpg"
+          "og": "/img/p/jelkica-pleteni-izgled/u7172483af-og.jpg",
+          "ai": true
         }
       ],
       "options": [
@@ -1482,12 +1823,6 @@
             "Srednji",
             "Veliki",
             "Privezak"
-          ],
-          "cene": [
-            590,
-            890,
-            1290,
-            450
           ]
         }
       ],
@@ -1566,8 +1901,7 @@
         "privezak-deda-mraz"
       ],
       "seoTitle": "Jelkica u pletenom izgledu, figura ili privezak | Bumbaru",
-      "meta": "Jelkica koja izgleda kao pletena: mala, srednja ili velika figura za dekoraciju, ili privezak za ključeve. 3D štampa, poručivanje preko Messengera.",
-      "skriven": true
+      "meta": "Jelkica koja izgleda kao pletena: mala, srednja ili velika figura za dekoraciju, ili privezak za ključeve. 3D štampa, poručivanje preko Messengera."
     },
     {
       "id": "NG-14",
@@ -1587,32 +1921,92 @@
       "price": 490,
       "images": [
         {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u77cfd3a40",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Deda Mraz lutkica u pletenom izgledu, spreda, na drvenom stolu",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u77cfd3a40-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u5cecc1115",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Deda Mraz lutkica u pletenom izgledu, spreda",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u5cecc1115-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/uebff1eb55",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Deda Mraz lutkica u pletenom izgledu, sa strane",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/uebff1eb55-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/ufaf70331f",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Deda Mraz lutkica u pletenom izgledu, otpozadi",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/ufaf70331f-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u4f575878c",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Deda Mraz lutkica u pletenom izgledu, sa druge strane",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u4f575878c-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u100607584",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Deda Mraz lutkica u pletenom izgledu, ukoso",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u100607584-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u11fb3a97e",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Deda Mraz lutkica između dve jelke na tacni",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u11fb3a97e-og.jpg"
+        },
+        {
+          "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/ubcf90e001",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Deda Mraz i Sneško lutkica sa jelkicom na tacni",
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/ubcf90e001-og.jpg"
+        },
+        {
           "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a79d15a5",
           "w": 1024,
           "h": 1024,
           "alt": "Deda Mraz u pletenom izgledu sa poklonom, pored kamina",
-          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a79d15a5-og.jpg"
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a79d15a5-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u5c08cef7e",
           "w": 1024,
           "h": 1024,
           "alt": "Deda Mraz u pletenom izgledu na snegu, pored jelke",
-          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u5c08cef7e-og.jpg"
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u5c08cef7e-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a73762eb",
           "w": 1024,
           "h": 1024,
           "alt": "Deda Mraz u pletenom izgledu među poklonima, pored kamina",
-          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a73762eb-og.jpg"
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a73762eb-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u8dd993231",
           "w": 1024,
           "h": 1024,
           "alt": "Deda Mraz privezak u crnoj poklon kutiji Bumbaru sa karticom",
-          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u8dd993231-og.jpg"
+          "og": "/img/p/deda-mraz-lutkica-pleteni-izgled/u8dd993231-og.jpg",
+          "ai": true
         }
       ],
       "options": [
@@ -1702,7 +2096,7 @@
         }
       ],
       "related": [
-        "novogodisnja-tacna-za-figure",
+        "rebrasta-ovalna-tacna",
         "irvas-lutkica-pleteni-izgled",
         "snesko-lutkica-pleteni-izgled",
         "privezak-deda-mraz"
@@ -1843,25 +2237,77 @@
       "price": 590,
       "images": [
         {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/ubc4bff62c",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Zelena spiralna jelka sa bakarnom zvezdom",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/ubc4bff62c-og.jpg"
+        },
+        {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/u22b01c07e",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Spiralna jelka sa zvezdom, sa strane",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/u22b01c07e-og.jpg"
+        },
+        {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/u7e4464cb4",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Spiralna jelka sa zvezdom, spreda",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/u7e4464cb4-og.jpg"
+        },
+        {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/ub5d9ee715",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Spiralna jelka sa zvezdom, izbliza",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/ub5d9ee715-og.jpg"
+        },
+        {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/u8fb18455c",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Spiralna jelka sa zvezdom na drvenom stolu",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/u8fb18455c-og.jpg"
+        },
+        {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/ue5e368576",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Spiralna jelka i jelkica na postolju sa Deda Mrazom, na tacni",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/ue5e368576-og.jpg"
+        },
+        {
+          "src": "/img/p/spiralna-jelka-sa-zvezdom/uc2ac1a1d6",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Spiralna jelka između Sneška i irvasa, na tacni",
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/uc2ac1a1d6-og.jpg"
+        },
+        {
           "src": "/img/p/spiralna-jelka-sa-zvezdom/u6936f26ea",
           "w": 1024,
           "h": 1024,
           "alt": "Dve zelene spiralne jelke, velika sa zvezdom i mala, na kamenom postolju",
-          "og": "/img/p/spiralna-jelka-sa-zvezdom/u6936f26ea-og.jpg"
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/u6936f26ea-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/spiralna-jelka-sa-zvezdom/ubb978832c",
           "w": 1024,
           "h": 1024,
           "alt": "Spiralne jelke na stočiću u dnevnoj sobi, iza je okićena jelka",
-          "og": "/img/p/spiralna-jelka-sa-zvezdom/ubb978832c-og.jpg"
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/ubb978832c-og.jpg",
+          "ai": true
         },
         {
           "src": "/img/p/spiralna-jelka-sa-zvezdom/u9934e1a90",
           "w": 1024,
           "h": 1024,
           "alt": "Spiralna jelka izbliza: slojevi u spirali i zvezda na vrhu",
-          "og": "/img/p/spiralna-jelka-sa-zvezdom/u9934e1a90-og.jpg"
+          "og": "/img/p/spiralna-jelka-sa-zvezdom/u9934e1a90-og.jpg",
+          "ai": true
         }
       ],
       "options": [
@@ -1937,8 +2383,8 @@
         }
       ],
       "related": [
-        "novogodisnja-tacna-za-figure",
-        "mini-jelka-za-sto",
+        "rebrasta-ovalna-tacna",
+        "jelka-sa-postoljem",
         "novogodisnja-kucica-sa-led-svecicom",
         "patuljak-sa-led-svecicom"
       ],
@@ -1946,22 +2392,187 @@
       "meta": "Jelka od slojeva u spirali sa zvezdom na vrhu. Mala, velika ili par, boje po izboru. Novogodišnja dekoracija za sto i komodu. Poručivanje preko Messengera."
     },
     {
-      "id": "NG-17",
-      "slug": "novogodisnja-tacna-za-figure",
-      "title": "Novogodišnja tacna za figure",
+      "id": "NG-18",
+      "slug": "jelka-sa-postoljem",
+      "title": "Jelka sa postoljem",
       "category": "nova-godina",
       "categories": [
-        "nova-godina",
-        "dom-i-kuhinja"
+        "nova-godina"
       ],
       "tags": [
         "sto"
       ],
-      "short": "Podloga za naše figure: mala praznična scena na stolu. Posle praznika tacna za sitnice.",
-      "lead": "Podloga na koju slažete naše figure – irvasa, Sneška, Deda Mraza i jelke – pa zajedno čine malu prazničnu scenu na stolu ili komodi. Posle praznika služi kao tacna za ključeve, daljinski i sitnice.",
-      "custom": false,
+      "short": "Jelka na postolju za sto, policu ili prozor. 15, 10 ili 7 cm.",
+      "lead": "Zelena jelka na postolju, sa vrhom na kraju. Stoji sama na stolu, polici ili prozoru, a lepa je i na tacni uz naše lutkice.",
       "price": 590,
-      "images": [],
+      "images": [
+        {
+          "src": "/img/p/jelka-sa-postoljem/u1478c0718",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Zelena jelkica na bakarnom postolju sa zvezdom",
+          "og": "/img/p/jelka-sa-postoljem/u1478c0718-og.jpg"
+        },
+        {
+          "src": "/img/p/jelka-sa-postoljem/ue5a7c19c4",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Zelena jelkica na postolju sa zvezdom, spreda",
+          "og": "/img/p/jelka-sa-postoljem/ue5a7c19c4-og.jpg"
+        },
+        {
+          "src": "/img/p/jelka-sa-postoljem/u494b98677",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Zelena jelkica na postolju sa zvezdom, izbliza",
+          "og": "/img/p/jelka-sa-postoljem/u494b98677-og.jpg"
+        },
+        {
+          "src": "/img/p/jelka-sa-postoljem/u2e87395b5",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Jelkica na postolju između irvasa i Deda Mraza, na tacni",
+          "og": "/img/p/jelka-sa-postoljem/u2e87395b5-og.jpg"
+        },
+        {
+          "src": "/img/p/jelka-sa-postoljem/u7445e64bd",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Jelkica na postolju između irvasa i Sneška, na tacni",
+          "og": "/img/p/jelka-sa-postoljem/u7445e64bd-og.jpg"
+        }
+      ],
+      "options": [
+        {
+          "id": "velicina",
+          "label": "Visina",
+          "values": [
+            "15 cm",
+            "10 cm",
+            "7 cm"
+          ],
+          "cene": [
+            590,
+            390,
+            290
+          ]
+        }
+      ],
+      "colors": [
+        {
+          "id": "boja",
+          "label": "Boja jelke",
+          "def": "zelena"
+        },
+        {
+          "id": "zvezda",
+          "label": "Boja postolja i vrha",
+          "def": "narandzasta"
+        }
+      ],
+      "about": [
+        "Jelka ima tri dela: postolje, jelku i vrh. Stoji sama, pa je lepa na stolu, polici, prozoru ili radnom stolu.",
+        "Birate visinu (15, 10 ili 7 cm) i boje, kao kod ostalih naših jelki. Više jelki različite visine zajedno izgleda kao mala šuma.",
+        "Uz lutkice u pletenom izgledu i rebrastu tacnu čini malu prazničnu scenu, a za različite proizvode dobijate popust."
+      ],
+      "specs": [
+        [
+          "Delovi",
+          "postolje, jelka i vrh"
+        ],
+        [
+          "Visina",
+          "15, 10 ili 7 cm"
+        ],
+        [
+          "Boje",
+          "izbor boje kao kod ostalih jelki"
+        ],
+        [
+          "Materijal",
+          "PLA plastika"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Mogu li dve jelke različite visine?",
+          "a": "Možete. Izaberite prvu visinu i dodajte u korpu, pa izaberite drugu i dodajte i nju."
+        },
+        {
+          "q": "Ima li popusta uz lutkice?",
+          "a": "Ima. Za 2 različita proizvoda iz grupe (lutkice, spiralna jelka, jelka sa postoljem, tacna) popust je 5%, za 3 različita 10%, a za 4 i više 15%."
+        }
+      ],
+      "related": [
+        "rebrasta-ovalna-tacna",
+        "spiralna-jelka-sa-zvezdom",
+        "irvas-lutkica-pleteni-izgled",
+        "snesko-lutkica-pleteni-izgled",
+        "deda-mraz-lutkica-pleteni-izgled"
+      ],
+      "seoTitle": "Jelka sa postoljem za sto, 15, 10 ili 7 cm | Bumbaru",
+      "meta": "Jelka na postolju za sto, policu ili prozor: postolje, jelka i vrh, tri visine (15, 10 i 7 cm). Od 290 din, plaćanje pouzećem."
+    },
+    {
+      "id": "DM-04",
+      "slug": "rebrasta-ovalna-tacna",
+      "title": "Rebrasta ovalna tacna",
+      "category": "dom-i-kuhinja",
+      "categories": [
+        "dom-i-kuhinja",
+        "nova-godina"
+      ],
+      "tags": [
+        "dekoracija",
+        "sto"
+      ],
+      "short": "Ovalna tacna sa rebrastim obodom, kao keramika, a ne lomi se. Podloga za naše figure ili tacna za sitnice.",
+      "lead": "Ovalna tacna sa rebrastim obodom koji izgleda kao keramika, a ne lomi se. Na njoj naše figure – irvas, Sneško, Deda Mraz i jelke – čine malu prazničnu scenu, a posle praznika drži ključeve, daljinski, nakit, sveće i sitnice.",
+      "price": 590,
+      "images": [
+        {
+          "src": "/img/p/rebrasta-ovalna-tacna/ucc85794c6",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Rebrasta ovalna tacna boje breskve na stolu",
+          "og": "/img/p/rebrasta-ovalna-tacna/ucc85794c6-og.jpg"
+        },
+        {
+          "src": "/img/p/rebrasta-ovalna-tacna/u8a39c1ccf",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Rebrasta ovalna tacna boje breskve, ukoso",
+          "og": "/img/p/rebrasta-ovalna-tacna/u8a39c1ccf-og.jpg"
+        },
+        {
+          "src": "/img/p/rebrasta-ovalna-tacna/ucdcd94e23",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Rebrasta tacna sa Deda Mrazom, irvasom i Sneškom",
+          "og": "/img/p/rebrasta-ovalna-tacna/ucdcd94e23-og.jpg"
+        },
+        {
+          "src": "/img/p/rebrasta-ovalna-tacna/u8361bbdaa",
+          "w": 1200,
+          "h": 1200,
+          "alt": "Rebrasta tacna sa irvasom, jelkicom i Sneškom",
+          "og": "/img/p/rebrasta-ovalna-tacna/u8361bbdaa-og.jpg"
+        }
+      ],
       "colors": [
         {
           "id": "boja",
@@ -1969,12 +2580,23 @@
           "def": "bela"
         }
       ],
+      "komplet": {
+        "uz": [
+          "deda-mraz-lutkica-pleteni-izgled",
+          "snesko-lutkica-pleteni-izgled"
+        ],
+        "popust": 10
+      },
       "about": [
-        "Na tacnu poređajte irvasa, Sneška i Deda Mraza u pletenom izgledu, spiralnu jelku ili mini jelku za sto. Figure stoje zajedno, na jednom mestu, i od njih nastaje mala praznična scena za sto, komodu ili prozor.",
-        "Posle praznika tacna ostaje u kući: na komodi drži ključeve, daljinski i sitnice. Boju birate kao kod ostalih proizvoda.",
-        "Tacna je samo za dekoraciju i sitnice, nije za hranu."
+        "Obod tacne je rebrast, pa izgleda kao keramika ili glazirana glina, a štampana je od PLA plastike i ne lomi se kad padne.",
+        "Za praznike na nju poređajte irvasa, Sneška i Deda Mraza u pletenom izgledu, spiralnu jelku ili jelku sa postoljem: figure stoje zajedno i od njih nastaje mala scena na stolu, komodi ili prozoru.",
+        "Posle praznika tacna ostaje u kući: na komodi ili u hodniku drži ključeve, daljinski, nakit, sveće i sitnice. Tacna je samo za dekoraciju i sitnice, nije za hranu."
       ],
       "specs": [
+        [
+          "Oblik",
+          "ovalna tacna sa rebrastim obodom"
+        ],
         [
           "Materijal",
           "PLA plastika"
@@ -1986,6 +2608,10 @@
         [
           "Boja",
           "izbor boje kao kod ostalih proizvoda"
+        ],
+        [
+          "Namena",
+          "dekoracija i sitnice, nije za hranu"
         ]
       ],
       "details": [
@@ -2005,22 +2631,26 @@
       "faq": [
         {
           "q": "Može li tacna za hranu?",
-          "a": "Ne. Tacna je samo za dekoraciju i sitnice (ključevi, daljinski, nakit), nije za hranu."
+          "a": "Ne. Tacna je samo za dekoraciju i sitnice (ključevi, daljinski, nakit, sveće), nije za hranu."
+        },
+        {
+          "q": "Da li se lomi?",
+          "a": "Ne lomi se kao keramika. Štampana je od PLA plastike, pa podnosi i pad sa stola."
         },
         {
           "q": "Ima li popusta ako uzmem i figure?",
-          "a": "Ima. Za 2 različita proizvoda iz grupe (lutkice, spiralna i mini jelka, tacna) popust je 5%, za 3 različita 10%, a za 4 i više 15%."
+          "a": "Ima. Za 2 različita proizvoda iz grupe (lutkice, spiralna jelka, jelka sa postoljem, tacna) popust je 5%, za 3 različita 10%, a za 4 i više 15%."
         }
       ],
       "related": [
-        "irvas-lutkica-pleteni-izgled",
-        "snesko-lutkica-pleteni-izgled",
         "deda-mraz-lutkica-pleteni-izgled",
+        "snesko-lutkica-pleteni-izgled",
+        "irvas-lutkica-pleteni-izgled",
         "spiralna-jelka-sa-zvezdom",
-        "mini-jelka-za-sto"
+        "jelka-sa-postoljem"
       ],
-      "seoTitle": "Novogodišnja tacna za figure i prazničnu scenu | Bumbaru",
-      "meta": "Tacna na koju slažete naše novogodišnje figure i jelke: mala praznična scena na stolu, a posle praznika tacna za sitnice. 590 din, plaćanje pouzećem."
+      "seoTitle": "Rebrasta ovalna tacna, izgled keramike | Bumbaru",
+      "meta": "Ovalna tacna sa rebrastim obodom, kao keramika, a ne lomi se. Podloga za novogodišnje figure, posle praznika tacna za ključeve i sitnice. 590 din."
     },
     {
       "id": "PK-01",

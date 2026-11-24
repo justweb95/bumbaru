@@ -42,9 +42,9 @@ if ( function_exists( 'wc_get_product' ) ) {
 }
 
 $hang = array(
-	array( 'x' => 110, 'hy' => 180, 'rot' => -3, 's' => 0.84, 'motif' => 'planine', 'color' => 'zelena', 'nameColor' => 'ista', 'fb' => 'Luka', 'key' => 'a', 'cls' => 'sway sway-1' ),
-	array( 'x' => 530, 'hy' => 225, 'rot' => 3, 's' => 0.84, 'motif' => 'masna', 'color' => 'crvena', 'nameColor' => 'ista', 'fb' => 'Mila', 'key' => 'c', 'cls' => 'sway sway-3' ),
-	array( 'x' => 330, 'hy' => 110, 'rot' => 0, 's' => 1.12, 'motif' => 'zvezde', 'color' => 'bela', 'nameColor' => 'crvena', 'fb' => 'Sofija', 'key' => 'b', 'cls' => 'sway' ),
+	array( 'x' => 110, 'hy' => 180, 'rot' => -3, 's' => 0.84, 'motif' => 'pahulja', 'color' => 'crvena', 'nameColor' => 'bela', 'fb' => 'Luka', 'key' => 'a', 'cls' => 'sway sway-1' ),
+	array( 'x' => 530, 'hy' => 225, 'rot' => 3, 's' => 0.84, 'motif' => 'masna', 'color' => 'crvena', 'nameColor' => 'bela', 'fb' => 'Neda', 'key' => 'c', 'cls' => 'sway sway-3' ),
+	array( 'x' => 330, 'hy' => 110, 'rot' => 0, 's' => 1.12, 'motif' => 'zvezde', 'color' => 'crvena', 'nameColor' => 'bela', 'fb' => 'Mila', 'key' => 'b', 'cls' => 'sway' ),
 );
 $prednosti = array(
 	array( 'cash', 'Plaćanje pouzećem', 'Plaćate kuriru kad paket stigne.' ),
@@ -134,7 +134,7 @@ get_header();
 			<div class="ukr-text">
 				<span class="badge">Po meri</span>
 				<h2 id="ukras-title" class="h1">Vaše ime na ukrasu za jelku</h2>
-				<p class="lead" style="color:var(--ink)">Upišite ime i odmah vidite kako izgleda na ukrasu. Četiri motiva, u jednoj ili dve boje, latinicom ili ćirilicom.</p>
+				<p class="lead" style="color:var(--ink)">Upišite ime i odmah vidite kako izgleda na ukrasu. Četiri motiva: zvezdice i jelke, mašnica, kapica Deda Mraza i velika pahulja. Latinicom ili ćirilicom.</p>
 				<form class="ukr-form" action="<?php echo esc_url( $ukras_url ); ?>" method="get">
 					<div class="field">
 						<label for="home-ime">Ime na ukrasu</label>
@@ -146,7 +146,7 @@ get_header();
 			</div>
 			<?php if ( function_exists( 'bumbaru_ornament_g' ) ) : ?>
 			<div class="ukr-stage" role="img" aria-label="Tri ukrasa za jelku sa imenima: zeleni sa planinama, beli sa zvezdama i crveni sa mašnom">
-				<?php foreach ( $hang as $h ) : $hy = 'masna' === $h['motif'] ? 71 : 64; ?>
+				<?php foreach ( $hang as $h ) : $hy = function_exists( 'bumbaru_motiv' ) ? (int) bumbaru_motiv( $h['motif'] )['hy'] : 64; ?>
 					<div class="ukr-layer <?php echo esc_attr( $h['cls'] ); ?>" style="transform-origin:<?php echo esc_attr( number_format( $h['x'] / 620 * 100, 2, '.', '' ) ); ?>% 0">
 						<svg viewBox="0 0 620 560" aria-hidden="true">
 							<line x1="<?php echo (int) $h['x']; ?>" y1="0" x2="<?php echo (int) $h['x']; ?>" y2="<?php echo (int) $h['hy']; ?>" stroke="#8E2A22" stroke-width="<?php echo $h['s'] > 1 ? 2 : 1.5; ?>" />
@@ -191,7 +191,7 @@ get_header();
 				<h3 class="h2">Pokloni sa imenom</h3>
 				<p class="muted">Ime upišete latinicom ili ćirilicom i odmah vidite kako izgleda. Pre štampe proveravamo svako ime.</p>
 				<ul class="cat-list">
-					<li><a href="<?php echo esc_url( $ukras_url ); ?>"><span><strong>Ukras za jelku sa imenom</strong><span class="small muted">4 motiva, 4 boje</span></span><?php echo bu_icon( 'arrow' ); ?></a></li>
+					<li><a href="<?php echo esc_url( $ukras_url ); ?>"><span><strong>Ukras za jelku sa imenom</strong><span class="small muted">4 motiva, ime u drugoj boji</span></span><?php echo bu_icon( 'arrow' ); ?></a></li>
 					<li><a href="<?php echo esc_url( bu_product_url( 'porodicni-set-ukrasa-sa-imenima' ) ); ?>"><span><strong>Porodični set ukrasa sa imenima</strong><span class="small muted">4 ili 5 imena u jednoj kutiji</span></span><?php echo bu_icon( 'arrow' ); ?></a></li>
 					<li><a href="<?php echo esc_url( bu_product_url( 'porodicni-privezak-sa-imenima' ) ); ?>"><span><strong>Porodični set privezaka sa imenima</strong><span class="small muted">2 do 8 imena, 5 stilova slova</span></span><?php echo bu_icon( 'arrow' ); ?></a></li>
 				</ul>

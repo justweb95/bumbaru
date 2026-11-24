@@ -1,25 +1,26 @@
-﻿Proizvoda ukupno,63
-Bez cene (poručuju se preko Messengera),14
-Bez fotografije,8
+﻿Proizvoda ukupno,65
+Bez cene (poručuju se preko Messengera),16
+Bez fotografije,7
 
 Proizvod,Šifra,Kategorija,"Cena sada, din","Nova cena, din","Akcijska cena, din",Fotografija,Opcije,Ključna reč (Google),Status
-Ukras za jelku sa imenom,NG-01,Nova godina,390,,350,Ima,"Ime, motiv, boja ukrasa i imena; popust za više komada 2=10, 3=15, 4=20",ukras za jelku sa imenom,Objavljen
-Porodični set ukrasa sa imenima,NG-02,Nova godina,1120,,,Ima,"4 imena 1.120 din ili 5 imena 1.400 din, motiv, boje",ukrasi za jelku sa imenima,Objavljen
+Ukras za jelku sa imenom,NG-01,Nova godina,390,,350,Ima,"Ime, motiv (Zvezdice i jelke, Mašnica, Kapica Deda Mraza, Velika pahulja), boja ukrasa i imena; popust za više komada 2=10, 3=15, 4=20",ukras za jelku sa imenom,Objavljen
+Rotirajući ukras sa imenom,NG-17,Nova godina,590,,530,Ima,"Ime do 10 slova, boja ukrasa i imena",rotirajući ukras za jelku sa imenom,Objavljen
+Porodični set ukrasa sa imenima,NG-02,Nova godina,1120,,,Ima,"Ime, motiv (Zvezdice i jelke, Mašnica, Kapica Deda Mraza, Velika pahulja), boja ukrasa i imena; 4 imena 1.120 din ili 5 imena 1.400 din; motiv isti ili različit za svako ime",ukrasi za jelku sa imenima,Objavljen
 Privezak Deda Mraz,NG-03,Nova godina,,,,Ima,,privezak deda mraz,Objavljen
 Privezak irvas,NG-04,Nova godina,,,,Ima,,novogodišnji privezak,Objavljen
 Patuljak sa LED svećicom,NG-05,Nova godina,,,,Ima,Motiv = Sa zvezdicama na kapi | Sa fenjerom | Sa zvezdom u ruci | Set od 3 motiva; Izbor boje: Boja,novogodišnji patuljak,Objavljen
 "Prstenovi za salvete, set od 6",NG-06,Nova godina,,,,Ima,Izbor boje: Boja,prstenovi za salvete,Objavljen
-Mini jelka za sto,NG-07,Nova godina,590,,,Ima,Boja zvezdice; Veličina = 15 cm [590] | 10 cm [390] | 7 cm [290],mala jelka,Objavljen
+Mini jelka za sto,NG-07,Nova godina,,,,Ima,Veličina = 15 cm | 10 cm | 7 cm; Cena na upit,mala jelka,Objavljen
 Jelka za sklapanje,NG-08,Nova godina,,,,Ima,"Boja zvezdice, visina",jelka za sklapanje,Objavljen
 Jelkica za punjenje,NG-09,Nova godina,,,,Ima,Izbor boje: Boja,ukras za jelku,Objavljen
 Novogodišnje modlice za medenjake,NG-10,Nova godina,300,,,Ima,"Izbor motiva i broja komada, popust za više; Izbor boje: Boja",modlice za medenjake,Objavljen
 Irvas lutkica (pleteni izgled),NG-11,Nova godina,490,,,Ima,Veličina = Mali [490] | Srednji [890] | Veliki [1290] | Privezak [450],novogodišnja dekoracija irvas,Objavljen
 Sneško lutkica (pleteni izgled),NG-12,Nova godina,490,,,Ima,Veličina = Mali [490] | Srednji [890] | Veliki [1290] | Privezak [450],sneško belić dekoracija,Objavljen
-Jelkica (pleteni izgled),NG-13,Nova godina,490,,,Ima,Veličina = Mali [490] | Srednji [890] | Veliki [1290] | Privezak [450],novogodišnja jelkica dekoracija,Skriven (ne nudimo)
+Jelkica (pleteni izgled),NG-13,Nova godina,,,,Ima,Veličina = Mali | Srednji | Veliki | Privezak; Cena na upit,novogodišnja jelkica dekoracija,Objavljen
 Deda Mraz lutkica (pleteni izgled),NG-14,Nova godina,490,,,Ima,Veličina = Mali [490] | Srednji [890] | Veliki [1290] | Privezak [450],deda mraz figura,Objavljen
 Novogodišnja kućica sa LED svećicom,NG-15,Nova godina,1990,,,Ima,Kako stiže = Sklopljena | Set za sklapanje,novogodišnja kućica sa svetlom,Objavljen
 Spiralna jelka sa zvezdom,NG-16,Nova godina,590,,,Ima,Veličina = Mala [590] | Velika [1490] | Par: mala i velika [2190]; Izbor boje: Boja jelke; Izbor boje: Boja zvezde,spiralna jelka,Objavljen
-Novogodišnja tacna za figure,NG-17,Nova godina,590,,,Nema,Izbor boje: Boja,novogodišnja tacna,Objavljen
+Jelka sa postoljem,NG-18,Nova godina,590,,,Ima,Visina = 15 cm [590] | 10 cm [390] | 7 cm [290]; Izbor boje: Boja jelke; Izbor boje: Boja postolja i vrha,jelka sa postoljem,Objavljen
 Porodični set privezaka sa imenima,PK-01,Pokloni sa imenom,,,,Ima,"Ime(na), stil slova, boje slojeva",privezak sa imenima,Objavljen
 Privezak sa imenom,PR-01,Privesci,,,,Ima,"Ime(na), stil slova, boje slojeva",privezak za ključeve sa imenom,Objavljen
 "Privezak sa imenom, bajkovita slova",PR-04,Privesci,,,,Ima,"Ime(na), stil slova, boje slojeva",privezak sa imenom,Objavljen
@@ -36,6 +37,7 @@ Nastavak za podmazivanje lanca,AM-03,Auto i moto,,,,Nema,Izbor boje: Boja,podmaz
 Klipovi za kesice,DM-01,Dom i kuhinja,120,,,Ima,"Izbor boja i broja komada, popust za više",klipovi za kese,Objavljen
 Rebrasta vaza sa tacnom i svećnjakom,DM-02,Dom i kuhinja,1990,,,Ima,"Komplet = Vaza, tacna i svećnjak [1990] | Samo vaza [1190]; Izbor boje: Boja",rebrasta vaza,Objavljen
 Podmetači Monstera sa saksijom,DM-03,Dom i kuhinja,1590,,,Ima,Izbor boje: Boja listova; Izbor boje: Boja saksije,podmetači za čaše,Objavljen
+Rebrasta ovalna tacna,DM-04,Dom i kuhinja,590,,,Ima,Izbor boje: Boja,rebrasta tacna,Objavljen
 Sastavite svoj set slavskih modlica,SK-01,Slavske modlice,300,,,Ima,"Izbor motiva i broja komada, popust za više; Veličina = Velika, medaljon Ø 9,5 cm [300 / 350] | Srednja, medaljon Ø 7,6 cm [200 / 300] | Mala, uz srednji medaljon Ø 7,6 cm [150 / 250]",slavske modlice,Objavljen
 Slavski set modlica Sveti Nikola,SS-01,Slavske modlice,2400,,,Ima,"Izbor 8 modlica za set; Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400 / 3490] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600 / 3090] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300 / 2590]",slavske modlice sveti nikola,Objavljen
 Slavski set modlica Sveti Georgije,SS-02,Slavske modlice,2400,,,Ima,"Izbor 8 modlica za set; Veličina = Velika: 8 velikih + veliki medaljon Ø 9,5 cm [2400 / 3490] | Srednja: 8 srednjih + veliki medaljon Ø 9,5 cm [1600 / 3090] | Mala: 8 malih + srednji medaljon Ø 7,6 cm [1300 / 2590]",slavske modlice sveti georgije,Objavljen

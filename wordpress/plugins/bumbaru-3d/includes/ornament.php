@@ -8,20 +8,20 @@ defined( 'ABSPATH' ) || exit;
 
 function bumbaru_motivi() {
 	return array(
-		array( 'id' => 'zvezde', 'label' => 'Zvezde i jelke', 'hy' => 64 ),
+		array( 'id' => 'zvezde', 'label' => 'Zvezdice i jelke', 'hy' => 64 ),
 		array( 'id' => 'planine', 'label' => 'Planine i šuma', 'hy' => 64 ),
-		array( 'id' => 'masna', 'label' => 'Mašna i cvet', 'hy' => 71 ),
+		array( 'id' => 'masna', 'label' => 'Mašnica', 'hy' => 71 ),
 		array( 'id' => 'grancica', 'label' => 'Grančica', 'hy' => 64 ),
 		// Dizajni sa MakerWorld-a (komercijalna licenca dogovorena sa autorima), prevedeni u naš crtež:
 		// Mr.Fusible (Customizable Name Ornament), purocrypto (Esferas personalizables),
 		// Galai (Bola de navidad personalizable), ArmenioMarques (Christmas Baubles Ball).
 		array( 'id' => 'pahulje', 'label' => 'Pahuljice', 'hy' => 53, 'ime' => array( 'ri' => 92 ) ),
 		array( 'id' => 'pahulje-masna', 'label' => 'Pahuljice i mašna', 'hy' => 69, 'ime' => array( 'ri' => 92 ) ),
-		array( 'id' => 'kapa', 'label' => 'Kapa Deda Mraza', 'hy' => 55, 'ime' => array( 'ri' => 92.5 ) ),
+		array( 'id' => 'kapa', 'label' => 'Kapica Deda Mraza', 'hy' => 55, 'ime' => array( 'ri' => 92.5 ) ),
 		array( 'id' => 'pahulja', 'label' => 'Velika pahulja', 'hy' => 72, 'podloga' => false, 'ime' => array( 'traka' => 1, 'w' => 80, 'y' => 189, 'fs' => 46 ) ),
 		// Okretni (po ideji ArmenioMarques, Christmas Baubles Ball): tri obruča se posle štampe okreću oko osovine,
 		// pahuljica sa imenom u sredini. Obruči, rupe i osovina se prave u generatoru (okrBuild), debljina 4 mm.
-		array( 'id' => 'okretni', 'label' => 'Okretna pahulja', 'hy' => 69, 'okretni' => true, 'podloga' => false, 'ime' => array( 'traka' => 1, 'w' => 56, 'y' => 189, 'fs' => 34 ) ),
+		array( 'id' => 'okretni', 'label' => 'Rotirajući', 'hy' => 69, 'okretni' => true, 'podloga' => false, 'ime' => array( 'traka' => 1, 'w' => 56, 'y' => 189, 'fs' => 34 ) ),
 	);
 }
 

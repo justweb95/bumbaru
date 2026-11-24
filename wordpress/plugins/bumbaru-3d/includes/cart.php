@@ -10,9 +10,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /** Čisto ime: bez HTML-a, najviše 12 znakova. */
-function bumbaru_clean_name( $v ) {
+function bumbaru_clean_name( $v, $max = 12 ) {
 	$v = trim( preg_replace( '/\s+/u', ' ', sanitize_text_field( (string) $v ) ) );
-	return mb_substr( $v, 0, 12, 'UTF-8' );
+	return mb_substr( $v, 0, $max, 'UTF-8' );
 }
 
 function bumbaru_color_label( $id ) {
@@ -100,7 +100,7 @@ function bumbaru_read_choice( $product, $src ) {
 	$unit_list = ( $optval ? $optval : $base ) + $add; // redovna cena jednog komada
 
 	if ( 'ukras' === $type || 'ime' === $type ) {
-		$ime = bumbaru_clean_name( $get( 'ime', '' ) );
+		$ime = bumbaru_clean_name( $get( 'ime', '' ), $c['ime_max'] );
 		if ( '' === $ime ) {
 			return new WP_Error( 'ime', 'Upišite ime koje štampamo.' );
 		}
@@ -131,11 +131,13 @@ function bumbaru_read_choice( $product, $src ) {
 		$raw['imena'] = $names;
 	}
 	if ( 'ukras' === $type || 'set' === $type ) {
-		$m  = bumbaru_motiv( sanitize_key( (string) $get( 'motiv', 'zvezde' ) ) );
-		$b  = sanitize_key( (string) $get( 'boja', '' ) );
-		$b  = 'set' === $type && 'sareno' === $b ? 'sareno' : bumbaru_valid_color( $b, 'bela' );
-		$nc = sanitize_key( (string) $get( 'bojaImena', 'ista' ) );
-		$nc = 'ista' === $nc ? 'ista' : bumbaru_valid_color( $nc, 'crvena' );
+		$dozv = bumbaru_motivi_za( $c );
+		$mid  = sanitize_key( (string) $get( 'motiv', '' ) );
+		$m    = in_array( $mid, wp_list_pluck( $dozv, 'id' ), true ) ? bumbaru_motiv( $mid ) : $dozv[0];
+		$b    = sanitize_key( (string) $get( 'boja', '' ) );
+		$b    = 'set' === $type && 'sareno' === $b ? 'sareno' : bumbaru_valid_color( $b, 'crvena' );
+		$nc   = sanitize_key( (string) $get( 'bojaImena', 'bela' ) );
+		$nc   = 'ista' === $nc ? 'ista' : bumbaru_valid_color( $nc, 'bela' );
 		$fo = bumbaru_font( sanitize_key( (string) $get( 'font', 'pacifico' ) ) );
 		$lines[]           = array( 'Motiv', $m['label'] );
 		$lines[]           = array( 'Slova', $fo['label'] );

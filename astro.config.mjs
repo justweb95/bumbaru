@@ -10,5 +10,7 @@ export default defineConfig({
   compressHTML: true,
   // Sajt je statičan; na serveru (Vercel funkcija) radi samo /api/boje za admin panel.
   output: 'static',
+  // Stara adresa tacne (preimenovana u „Rebrasta ovalna tacna”)
+  redirects: { '/proizvod/novogodisnja-tacna-za-figure/': '/proizvod/rebrasta-ovalna-tacna/' },
   adapter: vercel(),
 });

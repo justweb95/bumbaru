@@ -14,7 +14,7 @@ import ColorPicker from '../../components/ColorPicker.astro';
 import { PRODUCTS, productBySlug, productUrl, cardImg, sveCene, izborKomada, raznaCenaMotiva, type Product } from '../../data/products';
 import { categoryBySlug, catUrl } from '../../data/categories';
 import { SITE, din, messengerUrl } from '../../data/site';
-import { MOTIVI } from '../../lib/ornament';
+import { MOTIVI, OKRETNI } from '../../lib/ornament';
 import { ornamentG } from '../../lib/ornament-svg';
 import { BOJE_NA_STANJU, pick } from '../../lib/colors';
 import { STILOVI, stil, SLOJ_LABEL, PRIMERI } from '../../lib/keychain';
@@ -59,11 +59,15 @@ const sasData = sas ? JSON.stringify({ broj: sas.broj, poc: sasPoc, lista: SET_M
 const isUkras = p.personal === 'ukras';
 const isSet = p.personal === 'set';
 const isKey = p.personal === 'privezak' && !!p.keychain;
-const orn = isUkras || isSet;
+const isRot = p.personal === 'rotirajuci'; // rotirajući ukras: ime u pahulji, dva prstena, bez izbora motiva
+const imeMax = isRot ? 10 : 12;
+const orn = isUkras || isSet || isRot;
 const live = orn || isKey;
 const ngCustom = p.custom && p.categories.includes('nova-godina');
 // Slika za deljenje (Messenger, Facebook): og prve fotografije, inače opšta slika brenda
 const og = (p.images[0] || p.motivi?.lista.find((m) => m.slika)?.slika)?.og || '/img/og/bumbaru.jpg';
+// Na fotografijama napravljenim uz AI piše da pravi proizvod može malo da se razlikuje
+const AI_NAPOMENA = 'Fotografija je napravljena uz AI: pravi proizvod može malo da se razlikuje.';
 const ld: any = {
   '@context': 'https://schema.org',
   '@type': 'Product',
@@ -173,11 +177,11 @@ const detailIcon = (q: string) => {
           {live && (
             <div class="slide live" data-slide="live">
               <span class="badge live-badge"><i class="dotlive"></i>{isKey ? 'Okvirni pregled' : 'Pregled uživo'}</span>
-              {isUkras && (
+              {(isUkras || isRot) && (
                 <div class="sway-box sway">
                   <svg viewBox="0 0 600 600" role="img" aria-label="Pregled ukrasa sa vašim imenom" data-preview="ukras">
                     <line x1="300" y1="0" x2="300" y2={HY} stroke="#8E2A22" stroke-width="2.6" />
-                    <g transform={`translate(300 ${HY}) scale(${S}) translate(-120 -64)`} filter="url(#orn-sh)" data-tf set:html={ornamentG({ motif: 'zvezde', color: pick('bela'), nameColor: pick('crvena', 1), fallback: 'Mila', key: 'main' })} />
+                    <g transform={`translate(300 ${HY}) scale(${S}) translate(-120 -${(isRot ? OKRETNI : MOTIVI[0]).hy})`} filter="url(#orn-sh)" data-tf set:html={ornamentG({ motif: isRot ? 'okretni' : MOTIVI[0].id, color: pick('crvena'), nameColor: pick('bela', 1), fallback: isRot ? 'Uroš' : 'Mila', key: 'main', max: imeMax })} />
                   </svg>
                 </div>
               )}
@@ -186,7 +190,7 @@ const detailIcon = (q: string) => {
                 return (
                   <svg viewBox="0 0 600 600" role="img" aria-label={`Pregled porodičnog seta od ${n} ukrasa`} data-preview={`set${n}`} hidden={n === 5}>
                     {L.pts.map(([x, y], i) => (
-                      <g transform={`translate(${x} ${y}) scale(${L.s}) translate(-120 -49)`} filter="url(#orn-sh)" set:html={ornamentG({ motif: 'zvezde', color: SARENO[i], nameColor: 'ista', fallback: setNames[i], key: `s${i}` })} />
+                      <g transform={`translate(${x} ${y}) scale(${L.s}) translate(-120 -49)`} filter="url(#orn-sh)" set:html={ornamentG({ motif: MOTIVI[i % MOTIVI.length].id, color: pick('crvena'), nameColor: pick('bela', 1), fallback: setNames[i], key: `s${i}` })} />
                     ))}
                   </svg>
                 );
@@ -218,9 +222,11 @@ const detailIcon = (q: string) => {
             </div>
           )}
           {p.images.map((im, i) => (
-            <div class="slide" data-slide={`i${i}`} data-vel={im.vel} hidden={live || !!sas || i > 0}>
+            <div class="slide" data-slide={`i${i}`} data-vel={im.vel} data-motiv={im.motiv} data-boja={im.boja} hidden={live || !!sas || i > 0}>
               {im.w !== im.h && <img class="backdrop" src={cardImg(im)} alt="" width="900" height="900" loading="lazy" aria-hidden="true" />}
               <img class="full" src={`${im.src}-lg.webp`} alt={im.alt} width={im.w} height={im.h} loading={i === 0 && !live && !sas ? 'eager' : 'lazy'} fetchpriority={i === 0 && !live && !sas ? 'high' : undefined} decoding="async" />
+              {im.ai && <p class="ai-note">{AI_NAPOMENA}</p>}
+              {im.motiv && orn && <span class="badge mot-slide-name">{MOTIVI.find((m) => m.id === im.motiv)?.label || ''}</span>}
             </div>
           ))}
           {motSlike.map((m) => (
@@ -241,7 +247,7 @@ const detailIcon = (q: string) => {
             {motBoje && <button type="button" class="thumb thumb-live" data-thumb="mix" aria-pressed="false" aria-label="Vaš izbor boja" hidden><Icon name="palette" size={22} /><span>Vaš izbor</span></button>}
             {cr && crBoje.length > 0 && <button type="button" class="thumb thumb-live thumb-crtez" data-thumb="crtez" aria-pressed="false" aria-label="Crtež u izabranim bojama" style={crBoje.map((h, i) => `--c${i + 1}:${h}`).join(';')}><span class="tc-dots" aria-hidden="true">{crBoje.map((_, i) => <i style={`background:var(--c${i + 1})`}></i>)}</span><span>Vaše boje</span></button>}
             {p.images.map((im, i) => (
-              <button type="button" class="thumb" data-thumb={`i${i}`} data-vel={im.vel} aria-pressed={!live && !sas && i === 0 ? 'true' : 'false'} aria-label={`Fotografija ${i + 1}: ${im.alt}`}><img src={cardImg(im)} alt="" width="120" height="120" loading="lazy" /></button>
+              <button type="button" class="thumb" data-thumb={`i${i}`} data-vel={im.vel} data-motiv={im.motiv} data-boja={im.boja} aria-pressed={!live && !sas && i === 0 ? 'true' : 'false'} aria-label={`Fotografija ${i + 1}: ${im.alt}`}><img src={cardImg(im)} alt="" width="120" height="120" loading="lazy" /></button>
             ))}
           </div>
         )}
@@ -258,14 +264,15 @@ const detailIcon = (q: string) => {
         <h1 class="h1">{p.title}</h1>
         {ak > 0 && <Odbrojavanje mali />}
         {cenaPrikaz > 0 && <p class="price" data-price-el><Cena n={cenaPrikaz} pct={ak} pre={cenaPre} posle={cenaPosle} stara={cenaStara} /></p>}
+        {!cenaPrikaz && p.naUpit && <p class="price">Cena na upit <span class="muted" style="font-size:15px;font-weight:600">· javljamo u Messenger-u</span></p>}
         <p class="lead" style="color:var(--ink)">{p.lead}</p>
 
         <form class="order" id="poruci" data-order-form data-id={p.id} data-personal={p.personal || ''} data-kc={kcData || undefined} data-cena={showPrice ? p.price : undefined} data-od={p.priceFrom ? '1' : undefined} data-ak={ak || undefined} data-ak-naziv={ak && AKCIJA ? AKCIJA.naziv : undefined} novalidate>
-          {isUkras && (
+          {(isUkras || isRot) && (
             <div class="field">
               <label for="f-ime">Ime na ukrasu</label>
-              <input id="f-ime" class="input" name="ime" maxlength="12" placeholder="npr. Mila ili Љубица" autocomplete="off" data-ime required />
-              <p class="hint"><span data-err-ime>Latinicom ili ćirilicom. Štampamo tačno kako upišete.</span><span data-cnt>0/12</span></p>
+              <input id="f-ime" class="input" name="ime" maxlength={imeMax} placeholder={isRot ? 'npr. Uroš ili Урош' : 'npr. Mila ili Љубица'} autocomplete="off" data-ime data-max={imeMax} required />
+              <p class="hint"><span data-err-ime>{`Do ${imeMax} slova, latinicom ili ćirilicom. Štampamo tačno kako upišete.`}</span><span data-cnt>0/{imeMax}</span></p>
             </div>
           )}
 
@@ -325,14 +332,28 @@ const detailIcon = (q: string) => {
                   <div class="name-row" data-name-row={i} hidden={i === 4}>
                     <label class="sr-only" for={`f-n${i}`}>Ime {i + 1}</label>
                     <input id={`f-n${i}`} class="input" name={`ime${i}`} maxlength="12" placeholder={`Ime ${i + 1}`} autocomplete="off" data-set-name={i} />
+                    <label class="sr-only" for={`f-m${i}`}>Motiv za ime {i + 1}</label>
+                    <select id={`f-m${i}`} class="select set-mot" data-set-motiv={i} hidden>
+                      {MOTIVI.map((m, j) => <option value={m.id} selected={j === i % MOTIVI.length}>{m.label}</option>)}
+                    </select>
                   </div>
                 ))}
               </div>
               <p class="hint"><span data-err-names>Do 12 slova po imenu, latinicom ili ćirilicom.</span></p>
             </fieldset>
           )}
-          {orn && (
+          {isSet && (
             <fieldset class="field">
+              <legend class="flabel">Motiv</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="motivNacin" value="isti" checked data-label="Isti za sve" />Isti za sve</label>
+                <label class="chip"><input type="radio" name="motivNacin" value="razlicit" data-label="Različit za svako ime" />Različit za svako ime</label>
+              </div>
+              <p class="hint" data-set-mot-hint hidden>Motiv birate pored svakog imena.</p>
+            </fieldset>
+          )}
+          {(isUkras || isSet) && (
+            <fieldset class="field" data-motiv-polje>
               <legend class="flabel">{isSet ? 'Motiv za sve ukrase' : 'Motiv'}</legend>
               <div class="tile-grid">
                 {MOTIVI.map((m, i) => (
@@ -345,11 +366,11 @@ const detailIcon = (q: string) => {
               </div>
             </fieldset>
           )}
-          {orn && <ColorPicker name="boja" label="Boja ukrasa" def="bela" mix={isSet ? 'Šareno' : undefined} mixDefault={isSet} />}
+          {orn && <ColorPicker name="boja" label="Boja ukrasa" def="crvena" mix={isSet ? 'Šareno' : undefined} />}
           {orn && (
             <div>
-              <ColorPicker name="bojaImena" label="Boja imena" def="crvena" extra={[{ value: 'ista', label: 'Kao ukras', css: 'linear-gradient(135deg, #EEEAE3 50%, #ADA498 50%)', checked: isSet }]} />
-              <p class="hint" style="margin-top:8px">Ime u drugoj boji štampamo u istom komadu, bez lepljenja.</p>
+              <ColorPicker name="bojaImena" label="Boja imena" def="bela" extra={isRot ? undefined : [{ value: 'ista', label: 'Kao ukras', css: 'linear-gradient(135deg, #EEEAE3 50%, #ADA498 50%)' }]} />
+              <p class="hint" style="margin-top:8px">{isRot ? 'Ime je u boji imena, pahulja i prstenovi u boji ukrasa.' : 'Ime je izdignuto preko podloge u boji ukrasa i štampa se u istom komadu, bez lepljenja.'}</p>
             </div>
           )}
 
@@ -653,7 +674,7 @@ const detailIcon = (q: string) => {
   </div>
 </Base>
 <script>
-  import { fitName, boja, motiv } from '../../lib/ornament';
+  import { boja, paint, MOTIVI } from '../../lib/ornament';
   import { BOJE_NA_STANJU, SVE_BOJE } from '../../lib/colors';
   import { stil, nacrtaj, ucitajFont, PRIMERI, type Sloj } from '../../lib/keychain';
   import { dodaj as uKorpu } from '../../lib/korpa';
@@ -699,43 +720,43 @@ const detailIcon = (q: string) => {
   const naziv = (cid: string) => (SVE_BOJE.find((b) => b.id === cid) || { naziv: cid }).naziv;
 
   // ——— Ukras sa imenom i porodični set ———
-  function paint(g: Element, o: { motif: string; color: string; nameColor: string; name: string; fallback: string }) {
-    const M = motiv(o.motif), B = boja(o.color), N = o.nameColor === 'ista' ? B : boja(o.nameColor);
-    const f = fitName(o.name, o.fallback);
-    const e = g.querySelector('.orn-edge')!, fc = g.querySelector('.orn-face')!;
-    [e, fc].forEach((u) => u.setAttribute('href', '#orn-' + M.id));
-    e.setAttribute('fill', B.edge); e.setAttribute('stroke', B.edge);
-    fc.setAttribute('fill', B.face); fc.setAttribute('stroke', B.face);
-    const ne = g.querySelector('.orn-ne')!, nf = g.querySelector('.orn-nf')!;
-    ne.setAttribute('fill', N.edge); ne.setAttribute('stroke', N.edge);
-    nf.setAttribute('fill', N.face); nf.setAttribute('stroke', N.face);
-    g.querySelectorAll('.orn-name').forEach((t) => { t.textContent = f.name; t.setAttribute('font-size', f.fs); t.setAttribute('y', f.y); });
-    g.querySelectorAll('.orn-rail').forEach((r) => { r.setAttribute('d', f.rails); r.setAttribute('stroke-width', f.railW); });
-    return M;
-  }
   const naStanju = BOJE_NA_STANJU.map((b) => b.id);
   const klasicne = ['bela', 'crvena', 'zelena', 'zlatna'];
   const sarenoUkrasi = [...klasicne.filter((x) => naStanju.includes(x)), ...naStanju.filter((x) => !klasicne.includes(x))];
   const FALL = ['Marko', 'Jelena', 'Luka', 'Mila', 'Ana'];
+  // Porodični set: isti motiv za sve ili različit za svako ime (izbor pored imena)
+  const setRazlicit = () => val('motivNacin') === 'razlicit';
+  const setMotiv = (i: number) => (setRazlicit() ? form.querySelector<HTMLSelectElement>(`[data-set-motiv="${i}"]`)?.value || MOTIVI[0].id : val('motiv'));
+  const motivNaziv = (id: string) => (MOTIVI.find((m) => m.id === id) || MOTIVI[0]).label;
   function updateOrn() {
-    if (personal === 'ukras') {
+    if (personal === 'ukras' || personal === 'rotirajuci') {
       const g = document.querySelector('[data-orn="main"]');
       const ime = form.querySelector<HTMLInputElement>('[data-ime]')!;
+      const max = Number(ime.dataset.max || 12);
       if (g) {
-        const M = paint(g, { motif: val('motiv'), color: val('boja'), nameColor: val('bojaImena'), name: ime.value, fallback: 'Mila' });
+        const M = paint(g, { motif: personal === 'rotirajuci' ? 'okretni' : val('motiv'), color: val('boja'), nameColor: val('bojaImena'), name: ime.value, fallback: personal === 'rotirajuci' ? 'Uroš' : 'Mila', max });
         g.parentElement?.setAttribute('transform', `translate(300 136) scale(1.62) translate(-120 -${M.hy})`);
       }
       const cnt = form.querySelector('[data-cnt]');
-      if (cnt) cnt.textContent = Array.from(ime.value.trim()).length + '/12';
+      if (cnt) cnt.textContent = Array.from(ime.value.trim()).length + '/' + max;
     }
     if (personal === 'set') {
       const n = val('broj') === '5' ? 5 : 4;
+      const raz = setRazlicit();
       document.querySelectorAll<SVGElement>('[data-preview^="set"]').forEach((s) => { s.toggleAttribute('hidden', s.dataset.preview !== 'set' + n); });
-      form.querySelectorAll<HTMLElement>('[data-name-row]').forEach((r) => { r.hidden = Number(r.dataset.nameRow) >= n; });
+      form.querySelectorAll<HTMLElement>('[data-name-row]').forEach((r) => { r.hidden = Number(r.dataset.nameRow) >= n; r.classList.toggle('sa-motivom', raz); });
+      form.querySelectorAll<HTMLElement>('[data-set-motiv]').forEach((x) => { x.hidden = !raz; });
+      const polje = form.querySelector<HTMLElement>('[data-motiv-polje]');
+      if (polje) polje.hidden = raz;
+      const hint = form.querySelector<HTMLElement>('[data-set-mot-hint]');
+      if (hint) hint.hidden = !raz;
       const svg = document.querySelector(`[data-preview="set${n}"]`);
       svg?.querySelectorAll('[data-orn]').forEach((g, i) => {
         const inp = form.querySelector<HTMLInputElement>(`[data-set-name="${i}"]`);
-        paint(g, { motif: val('motiv'), color: val('boja') === 'sareno' ? sarenoUkrasi[i % sarenoUkrasi.length] : val('boja'), nameColor: val('bojaImena'), name: inp?.value || '', fallback: FALL[i] });
+        const M = paint(g, { motif: setMotiv(i), color: val('boja') === 'sareno' ? sarenoUkrasi[i % sarenoUkrasi.length] : val('boja'), nameColor: val('bojaImena'), name: inp?.value || '', fallback: FALL[i] });
+        // visina kačenja zavisi od motiva (mašnica visi niže)
+        const tf = g.parentElement?.getAttribute('transform') || '';
+        g.parentElement?.setAttribute('transform', tf.replace(/translate\(-120 -[\d.]+\)$/, `translate(-120 -${M.hy - 15})`));
       });
     }
     if (personal === 'ukras' || personal === 'set') {
@@ -743,6 +764,21 @@ const detailIcon = (q: string) => {
       const col = !b || b === 'sareno' || b === 'bela' ? '#7A6A5A' : boja(b).face;
       form.querySelectorAll('.tile use').forEach((u) => { u.setAttribute('fill', col); u.setAttribute('stroke', col); });
     }
+  }
+
+  // Ukras sa imenom: izbor motiva prikaže prave fotografije tog motiva (sličice ostalih motiva se sklone)
+  function motivGalerija(prikazi: boolean) {
+    if (!gal || personal !== 'ukras') return;
+    const m = val('motiv');
+    const ima = gal.querySelector(`[data-slide][data-motiv="${m}"]`);
+    if (!ima) return;
+    gal.querySelectorAll<HTMLElement>('[data-thumb][data-motiv]').forEach((t) => { t.hidden = t.dataset.motiv !== m; });
+    if (prikazi) (gal.querySelector(`[data-thumb][data-motiv="${m}"]`) as HTMLButtonElement | null)?.click();
+  }
+  // Fotografija u izabranoj boji (npr. crvena jelkica za punjenje)
+  function bojaGalerija(cid: string) {
+    if (!gal) return;
+    (gal.querySelector(`[data-thumb][data-boja="${cid}"]`) as HTMLButtonElement | null)?.click();
   }
 
   // ——— Privezak sa imenom ———
@@ -942,13 +978,16 @@ const detailIcon = (q: string) => {
       return;
     }
     updateOrn();
-    if (t.matches('[data-ime], [data-set-name], input[name="motiv"], input[name="boja"], input[name="bojaImena"], input[name="broj"]')) showLive();
+    if (t.matches('input[name="motiv"]') && personal === 'ukras' && gal?.querySelector('[data-slide][data-motiv]')) { motivGalerija(true); return; }
+    if (t.matches('[data-ime], [data-set-name], [data-set-motiv], input[name="motivNacin"], input[name="motiv"], input[name="boja"], input[name="bojaImena"], input[name="broj"]')) showLive();
+    if (!personal && t.closest('[data-cp]') && t.type === 'radio') bojaGalerija(t.value);
   });
   // ime iz adrese (?ime=Mila), npr. sa početne strane
   const qIme = new URLSearchParams(location.search).get('ime');
   const imeInp = form.querySelector<HTMLInputElement>('[data-ime]');
-  if (qIme && imeInp) imeInp.value = qIme.slice(0, 12);
+  if (qIme && imeInp) imeInp.value = Array.from(qIme).slice(0, Number(imeInp.dataset.max || 12)).join('');
   updateOrn();
+  motivGalerija(false);
 
   // ——— Izbor motiva (npr. modlice) ———
   const motEl = form.querySelector<HTMLElement>('[data-motivi]');
@@ -1093,7 +1132,7 @@ const detailIcon = (q: string) => {
     const lines: string[] = [];
     let cena = 0, jed: number | undefined;
     let qty = kol ? clamp(+kol.value) : 1;
-    if (personal === 'ukras') {
+    if (personal === 'ukras' || personal === 'rotirajuci') {
       const v = imeInp?.value.trim() || '';
       if (!v) { imeInp?.focus(); imeInp?.setAttribute('aria-invalid', 'true'); greska(form.querySelector('[data-err-ime]'), 'Upišite ime koje štampamo.'); return null; }
       imeInp?.removeAttribute('aria-invalid');
@@ -1107,11 +1146,12 @@ const detailIcon = (q: string) => {
         form.querySelector<HTMLInputElement>('[data-set-name]:placeholder-shown')?.focus();
         return null;
       }
-      lines.push('Broj ukrasa: ' + n, 'Imena: ' + names.join(', '));
+      if (setRazlicit()) lines.push('Broj ukrasa: ' + n, 'Imena i motivi: ' + names.map((x, i) => `${x} (${motivNaziv(setMotiv(i))})`).join(', '));
+      else lines.push('Broj ukrasa: ' + n, 'Imena: ' + names.join(', '), 'Motiv: ' + lab('motiv'));
+      lines.push('Boja ukrasa: ' + lab('boja'), 'Boja imena: ' + lab('bojaImena'));
     }
-    if (personal === 'ukras' || personal === 'set') {
-      lines.push('Motiv: ' + lab('motiv'), 'Boja ukrasa: ' + lab('boja'), 'Boja imena: ' + lab('bojaImena'));
-    }
+    if (personal === 'ukras') lines.push('Motiv: ' + lab('motiv'), 'Boja ukrasa: ' + lab('boja'), 'Boja imena: ' + lab('bojaImena'));
+    if (personal === 'rotirajuci') lines.push('Boja ukrasa: ' + lab('boja'), 'Boja imena: ' + lab('bojaImena'));
     if (sasCfg && sasEl) {
       const n = sasUkupno();
       if (n !== sasCfg.broj) {
@@ -1325,6 +1365,11 @@ const detailIcon = (q: string) => {
   fieldset.field { border: 0; padding: 0; margin: 0; min-width: 0; }
   fieldset.field legend { padding: 0; margin-bottom: 8px; }
   .names { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  /* Porodični set: motiv pored svakog imena */
+  .name-row.sa-motivom { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr minmax(0, 1fr); gap: 8px; }
+  .name-row .set-mot[hidden] { display: none; }
+  /* Napomena na fotografiji napravljenoj uz AI */
+  .ai-note { position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 2; margin: 0; padding: 6px 10px; border-radius: 10px; background: rgba(255,250,240,.9); color: var(--ink); font-size: 12px; line-height: 16px; font-weight: 600; text-align: center; }
   .sw-mix { background: conic-gradient(#F3EEE5 0 25%, #B3312A 0 50%, #2F5B3B 0 75%, #D6A23E 0); }
   .sw-same { background: linear-gradient(135deg, var(--surface-paper) 50%, var(--line) 50%); }
   .buy { display: flex; gap: 12px; align-items: center; }

@@ -7,6 +7,9 @@
     "procenat": 10,
     "kategorija": "nova-godina",
     "do": "2026-12-31",
-    "samo": ["NG-01"]
+    "samo": [
+      "NG-01",
+      "NG-17"
+    ]
   }
 }
