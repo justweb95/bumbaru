@@ -41,7 +41,7 @@ import Icon from './Icon.astro';
   import { grupaRacun, razlicitih, GRUPA_POPUSTI } from '../lib/grupa';
   // Popust za različite proizvode: stavke iz grupe (komplet je već sa svojim popustom, pa se ne broji)
   const grupa = (l: Stavka[]) => grupaRacun(l.filter((x) => x.cena && !x.id.includes(' + ')).map((x) => ({ slug: x.slug, cena: x.jed || x.cena / x.kol, kom: x.kol })));
-  const grupaTekst = (g: ReturnType<typeof grupa>) => `Popust za ${g.n} ${razlicitih(g.n)} proizvoda (−${g.pct}%)`;
+  const grupaTekst = (g: ReturnType<typeof grupa>) => 'Popust za lutkice, jelke i tacnu (' + [g.pct ? `${g.n} ${razlicitih(g.n)} −${g.pct}%` : '', g.isti ? `više istih −${g.isti}%` : ''].filter(Boolean).join(', ') + ')';
   const dlg = document.getElementById('korpa') as HTMLDialogElement;
   const $ = <T extends HTMLElement>(s: string) => dlg.querySelector<T>(s)!;
   const list = $('[data-kp-list]');

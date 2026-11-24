@@ -26,17 +26,23 @@
     var s = Array.prototype.find.call(form.querySelectorAll('select[data-option]'), function (x) { var o = x.selectedOptions[0]; return o && o.dataset.cena; });
     return s ? Number(s.selectedOptions[0].dataset.cena) || D.cena : D.cena;
   }
-  // Isti obračun kao bumbaru_grupa_racun() na serveru.
+  // Isti obračun kao bumbaru_grupa_racun() na serveru: različiti proizvodi (po jedan komad svakog) i
+  // više komada istog proizvoda (D.isti); svaki komad dobija veći popust, ukupno zaokruženo na 10 din.
+  var istiZa = function (n) { var p = 0; (D.isti || []).forEach(function (t) { if (n >= t.od) p = Math.max(p, t.procenat); }); return p; };
   function racun(stavke) {
-    var jed = {}, puna = 0;
+    var kom = {}, puna = 0;
     stavke.forEach(function (s) {
+      for (var i = 0; i < s.kom; i++) (kom[s.slug] = kom[s.slug] || []).push(s.cena);
       puna += s.cena * s.kom;
-      if (s.kom && (!(s.slug in jed) || s.cena > jed[s.slug])) jed[s.slug] = s.cena;
     });
-    var slugs = Object.keys(jed), n = slugs.length, p = pctZa(n), zbir = 0;
-    slugs.forEach(function (k) { zbir += jed[k]; });
-    var popust = p ? zbir - Math.round(zbir * (1 - p / 100) / 10) * 10 : 0;
-    return { n: n, pct: p, puna: puna, popust: popust, ukupno: puna - popust, slugs: slugs };
+    var slugs = Object.keys(kom), n = slugs.length, p = pctZa(n), sir = 0, isti = 0;
+    slugs.forEach(function (k) {
+      var c = kom[k].sort(function (a, b) { return b - a; }), ip = istiZa(c.length);
+      isti = Math.max(isti, ip);
+      c.forEach(function (x, i) { sir += x * Math.max(ip, i === 0 ? p : 0) / 100; });
+    });
+    var ukupno = sir > 0 ? Math.round((puna - sir) / 10) * 10 : puna;
+    return { n: n, pct: p, isti: isti, puna: puna, popust: puna - ukupno, ukupno: ukupno, slugs: slugs };
   }
   function izbor() { return korpa.concat([{ slug: D.slug, cena: cena(), kom: qty(), sad: true }]); }
 
@@ -54,23 +60,24 @@
     var uk = korpa.length ? korpa.reduce(function (a, s) { return a.indexOf(s.slug) < 0 ? a.concat([s.slug]) : a; }, []).length : 0;
     $('[data-mm-count]').textContent = broj(n) + (uk ? ' (u korpi ' + uk + ')' : '');
     var badge = $('[data-mm-badge]');
-    badge.hidden = !p;
-    badge.textContent = 'Popust ' + p + '%';
-    if (p > lastPct) pop(badge);
+    var bp = Math.max(p, r.isti);
+    badge.hidden = !bp;
+    badge.textContent = 'Popust ' + bp + '%';
+    if (bp > lastPct) pop(badge);
     var next = tiers.filter(function (t) { return t.od > n; })[0];
     $('[data-mm-text]').textContent = next
       ? (next.od - n === 1 ? 'Dodajte još jedan različit proizvod za −' + next.procenat + '%.' : 'Dodajte još ' + (next.od - n) + ' različita proizvoda za −' + next.procenat + '%.')
       : 'Imate najveći popust za različite proizvode.';
     var tot = $('[data-mm-total]');
-    tot.hidden = !p;
-    tot.innerHTML = p ? 'Ukupno sa ' + (uk ? 'proizvodima iz korpe' : 'ovim izborom') + ': <strong>' + din(r.ukupno) + '</strong><s>' + din(r.puna) + '</s>' : '';
+    tot.hidden = !r.popust;
+    tot.innerHTML = r.popust ? 'Ukupno sa ' + (uk ? 'proizvodima iz korpe' : 'ovim izborom') + ': <strong>' + din(r.ukupno) + '</strong><s>' + din(r.puna) + '</s>' : '';
     var set = $('[data-mm-set]');
     if (set) {
       var nema = (D.lista || []).filter(function (l) { return r.slugs.indexOf(l.slug) < 0; });
       set.hidden = !nema.length;
       set.innerHTML = nema.length ? 'Može uz ovo: ' + nema.map(function (l) { return '<a href="' + esc(l.url) + '">' + esc(l.naziv) + '</a>'; }).join(', ') + '.' : '';
     }
-    last = n; lastPct = p;
+    last = n; lastPct = bp;
   }
 
   form.addEventListener('change', function () { setTimeout(update, 0); });
@@ -100,11 +107,11 @@
       var args = Array.prototype.slice.call(arguments);
       if (id === D.sku) {
         var st = korpa.concat([{ slug: D.slug, cena: cena(), kom: q || 1 }]), r = racun(st);
-        if (r.pct) {
+        if (r.popust) {
           var add = korpa.length ? ['', 'Uz to iz korpe:'].concat(korpa.map(function (s) {
             return '- ' + s.naziv + (s.izbor ? ' (' + s.izbor + ')' : '') + ': ' + din(s.cena) + (s.kom > 1 ? ' × ' + s.kom : '');
           })) : [];
-          add.push('Popust za ' + r.n + ' ' + rec(r.n) + ' proizvoda: −' + r.pct + '% (−' + din(r.popust) + ')');
+          add.push('Popust' + (r.pct ? ' za ' + r.n + ' ' + rec(r.n) + ' proizvoda −' + r.pct + '%' : '') + (r.isti ? (r.pct ? ', ' : ' za ') + 'više istih −' + r.isti + '%' : '') + ' (−' + din(r.popust) + ')');
           add.push('Ukupno: ' + din(r.ukupno) + ' (umesto ' + din(r.puna) + ')');
           args[1] = (lines || []).concat(add);
         }

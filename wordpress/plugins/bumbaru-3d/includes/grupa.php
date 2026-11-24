@@ -6,6 +6,8 @@
  * Svaki proizvod se broji jednom (različite veličine istog proizvoda = isti proizvod). Popust važi za po
  * jedan komad svakog različitog proizvoda (najskuplji izabrani, ako ih ima više), a dodatni komadi istog
  * proizvoda idu po punoj ceni. Iznos se zaokružuje na 10 din i u korpi je poseban red (umanjenje).
+ * Više komada ISTOG proizvoda: 2 kom −5%, 4 i više −10% na sve komade tog proizvoda (veličine se sabiraju).
+ * Popusti se ne sabiraju: svaki komad dobija veći od dva (za različite ili za isti proizvod).
  * Akcija kategorije ne važi za proizvode iz grupe i ne sabira se sa ovim popustom.
  *
  * Grupa i stepenice se mogu promeniti opcijom bumbaru_grupa: { slugs: [...], popusti: "2=5, 3=10, 4=15" }.
@@ -31,6 +33,7 @@ function bumbaru_grupa() {
 			'rebrasta-ovalna-tacna',
 		),
 		'popusti' => bumbaru_parse_tiers( ! empty( $s['popusti'] ) ? $s['popusti'] : '2=5, 3=10, 4=15' ),
+		'isti'    => bumbaru_parse_tiers( ! empty( $s['isti'] ) ? $s['isti'] : '2=5, 4=10' ),
 	);
 	return $g;
 }
@@ -61,25 +64,48 @@ function bumbaru_grupa_broj( $n ) {
 
 /**
  * Obračun popusta. $stavke = [ [ 'slug' => …, 'cena' => cena jednog komada, 'kom' => broj komada ], … ].
- * Vraća [ 'n' => broj različitih, 'pct', 'puna' => ukupno bez popusta, 'popust' => iznos popusta (din), 'ukupno' ].
+ * Za različite: po jedan komad svakog proizvoda (najskuplji) dobija popust po broju različitih.
+ * Za isti: svi komadi proizvoda kog ima 2 ili više dobijaju popust po broju komada. Svaki komad dobija veći.
+ * Vraća [ 'n' => broj različitih, 'pct' => popust za različite, 'isti' => [ slug => procenat ], 'puna', 'popust' (din), 'ukupno' ].
  */
-function bumbaru_grupa_racun( $stavke, $tiers = null ) {
-	$tiers = null === $tiers ? bumbaru_grupa()['popusti'] : $tiers;
-	$jed   = array(); // slug => najskuplji komad
+function bumbaru_grupa_racun( $stavke, $tiers = null, $isti = null ) {
+	$g     = bumbaru_grupa();
+	$tiers = null === $tiers ? $g['popusti'] : $tiers;
+	$isti  = null === $isti ? $g['isti'] : $isti;
+	$kom   = array(); // slug => cene svih komada
 	$puna  = 0;
 	foreach ( $stavke as $s ) {
-		$c     = (float) $s['cena'];
-		$k     = max( 0, (int) $s['kom'] );
-		$puna += $c * $k;
-		if ( $k && ( ! isset( $jed[ $s['slug'] ] ) || $c > $jed[ $s['slug'] ] ) ) {
-			$jed[ $s['slug'] ] = $c;
+		$k = max( 0, (int) $s['kom'] );
+		for ( $i = 0; $i < $k; $i++ ) {
+			$kom[ $s['slug'] ][] = (float) $s['cena'];
+		}
+		$puna += (float) $s['cena'] * $k;
+	}
+	$n    = count( $kom );
+	$pct  = bumbaru_popust_za( $tiers, $n );
+	$ip   = array();
+	$sir  = 0; // popust pre zaokruživanja
+	foreach ( $kom as $slug => $cene ) {
+		rsort( $cene );
+		$ip[ $slug ] = bumbaru_popust_za( $isti, count( $cene ) );
+		foreach ( $cene as $i => $c ) {
+			$sir += $c * max( $ip[ $slug ], 0 === $i ? $pct : 0 ) / 100;
 		}
 	}
-	$n      = count( $jed );
-	$pct    = bumbaru_popust_za( $tiers, $n );
-	$zbir   = array_sum( $jed );
-	$popust = $pct ? $zbir - round( $zbir * ( 1 - $pct / 100 ) / 10 ) * 10 : 0;
-	return array( 'n' => $n, 'pct' => $pct, 'puna' => $puna, 'popust' => $popust, 'ukupno' => $puna - $popust, 'slugs' => array_keys( $jed ) );
+	$ukupno = $sir > 0 ? round( ( $puna - $sir ) / 10 ) * 10 : $puna;
+	return array( 'n' => $n, 'pct' => $pct, 'isti' => array_filter( $ip ), 'puna' => $puna, 'popust' => $puna - $ukupno, 'ukupno' => $ukupno, 'slugs' => array_keys( $kom ) );
+}
+
+/** Naziv popusta za korpu i porudžbinu. */
+function bumbaru_grupa_naziv( $r ) {
+	$d = array();
+	if ( $r['pct'] ) {
+		$d[] = $r['n'] . ' ' . bumbaru_grupa_rec( $r['n'] ) . ' −' . (float) $r['pct'] . '%';
+	}
+	if ( $r['isti'] ) {
+		$d[] = 'više istih −' . (float) max( $r['isti'] ) . '%';
+	}
+	return 'Popust za lutkice, jelke i tacnu (' . implode( ', ', $d ) . ')';
 }
 
 /** Stavke iz grupe u korpi: [ slug, cena, kom, naziv, izbor ]. */
@@ -121,7 +147,7 @@ add_action( 'woocommerce_cart_calculate_fees', function ( $cart ) {
 	}
 	$r = bumbaru_grupa_racun( bumbaru_grupa_korpa( $cart ) );
 	if ( $r['popust'] > 0 ) {
-		$cart->add_fee( 'Popust za ' . $r['n'] . ' ' . bumbaru_grupa_rec( $r['n'] ) . ' proizvoda (−' . (float) $r['pct'] . '%)', -$r['popust'], false );
+		$cart->add_fee( bumbaru_grupa_naziv( $r ), -$r['popust'], false );
 	}
 } );
 
@@ -198,6 +224,7 @@ function bumbaru_grupa_html( $product ) {
 	}
 	$data = array(
 		'tiers' => bumbaru_grupa()['popusti'],
+		'isti'  => bumbaru_grupa()['isti'],
 		'slug'  => $slug,
 		'sku'   => $product->get_sku(),
 		'cena'  => bumbaru_base_price( $product ),
@@ -207,7 +234,7 @@ function bumbaru_grupa_html( $product ) {
 	$imam = array_unique( array_merge( wp_list_pluck( $korpa, 'slug' ), array( $slug ) ) );
 	$n    = count( $imam );
 	return '<div class="field mot kol grp" data-grupa="' . esc_attr( wp_json_encode( $data ) ) . '"><p class="flabel">Popust za različite proizvode</p>'
-		. '<p class="hint mot-hint">Lutkice, spiralna jelka, jelka sa postoljem i rebrasta tacna: 2 različita −5%, 3 različita −10%, 4 i više −15%. Popust je na po jedan komad svakog različitog proizvoda u korpi.</p>'
+		. '<p class="hint mot-hint">Lutkice, spiralna jelka, jelka sa postoljem i rebrasta tacna: 2 različita −5%, 3 različita −10%, 4 i više −15% (na po jedan komad svakog). Više komada istog proizvoda: 2 kom −5%, 4 i više −10%. Popusti se ne sabiraju, važi veći.</p>'
 		. bumbaru_grupa_traka( $n )
 		. '<p class="mm-msg" aria-live="polite"><span class="mm-count" data-mm-count>' . esc_html( bumbaru_grupa_broj( $n ) ) . '</span><span class="mm-badge" data-mm-badge hidden></span><span data-mm-text>' . esc_html( bumbaru_grupa_poruka( $n ) ) . '</span></p>'
 		. '<p class="mm-total" data-mm-total hidden></p>'
@@ -222,12 +249,12 @@ add_action( 'woocommerce_before_cart_table', function () {
 		return;
 	}
 	$r = bumbaru_grupa_racun( $st );
-	echo '<div class="cart-grupa" data-cart-grupa><p class="cg-t"><b>Popust za različite proizvode</b> <span>2 različita −5% · 3 različita −10% · 4+ −15%</span></p>'; // phpcs:ignore
+	echo '<div class="cart-grupa" data-cart-grupa><p class="cg-t"><b>Popust za različite proizvode</b> <span>2 različita −5% · 3 različita −10% · 4+ −15% · isti proizvod: 2 kom −5%, 4+ −10%</span></p>'; // phpcs:ignore
 	echo bumbaru_grupa_traka( $r['n'] ); // phpcs:ignore
 	echo '<p class="mm-msg"><span class="mm-count">' . esc_html( bumbaru_grupa_broj( $r['n'] ) ) . '</span>'
 		. ( $r['pct'] ? '<span class="mm-badge pop">Popust ' . esc_html( (float) $r['pct'] ) . '%</span>' : '' )
 		. '<span>' . esc_html( bumbaru_grupa_poruka( $r['n'] ) ) . '</span></p>';
-	if ( $r['pct'] ) {
+	if ( $r['popust'] > 0 ) {
 		echo '<p class="mm-total">Ovi proizvodi sa popustom: <strong>' . esc_html( bumbaru_din( $r['ukupno'] ) ) . '</strong><s>' . esc_html( bumbaru_din( $r['puna'] ) ) . '</s></p>';
 	}
 	$pr = bumbaru_grupa_predlog( $r['slugs'] );
