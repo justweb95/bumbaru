@@ -26,7 +26,8 @@ const redTacne = (f: Foto) => (f.slug !== 'rebrasta-ovalna-tacna' ? 0 : f.fajl.s
 const prave = (slug: string): Img[] => FOTO.filter((f) => f.slug === slug)
   .map((f, i) => ({ f, i })).sort((a, b) => redTacne(a.f) - redTacne(b.f) || a.i - b.i)
   .map(({ f }) => ({ src: f.src, w: f.w, h: f.h, alt: f.alt, og: f.og, ...(f.motiv ? { motiv: f.motiv } : {}) }));
-// postojeće AI fotografije ostaju iza pravih, sa napomenom; prva prava fotografija je slika za deljenje (og)
+// postojeće fotografije ostaju iza novih (to su prave, obrađene fotografije, nisu AI); prva nova je slika za deljenje (og)
+// opts.ai: samo za fotografije koje su zaista napravljene uz AI (dobijaju napomenu ispod)
 function dodajPrave(p: Product, opts: { ai?: boolean; ukloni?: string[]; boja?: string } = {}) {
   const nove = prave(p.slug);
   if (opts.boja) nove.forEach((im) => (im.boja = opts.boja));
@@ -108,19 +109,18 @@ for (const slug of ['mini-jelka-za-sto', 'jelkica-pleteni-izgled']) {
   p.options = (p.options || []).map((o) => { const { cene, stare, ...x } = o; return x; });
   p.related = p.related.filter((r) => r !== STARA_TACNA);
 }
-by('jelkica-pleteni-izgled').images = by('jelkica-pleteni-izgled').images.map((im) => ({ ...im, ai: true }));
 by('mini-jelka-za-sto').related = ['jelka-sa-postoljem', 'spiralna-jelka-sa-zvezdom', 'zlatna-jelka-za-sklapanje', 'patuljak-sa-led-svecicom'];
 
 // ——— lutkice, spiralna jelka, jelkica za punjenje: prave fotografije ispred AI fotografija ———
 for (const slug of ['deda-mraz-lutkica-pleteni-izgled', 'snesko-lutkica-pleteni-izgled', 'irvas-lutkica-pleteni-izgled', 'spiralna-jelka-sa-zvezdom']) {
   const p = by(slug);
-  dodajPrave(p, { ai: true });
+  dodajPrave(p);
   p.related = [...new Set([TACNA, ...p.related.map((r) => (r === STARA_TACNA ? TACNA : r === 'mini-jelka-za-sto' ? 'jelka-sa-postoljem' : r))])].slice(0, 4);
 }
 {
   const p = by('jelkica-za-punjenje');
   const crvena = (p.colors || []).length > 0; // izbor boje nudi sve boje na stanju, među njima i crvenu
-  dodajPrave(p, { ai: true, ...(crvena ? { boja: 'crvena' } : {}) });
+  dodajPrave(p, crvena ? { boja: 'crvena' } : {});
 }
 
 // ——— NG-01 ukras za jelku sa imenom: 4 motiva kao pravi ukrasi ———
