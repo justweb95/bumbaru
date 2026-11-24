@@ -178,6 +178,13 @@ add_action( 'woocommerce_product_data_panels', function () {
 		</div>
 		<div class="options_group">
 			<?php
+			// Ukras sa imenom / set: koje motive kupac bira (rotirajući ukras: samo „Rotirajući”) i najviše slova imena.
+			echo '<p class="form-field"><label>Motivi ukrasa</label><span class="bu-motivi-ukras">';
+			foreach ( bumbaru_motivi() as $m ) {
+				echo '<label style="display:inline-block;margin:0 14px 4px 0;float:none;width:auto"><input type="checkbox" name="bu_config[motivi_ukras][]" value="' . esc_attr( $m['id'] ) . '"' . checked( in_array( $m['id'], $cfg['motivi_ukras'], true ), true, false ) . ' /> ' . esc_html( $m['label'] ) . '</label>';
+			}
+			echo '<input type="hidden" name="bu_config[motivi_ukras][]" value="" /></span><span class="description" style="display:block;clear:both">Za ukras sa imenom i porodični set. Ništa označeno = svi motivi. Prvi označeni je izabran kad se strana otvori. Samo jedan (npr. Rotirajući) = kupac ne bira motiv.</span></p>';
+			woocommerce_wp_text_input( array( 'id' => 'bu_ime_max', 'name' => 'bu_config[ime_max]', 'label' => 'Najviše slova imena', 'type' => 'number', 'value' => $cfg['ime_max'], 'custom_attributes' => array( 'min' => 4, 'max' => 12 ), 'description' => 'Ukras sa imenom: 12, rotirajući ukras: 10.', 'desc_tip' => false ) );
 			$pz = $cfg['poziv'] ? $cfg['poziv'] : array( 'tekst' => '', 'dugme' => '', 'poruka' => '' );
 			woocommerce_wp_textarea_input( array( 'id' => 'bu_poziv_t', 'name' => 'bu_config[poziv][tekst]', 'label' => 'Poziv na Messenger', 'value' => $pz['tekst'], 'rows' => 2, 'placeholder' => 'Ovo je samo deo kolekcije: pišite nam i šaljemo vam celu ponudu.', 'description' => 'Istaknuta kartica ispod porudžbine. Prazno = nema kartice.', 'desc_tip' => false ) );
 			woocommerce_wp_text_input( array( 'id' => 'bu_poziv_d', 'name' => 'bu_config[poziv][dugme]', 'label' => 'Natpis dugmeta', 'value' => $pz['dugme'], 'placeholder' => 'Pošaljite mi celu kolekciju' ) );
@@ -238,6 +245,11 @@ add_action( 'woocommerce_process_product_meta', function ( $id ) {
 		'izbor_boja'   => bumbaru_parse_color_choices( isset( $in['izbor_boja'] ) ? sanitize_textarea_field( $in['izbor_boja'] ) : '' ),
 		'crtez'        => isset( $in['crtez'] ) ? sanitize_key( $in['crtez'] ) : '',
 		'kolicina'     => isset( $in['kolicina'] ) ? bumbaru_tiers_to_text( bumbaru_parse_tiers( sanitize_text_field( $in['kolicina'] ) ) ) : '',
+		// Motivi ukrasa i dužina imena: iz obrasca, a ako ih obrazac nema (stari obrazac), ostaju kakvi su bili.
+		'motivi_ukras' => isset( $in['motivi_ukras'] )
+			? array_values( array_intersect( array_map( 'sanitize_key', (array) $in['motivi_ukras'] ), wp_list_pluck( bumbaru_motivi(), 'id' ) ) )
+			: ( isset( $prev['motivi_ukras'] ) ? (array) $prev['motivi_ukras'] : array() ),
+		'ime_max'      => isset( $in['ime_max'] ) && '' !== $in['ime_max'] ? max( 4, min( 12, (int) $in['ime_max'] ) ) : ( isset( $prev['ime_max'] ) ? (int) $prev['ime_max'] : 12 ),
 	);
 	// Izbor boja zadržava oznake polja (npr. „zvezda”) kad se naziv ne menja.
 	if ( ! empty( $prev['izbor_boja'] ) ) {

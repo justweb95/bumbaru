@@ -504,3 +504,35 @@ function bumbaru_migrate_ng26() {
 	update_option( 'bumbaru_migrate_ng26', 1 );
 	update_option( 'bumbaru_migrate_ng26_log', $log, false );
 }
+
+/**
+ * 2.6.2: čuvanje proizvoda u administraciji brisalo je motive ukrasa i dužinu imena (polja nisu bila u obrascu).
+ * Vraća ih: rotirajući ukras ima samo motiv „Rotirajući” i ime do 10 slova, ukras sa imenom i set 4 motiva.
+ */
+function bumbaru_migrate_262() {
+	if ( get_option( 'bumbaru_migrate_262' ) ) {
+		return;
+	}
+	$popravi = array(
+		'rotirajuci-ukras-sa-imenom'      => array( 'motivi_ukras' => array( 'okretni' ), 'ime_max' => 10 ),
+		'ukras-za-jelku-sa-imenom'        => array( 'motivi_ukras' => array( 'zvezde', 'masna', 'kapa', 'pahulja' ) ),
+		'porodicni-set-ukrasa-sa-imenima' => array( 'motivi_ukras' => array( 'zvezde', 'masna', 'kapa', 'pahulja' ) ),
+	);
+	foreach ( $popravi as $slug => $vrednosti ) {
+		$post = get_page_by_path( $slug, OBJECT, 'product' );
+		if ( ! $post ) {
+			continue;
+		}
+		$cfg = get_post_meta( $post->ID, '_bu_config', true );
+		$cfg = is_array( $cfg ) ? $cfg : array();
+		foreach ( $vrednosti as $k => $v ) {
+			if ( empty( $cfg[ $k ] ) || ( 'ime_max' === $k && 12 === (int) $cfg[ $k ] ) ) {
+				$cfg[ $k ] = $v;
+			}
+		}
+		update_post_meta( $post->ID, '_bu_config', $cfg );
+	}
+	wp_cache_flush();
+	do_action( 'litespeed_purge_all' );
+	update_option( 'bumbaru_migrate_262', 1 );
+}
