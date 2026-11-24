@@ -368,12 +368,13 @@ add_action( 'admin_post_bumbaru_save_akcija', function () {
 		'procenat'   => max( 1, min( 90, isset( $in['procenat'] ) ? (float) $in['procenat'] : 10 ) ),
 		'kategorija' => sanitize_title( isset( $in['kategorija'] ) ? $in['kategorija'] : '' ),
 		'do'         => $do,
+		'samo'       => implode( ', ', bumbaru_akcija_sifre( sanitize_text_field( isset( $in['samo'] ) ? $in['samo'] : '' ) ) ),
 	) );
 	bumbaru_admin_redirect( 'bumbaru-akcija' );
 } );
 
 function bumbaru_page_akcija() {
-	bumbaru_admin_head( 'Akcija', 'Popust na sve proizvode iz jedne kategorije, do izabranog dana. Na sajtu se pojavljuje traka na vrhu, dugme „Akcija” u meniju, strana /akcija/, odbrojavanje i precrtane cene. Posle poslednjeg dana akcija sama prestaje. Proizvod koji ima svoju akcijsku cenu (Proizvod → Opšte) zadržava nju.' );
+	bumbaru_admin_head( 'Akcija', 'Popust na sve proizvode iz jedne kategorije (ili samo na izabrane šifre), do izabranog dana. Na sajtu se pojavljuje traka na vrhu, dugme „Akcija” u meniju, strana /akcija/, odbrojavanje i precrtane cene. Posle poslednjeg dana akcija sama prestaje. Proizvod koji ima svoju akcijsku cenu (Proizvod → Opšte) zadržava nju.' );
 	$s = bumbaru_akcija_settings();
 	$a = bumbaru_akcija();
 	?>
@@ -390,6 +391,7 @@ function bumbaru_page_akcija() {
 					<option value="<?php echo esc_attr( $t->slug ); ?>"<?php selected( $s['kategorija'], $t->slug ); ?>><?php echo esc_html( $t->name ); ?></option>
 				<?php endforeach; ?>
 			</select></td></tr>
+			<tr><th scope="row"><label for="ak-s">Samo za šifre</label></th><td><input class="regular-text" id="ak-s" name="ak[samo]" value="<?php echo esc_attr( $s['samo'] ); ?>" placeholder="npr. NG-01" /> <p class="description">Šifre proizvoda odvojene zarezom. Kad je upisano, akcija važi samo za te proizvode, a ne za celu kategoriju. Prazno = cela kategorija. Lutkice, spiralna i mini jelka i tacna nikad nemaju akciju (imaju popust za različite proizvode).</p></td></tr>
 			<tr><th scope="row"><label for="ak-d">Poslednji dan</label></th><td><input type="date" id="ak-d" name="ak[do]" value="<?php echo esc_attr( $s['do'] ); ?>" /> <span class="description">Akcija važi do kraja tog dana.</span></td></tr>
 		</table>
 		<p><button class="button bu-btn" type="submit">Sačuvaj akciju</button></p>

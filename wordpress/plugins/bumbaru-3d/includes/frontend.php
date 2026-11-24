@@ -60,6 +60,9 @@ add_action( 'wp_enqueue_scripts', function () {
 		if ( $p && bumbaru_config( $p )['kolicina'] ) {
 			wp_enqueue_script( 'bumbaru-kolicina', BUMBARU3D_URL . 'assets/kolicina.js', array(), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 		}
+		if ( $p && bumbaru_grupa_slug( $p ) ) {
+			wp_enqueue_script( 'bumbaru-grupa', BUMBARU3D_URL . 'assets/grupa.js', array(), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+		}
 	}
 }, 30 );
 
@@ -567,6 +570,7 @@ function bumbaru_config_fields( $product ) {
 	}
 
 	$out .= bumbaru_kolicina_html( $product );
+	$out .= function_exists( 'bumbaru_grupa_html' ) ? bumbaru_grupa_html( $product ) : '';
 
 	// Slavski set: izbor modlica.
 	if ( 'sastav' === $type ) {
@@ -612,7 +616,7 @@ function bumbaru_kolicina_html( $product ) {
 	$korp = bumbaru_u_korpi( $product->get_id() );
 	$unit = bumbaru_eff( $product, bumbaru_base_price( $product ) );
 	$rec  = 'ukras' === $c['type'] ? array( 'ukras', 'ukrasa' ) : array( 'komad', 'komada' );
-	$data = array( 'tiers' => $tiers, 'korpa' => $korp, 'cena' => $unit, 'pid' => $product->get_id(), 'rec' => $rec );
+	$data = array( 'tiers' => $tiers, 'korpa' => $korp, 'cena' => $unit, 'pid' => $product->get_id(), 'sku' => $product->get_sku(), 'rec' => $rec );
 	// Ukras sa imenom: za 2–4 komada predloži porodični set (povoljniji po komadu).
 	if ( 'ukras' === $c['type'] ) {
 		$set = bumbaru_set_ponuda();
@@ -623,8 +627,8 @@ function bumbaru_kolicina_html( $product ) {
 	$o    = '<div class="field mot kol" data-kolicina="' . esc_attr( wp_json_encode( $data ) ) . '"><p class="flabel">Popust za više ' . esc_html( $rec[1] ) . '</p>'
 		. '<p class="hint mot-hint">' . ( 'ukras' === $c['type'] ? 'Svaki ukras može imati drugo ime: upišite ime, dodajte u korpu, pa sledeće. ' : '' ) . 'Sabiramo sve komade u korpi.</p>'
 		. '<div class="mm" aria-hidden="true"><div class="mm-track"><div class="mm-fill" data-mm-fill></div>';
-	foreach ( $tiers as $t ) {
-		$o .= '<span class="mm-stop" data-mm-stop="' . (int) $t['od'] . '" style="--x:' . esc_attr( round( $t['od'] / $max * 100, 2 ) ) . '%"><i></i><span class="mm-lab"><b>−' . esc_html( (float) $t['procenat'] ) . '%</b><small>' . (int) $t['od'] . ' kom</small></span></span>';
+	foreach ( $tiers as $ti => $t ) {
+		$o .= '<span class="mm-stop" data-mm-stop="' . (int) $t['od'] . '" style="--x:' . esc_attr( round( $t['od'] / $max * 100, 2 ) ) . '%"><i></i><span class="mm-lab"><b>−' . esc_html( (float) $t['procenat'] ) . '%</b><small>' . (int) $t['od'] . ( count( $tiers ) - 1 === $ti ? '+' : '' ) . ' kom</small></span></span>';
 	}
 	$o .= '<img class="mm-bee" data-mm-bee src="' . esc_url( function_exists( 'bu_img' ) ? bu_img( 'brand/pcelica.webp' ) : '' ) . '" alt="" width="44" height="44" /></div></div>'
 		. '<p class="mm-msg" aria-live="polite"><span class="mm-count" data-mm-count>1 kom</span><span class="mm-badge" data-mm-badge hidden></span><span data-mm-text></span></p>'

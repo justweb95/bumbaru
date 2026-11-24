@@ -42,7 +42,7 @@ const og = c.slug === 'nova-godina' || c.slug === 'pokloni-sa-imenom' ? '/img/og
         <span class="badge badge-honey">{c.label}</span>
         <h1 id="cat-title" class="h1">{c.title}</h1>
         <p class="muted">{c.text}</p>
-        {AKCIJA && AKCIJA.kategorija === c.slug && <Odbrojavanje />}
+        {AKCIJA && AKCIJA.kategorija === c.slug && !AKCIJA.samo.length && <Odbrojavanje />}
       </div>
     </section>
 

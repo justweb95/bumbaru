@@ -97,7 +97,7 @@
    "jelka"
   ],
   "custom": true,
-  "price": 290,
+  "price": 390,
   "priceFrom": false,
   "images": [
    {
@@ -134,7 +134,8 @@
   "config": {
    "type": "ukras",
    "name_color": "crvena",
-   "options": ""
+   "options": "",
+   "kolicina": "2=10, 3=15, 4=20"
   }
  },
  {
@@ -223,7 +224,7 @@
    "jelka"
   ],
   "custom": true,
-  "price": 1090,
+  "price": 1120,
   "priceFrom": true,
   "images": [
    {
@@ -245,7 +246,7 @@
   "og": "og/ukras-set.jpg",
   "config": {
    "type": "set",
-   "set_extra": 190,
+   "set_extra": 280,
    "options": ""
   }
  },
@@ -729,7 +730,7 @@
    "sto"
   ],
   "custom": false,
-  "price": null,
+  "price": 590,
   "priceFrom": false,
   "images": [
    {
@@ -748,10 +749,10 @@
    }
   ],
   "related": [
+   "novogodisnja-tacna-za-figure",
    "patuljak-sa-led-svecicom",
    "zlatna-jelka-za-sklapanje",
-   "prstenovi-za-salvete-set-od-6",
-   "jelkica-za-punjenje"
+   "prstenovi-za-salvete-set-od-6"
   ],
   "homeOrder": 9,
   "hidden": false,
@@ -760,7 +761,7 @@
    "type": "jelka",
    "tree": "mini",
    "star_default": "zlatna",
-   "options": "Veličina = 15 cm | 10 cm | 7 cm"
+   "options": "Veličina = 15 cm [590] | 10 cm [390] | 7 cm [290]"
   }
  },
  {
@@ -1353,8 +1354,8 @@
    }
   ],
   "related": [
+   "novogodisnja-tacna-za-figure",
    "snesko-lutkica-pleteni-izgled",
-   "jelkica-pleteni-izgled",
    "deda-mraz-lutkica-pleteni-izgled",
    "privezak-deda-mraz"
   ],
@@ -1368,15 +1369,6 @@
     "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
     "dugme": "Pošaljite mi celu kolekciju",
     "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
-   },
-   "komplet": {
-    "uz": [
-     "snesko-lutkica-pleteni-izgled",
-     "deda-mraz-lutkica-pleteni-izgled",
-     "jelkica-pleteni-izgled"
-    ],
-    "popust": 10,
-    "popusti": "2=10, 3=15, 4=20"
    }
   }
  },
@@ -1495,8 +1487,8 @@
    }
   ],
   "related": [
+   "novogodisnja-tacna-za-figure",
    "irvas-lutkica-pleteni-izgled",
-   "jelkica-pleteni-izgled",
    "deda-mraz-lutkica-pleteni-izgled",
    "privezak-deda-mraz"
   ],
@@ -1510,15 +1502,6 @@
     "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
     "dugme": "Pošaljite mi celu kolekciju",
     "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
-   },
-   "komplet": {
-    "uz": [
-     "irvas-lutkica-pleteni-izgled",
-     "deda-mraz-lutkica-pleteni-izgled",
-     "jelkica-pleteni-izgled"
-    ],
-    "popust": 10,
-    "popusti": "2=10, 3=15, 4=20"
    }
   }
  },
@@ -1643,7 +1626,7 @@
    "privezak-deda-mraz"
   ],
   "homeOrder": 0,
-  "hidden": false,
+  "hidden": true,
   "og": "p/jelkica-pleteni-izgled/ue11ef5c57-og.jpg",
   "config": {
    "type": "",
@@ -1652,15 +1635,6 @@
     "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
     "dugme": "Pošaljite mi celu kolekciju",
     "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
-   },
-   "komplet": {
-    "uz": [
-     "deda-mraz-lutkica-pleteni-izgled",
-     "snesko-lutkica-pleteni-izgled",
-     "irvas-lutkica-pleteni-izgled"
-    ],
-    "popust": 10,
-    "popusti": "2=10, 3=15, 4=20"
    }
   }
  },
@@ -1779,9 +1753,9 @@
    }
   ],
   "related": [
+   "novogodisnja-tacna-za-figure",
    "irvas-lutkica-pleteni-izgled",
    "snesko-lutkica-pleteni-izgled",
-   "jelkica-pleteni-izgled",
    "privezak-deda-mraz"
   ],
   "homeOrder": 0,
@@ -1794,15 +1768,6 @@
     "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
     "dugme": "Pošaljite mi celu kolekciju",
     "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
-   },
-   "komplet": {
-    "uz": [
-     "snesko-lutkica-pleteni-izgled",
-     "irvas-lutkica-pleteni-izgled",
-     "jelkica-pleteni-izgled"
-    ],
-    "popust": 10,
-    "popusti": "2=10, 3=15, 4=20"
    }
   }
  },
@@ -1983,7 +1948,7 @@
    "sto"
   ],
   "custom": false,
-  "price": 890,
+  "price": 590,
   "priceFrom": false,
   "images": [
    {
@@ -2009,17 +1974,17 @@
    }
   ],
   "related": [
+   "novogodisnja-tacna-za-figure",
    "mini-jelka-za-sto",
    "novogodisnja-kucica-sa-led-svecicom",
-   "patuljak-sa-led-svecicom",
-   "zlatna-jelka-za-sklapanje"
+   "patuljak-sa-led-svecicom"
   ],
   "homeOrder": 4,
   "hidden": false,
   "og": "p/spiralna-jelka-sa-zvezdom/u6936f26ea-og.jpg",
   "config": {
    "type": "",
-   "options": "Veličina = Mala [890] | Velika [1490] | Par: mala i velika [2190]",
+   "options": "Veličina = Mala [590] | Velika [1490] | Par: mala i velika [2190]",
    "izbor_boja": [
     {
      "id": "boja",
@@ -2032,13 +1997,93 @@
      "def": "zlatna"
     }
    ],
-   "komplet": {
-    "uz": [
-     "novogodisnja-kucica-sa-led-svecicom"
-    ],
-    "popust": 10
-   },
    "crtez": "jelka"
+  }
+ },
+ {
+  "id": "NG-17",
+  "slug": "novogodisnja-tacna-za-figure",
+  "title": "Novogodišnja tacna za figure",
+  "category": "nova-godina",
+  "short": "Podloga za naše figure: mala praznična scena na stolu. Posle praznika tacna za sitnice.",
+  "lead": "Podloga na koju slažete naše figure – irvasa, Sneška, Deda Mraza i jelke – pa zajedno čine malu prazničnu scenu na stolu ili komodi. Posle praznika služi kao tacna za ključeve, daljinski i sitnice.",
+  "about": [
+   "Na tacnu poređajte irvasa, Sneška i Deda Mraza u pletenom izgledu, spiralnu jelku ili mini jelku za sto. Figure stoje zajedno, na jednom mestu, i od njih nastaje mala praznična scena za sto, komodu ili prozor.",
+   "Posle praznika tacna ostaje u kući: na komodi drži ključeve, daljinski i sitnice. Boju birate kao kod ostalih proizvoda.",
+   "Tacna je samo za dekoraciju i sitnice, nije za hranu."
+  ],
+  "specs": [
+   [
+    "Materijal",
+    "PLA plastika"
+   ],
+   [
+    "Mere",
+    "javljamo na upit"
+   ],
+   [
+    "Boja",
+    "izbor boje kao kod ostalih proizvoda"
+   ]
+  ],
+  "details": [
+   {
+    "q": "Rok i dostava",
+    "a": "Rok slanja javljamo kad potvrdimo porudžbinu. Šaljemo Post Expressom, stiže za 1–2 radna dana, a dostava je besplatna za porudžbine od 2.500 din. Plaćate pouzećem, kuriru kad paket stigne."
+   },
+   {
+    "q": "Povraćaj i reklamacije",
+    "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+   },
+   {
+    "q": "Održavanje",
+    "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+   }
+  ],
+  "faq": [
+   {
+    "q": "Može li tacna za hranu?",
+    "a": "Ne. Tacna je samo za dekoraciju i sitnice (ključevi, daljinski, nakit), nije za hranu."
+   },
+   {
+    "q": "Ima li popusta ako uzmem i figure?",
+    "a": "Ima. Za 2 različita proizvoda iz grupe (lutkice, spiralna i mini jelka, tacna) popust je 5%, za 3 različita 10%, a za 4 i više 15%."
+   }
+  ],
+  "seoTitle": "Novogodišnja tacna za figure i prazničnu scenu | Bumbaru",
+  "meta": "Tacna na koju slažete naše novogodišnje figure i jelke: mala praznična scena na stolu, a posle praznika tacna za sitnice. 590 din, plaćanje pouzećem.",
+  "focus": "novogodišnja tacna",
+  "categories": [
+   "nova-godina",
+   "dom-i-kuhinja"
+  ],
+  "tags": [
+   "sto"
+  ],
+  "custom": false,
+  "price": 590,
+  "priceFrom": false,
+  "related": [
+   "irvas-lutkica-pleteni-izgled",
+   "snesko-lutkica-pleteni-izgled",
+   "deda-mraz-lutkica-pleteni-izgled",
+   "spiralna-jelka-sa-zvezdom",
+   "mini-jelka-za-sto"
+  ],
+  "homeOrder": 0,
+  "hidden": false,
+  "og": "",
+  "images": [],
+  "config": {
+   "type": "",
+   "options": "",
+   "izbor_boja": [
+    {
+     "id": "boja",
+     "label": "Boja",
+     "def": "bela"
+    }
+   ]
   }
  },
  {

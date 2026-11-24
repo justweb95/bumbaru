@@ -144,7 +144,7 @@
       "short": "4 ili 5 ukrasa sa imenima, u jednoj kutiji. Isti motiv, boje po izboru.",
       "lead": "4 ili 5 ukrasa za jelku, svaki sa jednim imenom, u jednoj kutiji. Poklon za celu porodicu, za kumove ili za baku i deku koji žele imena unučadi na jelki.",
       "custom": true,
-      "price": 1590,
+      "price": 1120,
       "priceFrom": true,
       "images": [
         {
@@ -682,13 +682,30 @@
         }
       ],
       "related": [
+        "novogodisnja-tacna-za-figure",
         "patuljak-sa-led-svecicom",
         "zlatna-jelka-za-sklapanje",
-        "prstenovi-za-salvete-set-od-6",
-        "jelkica-za-punjenje"
+        "prstenovi-za-salvete-set-od-6"
       ],
       "seoTitle": "Mini jelka za sto, novogodišnja dekoracija | Bumbaru",
-      "meta": "Mala zelena jelka sa zvezdom za praznični sto, policu ili radni sto. Novogodišnja dekoracija i mali poklon za kolege."
+      "meta": "Mala zelena jelka sa zvezdom za praznični sto, policu ili radni sto. Novogodišnja dekoracija i mali poklon za kolege.",
+      "price": 590,
+      "options": [
+        {
+          "id": "velicina",
+          "label": "Veličina",
+          "values": [
+            "15 cm",
+            "10 cm",
+            "7 cm"
+          ],
+          "cene": [
+            590,
+            390,
+            290
+          ]
+        }
+      ]
     },
     {
       "id": "NG-08",
@@ -1143,7 +1160,7 @@
       ],
       "short": "Izgleda kao pleten. Figura u 3 veličine ili privezak.",
       "lead": "Irvas koji izgleda kao pleten od vune, a štampan je u 3D od PLA plastike. Izaberite malu, srednju ili veliku figuru za sto, policu ili prozor, ili ga uzmite kao privezak za ključeve.",
-      "price": 590,
+      "price": 490,
       "images": [
         {
           "src": "/img/p/irvas-lutkica-pleteni-izgled/ud70341549",
@@ -1185,7 +1202,7 @@
             "Privezak"
           ],
           "cene": [
-            590,
+            490,
             890,
             1290,
             450
@@ -1196,12 +1213,6 @@
         "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
         "dugme": "Pošaljite mi celu kolekciju",
         "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
-      },
-      "komplet": {
-        "uz": [
-          "snesko-lutkica-pleteni-izgled"
-        ],
-        "popust": 10
       },
       "about": [
         "Površina ima šaru pletiva, pa ga ljudi na prvi pogled pipnu da vide da li je od vune. Štampan je od PLA plastike, pa je lagan, čvrst i lako se briše.",
@@ -1267,8 +1278,8 @@
         }
       ],
       "related": [
+        "novogodisnja-tacna-za-figure",
         "snesko-lutkica-pleteni-izgled",
-        "jelkica-pleteni-izgled",
         "deda-mraz-lutkica-pleteni-izgled",
         "privezak-deda-mraz"
       ],
@@ -1290,7 +1301,7 @@
       ],
       "short": "Izgleda kao pleten. Figura u 3 veličine ili privezak.",
       "lead": "Sneško koji izgleda kao pleten od vune, a štampan je u 3D od PLA plastike. Izaberite malu, srednju ili veliku figuru za sto, policu ili prozor, ili ga uzmite kao privezak za ključeve.",
-      "price": 590,
+      "price": 490,
       "images": [
         {
           "src": "/img/p/snesko-lutkica-pleteni-izgled/uf9871bde7",
@@ -1332,7 +1343,7 @@
             "Privezak"
           ],
           "cene": [
-            590,
+            490,
             890,
             1290,
             450
@@ -1343,12 +1354,6 @@
         "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
         "dugme": "Pošaljite mi celu kolekciju",
         "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
-      },
-      "komplet": {
-        "uz": [
-          "irvas-lutkica-pleteni-izgled"
-        ],
-        "popust": 10
       },
       "about": [
         "Površina ima šaru pletiva, pa ga ljudi na prvi pogled pipnu da vide da li je od vune. Štampan je od PLA plastike, pa je lagan, čvrst i lako se briše.",
@@ -1414,8 +1419,8 @@
         }
       ],
       "related": [
+        "novogodisnja-tacna-za-figure",
         "irvas-lutkica-pleteni-izgled",
-        "jelkica-pleteni-izgled",
         "deda-mraz-lutkica-pleteni-izgled",
         "privezak-deda-mraz"
       ],
@@ -1491,12 +1496,6 @@
         "dugme": "Pošaljite mi celu kolekciju",
         "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
       },
-      "komplet": {
-        "uz": [
-          "deda-mraz-lutkica-pleteni-izgled"
-        ],
-        "popust": 10
-      },
       "about": [
         "Površina ima šaru pletiva, pa je ljudi na prvi pogled pipnu da vide da li je od vune. Štampana je od PLA plastike, pa je lagana, čvrsta i lako se briše.",
         "Izaberite veličinu: mali, srednji ili veliki za dekoraciju, ili privezak sa karikom za ključeve, ranac ili torbu. Cena se menja prema izboru.",
@@ -1567,7 +1566,8 @@
         "privezak-deda-mraz"
       ],
       "seoTitle": "Jelkica u pletenom izgledu, figura ili privezak | Bumbaru",
-      "meta": "Jelkica koja izgleda kao pletena: mala, srednja ili velika figura za dekoraciju, ili privezak za ključeve. 3D štampa, poručivanje preko Messengera."
+      "meta": "Jelkica koja izgleda kao pletena: mala, srednja ili velika figura za dekoraciju, ili privezak za ključeve. 3D štampa, poručivanje preko Messengera.",
+      "skriven": true
     },
     {
       "id": "NG-14",
@@ -1584,7 +1584,7 @@
       ],
       "short": "Izgleda kao pleten. Figura u 3 veličine ili privezak.",
       "lead": "Deda Mraz koji izgleda kao pleten od vune, a štampan je u 3D od PLA plastike. Izaberite malu, srednju ili veliku figuru za sto, policu ili prozor, ili ga uzmite kao privezak za ključeve.",
-      "price": 590,
+      "price": 490,
       "images": [
         {
           "src": "/img/p/deda-mraz-lutkica-pleteni-izgled/u0a79d15a5",
@@ -1626,7 +1626,7 @@
             "Privezak"
           ],
           "cene": [
-            590,
+            490,
             890,
             1290,
             450
@@ -1637,12 +1637,6 @@
         "tekst": "Ovo je samo deo kolekcije: imamo još mnogo lutkica u pletenom izgledu, za dekoraciju i kao privezak. Pišite nam i šaljemo vam celu kolekciju.",
         "dugme": "Pošaljite mi celu kolekciju",
         "poruka": "Zdravo! Pošaljite mi celu kolekciju lutkica u pletenom izgledu (figure i privesci)."
-      },
-      "komplet": {
-        "uz": [
-          "jelkica-pleteni-izgled"
-        ],
-        "popust": 10
       },
       "about": [
         "Površina ima šaru pletiva, pa ga ljudi na prvi pogled pipnu da vide da li je od vune. Štampan je od PLA plastike, pa je lagan, čvrst i lako se briše.",
@@ -1708,9 +1702,9 @@
         }
       ],
       "related": [
+        "novogodisnja-tacna-za-figure",
         "irvas-lutkica-pleteni-izgled",
         "snesko-lutkica-pleteni-izgled",
-        "jelkica-pleteni-izgled",
         "privezak-deda-mraz"
       ],
       "seoTitle": "Deda Mraz u pletenom izgledu, figura ili privezak | Bumbaru",
@@ -1846,7 +1840,7 @@
       ],
       "short": "Moderna jelka u spirali sa zvezdom na vrhu. Mala, velika ili par.",
       "lead": "Jelka od slojeva koji se uvijaju u spiralu, sa zvezdom na vrhu. Mirna, moderna dekoracija za sto, komodu ili prozor, a par velike i male jelke izgleda najlepše.",
-      "price": 890,
+      "price": 590,
       "images": [
         {
           "src": "/img/p/spiralna-jelka-sa-zvezdom/u6936f26ea",
@@ -1880,7 +1874,7 @@
             "Par: mala i velika"
           ],
           "cene": [
-            890,
+            590,
             1490,
             2190
           ]
@@ -1898,12 +1892,6 @@
           "def": "zlatna"
         }
       ],
-      "komplet": {
-        "uz": [
-          "novogodisnja-kucica-sa-led-svecicom"
-        ],
-        "popust": 10
-      },
       "crtez": "jelka",
       "about": [
         "Slojevi se uvijaju oko jelke kao spirala, pa svetlo pada drugačije sa svake strane. Zvezda na vrhu je u drugoj boji.",
@@ -1949,13 +1937,90 @@
         }
       ],
       "related": [
+        "novogodisnja-tacna-za-figure",
         "mini-jelka-za-sto",
         "novogodisnja-kucica-sa-led-svecicom",
-        "patuljak-sa-led-svecicom",
-        "zlatna-jelka-za-sklapanje"
+        "patuljak-sa-led-svecicom"
       ],
       "seoTitle": "Spiralna jelka sa zvezdom, moderna novogodišnja dekoracija | Bumbaru",
       "meta": "Jelka od slojeva u spirali sa zvezdom na vrhu. Mala, velika ili par, boje po izboru. Novogodišnja dekoracija za sto i komodu. Poručivanje preko Messengera."
+    },
+    {
+      "id": "NG-17",
+      "slug": "novogodisnja-tacna-za-figure",
+      "title": "Novogodišnja tacna za figure",
+      "category": "nova-godina",
+      "categories": [
+        "nova-godina",
+        "dom-i-kuhinja"
+      ],
+      "tags": [
+        "sto"
+      ],
+      "short": "Podloga za naše figure: mala praznična scena na stolu. Posle praznika tacna za sitnice.",
+      "lead": "Podloga na koju slažete naše figure – irvasa, Sneška, Deda Mraza i jelke – pa zajedno čine malu prazničnu scenu na stolu ili komodi. Posle praznika služi kao tacna za ključeve, daljinski i sitnice.",
+      "custom": false,
+      "price": 590,
+      "images": [],
+      "colors": [
+        {
+          "id": "boja",
+          "label": "Boja",
+          "def": "bela"
+        }
+      ],
+      "about": [
+        "Na tacnu poređajte irvasa, Sneška i Deda Mraza u pletenom izgledu, spiralnu jelku ili mini jelku za sto. Figure stoje zajedno, na jednom mestu, i od njih nastaje mala praznična scena za sto, komodu ili prozor.",
+        "Posle praznika tacna ostaje u kući: na komodi drži ključeve, daljinski i sitnice. Boju birate kao kod ostalih proizvoda.",
+        "Tacna je samo za dekoraciju i sitnice, nije za hranu."
+      ],
+      "specs": [
+        [
+          "Materijal",
+          "PLA plastika"
+        ],
+        [
+          "Mere",
+          "javljamo na upit"
+        ],
+        [
+          "Boja",
+          "izbor boje kao kod ostalih proizvoda"
+        ]
+      ],
+      "details": [
+        {
+          "q": "Rok i dostava",
+          "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+        },
+        {
+          "q": "Povraćaj i reklamacije",
+          "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+        },
+        {
+          "q": "Održavanje",
+          "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Može li tacna za hranu?",
+          "a": "Ne. Tacna je samo za dekoraciju i sitnice (ključevi, daljinski, nakit), nije za hranu."
+        },
+        {
+          "q": "Ima li popusta ako uzmem i figure?",
+          "a": "Ima. Za 2 različita proizvoda iz grupe (lutkice, spiralna i mini jelka, tacna) popust je 5%, za 3 različita 10%, a za 4 i više 15%."
+        }
+      ],
+      "related": [
+        "irvas-lutkica-pleteni-izgled",
+        "snesko-lutkica-pleteni-izgled",
+        "deda-mraz-lutkica-pleteni-izgled",
+        "spiralna-jelka-sa-zvezdom",
+        "mini-jelka-za-sto"
+      ],
+      "seoTitle": "Novogodišnja tacna za figure i prazničnu scenu | Bumbaru",
+      "meta": "Tacna na koju slažete naše novogodišnje figure i jelke: mala praznična scena na stolu, a posle praznika tacna za sitnice. 590 din, plaćanje pouzećem."
     },
     {
       "id": "PK-01",

@@ -91,7 +91,7 @@ const brojKat = CATEGORIES.filter((c) => !c.soon).length;
               </div>
             </div>
             <div class="k-sec-act">
-              {AKCIJA && AKCIJA.kategorija === c.slug && <Odbrojavanje mali />}
+              {AKCIJA && AKCIJA.kategorija === c.slug && !AKCIJA.samo.length && <Odbrojavanje mali />}
               <a class="btn btn-paper" href={catUrl(c.slug)}>{list.length > 4 ? `Svih ${list.length} proizvoda` : 'Cela kategorija'}<Icon name="arrow" /></a>
             </div>
           </div>

@@ -43,13 +43,14 @@
     }
     var tot = $('[data-mm-total]');
     if (tot && D.cena) {
+      // Ukupno za sve komade (i one u korpi), zaokruženo na 10 din kao u korpi.
       tot.hidden = !p;
-      tot.innerHTML = p ? 'Cena po ' + D.rec[0] + 'u sa popustom: <strong>' + din(snizi(D.cena, p)) + '</strong><s>' + din(D.cena) + '</s>' + (korpa ? ' <small>(važi i za ' + korpa + ' u korpi)</small>' : '') : '';
+      tot.innerHTML = p ? 'Ukupno za ' + n + ' ' + rec(n) + ' sa popustom: <strong>' + din(snizi(D.cena * n, p)) + '</strong><s>' + din(D.cena * n) + '</s>' + (korpa ? ' <small>(sa ' + korpa + ' u korpi)</small>' : '') : '';
     }
     var setEl = $('[data-mm-set]');
     if (setEl && D.set) {
-      // 2–4 ukrasa: porodični set od 4 imena je povoljniji po komadu.
-      var showSet = n >= 2 && n <= 4 && D.cena && D.set.po < D.cena;
+      // 2–4 ukrasa: porodični set od 4 imena, samo kad je jeftiniji od 4 pojedinačna ukrasa sa popustom.
+      var showSet = n >= 2 && n <= 4 && D.cena && D.set.cena < snizi(D.cena * D.set.kom, pct(D.set.kom));
       setEl.hidden = !showSet;
       if (showSet) setEl.innerHTML = 'Za ' + D.set.kom + ' imena je povoljniji <a href="' + esc(D.set.url) + '">' + esc(D.set.naziv) + '</a>: ' + din(D.set.cena) + ' (' + din(D.set.po) + ' po ukrasu umesto ' + din(D.cena) + ').';
     }
@@ -79,5 +80,24 @@
       return r;
     };
   }
+  // Messenger poruka: popust za količinu i ukupna cena.
+  function wrap() {
+    var orig = window.bumbaruOrder;
+    if (typeof orig !== 'function' || orig.buKol) return;
+    var w = function (id, lines, q) {
+      var args = Array.prototype.slice.call(arguments), k = Math.max(1, q || 1), n = korpa + k, p = pct(n);
+      if (id === D.sku && p && D.cena) {
+        args[1] = (lines || []).concat([
+          'Popust za količinu: −' + p + '% (' + n + ' ' + rec(n) + (korpa ? ', sa ' + korpa + ' u korpi' : '') + ')',
+          'Ukupno za ' + k + ' ' + rec(k) + ': ' + din(snizi(D.cena * k, p)) + ' (umesto ' + din(D.cena * k) + ')'
+        ]);
+      }
+      return orig.apply(this, args);
+    };
+    w.buKol = true;
+    window.bumbaruOrder = w;
+  }
+  wrap();
+  window.addEventListener('load', wrap);
   update();
 })();

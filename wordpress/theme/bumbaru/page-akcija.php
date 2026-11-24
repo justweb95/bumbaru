@@ -19,7 +19,7 @@ if ( $a && function_exists( 'wc_get_products' ) ) {
 $naslov = $a ? $a['naziv'] . ' −' . (float) $a['procenat'] . '%' : 'Akcija';
 $do     = $a ? bumbaru_datum_kratko( $a['do'] ) : '';
 if ( $a ) {
-	bu_set_seo( $naslov . ' | Bumbaru', $a['naziv'] . ': ' . (float) $a['procenat'] . '% popusta na ' . ( $kat ? $kat->name : 'izabrane proizvode' ) . ' do ' . $do . ' Plaćanje pouzećem, besplatna dostava od ' . bu_free_ship_label() . '.' );
+	bu_set_seo( $naslov . ' | Bumbaru', $a['naziv'] . ': ' . (float) $a['procenat'] . '% popusta na ' . ( ! empty( $a['samo'] ) ? $a['opis'] : ( $kat ? $kat->name : 'izabrane proizvode' ) ) . ' do ' . $do . ' Plaćanje pouzećem, besplatna dostava od ' . bu_free_ship_label() . '.' );
 } else {
 	bu_set_seo( 'Akcija | Bumbaru', 'Trenutno nema akcije. Pogledajte ceo Bumbaru katalog.', array( 'noindex' => true ) );
 }
@@ -33,7 +33,7 @@ get_header();
 				<div class="ak-hero-txt">
 					<span class="badge badge-berry">Akcija traje do <?php echo esc_html( $do ); ?></span>
 					<h1 id="ak-t" class="h1"><?php echo esc_html( $a['naziv'] ); ?>: <span class="ak-pct">−<?php echo esc_html( (float) $a['procenat'] ); ?>%</span></h1>
-					<p class="lead">Popust važi za sve proizvode iz kategorije <?php echo esc_html( $kat ? $kat->name : '' ); ?>, a cena je već umanjena. Popust za veću količinu i za komplet se dodaje na akcijsku cenu.</p>
+					<p class="lead"><?php echo esc_html( ! empty( $a['samo'] ) ? 'Popust važi za: ' . $a['opis'] : 'Popust važi za sve proizvode iz kategorije ' . ( $kat ? $kat->name : '' ) ); ?>, a cena je već umanjena. Popust za veću količinu i za komplet se dodaje na akcijsku cenu.</p>
 					<?php echo bu_odbrojavanje(); // phpcs:ignore ?>
 				</div>
 				<div class="ak-hero-art" aria-hidden="true">

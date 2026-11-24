@@ -407,6 +407,8 @@ add_action( 'woocommerce_before_calculate_totals', function ( $cart ) {
 }, 20 );
 
 // Popust za više komada: saberu se svi komadi istog proizvoda u korpi (ukrasi sa različitim imenima).
+// Ukupan iznos za taj proizvod se zaokružuje na 10 din (npr. 3 × 350 −15% = 890, a ne 3 × 300), pa se
+// razlika od zaokruživanja po komadu skine sa poslednje stavke od jednog komada.
 add_action( 'woocommerce_before_calculate_totals', function ( $cart ) {
 	if ( is_admin() && ! wp_doing_ajax() ) {
 		return;
@@ -415,6 +417,7 @@ add_action( 'woocommerce_before_calculate_totals', function ( $cart ) {
 	foreach ( $cart->get_cart() as $item ) {
 		$count[ $item['product_id'] ] = ( isset( $count[ $item['product_id'] ] ) ? $count[ $item['product_id'] ] : 0 ) + (int) $item['quantity'];
 	}
+	$grupe = array(); // product_id => [ 'puna' => …, 'nova' => …, 'keys' => [ key => [ cena, kom ] ] ]
 	foreach ( $cart->get_cart() as $key => $item ) {
 		$tiers = bumbaru_config( $item['product_id'] )['kolicina'];
 		$pct   = $tiers ? bumbaru_popust_za( $tiers, $count[ $item['product_id'] ] ) : 0;
@@ -429,8 +432,32 @@ add_action( 'woocommerce_before_calculate_totals', function ( $cart ) {
 			$new = bumbaru_snizi( $unit, $pct );
 			$item['data']->update_meta_data( '_bu_cart_price', (string) $new ); // akcija kategorije ovu cenu ne dira
 			$item['data']->set_price( $new );
+			$g = isset( $grupe[ $item['product_id'] ] ) ? $grupe[ $item['product_id'] ] : array( 'pct' => $pct, 'puna' => 0, 'nova' => 0, 'keys' => array() );
+			$g['puna']        += $unit * (int) $item['quantity'];
+			$g['nova']        += $new * (int) $item['quantity'];
+			$g['keys'][ $key ] = array( $new, (int) $item['quantity'] );
+			$grupe[ $item['product_id'] ] = $g;
 		} elseif ( ! isset( $item['bumbaru']['price'] ) || null === $item['bumbaru']['price'] ) {
 			$item['data']->delete_meta_data( '_bu_cart_price' );
+		}
+	}
+	foreach ( $grupe as $g ) {
+		$diff = round( $g['puna'] * ( 1 - $g['pct'] / 100 ) / 10 ) * 10 - $g['nova'];
+		if ( ! $diff ) {
+			continue;
+		}
+		$pick = null;
+		foreach ( array_reverse( $g['keys'], true ) as $key => $x ) {
+			if ( 0 == fmod( $diff, $x[1] ) && $x[0] + $diff / $x[1] > 0 ) {
+				$pick = $key;
+				break;
+			}
+		}
+		if ( null !== $pick ) {
+			list( $cena, $kom ) = $g['keys'][ $pick ];
+			$data = $cart->cart_contents[ $pick ]['data'];
+			$data->update_meta_data( '_bu_cart_price', (string) ( $cena + $diff / $kom ) );
+			$data->set_price( $cena + $diff / $kom );
 		}
 	}
 }, 30 );

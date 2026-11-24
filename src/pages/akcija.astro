@@ -24,7 +24,7 @@ const naslov = AKCIJA ? `${AKCIJA.naziv} −${AKCIJA.procenat}%` : 'Akcija';
             <div class="ak-hero-txt">
               <span class="badge badge-berry">Akcija traje do {datumKratko(AKCIJA.do)}</span>
               <h1 id="ak-t" class="h1">{AKCIJA.naziv}: <span class="ak-pct">−{AKCIJA.procenat}%</span></h1>
-              <p class="lead">Popust važi za sve proizvode iz kategorije {kat?.label || ''}, a cena je već umanjena. Popust za veću količinu i za komplet se dodaje na akcijsku cenu.</p>
+              <p class="lead">{AKCIJA.samo.length ? `Popust važi za: ${PRODUCTS.filter((p) => AKCIJA!.samo.includes(p.id)).map((p) => p.title).join(', ')}` : `Popust važi za sve proizvode iz kategorije ${kat?.label || ''}`}, a cena je već umanjena. Popust za veću količinu i za komplet se dodaje na akcijsku cenu.</p>
               <Odbrojavanje />
             </div>
             <div class="ak-hero-art" aria-hidden="true">

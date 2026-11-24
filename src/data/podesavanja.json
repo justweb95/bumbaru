@@ -6,6 +6,7 @@
     "naziv": "Novogodišnja akcija",
     "procenat": 10,
     "kategorija": "nova-godina",
-    "do": "2026-12-31"
+    "do": "2026-12-31",
+    "samo": ["NG-01"]
   }
 }

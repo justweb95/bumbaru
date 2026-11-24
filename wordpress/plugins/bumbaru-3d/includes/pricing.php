@@ -5,6 +5,8 @@
  *
  * Akcija se podešava u Bumbaru 3D → Akcija. Važi do kraja izabranog dana (Beograd) i posle toga
  * sama prestaje. Proizvod koji ima svoju akcijsku cenu (Proizvod → Opšte) zadržava nju.
+ * „Samo za šifre” (npr. NG-01): akcija važi samo za te proizvode, a ne za celu kategoriju.
+ * Proizvodi sa popustom za različite proizvode (grupa.php) nemaju akciju.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -16,7 +18,13 @@ function bumbaru_akcija_defaults() {
 		'procenat'   => 10,
 		'kategorija' => 'nova-godina',
 		'do'         => '2026-12-31',
+		'samo'       => '',
 	);
+}
+
+/** Šifre iz polja „Samo za šifre” („NG-01, NG-02” → [NG-01, NG-02]). */
+function bumbaru_akcija_sifre( $txt ) {
+	return array_values( array_filter( array_map( 'trim', preg_split( '/[\s,;]+/', strtoupper( (string) $txt ) ) ) ) );
 }
 
 function bumbaru_akcija_settings() {
@@ -50,7 +58,24 @@ function bumbaru_akcija() {
 		'do'         => (string) $s['do'],
 		'kraj'       => $kraj->getTimestamp(),
 		'kraj_iso'   => $kraj->format( DATE_ATOM ),
+		'samo'       => bumbaru_akcija_sifre( $s['samo'] ),
 	);
+	// Za šta važi (traka u meniju, strana /akcija/): nazivi proizvoda ili kategorija.
+	$a['opis'] = '';
+	if ( $a['samo'] && function_exists( 'wc_get_product_id_by_sku' ) ) {
+		$imena = array();
+		foreach ( $a['samo'] as $sku ) {
+			$pid = wc_get_product_id_by_sku( $sku );
+			if ( $pid ) {
+				$imena[] = get_the_title( $pid );
+			}
+		}
+		$a['opis'] = implode( ', ', $imena );
+	}
+	if ( '' === $a['opis'] ) {
+		$t         = get_term_by( 'slug', $a['kategorija'], 'product_cat' );
+		$a['opis'] = 'sve iz kategorije ' . ( $t ? $t->name : $a['kategorija'] );
+	}
 	return $a;
 }
 
@@ -77,6 +102,12 @@ function bumbaru_akcija_pct( $product ) {
 	}
 	if ( '' === (string) get_post_meta( $id, '_regular_price', true ) ) {
 		return 0;
+	}
+	if ( function_exists( 'bumbaru_grupa_slug' ) && bumbaru_grupa_slug( $id ) ) {
+		return 0; // popust za različite proizvode se ne sabira sa akcijom
+	}
+	if ( $a['samo'] ) {
+		return in_array( strtoupper( (string) get_post_meta( $id, '_sku', true ) ), $a['samo'], true ) ? $a['procenat'] : 0;
 	}
 	return has_term( $a['kategorija'], 'product_cat', $id ) ? $a['procenat'] : 0;
 }

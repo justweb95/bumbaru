@@ -12,7 +12,7 @@ const greska = (msg: string): never => { throw new CmsGreska(msg); };
 
 export interface Boja { id: string; naziv: string; hex: string; dostupna: boolean }
 // Akcija (npr. novogodišnja): procenat popusta na proizvode iz jedne kategorije, do datuma (uključujući taj dan)
-export interface Akcija { ukljucena: boolean; naziv: string; procenat: number; kategorija: string; do: string }
+export interface Akcija { ukljucena: boolean; naziv: string; procenat: number; kategorija: string; do: string; samo?: string[] }
 export interface Podesavanja { prikaziCene: boolean; akcija?: Akcija }
 export interface CmsPodaci { proizvodi: Product[]; kategorije: Category[]; boje: Boja[]; podesavanja: Podesavanja }
 
@@ -106,6 +106,7 @@ export function ocistiPodesavanja(v: unknown): Podesavanja {
       procenat: ceo(a.procenat, 'Akcija: procenat', 1, 90),
       kategorija: SLUG.test(String(a.kategorija ?? '')) ? String(a.kategorija) : greska('Akcija: izaberite kategoriju.'),
       do: datum,
+      ...(Array.isArray(a.samo) && a.samo.length ? { samo: a.samo.map((x) => String(x).trim().toUpperCase()).filter((x) => /^[A-Z]{2}-\d{2}$/.test(x)) } : {}),
     };
   }
   return out;

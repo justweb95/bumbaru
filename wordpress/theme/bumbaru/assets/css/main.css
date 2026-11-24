@@ -890,26 +890,33 @@ body.has-sbar .kp-toast { bottom: 88px !important; }
   .tpl-product .mot-step button { width: 32px; height: 30px; border: 0; background: none; font-size: 20px; font-weight: 700; color: var(--ink); cursor: pointer; border-radius: 999px; }
   .tpl-product .mot-step button:hover { background: var(--honey-soft); }
   .tpl-product .mot-step span { font-weight: 800; font-size: 15px; }
-  .tpl-product .mm { padding: 46px 26px 44px; margin-top: 16px; border-radius: 18px; background: var(--surface-raised); }
-  .tpl-product .mm-track { position: relative; height: 10px; border-radius: 999px; background: var(--surface-paper); box-shadow: inset 0 0 0 2px var(--line); }
-  .tpl-product .mm-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--honey-soft), var(--honey)); transition: width .55s cubic-bezier(.3,1.3,.5,1); }
-  .tpl-product .mm-stop { position: absolute; left: var(--x); top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
-  .tpl-product .mm-stop i { width: 20px; height: 20px; border-radius: 50%; background: var(--surface-paper); border: 2px solid var(--line-strong); transition: background-color .3s, border-color .3s; }
-  .tpl-product .mm-lab { position: absolute; top: 24px; display: flex; flex-direction: column; align-items: center; line-height: 15px; white-space: nowrap; }
-  .tpl-product .mm-stop b { font-size: 13px; font-weight: 800; color: var(--ink-muted); transition: color .3s; }
-  .tpl-product .mm-stop small { font-size: 11px; font-weight: 700; color: var(--ink-muted); }
-  .tpl-product .mm-stop.on i { background: var(--honey); border-color: var(--ink); }
-  .tpl-product .mm-stop.on b { color: var(--leaf); }
-  .tpl-product .mm-stop.pop i { animation: mot-pop .5s cubic-bezier(.3,1.7,.5,1); }
-  .tpl-product .mm-bee { position: absolute; left: 0; top: 50%; width: 44px; height: 44px; transform: translate(-50%, -100%); transition: left .6s cubic-bezier(.3,1.3,.5,1); z-index: 2; pointer-events: none; filter: drop-shadow(0 4px 4px rgba(49,32,24,.18)); }
-  .tpl-product .mm-bee.pop { animation: mot-hop .6s ease; }
-  .tpl-product .mm-msg { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 14px 0 0; font-weight: 600; font-size: 15px; line-height: 22px; }
-  .tpl-product .mm-count { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--ink); color: var(--surface-paper); font-weight: 800; font-size: 14px; }
-  .tpl-product .mm-badge { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--leaf); color: #fff; font-weight: 800; font-size: 14px; }
-  .tpl-product .mm-badge[hidden] { display: none; }
-  .tpl-product .mm-badge.pop { animation: mot-pop .55s cubic-bezier(.3,1.7,.5,1); }
-  .tpl-product .mm-total { margin: 8px 0 0; font-size: 16px; }
-  .tpl-product .mm-total s { color: var(--ink-muted); margin-left: 6px; font-weight: 500; }
+  :is(.tpl-product, .cart-grupa) .mm { padding: 46px 26px 44px; margin-top: 16px; border-radius: 18px; background: var(--surface-raised); }
+  :is(.tpl-product, .cart-grupa) .mm-track { position: relative; height: 10px; border-radius: 999px; background: var(--surface-paper); box-shadow: inset 0 0 0 2px var(--line); }
+  :is(.tpl-product, .cart-grupa) .mm-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--honey-soft), var(--honey)); transition: width .55s cubic-bezier(.3,1.3,.5,1); }
+  :is(.tpl-product, .cart-grupa) .mm-stop { position: absolute; left: var(--x); top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
+  :is(.tpl-product, .cart-grupa) .mm-stop i { width: 20px; height: 20px; border-radius: 50%; background: var(--surface-paper); border: 2px solid var(--line-strong); transition: background-color .3s, border-color .3s; }
+  :is(.tpl-product, .cart-grupa) .mm-lab { position: absolute; top: 24px; display: flex; flex-direction: column; align-items: center; line-height: 15px; white-space: nowrap; }
+  :is(.tpl-product, .cart-grupa) .mm-stop b { font-size: 13px; font-weight: 800; color: var(--ink-muted); transition: color .3s; }
+  :is(.tpl-product, .cart-grupa) .mm-stop small { font-size: 11px; font-weight: 700; color: var(--ink-muted); }
+  :is(.tpl-product, .cart-grupa) .mm-stop.on i { background: var(--honey); border-color: var(--ink); }
+  :is(.tpl-product, .cart-grupa) .mm-stop.on b { color: var(--leaf); }
+  :is(.tpl-product, .cart-grupa) .mm-stop.pop i { animation: mot-pop .5s cubic-bezier(.3,1.7,.5,1); }
+  :is(.tpl-product, .cart-grupa) .mm-bee { position: absolute; left: 0; top: 50%; width: 44px; height: 44px; transform: translate(-50%, -100%); transition: left .6s cubic-bezier(.3,1.3,.5,1); z-index: 2; pointer-events: none; filter: drop-shadow(0 4px 4px rgba(49,32,24,.18)); }
+  :is(.tpl-product, .cart-grupa) .mm-bee.pop { animation: mot-hop .6s ease; }
+  :is(.tpl-product, .cart-grupa) .mm-msg { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 14px 0 0; font-weight: 600; font-size: 15px; line-height: 22px; }
+  :is(.tpl-product, .cart-grupa) .mm-count { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--ink); color: var(--surface-paper); font-weight: 800; font-size: 14px; }
+  :is(.tpl-product, .cart-grupa) .mm-badge { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--leaf); color: #fff; font-weight: 800; font-size: 14px; }
+  :is(.tpl-product, .cart-grupa) .mm-badge[hidden] { display: none; }
+  :is(.tpl-product, .cart-grupa) .mm-badge.pop { animation: mot-pop .55s cubic-bezier(.3,1.7,.5,1); }
+  :is(.tpl-product, .cart-grupa) .mm-total { margin: 8px 0 0; font-size: 16px; }
+  :is(.tpl-product, .cart-grupa) .mm-total s { color: var(--ink-muted); margin-left: 6px; font-weight: 500; }
+  /* Korpa: popust za različite proizvode (ista traka kao na strani proizvoda, plugin Bumbaru 3D) */
+  .cart-grupa { margin: 0 0 18px; }
+  .cart-grupa .cg-t { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin: 0; font-size: 16px; }
+  .cart-grupa .cg-t span { font-size: 14px; color: var(--ink-muted); }
+  div.cart-grupa .mm { margin-top: 10px; padding-left: 44px; padding-right: 44px; }
+  .cart-grupa .mm-set { margin: 10px 0 0; padding: 8px 12px; border-radius: 10px; background: var(--honey-soft); font-size: 14px; }
+  .cart-grupa .mm-set a { font-weight: 700; }
   .tpl-product .mot-err:empty { display: none; }
   @keyframes mot-pop { 0% { transform: scale(.6); } 60% { transform: scale(1.18); } 100% { transform: scale(1); } }
   @keyframes mot-in { from { opacity: 0; transform: translateY(-6px) scale(.9); } to { opacity: 1; transform: none; } }
@@ -971,8 +978,8 @@ body.has-sbar .kp-toast { bottom: 88px !important; }
   .tpl-product .mix-hint { position: absolute; left: 16px; right: 16px; bottom: 14px; margin: 0; text-align: center; font-size: 13px; line-height: 18px; color: var(--ink-muted); }
   @media (prefers-reduced-motion: reduce) { .tpl-product .mot-boja .sil, .tpl-product .mq { transition: none; } .tpl-product .mix-grid .mix-g, .tpl-product .mix-grid .mix-k.pop, .tpl-product .mq.pop { animation: none; } }
   @media (prefers-reduced-motion: reduce) {
-    .tpl-product .mot-pick, .tpl-product .mot-check, .tpl-product .mm-fill, .tpl-product .mm-bee { transition: none; }
-    .tpl-product .mot-step, .tpl-product .mm-bee.pop, .tpl-product .mm-badge.pop, .tpl-product .mm-stop.pop i, .tpl-product .mot-grid.pop { animation: none; }
+    .tpl-product .mot-pick, .tpl-product .mot-check, :is(.tpl-product, .cart-grupa) .mm-fill, :is(.tpl-product, .cart-grupa) .mm-bee { transition: none; }
+    .tpl-product .mot-step, :is(.tpl-product, .cart-grupa) .mm-bee.pop, :is(.tpl-product, .cart-grupa) .mm-badge.pop, :is(.tpl-product, .cart-grupa) .mm-stop.pop i, .tpl-product .mot-grid.pop { animation: none; }
   }
 
   @media (max-width: 960px) {

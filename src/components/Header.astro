@@ -3,7 +3,7 @@ import Icon from './Icon.astro';
 import { SITE, messengerUrl, datumKratko } from '../data/site';
 import { AKCIJA } from '../lib/cene';
 import { CATEGORIES, catUrl } from '../data/categories';
-import { inCategory, hasPhoto, cardImg } from '../data/products';
+import { inCategory, hasPhoto, cardImg, PRODUCTS } from '../data/products';
 interface Props { current?: string }
 const { current = '' } = Astro.props;
 
@@ -76,7 +76,7 @@ const ribbon = SITE.ribbon[SITE.season];
         {AKCIJA && (
           <a class="mega-promo mp-ak ak-on" href="/akcija/">
             <span class="mp-lab"><Icon name="gift" size={18} />{AKCIJA.naziv}</span>
-            <b class="mp-big">−{AKCIJA.procenat}% na sve iz kategorije {CATEGORIES.find((c) => c.slug === AKCIJA!.kategorija)?.label || ''}</b>
+            <b class="mp-big">−{AKCIJA.procenat}% na {AKCIJA.samo.length ? PRODUCTS.filter((p) => AKCIJA!.samo.includes(p.id)).map((p) => p.title).join(', ') : 'sve iz kategorije ' + (CATEGORIES.find((c) => c.slug === AKCIJA!.kategorija)?.label || '')}</b>
             <span class="small">Traje do {datumKratko(AKCIJA.do)}, cene su već umanjene.</span>
             <span class="link-arrow">Pogledajte akciju<Icon name="arrow" /></span>
           </a>

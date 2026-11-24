@@ -77,7 +77,7 @@ get_header();
 			<?php if ( $text ) : ?><p class="muted"><?php echo esc_html( $text ); ?></p><?php endif; ?>
 			<?php
 			$ak = function_exists( 'bumbaru_akcija' ) ? bumbaru_akcija() : null;
-			if ( $ak && $ak['kategorija'] === $c->slug ) {
+			if ( $ak && $ak['kategorija'] === $c->slug && empty( $ak['samo'] ) ) {
 				echo bu_odbrojavanje(); // phpcs:ignore
 			}
 			?>

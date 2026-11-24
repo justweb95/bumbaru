@@ -105,7 +105,7 @@ $shop    = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( '
 				<?php if ( $ak ) : ?>
 					<a class="mega-promo mp-ak ak-on" href="<?php echo esc_url( $ak_url ); ?>">
 						<span class="mp-lab"><?php echo bu_icon( 'gift', 18 ); ?><?php echo esc_html( $ak['naziv'] ); ?></span>
-						<b class="mp-big">−<?php echo esc_html( (float) $ak['procenat'] ); ?>% na sve iz kategorije <?php echo esc_html( $ak_cat ? $ak_cat->name : '' ); ?></b>
+						<b class="mp-big">−<?php echo esc_html( (float) $ak['procenat'] ); ?>% na <?php echo esc_html( isset( $ak['opis'] ) ? $ak['opis'] : 'sve iz kategorije ' . ( $ak_cat ? $ak_cat->name : '' ) ); ?></b>
 						<span class="small">Traje do <?php echo esc_html( bumbaru_datum_kratko( $ak['do'] ) ); ?>, cene su već umanjene.</span>
 						<span class="link-arrow">Pogledajte akciju<?php echo bu_icon( 'arrow' ); ?></span>
 					</a>

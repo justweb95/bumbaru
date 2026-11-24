@@ -113,7 +113,7 @@ if ( is_shop() && ! is_search() ) :
 						</div>
 						<div class="k-sec-act">
 							<?php
-							if ( $ak && $ak['kategorija'] === $c->slug ) {
+							if ( $ak && $ak['kategorija'] === $c->slug && empty( $ak['samo'] ) ) {
 								echo bu_odbrojavanje( true ); // phpcs:ignore
 							}
 							?>

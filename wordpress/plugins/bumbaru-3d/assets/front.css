@@ -52,3 +52,5 @@
 .mm-set a { font-weight: 700; }
 /* Ime na ukrasu: bez ukrasnih varijanti slova (calt/swsh), isto kao generator 3MF-a */
 .orn-name { font-feature-settings: "calt" 0, "swsh" 0, "salt" 0; }
+/* Popust za različite proizvode: malo više mesta za natpis „4+ različita” */
+.field.grp .mm { padding-left: 44px; padding-right: 44px; }

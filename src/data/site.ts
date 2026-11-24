@@ -4,11 +4,11 @@ import podesavanja from './podesavanja.json';
 
 // Akcija iz admina (Podešavanja): važi do kraja izabranog dana. Posle tog trenutka sajt sam sakrije akcijske cene
 // (u pregledaču, i bez nove objave), a pri sledećoj objavi akcija nestaje i iz koda strane.
-interface AkcijaPod { ukljucena: boolean; naziv: string; procenat: number; kategorija: string; do: string }
+interface AkcijaPod { ukljucena: boolean; naziv: string; procenat: number; kategorija: string; do: string; samo?: string[] }
 const ak = (podesavanja as { akcija?: AkcijaPod }).akcija;
 const akKraj = ak ? `${ak.do}T23:59:59+01:00` : '';
 const AKCIJA = ak && ak.ukljucena && Date.now() <= Date.parse(akKraj)
-  ? { naziv: ak.naziv, procenat: ak.procenat, kategorija: ak.kategorija, do: ak.do, kraj: akKraj }
+  ? { naziv: ak.naziv, procenat: ak.procenat, kategorija: ak.kategorija, do: ak.do, kraj: akKraj, samo: ak.samo ?? [] }
   : null;
 
 export const SITE = {
