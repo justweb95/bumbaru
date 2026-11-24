@@ -9,7 +9,7 @@
   var D = JSON.parse(box.getAttribute('data-grupa'));
   var form = box.closest('form') || document;
   var qtyIn = form.querySelector('input[name="quantity"]');
-  var tiers = D.tiers, max = tiers[tiers.length - 1].od, korpa = D.korpa || [], last = -1, lastPct = 0;
+  var tiers = D.tiers, max = tiers[tiers.length - 1].od, korpa = D.korpa || [], last = -1, lastPct = 0; // last: poslednje mesto pčelice
   var $ = function (s) { return box.querySelector(s); };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var pop = function (el) { if (el) { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); } };
@@ -47,27 +47,36 @@
   function izbor() { return korpa.concat([{ slug: D.slug, cena: cena(), kom: qty(), sad: true }]); }
 
   function update() {
-    var r = racun(izbor()), n = r.n, p = r.pct, x = Math.min(n, max) / max;
+    var r = racun(izbor()), n = r.n, p = r.pct, e = Math.max(p, r.isti);
+    // Pčelica stoji na stepenici sa dostignutim procentom (za različite proizvode ili za više istih).
+    var nivo = Math.min(n, 1);
+    tiers.forEach(function (t) { if (e >= t.procenat) nivo = t.od; });
+    var x = nivo / max, kljuc = nivo + '|' + e;
     $('[data-mm-fill]').style.width = (x * 100) + '%';
     var bee = $('[data-mm-bee]');
     bee.style.left = (x * 100) + '%';
-    if (n !== last && last >= 0) pop(bee);
+    if (kljuc !== last && last !== -1) pop(bee);
     box.querySelectorAll('[data-mm-stop]').forEach(function (s) {
-      var was = s.classList.contains('on'), on = n >= +s.getAttribute('data-mm-stop');
+      var was = s.classList.contains('on'), on = e >= +s.getAttribute('data-mm-pct');
       s.classList.toggle('on', on);
-      if (on && !was && last >= 0) pop(s);
+      if (on && !was && last !== -1) pop(s);
     });
+    // komada ovog proizvoda (u korpi + izbor)
+    var ovaj = korpa.filter(function (s) { return s.slug === D.slug; }).reduce(function (a, s) { return a + s.kom; }, 0) + qty();
     var uk = korpa.length ? korpa.reduce(function (a, s) { return a.indexOf(s.slug) < 0 ? a.concat([s.slug]) : a; }, []).length : 0;
-    $('[data-mm-count]').textContent = broj(n) + (uk ? ' (u korpi ' + uk + ')' : '');
+    $('[data-mm-count]').textContent = broj(n) + (ovaj > 1 ? ' · ' + ovaj + ' kom ovog' : '') + (uk ? ' (u korpi ' + uk + ')' : '');
     var badge = $('[data-mm-badge]');
-    var bp = Math.max(p, r.isti);
+    var bp = e;
     badge.hidden = !bp;
     badge.textContent = 'Popust ' + bp + '%';
     if (bp > lastPct) pop(badge);
-    var next = tiers.filter(function (t) { return t.od > n; })[0];
-    $('[data-mm-text]').textContent = next
-      ? (next.od - n === 1 ? 'Dodajte još jedan različit proizvod za −' + next.procenat + '%.' : 'Dodajte još ' + (next.od - n) + ' različita proizvoda za −' + next.procenat + '%.')
-      : 'Imate najveći popust za različite proizvode.';
+    var next = tiers.filter(function (t) { return t.od > n && t.procenat > e; })[0];
+    var sledIsti = (D.isti || []).filter(function (t) { return t.od > ovaj && t.procenat > e; })[0];
+    var txt = next
+      ? (next.od - n === 1 ? 'Dodajte još jedan različit proizvod za −' + next.procenat + '%' : 'Dodajte još ' + (next.od - n) + ' različita proizvoda za −' + next.procenat + '%')
+      : '';
+    if (sledIsti) txt += (txt ? ', ili još ' : 'Još ') + (sledIsti.od - ovaj) + ' kom ovog proizvoda za −' + sledIsti.procenat + '%';
+    $('[data-mm-text]').textContent = txt ? txt + '.' : 'Imate najveći popust.';
     var tot = $('[data-mm-total]');
     tot.hidden = !r.popust;
     tot.innerHTML = r.popust ? 'Ukupno sa ' + (uk ? 'proizvodima iz korpe' : 'ovim izborom') + ': <strong>' + din(r.ukupno) + '</strong><s>' + din(r.puna) + '</s>' : '';
@@ -77,7 +86,7 @@
       set.hidden = !nema.length;
       set.innerHTML = nema.length ? 'Može uz ovo: ' + nema.map(function (l) { return '<a href="' + esc(l.url) + '">' + esc(l.naziv) + '</a>'; }).join(', ') + '.' : '';
     }
-    last = n; lastPct = bp;
+    last = kljuc; lastPct = bp;
   }
 
   form.addEventListener('change', function () { setTimeout(update, 0); });

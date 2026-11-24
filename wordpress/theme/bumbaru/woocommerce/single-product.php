@@ -64,6 +64,9 @@ $all        = $plugin ? bumbaru_all_prices( $product ) : array();
 if ( $all ) {
 	$oi        = bumbaru_price_option_index( $cfg );
 	$n         = $oi >= 0 ? bumbaru_value_price( $product, $cfg['options'][ $oi ]['values'][0] ) : bumbaru_base_price( $product );
+	if ( function_exists( 'bumbaru_set_cene' ) && bumbaru_set_cene( $product ) ) {
+		$n = min( $all ); // set: cena najmanjeg seta („od …”), tačna cena je u „Napravite svoj set”
+	}
 	$old       = $oi >= 0 ? (float) $cfg['options'][ $oi ]['values'][0]['old'] : 0;
 	$od        = ( $oi < 0 && bu_pmeta( $product, 'price_from' ) ) || bumbaru_razna_cena_motiva( $product );
 	$price_html = bumbaru_price_markup( $product, $n, $od ? 'od ' : '', $mot ? ' po komadu' : '', $old );
@@ -268,7 +271,8 @@ get_header();
 			<?php endif; ?>
 			<?php if ( $lead ) : ?><p class="lead" style="color:var(--ink)"><?php echo esc_html( $lead ); ?></p><?php endif; ?>
 
-			<form class="order" id="poruci" data-order-form data-id="<?php echo esc_attr( $sku ); ?>" data-personal="<?php echo esc_attr( $type ); ?>" data-bu="<?php echo esc_attr( wp_json_encode( $bu_data ) ); ?>" action="<?php echo esc_url( $url ); ?>" method="post" novalidate>
+			<?php $bu_set = $plugin && ! empty( bumbaru_config( $product )['komplet']['glavni'] ); // set: kupuje se samo kroz „Napravite svoj set” ?>
+			<form class="order<?php echo $bu_set ? ' is-set' : ''; ?>" id="poruci" data-order-form data-id="<?php echo esc_attr( $sku ); ?>" data-personal="<?php echo esc_attr( $type ); ?>" data-bu="<?php echo esc_attr( wp_json_encode( $bu_data ) ); ?>" action="<?php echo esc_url( $url ); ?>" method="post" novalidate>
 				<?php
 				if ( $plugin ) {
 					echo bumbaru_config_fields( $product ); // phpcs:ignore WordPress.Security.EscapeOutput

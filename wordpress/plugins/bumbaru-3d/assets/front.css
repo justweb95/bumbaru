@@ -54,3 +54,9 @@
 .orn-name { font-feature-settings: "calt" 0, "swsh" 0, "salt" 0; }
 /* Popust za različite proizvode: malo više mesta za natpis „4+ različita” */
 .field.grp .mm { padding-left: 44px; padding-right: 44px; }
+/* Set na tacni: zaključane figure kad je set pun; strana seta nema posebno dugme za sam proizvod */
+.km-izbor .km-pick.off { cursor: not-allowed; }
+.km-izbor .km-pick.off .km-img { opacity: .3; }
+.km-set { border: 2px solid var(--ink, #312018); }
+form.is-set .buy, form.is-set [data-checkout], form.is-set [data-messenger-order] { display: none !important; }
+body:has(form.is-set) .sbar { display: none !important; }

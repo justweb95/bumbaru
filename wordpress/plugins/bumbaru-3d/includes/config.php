@@ -334,6 +334,10 @@ function bumbaru_config( $product ) {
 				'popust'  => max( 0, min( 90, isset( $raw['komplet']['popust'] ) ? (float) $raw['komplet']['popust'] : 10 ) ),
 				// Popust po broju proizvoda u kompletu (npr. 2=10, 3=15, 4=20): kupac sam bira šta ide u komplet.
 				'popusti' => bumbaru_parse_tiers( isset( $raw['komplet']['popusti'] ) ? $raw['komplet']['popusti'] : '' ),
+				// Najviše proizvoda koje kupac bira uz ovaj (0 = bez ograničenja), npr. set na tacni: do 3 figure.
+				'max'     => isset( $raw['komplet']['max'] ) ? max( 0, (int) $raw['komplet']['max'] ) : 0,
+				// Set: komplet je glavni deo strane (naslov „Napravite svoj set”, bez posebnog dugmeta za sam proizvod).
+				'glavni'  => ! empty( $raw['komplet']['glavni'] ),
 			);
 		}
 	}

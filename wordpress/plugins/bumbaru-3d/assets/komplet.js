@@ -49,7 +49,14 @@
 
   function update() {
     var r = calc();
-    box.querySelectorAll('.km-pick').forEach(function (l) { l.classList.toggle('on', l.querySelector('input').checked); });
+    // Set: najviše D.max uz glavni proizvod; ostale kućice se zaključaju dok se neka ne skloni.
+    var pun = D.max && r.sel.length >= D.max;
+    box.querySelectorAll('.km-pick').forEach(function (l) {
+      var c = l.querySelector('input');
+      l.classList.toggle('on', c.checked);
+      c.disabled = !c.checked && !!pun;
+      l.classList.toggle('off', c.disabled);
+    });
     $('[data-km-n]').textContent = r.n + ' kom';
     var b = $('[data-km-pct]');
     b.hidden = !r.pct; b.textContent = 'Popust ' + r.pct + '%';
@@ -57,8 +64,9 @@
     lastPct = r.pct;
     var next = D.popusti.filter(function (t) { return t.od > r.n; })[0];
     var left = D.uz.length - r.sel.length;
-    $('[data-km-text]').textContent = !r.sel.length ? 'Štiklirajte bar jedan proizvod za komplet.'
-      : next && left > 0 ? 'Dodajte još ' + (next.od - r.n) + ' i popust je ' + next.procenat + '%.' : 'Imate najveći popust za komplet.';
+    if (D.max) left = Math.min(left, D.max - r.sel.length);
+    $('[data-km-text]').textContent = !r.sel.length ? 'Izaberite bar jedan proizvod.'
+      : next && left > 0 ? 'Dodajte još ' + (next.od - r.n) + ' i popust je ' + next.procenat + '%.' : (D.max && r.sel.length >= D.max ? 'Set je pun (' + r.n + ' kom). Najveći popust.' : 'Imate najveći popust.');
     $('[data-km-puna]').textContent = r.pct ? din(r.puna) : '';
     $('[data-km-cena]').textContent = din(r.cena);
     $('[data-km2-add]').disabled = !r.sel.length;
@@ -71,7 +79,10 @@
     var r = calc(), btn = this;
     if (!r.sel.length || !CFG.ajax) return;
     var nap = form && form.querySelector('[name="napomena"]');
-    var data = { komplet: true, kompletUz: r.sel, opcije: opcije(), napomena: nap ? nap.value : '' };
+    // izabrane boje glavnog proizvoda (npr. boja tacne u setu)
+    var boje = {};
+    if (form) form.querySelectorAll('input[name^="c-"]:checked').forEach(function (b) { boje[b.name.slice(2)] = b.value; });
+    var data = { komplet: true, kompletUz: r.sel, opcije: opcije(), boje: boje, napomena: nap ? nap.value : '' };
     var body = new URLSearchParams();
     body.set('product_id', String(D.pid));
     body.set('quantity', '1');

@@ -2584,6 +2584,202 @@
   "og": "p/jelka-sa-postoljem/u791d80efa-og.jpg"
  },
  {
+  "id": "NG-19",
+  "slug": "novogodisnji-set-na-tacni",
+  "title": "Novogodišnji set na tacni",
+  "category": "nova-godina",
+  "short": "Rebrasta tacna i do 3 figure po izboru: lutkice i jelke. Cena seta se računa odmah.",
+  "lead": "Sastavite svoj praznični set: rebrasta ovalna tacna i do tri figure po izboru – Deda Mraz, Sneško, irvas, spiralna jelka ili jelka sa postoljem. Što više figura, veći popust, a ceo set stiže u jednom paketu.",
+  "about": [
+   "Tacna je uvek u setu, a figure birate klikom: do tri, svaka po jednom. Cena seta se računa odmah: tacna i 1 figura −5%, tacna i 2 figure −10%, tacna i 3 figure −15%.",
+   "Lutkice su u maloj veličini, spiralna jelka mala, a jelka sa postoljem visoka 15 cm, kao na fotografijama. Boju tacne birate iznad, a ako želite drugu veličinu figure, napišite je u napomeni.",
+   "Posle praznika tacna ostaje u kući za ključeve, daljinski, nakit, sveće i sitnice. Tacna je samo za dekoraciju i sitnice, nije za hranu."
+  ],
+  "specs": [
+   [
+    "U setu",
+    "rebrasta ovalna tacna i do 3 figure po izboru"
+   ],
+   [
+    "Figure",
+    "Deda Mraz, Sneško, irvas (mali), spiralna jelka (mala), jelka sa postoljem (15 cm)"
+   ],
+   [
+    "Popust",
+    "tacna + 1 figura −5%, + 2 figure −10%, + 3 figure −15%"
+   ],
+   [
+    "Materijal",
+    "PLA plastika"
+   ],
+   [
+    "Boja tacne",
+    "izbor boje kao kod ostalih proizvoda"
+   ]
+  ],
+  "details": [
+   {
+    "q": "Rok i dostava",
+    "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
+   },
+   {
+    "q": "Povraćaj i reklamacije",
+    "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
+   },
+   {
+    "q": "Održavanje",
+    "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
+   }
+  ],
+  "faq": [
+   {
+    "q": "Koliko košta set?",
+    "a": "Zavisi od figura: tacna + Irvas + Sneško + Deda Mraz je 1.750 din (umesto 2.060), tacna + 2 lutkice 1.410 din (umesto 1.570). Cena se računa čim izaberete figure."
+   },
+   {
+    "q": "Mogu li dve iste figure?",
+    "a": "U setu je svaka figura po jednom. Ako želite dve iste, dodajte drugu posebno u korpu: za više komada istog proizvoda važi popust 2 kom −5%, 4 i više −10%."
+   },
+   {
+    "q": "Mogu li set bez tacne?",
+    "a": "Možete: dodajte figure posebno u korpu. Popust za različite proizvode se računa sam (3 različite figure −10%)."
+   }
+  ],
+  "seoTitle": "Novogodišnji set na tacni: tacna i figure po izboru | Bumbaru",
+  "meta": "Sastavite novogodišnji set: rebrasta tacna i do 3 figure (Deda Mraz, Sneško, irvas, jelke). Do −15% za set, cena se računa odmah. Plaćanje pouzećem.",
+  "focus": "novogodišnji set dekoracija",
+  "categories": [
+   "nova-godina",
+   "dom-i-kuhinja"
+  ],
+  "tags": [
+   "sto",
+   "dekoracija"
+  ],
+  "custom": false,
+  "price": 590,
+  "priceFrom": true,
+  "related": [
+   "rebrasta-ovalna-tacna",
+   "deda-mraz-lutkica-pleteni-izgled",
+   "snesko-lutkica-pleteni-izgled",
+   "irvas-lutkica-pleteni-izgled"
+  ],
+  "homeOrder": 0,
+  "hidden": false,
+  "og": "p/rebrasta-ovalna-tacna/u20e447d1e-og.jpg",
+  "images": [
+   {
+    "full": "p/rebrasta-ovalna-tacna/u20e447d1e-lg.webp",
+    "card": "p/rebrasta-ovalna-tacna/u20e447d1e-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Rebrasta tacna sa Deda Mrazom, irvasom i Sneškom"
+   },
+   {
+    "full": "p/rebrasta-ovalna-tacna/uf17327af4-lg.webp",
+    "card": "p/rebrasta-ovalna-tacna/uf17327af4-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Rebrasta tacna sa irvasom, jelkicom i Sneškom"
+   },
+   {
+    "full": "p/irvas-lutkica-pleteni-izgled/u5d350b609-lg.webp",
+    "card": "p/irvas-lutkica-pleteni-izgled/u5d350b609-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Irvas lutkica između dve jelke na tacni"
+   },
+   {
+    "full": "p/irvas-lutkica-pleteni-izgled/u212d7386e-lg.webp",
+    "card": "p/irvas-lutkica-pleteni-izgled/u212d7386e-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Irvas i Deda Mraz lutkica pored spiralne jelke na tacni"
+   },
+   {
+    "full": "p/snesko-lutkica-pleteni-izgled/u698a6b431-lg.webp",
+    "card": "p/snesko-lutkica-pleteni-izgled/u698a6b431-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Sneško lutkica između dve jelke na tacni"
+   },
+   {
+    "full": "p/snesko-lutkica-pleteni-izgled/u9eca5bcf2-lg.webp",
+    "card": "p/snesko-lutkica-pleteni-izgled/u9eca5bcf2-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Sneško i Deda Mraz lutkica pored spiralne jelke na tacni"
+   },
+   {
+    "full": "p/deda-mraz-lutkica-pleteni-izgled/u40d93c2d5-lg.webp",
+    "card": "p/deda-mraz-lutkica-pleteni-izgled/u40d93c2d5-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Deda Mraz lutkica između dve jelke na tacni"
+   },
+   {
+    "full": "p/deda-mraz-lutkica-pleteni-izgled/u301f17e77-lg.webp",
+    "card": "p/deda-mraz-lutkica-pleteni-izgled/u301f17e77-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Deda Mraz i Sneško lutkica sa jelkicom na tacni"
+   },
+   {
+    "full": "p/spiralna-jelka-sa-zvezdom/uc8c3b4863-lg.webp",
+    "card": "p/spiralna-jelka-sa-zvezdom/uc8c3b4863-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Spiralna jelka i jelkica na postolju sa Deda Mrazom, na tacni"
+   },
+   {
+    "full": "p/spiralna-jelka-sa-zvezdom/ube866eb57-lg.webp",
+    "card": "p/spiralna-jelka-sa-zvezdom/ube866eb57-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Spiralna jelka između Sneška i irvasa, na tacni"
+   },
+   {
+    "full": "p/jelka-sa-postoljem/u2bdd57ac8-lg.webp",
+    "card": "p/jelka-sa-postoljem/u2bdd57ac8-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Jelkica na postolju između irvasa i Deda Mraza, na tacni"
+   },
+   {
+    "full": "p/jelka-sa-postoljem/ucfac1ab28-lg.webp",
+    "card": "p/jelka-sa-postoljem/ucfac1ab28-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "Jelkica na postolju između irvasa i Sneška, na tacni"
+   }
+  ],
+  "config": {
+   "type": "",
+   "options": "",
+   "izbor_boja": [
+    {
+     "id": "boja",
+     "label": "Boja tacne",
+     "def": "bela"
+    }
+   ],
+   "komplet": {
+    "uz": [
+     "deda-mraz-lutkica-pleteni-izgled",
+     "snesko-lutkica-pleteni-izgled",
+     "irvas-lutkica-pleteni-izgled",
+     "spiralna-jelka-sa-zvezdom",
+     "jelka-sa-postoljem"
+    ],
+    "popust": 10,
+    "popusti": "2=5, 3=10, 4=15",
+    "max": 3,
+    "glavni": true
+   }
+  }
+ },
+ {
   "id": "DM-04",
   "slug": "rebrasta-ovalna-tacna",
   "title": "Rebrasta ovalna tacna",

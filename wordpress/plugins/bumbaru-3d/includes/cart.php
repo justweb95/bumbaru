@@ -318,6 +318,9 @@ function bumbaru_read_choice( $product, $src ) {
 	// Komplet: ovaj proizvod + proizvodi uz njega, sa popustom na ukupnu cenu
 	if ( $get( 'komplet' ) ) {
 		$ksel = $get( 'kompletUz' );
+		if ( is_array( $ksel ) && ! empty( $c['komplet']['max'] ) && count( $ksel ) > $c['komplet']['max'] ) {
+			return new WP_Error( 'komplet', 'U setu može najviše ' . (int) $c['komplet']['max'] . ' uz ' . $product->get_name() . '.' );
+		}
 		$k   = bumbaru_komplet( $product, is_array( $ksel ) ? $ksel : null, $oi >= 0 ? $c['options'][ $oi ]['values'][ $vel ]['label'] : '' );
 		if ( $k && null === $price ) {
 			$mine  = array();

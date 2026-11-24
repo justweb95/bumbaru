@@ -193,6 +193,8 @@ add_action( 'woocommerce_product_data_panels', function () {
 			woocommerce_wp_text_input( array( 'id' => 'bu_km_uz', 'name' => 'bu_config[komplet][uz]', 'label' => 'Komplet: uz ovo', 'value' => implode( ', ', $km['uz'] ), 'placeholder' => 'adresa-drugog-proizvoda', 'description' => 'Adrese proizvoda (slug), odvojene zarezom. Prazno = nema kompleta.', 'desc_tip' => false ) );
 			woocommerce_wp_text_input( array( 'id' => 'bu_km_p', 'name' => 'bu_config[komplet][popust]', 'label' => 'Popust za komplet, %', 'type' => 'number', 'value' => $km['popust'], 'custom_attributes' => array( 'min' => 0, 'max' => 90 ) ) );
 			woocommerce_wp_text_input( array( 'id' => 'bu_kol', 'name' => 'bu_config[kolicina]', 'label' => 'Popust za više komada', 'value' => $cfg['kolicina_txt'], 'placeholder' => '2=5, 3=10, 5=15', 'description' => 'Od koliko komada = procenat. Sabiraju se svi komadi ovog proizvoda u korpi (npr. ukrasi sa različitim imenima). Na strani proizvoda pčelica na traci pokazuje koliko još do popusta. Prazno = nema popusta. Ne važi za izbor motiva/boja i slavski set (oni imaju svoj popust).', 'desc_tip' => false ) );
+			woocommerce_wp_text_input( array( 'id' => 'bu_km_max', 'name' => 'bu_config[komplet][max]', 'label' => 'Komplet: najviše uz ovo', 'type' => 'number', 'value' => isset( $km['max'] ) ? $km['max'] : 0, 'custom_attributes' => array( 'min' => 0, 'max' => 20 ), 'description' => 'Koliko proizvoda kupac najviše bira uz ovaj (npr. set na tacni: 3). 0 = bez ograničenja.', 'desc_tip' => false ) );
+			woocommerce_wp_checkbox( array( 'id' => 'bu_km_glavni', 'name' => 'bu_config[komplet][glavni]', 'label' => 'Ovo je set', 'value' => ! empty( $km['glavni'] ) ? 'yes' : 'no', 'cbvalue' => 'yes', 'description' => 'Na strani je samo „Napravite svoj set” (ovaj proizvod je uvek u setu), bez posebnog dugmeta za sam proizvod.' ) );
 			woocommerce_wp_text_input( array( 'id' => 'bu_km_pp', 'name' => 'bu_config[komplet][popusti]', 'label' => 'Komplet po izboru: popust po broju', 'value' => isset( $km['popusti'] ) ? bumbaru_tiers_to_text( $km['popusti'] ) : '', 'placeholder' => '2=10, 3=15, 4=20', 'description' => 'Ako je upisano, kupac kućicama bira šta ide u komplet (prva dva su štiklirana), a popust zavisi od broja proizvoda u kompletu, računajući i ovaj. Prazno = uvek ceo komplet sa popustom iznad.', 'desc_tip' => false ) );
 			$fm = $cfg['firme'] ? $cfg['firme'] : array( 'popusti' => array(), 'tekst' => '' );
 			woocommerce_wp_text_input( array( 'id' => 'bu_fm_p', 'name' => 'bu_config[firme][popusti]', 'label' => 'Popusti za firme', 'value' => bumbaru_tiers_to_text( $fm['popusti'] ), 'placeholder' => '25=35, 50=40, 100=45', 'description' => 'Kartica „Za firme i veće količine” sa kalkulatorom. Prazno = nema kartice.', 'desc_tip' => false ) );
@@ -306,6 +308,8 @@ add_action( 'woocommerce_process_product_meta', function ( $id ) {
 			'uz'      => array_values( array_filter( array_map( 'sanitize_title', explode( ',', $in['komplet']['uz'] ) ) ) ),
 			'popust'  => (float) $in['komplet']['popust'],
 			'popusti' => bumbaru_tiers_to_text( bumbaru_parse_tiers( isset( $in['komplet']['popusti'] ) ? sanitize_text_field( $in['komplet']['popusti'] ) : '' ) ),
+			'max'     => isset( $in['komplet']['max'] ) ? max( 0, (int) $in['komplet']['max'] ) : ( isset( $prev['komplet']['max'] ) ? (int) $prev['komplet']['max'] : 0 ),
+			'glavni'  => isset( $in['komplet']['max'] ) ? ! empty( $in['komplet']['glavni'] ) : ! empty( $prev['komplet']['glavni'] ),
 		);
 	}
 	if ( ! empty( $in['firme']['popusti'] ) ) {

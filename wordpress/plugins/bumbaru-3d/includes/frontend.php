@@ -801,8 +801,12 @@ function bumbaru_komplet_izbor_html( $product, $k ) {
 	$base = bumbaru_base_price( $product );
 	$main = $vm['v'] ? $vm['v'] : array( '' => array( 'cena' => $base, 'eff' => bumbaru_eff( $product, $base ) ) );
 	$img  = function_exists( 'bu_card_img' ) ? bu_card_img( $product ) : '';
+	$c    = bumbaru_config( $product );
+	$set  = ! empty( $c['komplet']['glavni'] );
+	$max  = (int) $c['komplet']['max'];
 	$data = array(
 		'popusti' => $k['popusti'],
+		'max'     => $max,
 		'opcija'  => $vm['opcija'],
 		'main'    => $main,
 		'uz'      => array_map( function ( $x ) {
@@ -816,15 +820,16 @@ function bumbaru_komplet_izbor_html( $product, $k ) {
 	foreach ( $k['popusti'] as $t ) {
 		$tiers[] = (int) $t['od'] . ' kom −' . (float) $t['procenat'] . '%';
 	}
-	$o = '<div class="komplet km-izbor" data-komplet2="' . esc_attr( wp_json_encode( $data ) ) . '"><div class="km-head"><h2 class="h3">Napravite komplet</h2><span class="badge badge-leaf" data-km-badge>' . esc_html( implode( ' · ', $tiers ) ) . '</span></div>'
-		. '<p class="small muted km-hint">Štiklirajte šta ide uz ' . esc_html( $product->get_name() ) . '. Što više u kompletu, veći popust.</p><div class="km-row km-grid">'
-		. '<span class="km-item km-main"><span class="km-img">' . ( $img ? '<img src="' . esc_url( $img ) . '" alt="" width="120" height="120" loading="lazy" />' : '' ) . '</span><span class="km-name">' . esc_html( $product->get_name() ) . '</span><span class="km-tag">ovaj proizvod</span></span>';
+	$glavni = $set ? ( isset( $c['komplet']['naziv'] ) ? $c['komplet']['naziv'] : 'Rebrasta ovalna tacna' ) : $product->get_name();
+	$o = '<div class="komplet km-izbor' . ( $set ? ' km-set' : '' ) . '" id="' . ( $set ? 'set' : 'komplet' ) . '" data-komplet2="' . esc_attr( wp_json_encode( $data ) ) . '"><div class="km-head"><h2 class="h3">' . ( $set ? 'Napravite svoj set' : 'Napravite komplet' ) . '</h2><span class="badge badge-leaf" data-km-badge>' . esc_html( implode( ' · ', $tiers ) ) . '</span></div>'
+		. '<p class="small muted km-hint">' . ( $set ? 'Kliknite figure koje idu na tacnu' . ( $max ? ', do ' . $max : '' ) . '. Što više u setu, veći popust, a cena seta se računa odmah.' : 'Štiklirajte šta ide uz ' . esc_html( $product->get_name() ) . '. Što više u kompletu, veći popust.' ) . '</p><div class="km-row km-grid">'
+		. '<span class="km-item km-main"><span class="km-img">' . ( $img ? '<img src="' . esc_url( $img ) . '" alt="" width="120" height="120" loading="lazy" />' : '' ) . '</span><span class="km-name">' . esc_html( $glavni ) . '</span><span class="km-tag">' . ( $set ? 'uvek u setu' : 'ovaj proizvod' ) . '</span></span>';
 	foreach ( $k['uz'] as $i => $x ) {
 		$o .= '<label class="km-item km-pick"><input type="checkbox" value="' . (int) $x['pid'] . '" data-km-pick' . ( $i < 2 ? ' checked' : '' ) . ' /><span class="km-img">' . ( $x['slika'] ? '<img src="' . esc_url( $x['slika'] ) . '" alt="" width="120" height="120" loading="lazy" />' : '' ) . '<span class="km-check" aria-hidden="true">' . bumbaru_icon( 'check', 14, 3 ) . '</span></span><span class="km-name">' . esc_html( $x['naziv'] ) . '</span></label>';
 	}
 	$o .= '</div><p class="mm-msg km-msg" aria-live="polite"><span class="mm-count" data-km-n></span><span class="mm-badge" data-km-pct hidden></span><span data-km-text></span></p>'
 		. '<div class="km-foot"><p class="km-cena">Komplet: <s data-km-puna></s> <b data-km-cena></b></p>'
-		. '<button class="btn btn-primary" type="button" data-km2-add>' . bumbaru_icon( 'bag' ) . 'Dodaj komplet u korpu</button></div>'
+		. '<button class="btn btn-primary' . ( $set ? ' btn-lg' : '' ) . '" type="button" data-km2-add>' . bumbaru_icon( 'bag' ) . ( $set ? 'Dodaj set u korpu' : 'Dodaj komplet u korpu' ) . '</button></div>'
 		. ( $vm['opcija'] ? '<p class="small muted">' . esc_html( $vm['opcija'] ) . ' iz izbora iznad važi za ceo komplet.</p>' : '' ) . '</div>';
 	return $o;
 }

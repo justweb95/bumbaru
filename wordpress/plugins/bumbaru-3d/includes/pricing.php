@@ -200,11 +200,39 @@ function bumbaru_value_price( $product, $v ) {
 	return bumbaru_base_price( $product ) + (float) $v['add'];
 }
 
+/**
+ * Set (komplet je glavni deo strane, npr. tacna + do 3 figure): najmanja i najveća cena seta.
+ * Najmanji = sa najjeftinijim jednim proizvodom, najveći = sa najviše najskupljih (popust po broju u setu).
+ */
+function bumbaru_set_cene( $product ) {
+	$c = bumbaru_config( $product );
+	if ( empty( $c['komplet']['glavni'] ) || ! function_exists( 'bumbaru_komplet' ) ) {
+		return array();
+	}
+	$k = bumbaru_komplet( $product );
+	if ( ! $k || ! $k['uz'] ) {
+		return array();
+	}
+	$main = bumbaru_eff( $product, bumbaru_base_price( $product ) );
+	$cene = wp_list_pluck( $k['uz'], 'eff' );
+	sort( $cene );
+	$max  = $c['komplet']['max'] ? min( $c['komplet']['max'], count( $cene ) ) : count( $cene );
+	$sa   = function ( $lista ) use ( $main, $c ) {
+		$p = bumbaru_popust_za( $c['komplet']['popusti'], 1 + count( $lista ) );
+		return round( ( $main + array_sum( $lista ) ) * ( 1 - $p / 100 ) / 10 ) * 10;
+	};
+	return array( $sa( array_slice( $cene, 0, 1 ) ), $sa( array_slice( array_reverse( $cene ), 0, $max ) ) );
+}
+
 /** Sve cene koje kupac može da dobije (za „od … din” i Google), kao sveCene() na Astro sajtu. */
 function bumbaru_all_prices( $product ) {
 	$base = bumbaru_base_price( $product );
 	if ( ! $base ) {
 		return array();
+	}
+	$sc = bumbaru_set_cene( $product );
+	if ( $sc ) {
+		return $sc;
 	}
 	$c  = bumbaru_config( $product );
 	$oi = bumbaru_price_option_index( $c );
