@@ -703,7 +703,7 @@
   "related": [
    "privezak-deda-mraz",
    "jelkica-za-punjenje",
-   "mini-jelka-za-sto",
+   "jelka-sa-postoljem",
    "ukras-za-jelku-sa-imenom"
   ],
   "homeOrder": 11,
@@ -803,7 +803,7 @@
    }
   ],
   "related": [
-   "mini-jelka-za-sto",
+   "jelka-sa-postoljem",
    "prstenovi-za-salvete-set-od-6",
    "zlatna-jelka-za-sklapanje",
    "ukras-za-jelku-sa-imenom"
@@ -909,7 +909,7 @@
   ],
   "related": [
    "patuljak-sa-led-svecicom",
-   "mini-jelka-za-sto",
+   "jelka-sa-postoljem",
    "zlatna-jelka-za-sklapanje",
    "porodicni-set-ukrasa-sa-imenima"
   ],
@@ -926,91 +926,6 @@
      "def": "crvena"
     }
    ]
-  }
- },
- {
-  "id": "NG-07",
-  "slug": "mini-jelka-za-sto",
-  "title": "Mini jelka za sto",
-  "category": "nova-godina",
-  "short": "Mala jelka sa zvezdom za sto, policu ili radni sto.",
-  "lead": "Mala zelena jelka sa zvezdom na vrhu, za praznični sto, policu ili radni sto. Ne treba joj ni voda ni struja, a svake godine izgleda isto.",
-  "about": [
-   "Jelka ima slojevite grane, braon stablo i zvezdu na vrhu. Stoji sama, bez postolja, pa je lepa na stolu, polici ili prozoru.",
-   "Dobar je mali poklon za kolege: ne zauzima mesto, a radni sto odmah izgleda praznično."
-  ],
-  "specs": [
-   [
-    "Boje",
-    "zelena jelka, braon stablo, zvezda"
-   ],
-   [
-    "Materijal",
-    "PLA plastika"
-   ]
-  ],
-  "details": [
-   {
-    "q": "Rok i dostava",
-    "a": "Rok slanja javljamo u odgovoru na vašu poruku. Kurir nosi 1–2 radna dana, a plaćate pouzećem, kuriru kad paket stigne."
-   },
-   {
-    "q": "Povraćaj i reklamacije",
-    "a": "Proizvod možete vratiti u roku od 14 dana od prijema, bez navođenja razloga. Ako stigne oštećen, pošaljite nam fotografiju u Messenger-u i šaljemo novi."
-   },
-   {
-    "q": "Održavanje",
-    "a": "Brišite suvom krpom. Ne ostavljajte ga pored grejanja ni na suncu iza stakla: PLA omekšava na oko 55–60 °C."
-   }
-  ],
-  "faq": [
-   {
-    "q": "Može li jelka u drugoj boji?",
-    "a": "Može. Izaberite boju pre slanja poruke, od boja koje trenutno imamo."
-   }
-  ],
-  "seoTitle": "Mini jelka za sto, novogodišnja dekoracija | Bumbaru",
-  "meta": "Mala zelena jelka sa zvezdom za praznični sto, policu ili radni sto. Novogodišnja dekoracija i mali poklon za kolege.",
-  "focus": "mala jelka",
-  "categories": [
-   "nova-godina"
-  ],
-  "tags": [
-   "sto"
-  ],
-  "custom": false,
-  "price": null,
-  "priceFrom": false,
-  "images": [
-   {
-    "full": "p/mini-jelka-za-sto/1-lg.webp",
-    "card": "p/mini-jelka-za-sto/1-sq.webp",
-    "w": 896,
-    "h": 1195,
-    "alt": "Zelena mini jelka sa zvezdom na prazničnom stolu, pored sveća"
-   },
-   {
-    "full": "p/mini-jelka-za-sto/2-lg.webp",
-    "card": "p/mini-jelka-za-sto/2-sq.webp",
-    "w": 896,
-    "h": 1195,
-    "alt": "Mini jelka za sto sa kuglama i svećama"
-   }
-  ],
-  "related": [
-   "jelka-sa-postoljem",
-   "spiralna-jelka-sa-zvezdom",
-   "zlatna-jelka-za-sklapanje",
-   "patuljak-sa-led-svecicom"
-  ],
-  "homeOrder": 10,
-  "hidden": false,
-  "og": "og/mini-jelka-za-sto.jpg",
-  "config": {
-   "type": "jelka",
-   "tree": "mini",
-   "star_default": "zlatna",
-   "options": "Veličina = 15 cm | 10 cm | 7 cm"
   }
  },
  {
@@ -1099,7 +1014,7 @@
    }
   ],
   "related": [
-   "mini-jelka-za-sto",
+   "jelka-sa-postoljem",
    "privezak-deda-mraz",
    "prstenovi-za-salvete-set-od-6",
    "ukras-za-jelku-sa-imenom"
@@ -1211,7 +1126,7 @@
    "privezak-deda-mraz",
    "privezak-irvas",
    "ukras-za-jelku-sa-imenom",
-   "mini-jelka-za-sto"
+   "jelka-sa-postoljem"
   ],
   "homeOrder": 12,
   "hidden": false,
@@ -1315,7 +1230,7 @@
   ],
   "related": [
    "ukras-za-jelku-sa-imenom",
-   "mini-jelka-za-sto",
+   "jelka-sa-postoljem",
    "jelkica-za-punjenje",
    "prstenovi-za-salvete-set-od-6"
   ],
@@ -2275,7 +2190,7 @@
   "related": [
    "patuljak-sa-led-svecicom",
    "spiralna-jelka-sa-zvezdom",
-   "mini-jelka-za-sto",
+   "jelka-sa-postoljem",
    "zlatna-jelka-za-sklapanje"
   ],
   "homeOrder": 1,
@@ -2458,7 +2373,7 @@
   "slug": "jelka-sa-postoljem",
   "config": {
    "type": "",
-   "options": "Visina = 15 cm [590] | 10 cm [390] | 7 cm [290]",
+   "options": "",
    "izbor_boja": [
     {
      "id": "boja",
@@ -2477,11 +2392,11 @@
   "focus": "jelka sa postoljem",
   "title": "Jelka sa postoljem",
   "category": "nova-godina",
-  "short": "Jelka na postolju za sto, policu ili prozor. 15, 10 ili 7 cm.",
+  "short": "Jelka na postolju za sto, policu ili prozor, visine 15 cm.",
   "lead": "Zelena jelka na postolju, sa vrhom na kraju. Stoji sama na stolu, polici ili prozoru, a lepa je i na tacni uz naše lutkice.",
   "about": [
    "Jelka ima tri dela: postolje, jelku i vrh. Stoji sama, pa je lepa na stolu, polici, prozoru ili radnom stolu.",
-   "Birate visinu (15, 10 ili 7 cm) i boje, kao kod ostalih naših jelki. Više jelki različite visine zajedno izgleda kao mala šuma.",
+   "Visina je 15 cm. Boju jelke i boju postolja i vrha birate posebno, kao kod ostalih naših jelki.",
    "Uz lutkice u pletenom izgledu i rebrastu tacnu čini malu prazničnu scenu, a za različite proizvode dobijate popust."
   ],
   "specs": [
@@ -2491,7 +2406,7 @@
    ],
    [
     "Visina",
-    "15, 10 ili 7 cm"
+    "15 cm"
    ],
    [
     "Boje",
@@ -2518,16 +2433,12 @@
   ],
   "faq": [
    {
-    "q": "Mogu li dve jelke različite visine?",
-    "a": "Možete. Izaberite prvu visinu i dodajte u korpu, pa izaberite drugu i dodajte i nju."
-   },
-   {
     "q": "Ima li popusta uz lutkice?",
     "a": "Ima. Za 2 različita proizvoda iz grupe (lutkice, spiralna jelka, jelka sa postoljem, tacna) popust je 5%, za 3 različita 10%, a za 4 i više 15%."
    }
   ],
-  "seoTitle": "Jelka sa postoljem za sto, 15, 10 ili 7 cm | Bumbaru",
-  "meta": "Jelka na postolju za sto, policu ili prozor: postolje, jelka i vrh, tri visine (15, 10 i 7 cm). Od 290 din, plaćanje pouzećem.",
+  "seoTitle": "Jelka sa postoljem za sto, 15 cm | Bumbaru",
+  "meta": "Jelka na postolju za sto, policu ili prozor: postolje, jelka i vrh, visina 15 cm. Cena 590 din, plaćanje pouzećem.",
   "categories": [
    "nova-godina"
   ],

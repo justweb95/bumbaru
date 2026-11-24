@@ -1,5 +1,5 @@
-/* Bumbaru 3D: popust za različite proizvode (lutkice, spiralna i mini jelka, tacna).
-   Pčelica na traci pokazuje broj različitih proizvoda: ono što je već u korpi + ovaj proizvod.
+/* Bumbaru 3D: popust za različite proizvode (lutkice, spiralna jelka, jelka sa postoljem, tacna).
+   Pčelica na traci ide za brojem komada (u korpi + ovaj izbor), svaki klik jedan korak; stepenice svetle po dostignutom popustu.
    Popust je na po jedan komad svakog različitog proizvoda (najskuplji izbor), dodatni komadi idu po punoj ceni.
    Isti obračun radi server (grupa.php), ovde je samo prikaz i Messenger poruka. */
 (function () {
@@ -48,10 +48,10 @@
 
   function update() {
     var r = racun(izbor()), n = r.n, p = r.pct, e = Math.max(p, r.isti);
-    // Pčelica stoji na stepenici sa dostignutim procentom (za različite proizvode ili za više istih).
-    var nivo = Math.min(n, 1);
-    tiers.forEach(function (t) { if (e >= t.procenat) nivo = t.od; });
-    var x = nivo / max, kljuc = nivo + '|' + e;
+    // Pčelica ide za brojem komada (u korpi + izbor): svaki klik na + je jedan korak, kao kod popusta za količinu.
+    var sviKom = izbor().reduce(function (a, s) { return a + s.kom; }, 0);
+    var nivo = Math.min(Math.max(sviKom, 1), max);
+    var x = nivo / max, kljuc = sviKom + '|' + e;
     $('[data-mm-fill]').style.width = (x * 100) + '%';
     var bee = $('[data-mm-bee]');
     bee.style.left = (x * 100) + '%';

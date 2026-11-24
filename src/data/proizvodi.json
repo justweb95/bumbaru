@@ -638,7 +638,7 @@
       "related": [
         "privezak-deda-mraz",
         "jelkica-za-punjenje",
-        "mini-jelka-za-sto",
+        "jelka-sa-postoljem",
         "ukras-za-jelku-sa-imenom"
       ],
       "seoTitle": "Privezak irvas, novogodišnji poklon | Bumbaru",
@@ -744,7 +744,7 @@
         }
       ],
       "related": [
-        "mini-jelka-za-sto",
+        "jelka-sa-postoljem",
         "prstenovi-za-salvete-set-od-6",
         "zlatna-jelka-za-sklapanje",
         "ukras-za-jelku-sa-imenom"
@@ -837,7 +837,7 @@
       ],
       "related": [
         "patuljak-sa-led-svecicom",
-        "mini-jelka-za-sto",
+        "jelka-sa-postoljem",
         "zlatna-jelka-za-sklapanje",
         "porodicni-set-ukrasa-sa-imenima"
       ],
@@ -1016,7 +1016,7 @@
         }
       ],
       "related": [
-        "mini-jelka-za-sto",
+        "jelka-sa-postoljem",
         "privezak-deda-mraz",
         "prstenovi-za-salvete-set-od-6",
         "ukras-za-jelku-sa-imenom"
@@ -1119,7 +1119,7 @@
         "privezak-deda-mraz",
         "privezak-irvas",
         "ukras-za-jelku-sa-imenom",
-        "mini-jelka-za-sto"
+        "jelka-sa-postoljem"
       ],
       "seoTitle": "Jelkica za punjenje, ukras za jelku | Bumbaru",
       "meta": "Ukras za jelku u obliku jelkice koji punite sitnim poklonima ili umotanim bombonama. Tirkizna ili crvena. Poručivanje preko Messengera."
@@ -1373,7 +1373,7 @@
       ],
       "related": [
         "ukras-za-jelku-sa-imenom",
-        "mini-jelka-za-sto",
+        "jelka-sa-postoljem",
         "jelkica-za-punjenje",
         "prstenovi-za-salvete-set-od-6"
       ],
@@ -2196,7 +2196,7 @@
       "related": [
         "patuljak-sa-led-svecicom",
         "spiralna-jelka-sa-zvezdom",
-        "mini-jelka-za-sto",
+        "jelka-sa-postoljem",
         "zlatna-jelka-za-sklapanje"
       ],
       "seoTitle": "Novogodišnja kućica sa LED svećicom, dekoracija | Bumbaru",
@@ -2380,7 +2380,7 @@
       "tags": [
         "sto"
       ],
-      "short": "Jelka na postolju za sto, policu ili prozor. 15, 10 ili 7 cm.",
+      "short": "Jelka na postolju za sto, policu ili prozor, visine 15 cm.",
       "lead": "Zelena jelka na postolju, sa vrhom na kraju. Stoji sama na stolu, polici ili prozoru, a lepa je i na tacni uz naše lutkice.",
       "price": 590,
       "images": [
@@ -2420,22 +2420,6 @@
           "og": "/img/p/jelka-sa-postoljem/ucfac1ab28-og.jpg"
         }
       ],
-      "options": [
-        {
-          "id": "velicina",
-          "label": "Visina",
-          "values": [
-            "15 cm",
-            "10 cm",
-            "7 cm"
-          ],
-          "cene": [
-            590,
-            390,
-            290
-          ]
-        }
-      ],
       "colors": [
         {
           "id": "boja",
@@ -2450,7 +2434,7 @@
       ],
       "about": [
         "Jelka ima tri dela: postolje, jelku i vrh. Stoji sama, pa je lepa na stolu, polici, prozoru ili radnom stolu.",
-        "Birate visinu (15, 10 ili 7 cm) i boje, kao kod ostalih naših jelki. Više jelki različite visine zajedno izgleda kao mala šuma.",
+        "Visina je 15 cm. Boju jelke i boju postolja i vrha birate posebno, kao kod ostalih naših jelki.",
         "Uz lutkice u pletenom izgledu i rebrastu tacnu čini malu prazničnu scenu, a za različite proizvode dobijate popust."
       ],
       "specs": [
@@ -2460,7 +2444,7 @@
         ],
         [
           "Visina",
-          "15, 10 ili 7 cm"
+          "15 cm"
         ],
         [
           "Boje",
@@ -2487,10 +2471,6 @@
       ],
       "faq": [
         {
-          "q": "Mogu li dve jelke različite visine?",
-          "a": "Možete. Izaberite prvu visinu i dodajte u korpu, pa izaberite drugu i dodajte i nju."
-        },
-        {
           "q": "Ima li popusta uz lutkice?",
           "a": "Ima. Za 2 različita proizvoda iz grupe (lutkice, spiralna jelka, jelka sa postoljem, tacna) popust je 5%, za 3 različita 10%, a za 4 i više 15%."
         }
@@ -2502,8 +2482,8 @@
         "snesko-lutkica-pleteni-izgled",
         "deda-mraz-lutkica-pleteni-izgled"
       ],
-      "seoTitle": "Jelka sa postoljem za sto, 15, 10 ili 7 cm | Bumbaru",
-      "meta": "Jelka na postolju za sto, policu ili prozor: postolje, jelka i vrh, tri visine (15, 10 i 7 cm). Od 290 din, plaćanje pouzećem."
+      "seoTitle": "Jelka sa postoljem za sto, 15 cm | Bumbaru",
+      "meta": "Jelka na postolju za sto, policu ili prozor: postolje, jelka i vrh, visina 15 cm. Cena 590 din, plaćanje pouzećem."
     },
     {
       "id": "DM-04",

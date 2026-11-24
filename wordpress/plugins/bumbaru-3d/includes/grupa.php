@@ -172,33 +172,28 @@ function bumbaru_grupa_lista() {
 	return $l;
 }
 
-/** Natpis stepenice: „2 kom”, „3 različita · 4 ista”, „4+ različita” (isti procenat za različite i za iste). */
+/** Natpis stepenice ispod procenta: „2 kom”, „3 različita”, „4+ različita” (iste komade objašnjava tekst iznad trake). */
 function bumbaru_grupa_stepenica( $t, $last ) {
+	$isti = 0;
 	foreach ( bumbaru_grupa()['isti'] as $i ) {
-		if ( (float) $i['procenat'] === (float) $t['procenat'] ) {
-			return $i['od'] === $t['od'] ? $t['od'] . ' kom' : $t['od'] . ' različita · ' . $i['od'] . ' ista';
+		if ( (int) $i['od'] === (int) $t['od'] ) {
+			$isti = (float) $i['procenat'];
 		}
+	}
+	if ( $isti && $isti === (float) $t['procenat'] ) {
+		return $t['od'] . ' kom';
 	}
 	return $t['od'] . ( $last ? '+' : '' ) . ' ' . bumbaru_grupa_rec( (int) $t['od'] );
 }
 
-/** Mesto pčelice: stepenica sa dostignutim procentom (za različite ili za iste), inače broj različitih. */
-function bumbaru_grupa_nivo( $n, $e ) {
-	$tiers = bumbaru_grupa()['popusti'];
-	$nivo  = min( $n, 1 );
-	foreach ( $tiers as $t ) {
-		if ( $e >= $t['procenat'] ) {
-			$nivo = $t['od'];
-		}
-	}
-	return $nivo;
-}
-
-/** Traka sa pčelicom (ista kao kod popusta za količinu). $e = najveći dostignut popust (%). */
-function bumbaru_grupa_traka( $n, $e = 0 ) {
+/**
+ * Traka sa pčelicom (ista kao kod popusta za količinu): pčelica ide za brojem komada (svaki komad jedan korak),
+ * stepenice svetle kad je popust dostignut. $e = najveći dostignut popust (%), $kom = broj komada.
+ */
+function bumbaru_grupa_traka( $kom, $e = 0 ) {
 	$tiers = bumbaru_grupa()['popusti'];
 	$max   = end( $tiers )['od'];
-	$x     = bumbaru_grupa_nivo( $n, $e ) / $max * 100;
+	$x     = min( max( 1, (int) $kom ), $max ) / $max * 100;
 	$o     = '<div class="mm" aria-hidden="true"><div class="mm-track"><div class="mm-fill" data-mm-fill style="width:' . esc_attr( round( $x, 2 ) ) . '%"></div>';
 	foreach ( $tiers as $i => $t ) {
 		$o .= '<span class="mm-stop' . ( $e >= $t['procenat'] ? ' on' : '' ) . '" data-mm-stop="' . (int) $t['od'] . '" data-mm-pct="' . esc_attr( (float) $t['procenat'] ) . '" style="--x:' . esc_attr( round( $t['od'] / $max * 100, 2 ) ) . '%"><i></i><span class="mm-lab"><b>−' . esc_html( (float) $t['procenat'] ) . '%</b><small>' . esc_html( bumbaru_grupa_stepenica( $t, count( $tiers ) - 1 === $i ) ) . '</small></span></span>';
@@ -256,7 +251,7 @@ function bumbaru_grupa_html( $product ) {
 	$n    = count( $imam );
 	return '<div class="field mot kol grp" data-grupa="' . esc_attr( wp_json_encode( $data ) ) . '"><p class="flabel">Popust za različite proizvode</p>'
 		. '<p class="hint mot-hint">Lutkice, spiralna jelka, jelka sa postoljem i rebrasta tacna: 2 različita −5%, 3 različita −10%, 4 i više −15% (na po jedan komad svakog). Više komada istog proizvoda: 2 kom −5%, 4 i više −10%. Popusti se ne sabiraju, važi veći.</p>'
-		. bumbaru_grupa_traka( $n )
+		. bumbaru_grupa_traka( 1 + array_sum( wp_list_pluck( $korpa, 'kom' ) ) )
 		. '<p class="mm-msg" aria-live="polite"><span class="mm-count" data-mm-count>' . esc_html( bumbaru_grupa_broj( $n ) ) . '</span><span class="mm-badge" data-mm-badge hidden></span><span data-mm-text>' . esc_html( bumbaru_grupa_poruka( $n ) ) . '</span></p>'
 		. '<p class="mm-total" data-mm-total hidden></p>'
 		. '<p class="mm-set" data-mm-set>' . bumbaru_grupa_predlog( $imam ) . '</p>'
@@ -271,7 +266,7 @@ add_action( 'woocommerce_before_cart_table', function () {
 	}
 	$r = bumbaru_grupa_racun( $st );
 	echo '<div class="cart-grupa" data-cart-grupa><p class="cg-t"><b>Popust za različite proizvode</b> <span>2 različita −5% · 3 različita −10% · 4+ −15% · isti proizvod: 2 kom −5%, 4+ −10%</span></p>'; // phpcs:ignore
-	echo bumbaru_grupa_traka( $r['n'], max( $r['pct'], $r['isti'] ? max( $r['isti'] ) : 0 ) ); // phpcs:ignore
+	echo bumbaru_grupa_traka( array_sum( wp_list_pluck( $st, 'kom' ) ), max( $r['pct'], $r['isti'] ? max( $r['isti'] ) : 0 ) ); // phpcs:ignore
 	echo '<p class="mm-msg"><span class="mm-count">' . esc_html( bumbaru_grupa_broj( $r['n'] ) ) . '</span>'
 		. ( $r['popust'] > 0 ? '<span class="mm-badge pop">Popust ' . esc_html( (float) max( $r['pct'], $r['isti'] ? max( $r['isti'] ) : 0 ) ) . '%</span>' : '' )
 		. '<span>' . esc_html( bumbaru_grupa_poruka( $r['n'] ) ) . '</span></p>';

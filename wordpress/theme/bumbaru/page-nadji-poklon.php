@@ -36,7 +36,6 @@ $profili = array(
 	'privezak-irvas'                         => $P( array( 'dete', 'kolege', 'ona', 'on' ), array( 'nova-godina', 'paznja' ), array( 'zabavno' ) ),
 	'patuljak-sa-led-svecicom'               => $P( array( 'ona', 'porodica', 'dom', 'kolege' ), array( 'nova-godina', 'paznja' ), array( 'lepo' ) ),
 	'prstenovi-za-salvete-set-od-6'          => $P( array( 'dom', 'porodica', 'ona' ), array( 'nova-godina' ), array( 'lepo', 'korisno' ) ),
-	'mini-jelka-za-sto'                      => $P( array( 'kolege', 'dom', 'ona', 'on' ), array( 'nova-godina', 'paznja' ), array( 'lepo' ) ),
 	'zlatna-jelka-za-sklapanje'              => $P( array( 'kolege', 'ona', 'dom' ), array( 'nova-godina', 'paznja' ), array( 'lepo', 'zabavno' ) ),
 	'jelkica-za-punjenje'                    => $P( array( 'dete', 'porodica' ), array( 'nova-godina' ), array( 'zabavno' ) ),
 	'novogodisnje-modlice-za-medenjake'      => $P( array( 'porodica', 'ona', 'dete', 'dom' ), array( 'nova-godina' ), array( 'korisno', 'zabavno' ) ),

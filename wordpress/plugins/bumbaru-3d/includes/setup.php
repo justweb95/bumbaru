@@ -414,12 +414,11 @@ function bumbaru_ng26_cene() {
 		'snesko-lutkica-pleteni-izgled'    => array( 490, 'Veličina = Mali [490] | Srednji [890] | Veliki [1290] | Privezak [450]' ),
 		'deda-mraz-lutkica-pleteni-izgled' => array( 490, 'Veličina = Mali [490] | Srednji [890] | Veliki [1290] | Privezak [450]' ),
 		'spiralna-jelka-sa-zvezdom'        => array( 590, 'Veličina = Mala [590] | Velika [1490] | Par: mala i velika [2190]' ),
-		'jelka-sa-postoljem'               => array( 590, 'Visina = 15 cm [590] | 10 cm [390] | 7 cm [290]' ),
+		'jelka-sa-postoljem'               => array( 590, '' ),
 		'rebrasta-ovalna-tacna'            => array( 590, null ),
 		'ukras-za-jelku-sa-imenom'         => array( 390, null ),
 		'rotirajuci-ukras-sa-imenom'       => array( 390, null ),
 		'porodicni-set-ukrasa-sa-imenima'  => array( 1120, null ),
-		'mini-jelka-za-sto'                => array( '', 'Veličina = 15 cm | 10 cm | 7 cm' ),
 		'jelkica-pleteni-izgled'           => array( '', 'Veličina = Mali | Srednji | Veliki | Privezak' ),
 	);
 }
@@ -536,3 +535,48 @@ function bumbaru_migrate_262() {
 	do_action( 'litespeed_purge_all' );
 	update_option( 'bumbaru_migrate_262', 1 );
 }
+
+/**
+ * 2.6.3: jelka sa postoljem ima jednu visinu (15 cm) i cenu 590 din. „Mini jelka za sto” (NG-07) više ne postoji
+ * (postala je jelka sa postoljem): sklanja se sa sajta, a njena adresa vodi na jelku sa postoljem.
+ */
+function bumbaru_migrate_263() {
+	if ( get_option( 'bumbaru_migrate_263' ) || ! function_exists( 'wc_get_product' ) ) {
+		return;
+	}
+	$jelka = get_page_by_path( 'jelka-sa-postoljem', OBJECT, 'product' );
+	if ( $jelka ) {
+		$cfg = get_post_meta( $jelka->ID, '_bu_config', true );
+		$cfg = is_array( $cfg ) ? $cfg : array();
+		$cfg['options'] = '';
+		update_post_meta( $jelka->ID, '_bu_config', $cfg );
+		$p = wc_get_product( $jelka->ID );
+		if ( $p ) {
+			$p->set_regular_price( '590' );
+			$p->save();
+		}
+		wc_delete_product_transients( $jelka->ID );
+	}
+	$mini = get_page_by_path( 'mini-jelka-za-sto', OBJECT, 'product' );
+	if ( $mini && 'publish' === $mini->post_status ) {
+		wp_update_post( array( 'ID' => $mini->ID, 'post_status' => 'draft' ) );
+	}
+	wp_cache_flush();
+	do_action( 'litespeed_purge_all' );
+	update_option( 'bumbaru_migrate_263', 1 );
+}
+
+// Stara adresa mini jelke vodi na jelku sa postoljem.
+add_action( 'template_redirect', function () {
+	if ( ! is_404() ) {
+		return;
+	}
+	$path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' ); // phpcs:ignore
+	if ( 'mini-jelka-za-sto' === basename( $path ) ) {
+		$jelka = get_page_by_path( 'jelka-sa-postoljem', OBJECT, 'product' );
+		if ( $jelka ) {
+			wp_safe_redirect( get_permalink( $jelka->ID ), 301 );
+			exit;
+		}
+	}
+} );
