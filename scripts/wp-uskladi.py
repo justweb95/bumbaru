@@ -144,7 +144,7 @@ def update_csv(w):
         r[col['Proizvod']] = p['title']
         r[col['Kategorija']] = kat.get(p['category'], r[col['Kategorija']])
         r[col['Cena sada, din']] = str(p['price']) if p.get('price') else ''
-        r[col['Akcijska cena, din']] = {'NG-01': '350', 'NG-17': '530'}.get(p['id'], '')
+        r[col['Akcijska cena, din']] = {'NG-01': '350', 'NG-17': '350'}.get(p['id'], '')
         r[col['Fotografija']] = 'Ima' if p['images'] else 'Nema'
         opc = [p['config'].get('options', '').replace('\n', '; ')] if p['config'].get('options') else []
         opc += ['Izbor boje: ' + c['label'] for c in p['config'].get('izbor_boja', [])]
