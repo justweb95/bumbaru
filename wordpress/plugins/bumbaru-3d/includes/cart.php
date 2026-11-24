@@ -99,6 +99,18 @@ function bumbaru_read_choice( $product, $src ) {
 	}
 	$unit_list = ( $optval ? $optval : $base ) + $add; // redovna cena jednog komada
 
+	// Napravite svoj set: sve iz izbora seta (scena.php), napomena kao i inače.
+	if ( 'scena' === $type ) {
+		$r = bumbaru_scena_choice( $product, $get );
+		if ( ! is_wp_error( $r ) ) {
+			$nap = trim( sanitize_text_field( (string) $get( 'napomena', '' ) ) );
+			if ( '' !== $nap ) {
+				$r['lines'][] = array( 'Napomena', mb_substr( $nap, 0, 160, 'UTF-8' ) );
+			}
+		}
+		return $r;
+	}
+
 	if ( 'ukras' === $type || 'ime' === $type ) {
 		$ime = bumbaru_clean_name( $get( 'ime', '' ), $c['ime_max'] );
 		if ( '' === $ime ) {

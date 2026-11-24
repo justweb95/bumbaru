@@ -206,6 +206,9 @@ function bumbaru_value_price( $product, $v ) {
  */
 function bumbaru_set_cene( $product ) {
 	$c = bumbaru_config( $product );
+	if ( 'scena' === $c['type'] && function_exists( 'bumbaru_scena_cene' ) ) {
+		return bumbaru_scena_cene( $product );
+	}
 	if ( empty( $c['komplet']['glavni'] ) || ! function_exists( 'bumbaru_komplet' ) ) {
 		return array();
 	}

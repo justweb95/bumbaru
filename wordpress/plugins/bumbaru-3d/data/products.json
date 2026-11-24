@@ -2497,35 +2497,31 @@
  {
   "id": "NG-19",
   "slug": "novogodisnji-set-na-tacni",
-  "title": "Novogodišnji set na tacni",
+  "title": "Napravite svoj novogodišnji set",
   "category": "nova-godina",
-  "short": "Rebrasta tacna i do 3 figure po izboru: lutkice i jelke. Cena seta se računa odmah.",
-  "lead": "Sastavite svoj praznični set: rebrasta ovalna tacna i do tri figure po izboru – Deda Mraz, Sneško, irvas, spiralna jelka ili jelka sa postoljem. Što više figura, veći popust, a ceo set stiže u jednom paketu.",
+  "short": "Tacna, lutkice i jelke po izboru, do 4 komada. Dodajete i skidate, a pregled i cena se menjaju odmah.",
+  "lead": "Sastavite svoj praznični set: rebrasta tacna, Deda Mraz, Sneško, irvas, spiralna jelka i jelka sa postoljem. Dodajte šta želite, do 4 komada, izaberite boje tacne i jelki i odmah vidite kako set izgleda. Što više različitih, veći popust.",
   "about": [
-   "Tacna je uvek u setu, a figure birate klikom: do tri, svaka po jednom. Cena seta se računa odmah: tacna i 1 figura −5%, tacna i 2 figure −10%, tacna i 3 figure −15%.",
-   "Lutkice su u maloj veličini, spiralna jelka mala, a jelka sa postoljem visoka 15 cm, kao na fotografijama. Boju tacne birate iznad, a ako želite drugu veličinu figure, napišite je u napomeni.",
-   "Posle praznika tacna ostaje u kući za ključeve, daljinski, nakit, sveće i sitnice. Tacna je samo za dekoraciju i sitnice, nije za hranu."
+   "Ništa nije obavezno: uzmite tacnu sa tri figure, samo figure ili dve iste. Svaki proizvod dodajete i skidate klikom, a pregled u galeriji pokazuje set na tacni (ili na stolu, bez tacne) u bojama koje ste izabrali.",
+   "Cena je ista kao kad proizvode kupujete posebno, sa popustom: 2 različita −5%, 3 različita −10%, 4 različita −15%, a za više istih 2 kom −5%, 4 kom −10%. Ceo set ide u korpu kao jedna stavka i stiže u jednom paketu.",
+   "Lutkice su u maloj veličini, spiralna jelka mala, a jelka sa postoljem visoka 15 cm. Tacna posle praznika ostaje za ključeve, nakit, sveće i sitnice (nije za hranu)."
   ],
   "specs": [
    [
     "U setu",
-    "rebrasta ovalna tacna i do 3 figure po izboru"
+    "do 4 komada po izboru: rebrasta tacna, Deda Mraz, Sneško, irvas, spiralna jelka, jelka sa postoljem"
    ],
    [
-    "Figure",
-    "Deda Mraz, Sneško, irvas (mali), spiralna jelka (mala), jelka sa postoljem (15 cm)"
+    "Boje",
+    "tacna i jelke u boji po izboru, lutkice kao na fotografijama"
    ],
    [
     "Popust",
-    "tacna + 1 figura −5%, + 2 figure −10%, + 3 figure −15%"
+    "2 različita −5%, 3 različita −10%, 4 različita −15%; isti proizvod 2 kom −5%, 4 kom −10%"
    ],
    [
     "Materijal",
     "PLA plastika"
-   ],
-   [
-    "Boja tacne",
-    "izbor boje kao kod ostalih proizvoda"
    ]
   ],
   "details": [
@@ -2545,19 +2541,19 @@
   "faq": [
    {
     "q": "Koliko košta set?",
-    "a": "Zavisi od figura: tacna + Irvas + Sneško + Deda Mraz je 1.750 din (umesto 2.060), tacna + 2 lutkice 1.410 din (umesto 1.570). Cena se računa čim izaberete figure."
+    "a": "Zavisi od izbora: tacna + Irvas + Sneško + Deda Mraz je 1.750 din (umesto 2.060), tacna + 2 lutkice 1.410 din (umesto 1.570). Cena se menja čim nešto dodate ili skinete."
+   },
+   {
+    "q": "Mora li tacna?",
+    "a": "Ne mora. Set može biti i samo od figura, na primer tri lutkice za 1.320 din (umesto 1.470)."
    },
    {
     "q": "Mogu li dve iste figure?",
-    "a": "U setu je svaka figura po jednom. Ako želite dve iste, dodajte drugu posebno u korpu: za više komada istog proizvoda važi popust 2 kom −5%, 4 i više −10%."
-   },
-   {
-    "q": "Mogu li set bez tacne?",
-    "a": "Možete: dodajte figure posebno u korpu. Popust za različite proizvode se računa sam (3 različite figure −10%)."
+    "a": "Možete: kliknite + na figuri. Za 2 ista proizvoda popust je 5%, za 4 ista 10%."
    }
   ],
-  "seoTitle": "Novogodišnji set na tacni: tacna i figure po izboru | Bumbaru",
-  "meta": "Sastavite novogodišnji set: rebrasta tacna i do 3 figure (Deda Mraz, Sneško, irvas, jelke). Do −15% za set, cena se računa odmah. Plaćanje pouzećem.",
+  "seoTitle": "Napravite svoj novogodišnji set: tacna, lutkice i jelke | Bumbaru",
+  "meta": "Sastavite novogodišnji set po izboru: rebrasta tacna, Deda Mraz, Sneško, irvas i jelke, do 4 komada. Pregled uživo, do −15%. Plaćanje pouzećem.",
   "focus": "novogodišnji set dekoracija",
   "categories": [
    "nova-godina",
@@ -2666,27 +2662,24 @@
    }
   ],
   "config": {
-   "type": "",
+   "type": "scena",
    "options": "",
-   "izbor_boja": [
-    {
-     "id": "boja",
-     "label": "Boja tacne",
-     "def": "bela"
-    }
-   ],
-   "komplet": {
+   "scena": {
     "uz": [
+     "rebrasta-ovalna-tacna",
      "deda-mraz-lutkica-pleteni-izgled",
      "snesko-lutkica-pleteni-izgled",
      "irvas-lutkica-pleteni-izgled",
      "spiralna-jelka-sa-zvezdom",
      "jelka-sa-postoljem"
     ],
-    "popust": 10,
-    "popusti": "2=5, 3=10, 4=15",
-    "max": 3,
-    "glavni": true
+    "max": 4,
+    "poc": [
+     "rebrasta-ovalna-tacna",
+     "deda-mraz-lutkica-pleteni-izgled",
+     "irvas-lutkica-pleteni-izgled",
+     "snesko-lutkica-pleteni-izgled"
+    ]
    }
   }
  },

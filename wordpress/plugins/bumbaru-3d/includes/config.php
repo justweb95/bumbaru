@@ -13,6 +13,7 @@
  *  motivi    – kupac bira motive i broj komada svakog (npr. modlice), popust raste sa brojem komada
  *  boje      – kupac bira boje filamenta i broj komada svake (npr. klipovi), popust raste sa brojem komada
  *  sastav    – slavski set: kupac bira modlice za set uz medaljon sveca, pregled seta u krug
+ *  scena     – napravite svoj set (tacna, lutkice, jelke): kupac dodaje i skida proizvode, pregled na tacni (scena.php)
  *
  * Uz svaki tip mogu da idu: opcije (sa doplatom ili sopstvenom cenom), izbor boja, poziv na Messenger,
  * komplet „Uz ovo često uzimaju”, popusti za firme i crtež u izabranim bojama.
@@ -29,6 +30,7 @@ function bumbaru_config_types() {
 		'motivi'   => 'Kupac bira motive i broj komada (popust za više komada)',
 		'boje'     => 'Kupac bira boje i broj komada (popust za više komada)',
 		'sastav'   => 'Slavski set (kupac bira modlice uz medaljon)',
+		'scena'    => 'Napravite svoj set (tacna, lutkice, jelke, pregled na tacni)',
 		'jelka'    => 'Jelka sa zvezdicom (bira se boja zvezdice, pregled uživo)',
 		'ime'      => 'Privezak sa imenom, jednostavno (jedno ime)',
 		'imena'    => 'Porodični privezak, jednostavno (2–4 imena)',
@@ -259,6 +261,7 @@ function bumbaru_config( $product ) {
 		'keychain'     => null,
 		'motivi'       => null,
 		'sastav'       => null,
+		'scena'        => null,
 		'poziv'        => null,
 		'komplet'      => null,
 		'firme'        => null,
@@ -267,7 +270,7 @@ function bumbaru_config( $product ) {
 		'motivi_ukras' => array_values( array_intersect( isset( $raw['motivi_ukras'] ) ? (array) $raw['motivi_ukras'] : array(), wp_list_pluck( bumbaru_motivi(), 'id' ) ) ),
 		'ime_max'      => isset( $raw['ime_max'] ) ? max( 4, min( 12, (int) $raw['ime_max'] ) ) : 12,
 		// Popust za više komada istog proizvoda (svi komadi u korpi se sabiraju, npr. ukrasi sa različitim imenima).
-		'kolicina'     => in_array( $type, array( 'motivi', 'boje', 'sastav' ), true ) ? array() : bumbaru_parse_tiers( isset( $raw['kolicina'] ) ? $raw['kolicina'] : ( 'ukras' === $type ? bumbaru_kolicina_default() : '' ) ),
+		'kolicina'     => in_array( $type, array( 'motivi', 'boje', 'sastav', 'scena' ), true ) ? array() : bumbaru_parse_tiers( isset( $raw['kolicina'] ) ? $raw['kolicina'] : ( 'ukras' === $type ? bumbaru_kolicina_default() : '' ) ),
 		'kolicina_txt' => isset( $raw['kolicina'] ) ? (string) $raw['kolicina'] : ( 'ukras' === $type ? bumbaru_kolicina_default() : '' ),
 	);
 	if ( ! in_array( $c['star_default'], $c['star_colors'], true ) ) {
@@ -322,6 +325,9 @@ function bumbaru_config( $product ) {
 		$s  = isset( $raw['sastav'] ) && is_array( $raw['sastav'] ) ? $raw['sastav'] : array();
 		$md = isset( $s['medaljon'] ) && bumbaru_set_medaljon( $s['medaljon'] ) ? $s['medaljon'] : 'sv-nikola';
 		$c['sastav'] = array( 'medaljon' => $md, 'broj' => max( 1, min( 16, isset( $s['broj'] ) ? (int) $s['broj'] : 8 ) ) );
+	}
+	if ( 'scena' === $type && function_exists( 'bumbaru_scena_parse' ) ) {
+		$c['scena'] = bumbaru_scena_parse( isset( $raw['scena'] ) ? $raw['scena'] : array() );
 	}
 	if ( ! empty( $raw['poziv']['tekst'] ) && ! empty( $raw['poziv']['dugme'] ) ) {
 		$c['poziv'] = array( 'tekst' => (string) $raw['poziv']['tekst'], 'dugme' => (string) $raw['poziv']['dugme'], 'poruka' => isset( $raw['poziv']['poruka'] ) ? (string) $raw['poziv']['poruka'] : '' );

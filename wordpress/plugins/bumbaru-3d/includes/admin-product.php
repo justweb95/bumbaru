@@ -300,6 +300,10 @@ add_action( 'woocommerce_process_product_meta', function ( $id ) {
 	if ( isset( $in['sastav'] ) && 'sastav' === $cfg['type'] ) {
 		$cfg['sastav'] = array( 'medaljon' => sanitize_key( $in['sastav']['medaljon'] ), 'broj' => (int) $in['sastav']['broj'] );
 	}
+	// Napravite svoj set: nema polja u obrascu, podešavanje ostaje kakvo je bilo (proizvodi, najviše komada, početni set).
+	if ( 'scena' === $cfg['type'] && ! empty( $prev['scena'] ) ) {
+		$cfg['scena'] = $prev['scena'];
+	}
 	if ( ! empty( $in['poziv']['tekst'] ) && ! empty( $in['poziv']['dugme'] ) ) {
 		$cfg['poziv'] = array( 'tekst' => sanitize_textarea_field( $in['poziv']['tekst'] ), 'dugme' => sanitize_text_field( $in['poziv']['dugme'] ), 'poruka' => sanitize_text_field( $in['poziv']['poruka'] ) );
 	}

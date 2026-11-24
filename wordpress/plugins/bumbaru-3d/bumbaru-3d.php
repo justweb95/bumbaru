@@ -24,6 +24,7 @@ require_once BUMBARU3D_DIR . 'includes/tree.php';
 require_once BUMBARU3D_DIR . 'includes/config.php';
 require_once BUMBARU3D_DIR . 'includes/pricing.php';
 require_once BUMBARU3D_DIR . 'includes/grupa.php';
+require_once BUMBARU3D_DIR . 'includes/scena.php';
 require_once BUMBARU3D_DIR . 'includes/calculator.php';
 require_once BUMBARU3D_DIR . 'includes/frontend.php';
 require_once BUMBARU3D_DIR . 'includes/cart.php';

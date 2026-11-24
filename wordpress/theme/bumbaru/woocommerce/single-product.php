@@ -179,11 +179,13 @@ $sa_imenom   = in_array( $type, array( 'ukras', 'set', 'privezak', 'ime', 'imena
 $korak1      = $sa_imenom ? 'Upišite ime i izaberite boje' : ( $mot_boje ? 'Izaberite boje i količinu' : ( $mot ? 'Izaberite motive' : ( ! empty( $cfg['options'] ) || ! empty( $cfg['izbor_boja'] ) ? 'Izaberite šta vam treba' : 'Izaberite količinu' ) ) );
 if ( 'sastav' === $type ) {
 	$korak1 = 'Izaberite modlice za set';
+} elseif ( 'scena' === $type ) {
+	$korak1 = 'Sastavite set: tacna, lutkice, jelke';
 } elseif ( 'jelka' === $type ) {
 	$korak1 = 'Izaberite zvezdicu i visinu';
 }
 $bu_data = $plugin ? bumbaru_product_data( $product ) : array( 'id' => $sku, 'pid' => $product->get_id(), 'type' => '', 'cena' => (float) $product->get_price(), 'od' => false, 'buy' => $buy, 'popust' => array( 'vrsta' => '', 'v' => 0, 'naziv' => '' ), 'setExtra' => 0, 'naslov' => $title, 'url' => $url, 'slika' => $card_img );
-$show_qty = ! $is_key && ! $mot && 'sastav' !== $type;
+$show_qty = ! $is_key && ! $mot && ! in_array( $type, array( 'sastav', 'scena' ), true );
 
 get_header();
 ?>
@@ -201,7 +203,7 @@ get_header();
 	</div>
 	<div class="wrap pd">
 		<!-- Galerija -->
-		<div class="gallery" data-gallery<?php echo ( $live || in_array( $type, array( 'motivi', 'sastav', 'boje', 'ukras', 'set', 'privezak' ), true ) ) ? ' data-mini' : ''; ?>>
+		<div class="gallery" data-gallery<?php echo ( $live || in_array( $type, array( 'motivi', 'sastav', 'scena', 'boje', 'ukras', 'set', 'privezak' ), true ) ) ? ' data-mini' : ''; ?>>
 			<div class="stage">
 				<?php
 				if ( $live ) {
@@ -210,7 +212,7 @@ get_header();
 				if ( $plugin ) {
 					echo bumbaru_extra_slides( $product ); // phpcs:ignore WordPress.Security.EscapeOutput
 				}
-				$first_hidden = $live || 'sastav' === $type;
+				$first_hidden = $live || in_array( $type, array( 'sastav', 'scena' ), true );
 				foreach ( $images as $i => $im ) :
 					$hidden = $first_hidden || $i > 0;
 					$eager  = 0 === $i && ! $first_hidden;

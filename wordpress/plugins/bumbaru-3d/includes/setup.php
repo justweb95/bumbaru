@@ -537,7 +537,7 @@ function bumbaru_migrate_262() {
 }
 
 /**
- * 2.6.3: jelka sa postoljem ima jednu visinu (15 cm) i cenu 590 din. „Mini jelka za sto” (NG-07) više ne postoji
+ * 2.6.3: „Napravite svoj novogodišnji set” (NG-19) sa pregledom na tacni; jelka sa postoljem ima jednu visinu (15 cm) i cenu 590 din. „Mini jelka za sto” (NG-07) više ne postoji
  * (postala je jelka sa postoljem): sklanja se sa sajta, a njena adresa vodi na jelku sa postoljem.
  */
 function bumbaru_migrate_263() {
@@ -556,6 +556,21 @@ function bumbaru_migrate_263() {
 			$p->save();
 		}
 		wc_delete_product_transients( $jelka->ID );
+	}
+	// Napravite svoj set (NG-19): kupac dodaje i skida tacnu i figure, pregled na tacni (scena.php).
+	$set = get_page_by_path( 'novogodisnji-set-na-tacni', OBJECT, 'product' );
+	if ( $set ) {
+		update_post_meta( $set->ID, '_bu_config', array(
+			'type'    => 'scena',
+			'options' => '',
+			'scena'   => array(
+				'uz'  => array( 'rebrasta-ovalna-tacna', 'deda-mraz-lutkica-pleteni-izgled', 'snesko-lutkica-pleteni-izgled', 'irvas-lutkica-pleteni-izgled', 'spiralna-jelka-sa-zvezdom', 'jelka-sa-postoljem' ),
+				'max' => 4,
+				'poc' => array( 'rebrasta-ovalna-tacna', 'deda-mraz-lutkica-pleteni-izgled', 'irvas-lutkica-pleteni-izgled', 'snesko-lutkica-pleteni-izgled' ),
+			),
+		) );
+		wp_update_post( array( 'ID' => $set->ID, 'post_title' => 'Napravite svoj novogodišnji set' ) );
+		wc_delete_product_transients( $set->ID );
 	}
 	$mini = get_page_by_path( 'mini-jelka-za-sto', OBJECT, 'product' );
 	if ( $mini && 'publish' === $mini->post_status ) {

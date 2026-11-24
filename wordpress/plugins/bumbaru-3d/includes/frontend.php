@@ -62,7 +62,10 @@ add_action( 'wp_enqueue_scripts', function () {
 		}
 		// Galerija prati izbor: motiv ukrasa prikaže prave fotografije tog motiva (sličice drugih motiva se sklone),
 		// a boja prikaže fotografiju u toj boji (npr. crvena jelkica za punjenje).
-		wp_add_inline_script( 'bumbaru-product', "(function(){var f=document.querySelector('[data-order-form]'),g=document.querySelector('[data-gallery]');if(!f||!g)return;function mot(k){var m=f.querySelector('input[name=\"motiv\"]:checked');if(!m||!g.querySelector('[data-thumb][data-motiv]'))return;var ok=g.querySelector('[data-thumb][data-motiv=\"'+m.value+'\"]');if(!ok)return;g.querySelectorAll('[data-thumb][data-motiv]').forEach(function(t){t.hidden=t.getAttribute('data-motiv')!==m.value;});if(k)ok.click();}f.addEventListener('change',function(e){var t=e.target;if(t.name==='motiv')setTimeout(function(){mot(1);},0);else if(t.type==='radio'&&t.closest('[data-cp]')){var b=g.querySelector('[data-thumb][data-boja=\"'+t.value+'\"]');if(b&&!f.querySelector('[data-ime],[data-set-name]'))b.click();}});mot(0);})();" );
+		wp_add_inline_script( 'bumbaru-product', "(function(){var f=document.querySelector('[data-order-form]'),g=document.querySelector('[data-gallery]');if(!f||!g)return;function mot(k){var m=f.querySelector('input[name=\"motiv\"]:checked');if(!m||!g.querySelector('[data-thumb][data-motiv]'))return;var ok=g.querySelector('[data-thumb][data-motiv=\"'+m.value+'\"]');if(!ok)return;g.querySelectorAll('[data-thumb][data-motiv]').forEach(function(t){t.hidden=t.getAttribute('data-motiv')!==m.value;});if(k)ok.click();}f.addEventListener('change',function(e){var t=e.target;if(t.name==='motiv')setTimeout(function(){mot(1);},0);else if(t.type==='radio'&&t.closest('[data-cp]')&&!t.closest('[data-scena]')){var b=g.querySelector('[data-thumb][data-boja=\"'+t.value+'\"]');if(b&&!f.querySelector('[data-ime],[data-set-name]'))b.click();}});mot(0);})();" );
+		if ( $p && 'scena' === bumbaru_config( $p )['type'] ) {
+			wp_enqueue_script( 'bumbaru-scena', BUMBARU3D_URL . 'assets/scena.js', array( 'bumbaru-product' ), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+		}
 		if ( $p && bumbaru_grupa_slug( $p ) ) {
 			wp_enqueue_script( 'bumbaru-grupa', BUMBARU3D_URL . 'assets/grupa.js', array(), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 		}
@@ -333,6 +336,9 @@ function bumbaru_extra_slides( $product ) {
 		}
 		$out .= '</div></div>';
 	}
+	if ( 'scena' === $c['type'] ) {
+		$out .= bumbaru_scena_slide( $product );
+	}
 	if ( 'boje' === $c['type'] ) {
 		$out .= '<div class="slide mix" data-slide="mix" hidden><span class="badge live-badge"><i class="dotlive"></i>Vaš izbor<b data-mix-n></b></span><div class="mix-grid" data-mix-grid></div><p class="mix-hint">Boje na crtežu su okvirne, a pravi izgled je na fotografijama.</p></div>';
 	}
@@ -394,6 +400,9 @@ function bumbaru_extra_thumbs( $product ) {
 		$med  = bumbaru_set_medaljon( $c['sastav']['medaljon'] );
 		$out .= '<button type="button" class="thumb thumb-live thumb-sas" data-thumb="sastav" aria-pressed="true" aria-label="Pregled vašeg seta"><img src="' . esc_url( $med['slika'] ) . '" alt="" width="60" height="58" /><span>Vaš set</span></button>';
 	}
+	if ( 'scena' === $c['type'] ) {
+		$out .= bumbaru_scena_thumb( $product );
+	}
 	if ( 'boje' === $c['type'] ) {
 		$out .= '<button type="button" class="thumb thumb-live" data-thumb="mix" aria-pressed="false" aria-label="Vaš izbor boja" hidden>' . bumbaru_icon( 'palette', 22 ) . '<span>Vaš izbor</span></button>';
 	}
@@ -412,7 +421,7 @@ function bumbaru_extra_thumbs( $product ) {
 /** Ima li galerija slajdove pre fotografija (pa sličice idu i za jednu fotografiju). */
 function bumbaru_has_extra_slides( $product ) {
 	$c = bumbaru_config( $product );
-	return bumbaru_has_live( $product ) || in_array( $c['type'], array( 'sastav', 'boje' ), true ) || ( $c['crtez'] && $c['izbor_boja'] );
+	return bumbaru_has_live( $product ) || in_array( $c['type'], array( 'sastav', 'boje', 'scena' ), true ) || ( $c['crtez'] && $c['izbor_boja'] );
 }
 
 /** Cena na pločici (vrednost opcije ili motiva). */
@@ -579,6 +588,9 @@ function bumbaru_config_fields( $product ) {
 	$out .= bumbaru_kolicina_html( $product );
 	$out .= function_exists( 'bumbaru_grupa_html' ) ? bumbaru_grupa_html( $product ) : '';
 
+	if ( 'scena' === $type ) {
+		$out .= bumbaru_scena_fields( $product );
+	}
 	// Slavski set: izbor modlica.
 	if ( 'sastav' === $type ) {
 		$med  = bumbaru_set_medaljon( $c['sastav']['medaljon'] );
