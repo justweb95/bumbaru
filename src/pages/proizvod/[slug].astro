@@ -15,7 +15,6 @@ import { PRODUCTS, productBySlug, productUrl, cardImg, sveCene, izborKomada, raz
 import { categoryBySlug, catUrl } from '../../data/categories';
 import { SITE, din, messengerUrl } from '../../data/site';
 import { MOTIVI, OKRETNI } from '../../lib/ornament';
-import { uGrupi } from '../../lib/grupa'; // popust za različite proizvode: bez izbora količine
 import { ornamentG } from '../../lib/ornament-svg';
 import { BOJE_NA_STANJU, pick } from '../../lib/colors';
 import { STILOVI, stil, SLOJ_LABEL, PRIMERI } from '../../lib/keychain';
@@ -475,10 +474,10 @@ const detailIcon = (q: string) => {
           )}
           <div class="field">
             <label for="f-nap">Napomena <span style="text-transform:none;letter-spacing:0;font-weight:400">(nije obavezno)</span></label>
-            <input id="f-nap" class="input" name="napomena" maxlength="160" placeholder={p.custom ? 'npr. poruka za karticu u paketu' : mot || uGrupi(p.slug) ? 'npr. rok ili poruka za karticu' : 'npr. broj komada, rok'} autocomplete="off" />
+            <input id="f-nap" class="input" name="napomena" maxlength="160" placeholder={p.custom ? 'npr. poruka za karticu u paketu' : mot ? 'npr. rok ili poruka za karticu' : 'npr. broj komada, rok'} autocomplete="off" />
           </div>
           <div class="buy">
-            {!isKey && !mot && !uGrupi(p.slug) && (
+            {!isKey && !mot && (
               <div class="qty" role="group" aria-label="Količina">
                 <button type="button" data-dec aria-label="Smanji količinu">−</button>
                 <input type="number" name="kol" value="1" min="1" max="50" inputmode="numeric" aria-label="Količina" />

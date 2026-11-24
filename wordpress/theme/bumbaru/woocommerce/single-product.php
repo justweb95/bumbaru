@@ -180,9 +180,7 @@ if ( 'sastav' === $type ) {
 	$korak1 = 'Izaberite zvezdicu i visinu';
 }
 $bu_data = $plugin ? bumbaru_product_data( $product ) : array( 'id' => $sku, 'pid' => $product->get_id(), 'type' => '', 'cena' => (float) $product->get_price(), 'od' => false, 'buy' => $buy, 'popust' => array( 'vrsta' => '', 'v' => 0, 'naziv' => '' ), 'setExtra' => 0, 'naslov' => $title, 'url' => $url, 'slika' => $card_img );
-// Proizvodi sa popustom za različite proizvode (lutkice, jelke, tacna): bez izbora količine, jer drugi komad istog
-// proizvoda nema popust; kupac dodaje jedan po jedan.
-$show_qty = ! $is_key && ! $mot && 'sastav' !== $type && ! ( function_exists( 'bumbaru_grupa_slug' ) && bumbaru_grupa_slug( $product ) );
+$show_qty = ! $is_key && ! $mot && 'sastav' !== $type;
 
 get_header();
 ?>
