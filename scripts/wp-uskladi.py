@@ -1,6 +1,6 @@
 """Uskladi WordPress podatke (plugin bumbaru-3d/data/products.json i CSV) sa Astro proizvodima (src/data/proizvodi.json)
 za proizvode iz novogodišnje ponude: tekstovi, slike (sa oznakama motiva i AI), cene, konfigurator i povezani.
-Fotografije za WP uvoz se kopiraju u wordpress/plugins/bumbaru-3d/import/p/<slug>/ (u paketu, ne u gitu).
+Fotografije za WP uvoz se kopiraju u dodatak wordpress/plugins/bumbaru-3d-fotografije/import/p/<slug>/ (poseban zip, ne u gitu).
 Pokretanje iz korena repoa: python3 scripts/wp-uskladi.py
 """
 import csv, io, json, os, re, shutil
@@ -9,7 +9,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 WP = ROOT + 'wordpress/plugins/bumbaru-3d/data/products.json'
 AS = ROOT + 'src/data/proizvodi.json'
 CSVF = ROOT + 'wordpress/Bumbaru_proizvodi_i_cene.csv'
-IMP = ROOT + 'wordpress/plugins/bumbaru-3d/import/'
+IMP = ROOT + 'wordpress/plugins/bumbaru-3d-fotografije/import/'  # dodatak „Bumbaru 3D – fotografije” (ne ide u git ni u glavni plugin)
 
 # Astro motiv → WP motiv (includes/ornament.php)
 MOT = {'zvezdice-i-jelke': 'zvezde', 'masnica': 'masna', 'kapica-deda-mraza': 'kapa', 'velika-pahulja': 'pahulja'}
