@@ -166,7 +166,7 @@ if (!has('rotirajuci-ukras-sa-imenom')) {
     id: 'NG-17', slug: 'rotirajuci-ukras-sa-imenom', title: 'Rotirajući ukras sa imenom', category: 'nova-godina', categories: ['nova-godina', 'pokloni-sa-imenom'], tags: [...(n1.tags || [])],
     short: 'Pahulja sa imenom i dva prstena koji se okreću. Jedan komad, ništa se ne lepi.',
     lead: 'Pahulja sa imenom u sredini i dva prstena oko nje. Delovi se okreću nezavisno, pa ukras na jelki stalno menja izgled.',
-    custom: true, price: 590, personal: 'rotirajuci', images: [],
+    custom: true, price: 390, personal: 'rotirajuci', images: [],
     about: [
       'Pahulja sa imenom je u sredini, a oko nje su dva prstena. Svaki deo se okreće sam, pa ukras na jelki stalno menja izgled, čim ga dotakne vazduh ili ruka.',
       'Ukras štampamo sklopljen, iz jednog komada: prstenovi se okreću odmah posle štampe i ništa se ne lepi. Ime upišete latinicom ili ćirilicom, do 10 slova, i birate boju ukrasa i boju imena.',

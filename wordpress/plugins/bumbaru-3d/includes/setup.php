@@ -417,7 +417,7 @@ function bumbaru_ng26_cene() {
 		'jelka-sa-postoljem'               => array( 590, 'Visina = 15 cm [590] | 10 cm [390] | 7 cm [290]' ),
 		'rebrasta-ovalna-tacna'            => array( 590, null ),
 		'ukras-za-jelku-sa-imenom'         => array( 390, null ),
-		'rotirajuci-ukras-sa-imenom'       => array( 590, null ),
+		'rotirajuci-ukras-sa-imenom'       => array( 390, null ),
 		'porodicni-set-ukrasa-sa-imenima'  => array( 1120, null ),
 		'mini-jelka-za-sto'                => array( '', 'Veličina = 15 cm | 10 cm | 7 cm' ),
 		'jelkica-pleteni-izgled'           => array( '', 'Veličina = Mali | Srednji | Veliki | Privezak' ),
