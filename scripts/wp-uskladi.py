@@ -13,7 +13,7 @@ IMP = ROOT + 'wordpress/plugins/bumbaru-3d-fotografije/import/'  # dodatak „Bu
 
 # Astro motiv → WP motiv (includes/ornament.php)
 MOT = {'zvezdice-i-jelke': 'zvezde', 'masnica': 'masna', 'kapica-deda-mraza': 'kapa', 'velika-pahulja': 'pahulja'}
-UKRAS_MOTIVI = ['zvezde', 'masna', 'kapa', 'pahulja']
+UKRAS_MOTIVI = ['zvezde', 'masna', 'kapa', 'pahulja', 'pahulje', 'pahulje-masna', 'planine', 'grancica']  # prvi je izabran
 STARA_TACNA = 'novogodisnja-tacna-za-figure'
 SLUGS = ['ukras-za-jelku-sa-imenom', 'rotirajuci-ukras-sa-imenom', 'porodicni-set-ukrasa-sa-imenima', 'rebrasta-ovalna-tacna',
          'jelka-sa-postoljem', 'mini-jelka-za-sto', 'jelkica-pleteni-izgled', 'irvas-lutkica-pleteni-izgled',
@@ -95,7 +95,7 @@ def run():
             cfg['motivi_ukras'] = UKRAS_MOTIVI
             cfg['name_color'] = 'bela'
         if slug == 'rotirajuci-ukras-sa-imenom':
-            cfg.update({'type': 'ukras', 'name_color': 'bela', 'motivi_ukras': ['okretni'], 'ime_max': 10, 'kolicina': ''})
+            cfg.update({'type': 'ukras', 'name_color': 'bela', 'motivi_ukras': ['okretni'] + UKRAS_MOTIVI, 'ime_max': 10, 'kolicina': ''})
             p['focus'] = 'rotirajući ukras za jelku sa imenom'
         if slug == 'rebrasta-ovalna-tacna':
             p['focus'] = 'rebrasta tacna'

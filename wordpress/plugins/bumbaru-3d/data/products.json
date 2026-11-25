@@ -233,7 +233,11 @@
     "zvezde",
     "masna",
     "kapa",
-    "pahulja"
+    "pahulja",
+    "pahulje",
+    "pahulje-masna",
+    "planine",
+    "grancica"
    ]
   }
  },
@@ -245,7 +249,15 @@
    "options": "",
    "name_color": "bela",
    "motivi_ukras": [
-    "okretni"
+    "okretni",
+    "zvezde",
+    "masna",
+    "kapa",
+    "pahulja",
+    "pahulje",
+    "pahulje-masna",
+    "planine",
+    "grancica"
    ],
    "ime_max": 10,
    "kolicina": ""
@@ -503,7 +515,11 @@
     "zvezde",
     "masna",
     "kapa",
-    "pahulja"
+    "pahulja",
+    "pahulje",
+    "pahulje-masna",
+    "planine",
+    "grancica"
    ],
    "name_color": "bela"
   }
