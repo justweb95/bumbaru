@@ -599,7 +599,7 @@ add_action( 'template_redirect', function () {
 /**
  * 2.6.4: ukras sa imenom i porodični set opet nude sve motive (2.6.2 ih je svela na 4), a rotirajući ukras
  * nudi svoj motiv kao izabran i ostale za promenu. Prvi motiv na listi je izabran kad se strana otvori,
- * pa klik na proizvod iz kataloga otvara baš taj motiv.
+ * pa klik na proizvod iz kataloga otvara baš taj motiv. Popust za ukrase sa imenom: 3=10, 5=15, 7=20.
  */
 function bumbaru_migrate_264() {
 	if ( get_option( 'bumbaru_migrate_264' ) ) {
@@ -619,6 +619,9 @@ function bumbaru_migrate_264() {
 		$cfg                 = get_post_meta( $post->ID, '_bu_config', true );
 		$cfg                 = is_array( $cfg ) ? $cfg : array();
 		$cfg['motivi_ukras'] = $motivi;
+		if ( 'ukras-za-jelku-sa-imenom' === $slug ) {
+			$cfg['kolicina'] = '3=10, 5=15, 7=20'; // popust za ukrase: od 3. komada 10%, od 5. 15%, od 7. 20%
+		}
 		update_post_meta( $post->ID, '_bu_config', $cfg );
 	}
 	wp_cache_flush();

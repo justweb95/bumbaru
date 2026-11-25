@@ -228,7 +228,7 @@
    "type": "ukras",
    "name_color": "bela",
    "options": "",
-   "kolicina": "2=10, 3=15, 4=20",
+   "kolicina": "3=10, 5=15, 7=20",
    "motivi_ukras": [
     "zvezde",
     "masna",

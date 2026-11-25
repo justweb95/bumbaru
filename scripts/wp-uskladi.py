@@ -149,7 +149,7 @@ def update_csv(w):
         opc = [p['config'].get('options', '').replace('\n', '; ')] if p['config'].get('options') else []
         opc += ['Izbor boje: ' + c['label'] for c in p['config'].get('izbor_boja', [])]
         if p['id'] in ('NG-01', 'NG-02'):
-            opc = ['Ime, motiv (Zvezdice i jelke, Mašnica, Kapica Deda Mraza, Velika pahulja), boja ukrasa i imena'] + (['popust za više komada 2=10, 3=15, 4=20'] if p['id'] == 'NG-01' else ['4 imena 1.120 din ili 5 imena 1.400 din; motiv isti ili različit za svako ime'])
+            opc = ['Ime, motiv (Zvezdice i jelke, Mašnica, Kapica Deda Mraza, Velika pahulja), boja ukrasa i imena'] + (['popust za više komada 3=10, 5=15, 7=20'] if p['id'] == 'NG-01' else ['4 imena 1.120 din ili 5 imena 1.400 din; motiv isti ili različit za svako ime'])
         if p['id'] == 'NG-17':
             opc = ['Ime do 10 slova, boja ukrasa i imena']
         if p['id'] in ('NG-07', 'NG-13'):
