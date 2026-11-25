@@ -78,3 +78,67 @@ body:has(form.is-set) .sbar { display: none !important; }
 .tpl-product .sc-boje .field { margin-bottom: 10px; }
 .tpl-product .sc-mm { margin-top: 16px; }
 .tpl-product .sc-total s { margin-left: 8px; }
+
+/* ——— Utisci kupaca ——— */
+.rv-grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 32px; align-items: start; }
+@media (max-width: 900px) { .rv-grid { grid-template-columns: 1fr; gap: 20px; } }
+.rv-side { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.rv-side .h1 { margin: 0; }
+.rv-sum { display: flex; align-items: center; gap: 14px; }
+.rv-avg { font-size: 52px; line-height: 1; font-weight: 800; color: var(--ink); }
+.rv-sum p { margin: 4px 0 0; }
+.rv-stars { display: inline-flex; gap: 2px; vertical-align: middle; }
+.rv-stars i { width: var(--s); height: var(--s); background: linear-gradient(90deg, var(--honey-hover, #DDA81C) var(--f), #CFC4B6 var(--f));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z'/%3E%3C/svg%3E") center / contain no-repeat; }
+.rv-bars { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 300px; display: grid; gap: 4px; }
+.rv-bars li { display: grid; grid-template-columns: 14px 1fr 28px; gap: 8px; align-items: center; font-size: 13px; }
+.rv-bars i { height: 8px; border-radius: 99px; background: linear-gradient(90deg, var(--honey) var(--w), var(--surface-raised, #D9D3CA) var(--w)); }
+.rv-bars small { text-align: right; color: var(--ink-muted); }
+.rv-list { display: grid; gap: 14px; }
+.rv-item { background: var(--surface-paper, #EEEAE3); border-radius: var(--r-lg, 24px); padding: 18px 20px; }
+.rv-head { display: flex; align-items: center; gap: 12px; }
+.rv-head > div { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+.rv-head small, .rv-reply small { color: var(--ink-muted); font-size: 12px; }
+.rv-av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--honey-soft); font-weight: 800; flex: none; }
+.rv-badge { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; background: var(--leaf-soft); color: var(--leaf); }
+.rv-text p { margin: 10px 0 0; }
+.rv-pics { display: flex; gap: 8px; margin-top: 12px; }
+.rv-pic { padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 12px; overflow: hidden; width: 104px; height: 104px; }
+.rv-pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rv-replies { margin-top: 12px; display: grid; gap: 8px; }
+.rv-reply { border-left: 3px solid var(--line); padding: 4px 0 4px 12px; }
+.rv-reply.rv-nas { border-color: var(--honey); }
+.rv-reply strong { margin-right: 6px; }
+.rv-reply .rv-badge { margin-right: 6px; background: var(--honey-soft); color: var(--ink); }
+.rv-reply p { margin: 4px 0 0; }
+.rv-odg { margin-top: 10px; padding: 0; border: 0; background: none; font: inherit; font-size: 13px; font-weight: 700; color: var(--berry); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.rv-form { background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg, 24px); padding: 18px 20px; display: grid; gap: 12px; margin-top: 12px; }
+.rv-form .h3 { margin: 0; }
+.rv-form p { margin: 0; }
+.rv-form fieldset { border: 0; padding: 0; margin: 0; }
+.rv-form [hidden] { display: none !important; }
+.rv-rate-in { display: inline-flex; flex-direction: row-reverse; gap: 4px; }
+.rv-rate-in input { position: absolute; opacity: 0; pointer-events: none; }
+.rv-rate-in label { width: 36px; height: 36px; cursor: pointer; background: #CFC4B6; transition: background .15s, transform .15s;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z'/%3E%3C/svg%3E") center / contain no-repeat; }
+.rv-rate-in label:hover, .rv-rate-in label:hover ~ label, .rv-rate-in input:checked ~ label { background: var(--honey-hover, #DDA81C); }
+.rv-rate-in label:hover { transform: scale(1.12); }
+.rv-rate-in input:focus-visible + label { outline: 2px solid var(--ink); outline-offset: 2px; }
+.rv-prev { display: flex; gap: 8px; margin-top: 8px; }
+.rv-th { position: relative; width: 84px; height: 84px; border-radius: 12px; overflow: hidden; }
+.rv-th img { width: 100%; height: 100%; object-fit: cover; }
+.rv-th .icon-btn { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; min-width: 0; padding: 0; border-radius: 50%; background: rgba(255,255,255,.9); }
+.rv-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.rv-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.rv-dlg { border: 0; padding: 0; border-radius: 16px; max-width: min(92vw, 900px); background: #000; }
+.rv-dlg::backdrop { background: rgba(20,12,8,.78); }
+.rv-dlg img { display: block; max-width: min(92vw, 900px); max-height: 86vh; }
+.rv-dlg form { position: absolute; top: 8px; right: 8px; }
+.rv-dlg .icon-btn { background: rgba(255,255,255,.92); border-radius: 50%; width: 36px; height: 36px; font-size: 22px; line-height: 1; }
+.rv-top { display: inline-flex; align-items: center; gap: 8px; margin: -4px 0 10px; font-size: 14px; color: var(--ink-muted); text-decoration: none; }
+.rv-top:hover { text-decoration: underline; }
+.rv-file { position: relative; cursor: pointer; text-transform: none; letter-spacing: 0; font-size: 15px; width: auto; justify-self: start; display: inline-flex; }
+.rv-file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.rv-file:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }

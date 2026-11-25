@@ -115,6 +115,10 @@ if ( $all || '' !== $product->get_price() ) {
 		'category'    => $cat ? $cat->name : '',
 		'offers'      => $offer,
 	);
+	// Ocene i utisci kupaca (samo odobreni; bez njih Google ne dobija ocenu).
+	if ( function_exists( 'bumbaru_utisci_ld' ) ) {
+		$ld = array_merge( $ld, bumbaru_utisci_ld( $product->get_id() ) );
+	}
 	if ( count( array_unique( $eff ) ) > 1 ) {
 		$ld['offers'] = array(
 			'@type'         => 'AggregateOffer',
@@ -261,6 +265,14 @@ get_header();
 				<?php endif; ?>
 			</div>
 			<h1 class="h1"><?php echo esc_html( $title ); ?></h1>
+			<?php
+			if ( function_exists( 'bumbaru_utisci_ocena' ) ) {
+				list( $rv_avg, $rv_n ) = bumbaru_utisci_ocena( $product->get_id() );
+				if ( $rv_n ) {
+					echo '<a class="rv-top" href="#utisci">' . bumbaru_zvezdice( $rv_avg, 16 ) . '<span>' . esc_html( str_replace( '.', ',', number_format( $rv_avg, 1 ) ) . ' · utisci kupaca (' . $rv_n . ')' ) . '</span></a>'; // phpcs:ignore
+				}
+			}
+			?>
 			<?php
 			if ( $pct && 'ak' === $bu_data['popust']['vrsta'] ) {
 				echo bu_odbrojavanje( true ); // phpcs:ignore
@@ -420,6 +432,13 @@ get_header();
 				</ol>
 			</div>
 		</section>
+
+		<?php
+		// Utisci kupaca: ocena, komentar, do 2 fotografije, odgovori (objavljuju se posle odobrenja).
+		if ( function_exists( 'bumbaru_utisci_html' ) ) {
+			echo bumbaru_utisci_html( $product ); // phpcs:ignore -- očišćeno u pluginu
+		}
+		?>
 
 		<?php if ( $faq ) : ?>
 			<!-- Česta pitanja -->

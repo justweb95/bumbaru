@@ -624,6 +624,10 @@ function bumbaru_migrate_264() {
 		}
 		update_post_meta( $post->ID, '_bu_config', $cfg );
 	}
+	// Utisci kupaca se čuvaju kao WooCommerce recenzije: uključene, sa zvezdicama, odobrava ih prodavnica.
+	update_option( 'woocommerce_enable_reviews', 'yes' );
+	update_option( 'woocommerce_enable_review_rating', 'yes' );
+	update_option( 'woocommerce_review_rating_required', 'yes' );
 	wp_cache_flush();
 	do_action( 'litespeed_purge_all' );
 	update_option( 'bumbaru_migrate_264', 1 );
