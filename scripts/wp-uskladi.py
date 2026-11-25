@@ -95,7 +95,7 @@ def run():
             cfg['motivi_ukras'] = UKRAS_MOTIVI
             cfg['name_color'] = 'bela'
         if slug == 'rotirajuci-ukras-sa-imenom':
-            cfg.update({'type': 'ukras', 'name_color': 'bela', 'motivi_ukras': ['okretni'] + UKRAS_MOTIVI, 'ime_max': 10, 'kolicina': ''})
+            cfg.update({'type': 'ukras', 'name_color': 'bela', 'motivi_ukras': ['okretni'] + UKRAS_MOTIVI, 'ime_max': 10, 'kolicina': '3=10, 5=15, 7=20'})
             p['focus'] = 'rotirajući ukras za jelku sa imenom'
         if slug == 'rebrasta-ovalna-tacna':
             p['focus'] = 'rebrasta tacna'

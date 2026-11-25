@@ -619,7 +619,7 @@ function bumbaru_migrate_264() {
 		$cfg                 = get_post_meta( $post->ID, '_bu_config', true );
 		$cfg                 = is_array( $cfg ) ? $cfg : array();
 		$cfg['motivi_ukras'] = $motivi;
-		if ( 'ukras-za-jelku-sa-imenom' === $slug ) {
+		if ( 'porodicni-set-ukrasa-sa-imenima' !== $slug ) {
 			$cfg['kolicina'] = '3=10, 5=15, 7=20'; // popust za ukrase: od 3. komada 10%, od 5. 15%, od 7. 20%
 		}
 		update_post_meta( $post->ID, '_bu_config', $cfg );

@@ -260,7 +260,7 @@
     "grancica"
    ],
    "ime_max": 10,
-   "kolicina": ""
+   "kolicina": "3=10, 5=15, 7=20"
   },
   "homeOrder": 6,
   "hidden": false,
