@@ -60,6 +60,8 @@ add_action( 'wp_enqueue_scripts', function () {
 		if ( $p && bumbaru_config( $p )['kolicina'] ) {
 			wp_enqueue_script( 'bumbaru-kolicina', BUMBARU3D_URL . 'assets/kolicina.js', array(), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 		}
+		// Adresa sa #motiv (npr. #velika-pahulja, iz kartice u katalogu): taj motiv je izabran kad se strana otvori.
+		wp_add_inline_script( 'bumbaru-product', "(function(){function pick(ev){var h='';try{h=decodeURIComponent(location.hash.slice(1)).toLowerCase();}catch(e){}if(!h)return;var r=null;document.querySelectorAll('input[name=motiv]').forEach(function(x){if(x.getAttribute('data-hash')===h||x.value===h)r=x;});if(!r||r.checked)return;r.checked=true;if(ev){r.dispatchEvent(new Event('input',{bubbles:true}));r.dispatchEvent(new Event('change',{bubbles:true}));}}pick(0);window.addEventListener('hashchange',function(){pick(1);});})();", 'before' );
 		// Galerija prati izbor: motiv ukrasa prikaže prave fotografije tog motiva (sličice drugih motiva se sklone),
 		// a boja prikaže fotografiju u toj boji (npr. crvena jelkica za punjenje).
 		wp_add_inline_script( 'bumbaru-product', "(function(){var f=document.querySelector('[data-order-form]'),g=document.querySelector('[data-gallery]');if(!f||!g)return;function mot(k){var m=f.querySelector('input[name=\"motiv\"]:checked');if(!m||!g.querySelector('[data-thumb][data-motiv]'))return;var ok=g.querySelector('[data-thumb][data-motiv=\"'+m.value+'\"]');if(!ok)return;g.querySelectorAll('[data-thumb][data-motiv]').forEach(function(t){t.hidden=t.getAttribute('data-motiv')!==m.value;});if(k)ok.click();}f.addEventListener('change',function(e){var t=e.target;if(t.name==='motiv')setTimeout(function(){mot(1);},0);else if(t.type==='radio'&&t.closest('[data-cp]')&&!t.closest('[data-scena]')){var b=g.querySelector('[data-thumb][data-boja=\"'+t.value+'\"]');if(b&&!f.querySelector('[data-ime],[data-set-name]'))b.click();}});mot(0);})();" );
@@ -521,7 +523,7 @@ function bumbaru_config_fields( $product ) {
 		// Samo jedan motiv (rotirajući ukras): izbor se ne prikazuje, ali je izabran.
 		$out .= '<fieldset class="field"' . ( count( $mot ) < 2 ? ' hidden' : '' ) . '><legend class="flabel">' . ( 'set' === $type ? 'Motiv za sve ukrase' : 'Motiv' ) . '</legend><div class="tile-grid">';
 		foreach ( $mot as $i => $m ) {
-			$out .= '<label class="tile"><input type="radio" name="motiv" value="' . esc_attr( $m['id'] ) . '"' . ( 0 === $i ? ' checked' : '' ) . ' data-label="' . esc_attr( $m['label'] ) . '" />'
+			$out .= '<label class="tile"><input type="radio" name="motiv" value="' . esc_attr( $m['id'] ) . '"' . ( 0 === $i ? ' checked' : '' ) . ' data-label="' . esc_attr( $m['label'] ) . '" data-hash="' . esc_attr( bumbaru_motiv_hash( $m ) ) . '" />'
 				. '<svg viewBox="-12 34 264 256" aria-hidden="true"><use href="#orn-' . esc_attr( $m['id'] ) . '" fill="#7A6A5A" stroke="#7A6A5A" /></svg>' . esc_html( $m['label'] ) . '</label>';
 		}
 		$out .= '</div></fieldset>';
@@ -611,12 +613,13 @@ function bumbaru_config_fields( $product ) {
 	return $out;
 }
 
-/** Koliko komada ovog proizvoda je već u korpi. */
+/** Koliko komada ovog proizvoda je već u korpi (ukrasi sa imenom: svi, i rotirajući). */
 function bumbaru_u_korpi( $product_id ) {
 	$n = 0;
 	if ( function_exists( 'WC' ) && WC()->cart ) {
+		$k = bumbaru_kolicina_kljuc( $product_id );
 		foreach ( WC()->cart->get_cart() as $it ) {
-			if ( (int) $it['product_id'] === (int) $product_id ) {
+			if ( bumbaru_kolicina_kljuc( $it['product_id'] ) === $k ) {
 				$n += (int) $it['quantity'];
 			}
 		}
@@ -644,7 +647,7 @@ function bumbaru_kolicina_html( $product ) {
 		}
 	}
 	$o    = '<div class="field mot kol" data-kolicina="' . esc_attr( wp_json_encode( $data ) ) . '"><p class="flabel">Popust za više ' . esc_html( $rec[1] ) . '</p>'
-		. '<p class="hint mot-hint">' . ( 'ukras' === $c['type'] ? 'Svaki ukras može imati drugo ime: upišite ime, dodajte u korpu, pa sledeće. ' : '' ) . 'Sabiramo sve komade u korpi.</p>'
+		. '<p class="hint mot-hint">' . ( 'ukras' === $c['type'] ? 'Svaki ukras može imati drugo ime i motiv: upišite ime, dodajte u korpu, pa sledeće. Sabiramo sve ukrase sa imenom u korpi, i rotirajuće.' : 'Sabiramo sve komade u korpi.' ) . '</p>'
 		. '<div class="mm" aria-hidden="true"><div class="mm-track"><div class="mm-fill" data-mm-fill></div>';
 	foreach ( $tiers as $ti => $t ) {
 		$o .= '<span class="mm-stop" data-mm-stop="' . (int) $t['od'] . '" style="--x:' . esc_attr( round( $t['od'] / $max * 100, 2 ) ) . '%"><i></i><span class="mm-lab"><b>−' . esc_html( (float) $t['procenat'] ) . '%</b><small>' . (int) $t['od'] . ( count( $tiers ) - 1 === $ti ? '+' : '' ) . ' kom</small></span></span>';

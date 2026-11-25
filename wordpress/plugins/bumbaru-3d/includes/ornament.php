@@ -250,3 +250,61 @@ function bumbaru_preview_svg( $raw, $max = 0 ) {
 	}
 	return $svg;
 }
+
+/** Oznaka motiva u adresi (npr. #velika-pahulja): konfigurator otvori baš taj motiv. */
+function bumbaru_motiv_hash( $m ) {
+	return sanitize_title( $m['label'] );
+}
+
+/**
+ * Katalog: ukras sa imenom se prikazuje kao posebna kartica za svaki motiv (adresa sa #motiv).
+ * Fotografija kartice je prva fotografija tog motiva, a bez nje crtež ukrasa sa primerom imena.
+ * Rotirajući motiv ima svoj proizvod, pa ga ovde nema; proizvod kome je prvi motiv rotirajući ostaje jedna kartica.
+ * Vraća [ id, label, url, img, srcset, svg ] ili prazan niz (obična kartica).
+ */
+function bumbaru_motiv_kartice( $product ) {
+	$c = bumbaru_config( $product );
+	if ( 'ukras' !== $c['type'] ) {
+		return array();
+	}
+	$mot = bumbaru_motivi_za( $c );
+	if ( count( $mot ) < 2 || ! empty( $mot[0]['okretni'] ) ) {
+		return array();
+	}
+	$map   = (array) get_post_meta( $product->get_id(), '_bu_img_mot', true );
+	$url   = get_permalink( $product->get_id() );
+	$imena = array( 'Mila', 'Luka', 'Sara', 'Vuk', 'Ena', 'Mateo', 'Dunja', 'Pavle', 'Ana' );
+	$out   = array();
+	foreach ( $mot as $i => $m ) {
+		if ( ! empty( $m['okretni'] ) ) {
+			continue;
+		}
+		$img    = '';
+		$srcset = '';
+		foreach ( $map as $aid => $mid ) {
+			if ( $mid === $m['id'] ) {
+				$src = wp_get_attachment_image_src( (int) $aid, 'woocommerce_thumbnail' );
+				if ( $src ) {
+					$img    = $src[0];
+					$srcset = (string) wp_get_attachment_image_srcset( (int) $aid, 'woocommerce_thumbnail' );
+					break;
+				}
+			}
+		}
+		$svg = '';
+		if ( ! $img ) {
+			$svg = '<svg class="orn-card" viewBox="-40 -14 320 320" role="img" aria-label="' . esc_attr( $m['label'] ) . '"><g transform="translate(0 ' . ( 6 - $m['hy'] + 64 ) . ')" filter="url(#orn-sh)">'
+				. bumbaru_ornament_g( array( 'motif' => $m['id'], 'color' => bumbaru_pick_color( 'crvena' ), 'nameColor' => bumbaru_pick_color( 'bela', 1 ), 'name' => $imena[ $i % count( $imena ) ], 'font' => 'pacifico' ) )
+				. '</g></svg>';
+		}
+		$out[] = array(
+			'id'     => $m['id'],
+			'label'  => $m['label'],
+			'url'    => $url . '#' . bumbaru_motiv_hash( $m ),
+			'img'    => $img,
+			'srcset' => $srcset,
+			'svg'    => $svg,
+		);
+	}
+	return $out;
+}

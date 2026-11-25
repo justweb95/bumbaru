@@ -170,7 +170,7 @@ else :
 			<?php
 			while ( have_posts() ) {
 				the_post();
-				bu_product_card( wc_get_product( get_the_ID() ) );
+				bu_product_cards( wc_get_product( get_the_ID() ) );
 			}
 			?>
 		</div>

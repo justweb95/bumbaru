@@ -358,6 +358,16 @@ function bumbaru_config( $product ) {
 }
 
 /** Podrazumevani popust za više ukrasa sa imenom (menja se u proizvodu → Konfigurator). */
+/** Ključ za popust za količinu: svi ukrasi sa imenom (tip „ukras”, i rotirajući) se broje zajedno, ostalo po proizvodu. */
+function bumbaru_kolicina_kljuc( $product_id ) {
+	static $memo = array();
+	$product_id = (int) $product_id;
+	if ( ! isset( $memo[ $product_id ] ) ) {
+		$memo[ $product_id ] = 'ukras' === bumbaru_config( $product_id )['type'] ? 'ukras' : 'p' . $product_id;
+	}
+	return $memo[ $product_id ];
+}
+
 function bumbaru_kolicina_default() {
 	return '5=10, 7=15, 10=20'; // do 4 komada je povoljniji porodični set (4 imena)
 }

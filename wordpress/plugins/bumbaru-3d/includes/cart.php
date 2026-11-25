@@ -430,21 +430,22 @@ add_action( 'woocommerce_before_calculate_totals', function ( $cart ) {
 	if ( is_admin() && ! wp_doing_ajax() ) {
 		return;
 	}
-	$count = array();
+	$count = array(); // ukrasi sa imenom (obični i rotirajući) se broje zajedno
 	foreach ( $cart->get_cart() as $item ) {
-		$count[ $item['product_id'] ] = ( isset( $count[ $item['product_id'] ] ) ? $count[ $item['product_id'] ] : 0 ) + (int) $item['quantity'];
+		$k           = bumbaru_kolicina_kljuc( $item['product_id'] );
+		$count[ $k ] = ( isset( $count[ $k ] ) ? $count[ $k ] : 0 ) + (int) $item['quantity'];
 	}
 	$grupe = array(); // product_id => [ 'puna' => …, 'nova' => …, 'keys' => [ key => [ cena, kom ] ] ]
 	foreach ( $cart->get_cart() as $key => $item ) {
 		$tiers = bumbaru_config( $item['product_id'] )['kolicina'];
-		$pct   = $tiers ? bumbaru_popust_za( $tiers, $count[ $item['product_id'] ] ) : 0;
+		$pct   = $tiers ? bumbaru_popust_za( $tiers, $count[ bumbaru_kolicina_kljuc( $item['product_id'] ) ] ) : 0;
 		if ( isset( $item['bumbaru']['price'] ) && null !== $item['bumbaru']['price'] ) {
 			$unit = (float) $item['bumbaru']['price'];
 		} else {
 			$fresh = wc_get_product( $item['variation_id'] ? $item['variation_id'] : $item['product_id'] );
 			$unit  = $fresh ? (float) $fresh->get_price() : 0;
 		}
-		$cart->cart_contents[ $key ]['bu_kolicina'] = $pct ? array( 'pct' => $pct, 'kom' => $count[ $item['product_id'] ], 'old' => $unit ) : null;
+		$cart->cart_contents[ $key ]['bu_kolicina'] = $pct ? array( 'pct' => $pct, 'kom' => $count[ bumbaru_kolicina_kljuc( $item['product_id'] ) ], 'old' => $unit ) : null;
 		if ( $pct && $unit ) {
 			$new = bumbaru_snizi( $unit, $pct );
 			$item['data']->update_meta_data( '_bu_cart_price', (string) $new ); // akcija kategorije ovu cenu ne dira

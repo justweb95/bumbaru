@@ -397,16 +397,33 @@ function bu_buyable( $product ) {
 }
 
 /** Kartica proizvoda (ista kao ProductCard.astro). */
-function bu_product_card( $product, $eager = false, $with_tags = false ) {
+/**
+ * Kartice proizvoda za katalog: ukras sa imenom ima posebnu karticu za svaki motiv
+ * (klik otvara konfigurator sa tim motivom), ostali proizvodi jednu.
+ */
+function bu_product_cards( $product, $eager = false, $with_tags = false ) {
+	$kartice = ( $product && function_exists( 'bumbaru_motiv_kartice' ) ) ? bumbaru_motiv_kartice( $product ) : array();
+	if ( ! $kartice ) {
+		bu_product_card( $product, $eager, $with_tags );
+		return;
+	}
+	foreach ( $kartice as $k ) {
+		bu_product_card( $product, $eager, $with_tags, $k );
+	}
+}
+
+/** $motiv: kartica jednog motiva ukrasa (bumbaru_motiv_kartice): adresa sa #motiv, naziv, fotografija ili crtež. */
+function bu_product_card( $product, $eager = false, $with_tags = false, $motiv = null ) {
 	if ( ! $product ) {
 		return;
 	}
-	$url    = get_permalink( $product->get_id() );
-	$img    = bu_card_img( $product );
+	$url    = $motiv ? $motiv['url'] : get_permalink( $product->get_id() );
+	$img    = $motiv ? $motiv['img'] : bu_card_img( $product );
+	$svg    = $motiv ? $motiv['svg'] : '';
 	$price  = bu_price_html( $product );
 	$custom = bu_pmeta( $product, 'custom' );
 	$type   = bu_config_type( $product );
-	$title  = $product->get_name();
+	$title  = $motiv ? $motiv['label'] . ' – ' . bu_lcfirst( $product->get_name() ) : $product->get_name();
 	$cp     = function_exists( 'bumbaru_card_price' ) && '' !== $product->get_price() ? bumbaru_card_price( $product ) : null;
 	$komadi = function_exists( 'bumbaru_izbor_komada' ) && bumbaru_izbor_komada( $product );
 	$pdo    = function_exists( 'bumbaru_popust_do' ) ? bumbaru_popust_do( $product ) : 0;
@@ -419,8 +436,10 @@ function bu_product_card( $product, $eager = false, $with_tags = false ) {
 	<article class="card"<?php echo $with_tags ? ' data-tags="' . esc_attr( $tags ) . '"' : ''; ?>>
 		<div class="media">
 			<a class="media-link" href="<?php echo esc_url( $url ); ?>" tabindex="-1" aria-hidden="true">
-				<?php if ( $img ) : ?>
-					<img src="<?php echo esc_url( $img ); ?>"<?php echo bu_card_srcset( $product ); // phpcs:ignore ?> alt="" width="900" height="900" loading="<?php echo $eager ? 'eager' : 'lazy'; ?>" decoding="async" />
+				<?php if ( $svg ) : ?>
+					<div class="orn-card-bg"><?php echo $svg; // phpcs:ignore -- crtež iz plugina ?></div>
+				<?php elseif ( $img ) : ?>
+					<img src="<?php echo esc_url( $img ); ?>"<?php echo $motiv ? ( $motiv['srcset'] ? ' srcset="' . esc_attr( $motiv['srcset'] ) . '" sizes="(max-width: 760px) 62vw, (max-width: 1100px) 33vw, 330px"' : '' ) : bu_card_srcset( $product ); // phpcs:ignore ?> alt="" width="900" height="900" loading="<?php echo $eager ? 'eager' : 'lazy'; ?>" decoding="async" />
 				<?php else : ?>
 					<div class="soon-photo"><img src="<?php echo esc_url( bu_img( 'brand/pcelica.webp' ) ); ?>" alt="" width="320" height="320" loading="lazy" /><span>Fotografija uskoro</span></div>
 				<?php endif; ?>
@@ -479,6 +498,13 @@ function bu_product_card( $product, $eager = false, $with_tags = false ) {
 		</div>
 	</article>
 	<?php
+}
+
+/** Prvo slovo malo (naziv proizvoda posle naziva motiva), osim kad je cela reč velikim slovima. */
+function bu_lcfirst( $s ) {
+	$f = mb_substr( $s, 0, 1 );
+	$r = mb_substr( $s, 1 );
+	return ( mb_strtoupper( mb_substr( $s, 0, 2 ) ) === mb_substr( $s, 0, 2 ) ) ? $s : mb_strtolower( $f ) . $r;
 }
 
 /** Kartica proizvoda po adresi (slug), ako postoji i objavljen je. */

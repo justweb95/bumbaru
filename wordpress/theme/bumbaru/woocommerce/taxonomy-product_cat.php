@@ -111,11 +111,18 @@ get_header();
 				<?php endif; ?>
 				<div class="tb-right">
 					<?php bu_search_field( $c->slug, $c->name ); ?>
-					<p class="small muted" data-count><?php echo (int) count( $list ) . ' ' . esc_html( $plural( count( $list ) ) ); ?></p>
+					<?php
+					// Ukras sa imenom ima karticu za svaki motiv, pa se broje kartice.
+					$n_kart = 0;
+					foreach ( $list as $p ) {
+						$n_kart += function_exists( 'bumbaru_motiv_kartice' ) ? max( 1, count( bumbaru_motiv_kartice( $p ) ) ) : 1;
+					}
+					?>
+					<p class="small muted" data-count><?php echo (int) $n_kart . ' ' . esc_html( $plural( $n_kart ) ); ?></p>
 				</div>
 			</div>
 			<div class="grid" data-grid>
-				<?php foreach ( $list as $i => $p ) { bu_product_card( $p, $i < 4, true ); } ?>
+				<?php foreach ( $list as $i => $p ) { bu_product_cards( $p, $i < 4, true ); } ?>
 			</div>
 		</section>
 	<?php endif; ?>
