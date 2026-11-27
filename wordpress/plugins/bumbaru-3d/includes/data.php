@@ -107,6 +107,7 @@ function bumbaru_default_filaments() {
 		array( 'id' => 'pla-tirkizna', 'name' => 'PLA tirkizna', 'material' => 'PLA', 'color' => 'tirkizna', 'price_kg' => 2500 ),
 		array( 'id' => 'petg-crna', 'name' => 'PETG crna', 'material' => 'PETG', 'color' => 'crna', 'price_kg' => 2800 ),
 		array( 'id' => 'asa-crna', 'name' => 'ASA crna', 'material' => 'ASA', 'color' => 'crna', 'price_kg' => 3600 ),
+		array( 'id' => 'pla-bez', 'name' => 'PLA bež', 'material' => 'PLA', 'color' => 'bež', 'price_kg' => 2500 ),
 	);
 }
 
@@ -133,6 +134,8 @@ function bumbaru_default_extras() {
 		array( 'id' => 'kesica', 'name' => 'Kesica i nalepnica', 'price' => 15 ),
 		array( 'id' => 'srafovi', 'name' => 'Šrafovi i tiplovi', 'price' => 30 ),
 		array( 'id' => 'koverta', 'name' => 'Koverta', 'price' => 20 ),
+		array( 'id' => 'ram-a4', 'name' => 'A4 ram sa staklom (Jysk)', 'price' => 350 ),
+		array( 'id' => 'foto-papir-a4', 'name' => 'A4 glossy foto papir + štampa (list, mastilo, rezerva)', 'price' => 60 ),
 	);
 }
 

@@ -65,6 +65,10 @@ add_action( 'wp_enqueue_scripts', function () {
 		// Galerija prati izbor: motiv ukrasa prikaže prave fotografije tog motiva (sličice drugih motiva se sklone),
 		// a boja prikaže fotografiju u toj boji (npr. crvena jelkica za punjenje).
 		wp_add_inline_script( 'bumbaru-product', "(function(){var f=document.querySelector('[data-order-form]'),g=document.querySelector('[data-gallery]');if(!f||!g)return;function mot(k){var m=f.querySelector('input[name=\"motiv\"]:checked');if(!m||!g.querySelector('[data-thumb][data-motiv]'))return;var ok=g.querySelector('[data-thumb][data-motiv=\"'+m.value+'\"]');if(!ok)return;g.querySelectorAll('[data-thumb][data-motiv]').forEach(function(t){t.hidden=t.getAttribute('data-motiv')!==m.value;});if(k)ok.click();}f.addEventListener('change',function(e){var t=e.target;if(t.name==='motiv')setTimeout(function(){mot(1);},0);else if(t.type==='radio'&&t.closest('[data-cp]')&&!t.closest('[data-scena]')){var b=g.querySelector('[data-thumb][data-boja=\"'+t.value+'\"]');if(b&&!f.querySelector('[data-ime],[data-set-name]'))b.click();}});mot(0);})();" );
+		if ( $p && 'csmapa' === bumbaru_config( $p )['type'] ) {
+			wp_enqueue_style( 'bumbaru-cs-fontovi', BUMBARU3D_URL . 'assets/fonts/csmapa.css', array(), BUMBARU3D_VERSION );
+			wp_enqueue_script( 'bumbaru-csmapa', BUMBARU3D_URL . 'assets/csmapa.js', array( 'bumbaru-product' ), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+		}
 		if ( $p && 'scena' === bumbaru_config( $p )['type'] ) {
 			wp_enqueue_script( 'bumbaru-scena', BUMBARU3D_URL . 'assets/scena.js', array( 'bumbaru-product' ), BUMBARU3D_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 		}
@@ -276,6 +280,9 @@ function bumbaru_live_slide( $product ) {
 	if ( ! bumbaru_has_live( $product ) ) {
 		return '';
 	}
+	if ( 'csmapa' === $c['type'] ) {
+		return bumbaru_cs_slide( $product );
+	}
 	$key = 'privezak' === $c['type'];
 	$out = '<div class="slide live" data-slide="live"><span class="badge live-badge"><i class="dotlive"></i>' . ( $key ? 'Okvirni pregled' : 'Pregled uživo' ) . '</span>';
 	if ( 'ukras' === $c['type'] ) {
@@ -396,7 +403,7 @@ function bumbaru_extra_thumbs( $product ) {
 	$c   = bumbaru_config( $product );
 	$out = '';
 	if ( bumbaru_has_live( $product ) ) {
-		$out .= '<button type="button" class="thumb thumb-live" data-thumb="live" aria-pressed="true" aria-label="' . esc_attr( 'jelka' === $c['type'] ? 'Pregled jelke sa izabranom zvezdicom' : 'Pregled sa vašim imenom' ) . '">' . bumbaru_icon( 'star', 22 ) . '<span>Pregled</span></button>';
+		$out .= '<button type="button" class="thumb thumb-live" data-thumb="live" aria-pressed="true" aria-label="' . esc_attr( 'jelka' === $c['type'] ? 'Pregled jelke sa izabranom zvezdicom' : ( 'csmapa' === $c['type'] ? 'Pregled podloge u ramu' : 'Pregled sa vašim imenom' ) ) . '">' . bumbaru_icon( 'star', 22 ) . '<span>Pregled</span></button>';
 	}
 	if ( 'sastav' === $c['type'] ) {
 		$med  = bumbaru_set_medaljon( $c['sastav']['medaljon'] );
@@ -439,6 +446,11 @@ function bumbaru_config_fields( $product ) {
 	$out   = '';
 	$orn   = 'ukras' === $type || 'set' === $type;
 	$oi    = bumbaru_price_option_index( $c );
+
+	// CS2 mapa u ramu: mapa, model podloge, jezik, ime igrača, Steam link (csmapa.php).
+	if ( 'csmapa' === $type ) {
+		$out .= bumbaru_cs_fields( $product );
+	}
 
 	// Ime na ukrasu (ili na jednostavnom privesku).
 	if ( 'ukras' === $type || 'ime' === $type ) {

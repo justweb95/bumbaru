@@ -271,10 +271,22 @@ function bumbaru_import_product( $i ) {
 	foreach ( $meta as $k => $v ) {
 		update_post_meta( $pid, $k, $v );
 	}
+	if ( ! empty( $p['calc'] ) ) {
+		bumbaru_import_calc( $pid, $p['calc'] );
+	}
 	$og = ! empty( $p['og'] ) ? bumbaru_import_image( $p['og'], $p['title'], $pid ) : 0;
 	update_post_meta( $pid, '_bu_og_image', $og );
 
 	return ( $is_new ? 'Dodat: ' : 'Osvežen: ' ) . $p['title'];
+}
+
+/** Obračun cene iz paketa: upisuje se samo kad proizvod još nema svoj obračun (izmene u administraciji ostaju), pa cena prati kalkulator. */
+function bumbaru_import_calc( $pid, $calc ) {
+	if ( ! function_exists( 'bumbaru_calc_sanitize' ) || bumbaru_calc_has_data( get_post_meta( $pid, '_bu_calc', true ) ) ) {
+		return;
+	}
+	update_post_meta( $pid, '_bu_calc', bumbaru_calc_sanitize( $calc ) );
+	bumbaru_calc_sync_price( $pid );
 }
 
 /** Konfigurator iz paketa: fotografije motiva idu u biblioteku medija (oznaka slike umesto putanje). */

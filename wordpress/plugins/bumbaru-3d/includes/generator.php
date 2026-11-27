@@ -146,6 +146,29 @@ function bumbaru_gen_order_data( $o ) {
 	$items = array();
 	foreach ( $o->get_items() as $iid => $it ) {
 		$rows = bumbaru_gen_item_rows( $it );
+		$cs   = function_exists( 'bumbaru_cs_item_raw' ) ? bumbaru_cs_item_raw( $it ) : null;
+		if ( $cs ) {
+			// CS2 mapa u ramu: dva preuzimanja, 3MF mape (isti za sve porudžbine te mape) i podloga A4.
+			// Stavka je „skinuta” kad su gotova oba (oznake: _bu_cs_3mf i _bu_gen_skinuto).
+			$st      = bumbaru_cs_status( $it );
+			$fmt     = function ( $t ) {
+				return $t ? mysql2date( 'j. n. \\u H:i', $t ) : '';
+			};
+			$items[] = array(
+				'id'        => (int) $iid,
+				'naziv'     => $it->get_name(),
+				'kom'       => (int) $it->get_quantity(),
+				'rows'      => array(),
+				'podloga'   => bumbaru_cs_stampa_url( $o->get_id(), $iid ),
+				'png'       => add_query_arg( 'preuzmi', 'png', bumbaru_cs_stampa_url( $o->get_id(), $iid ) ),
+				'mapa3mf'   => bumbaru_cs_3mf_file( $cs['mapa'] ) ? bumbaru_cs_3mf_url( $o->get_id(), $iid ) : '',
+				'opis'      => bumbaru_cs_opis( $cs ),
+				'sk3mf'     => $fmt( $st['3mf'] ),
+				'skPodloga' => $fmt( $st['podloga'] ),
+				'skinuto'   => $st['3mf'] && $st['podloga'] ? $fmt( max( $st['3mf'], $st['podloga'] ) ) : '',
+			);
+			continue;
+		}
 		if ( $rows ) {
 			$sk      = (string) $it->get_meta( '_bu_gen_skinuto' );
 			$items[] = array(
@@ -216,6 +239,9 @@ function bumbaru_gen_pending_count() {
 			foreach ( $o->get_items() as $it ) {
 				if ( ! $it->get_meta( '_bu_gen_skinuto' ) ) {
 					$n += count( bumbaru_gen_item_rows( $it ) );
+				}
+				if ( function_exists( 'bumbaru_cs_item_raw' ) && bumbaru_cs_item_raw( $it ) && bumbaru_cs_ceka( $it ) ) {
+					$n++; // CS2 mapa: dok nisu skinuti i 3MF mape i podloga
 				}
 			}
 		}
@@ -380,8 +406,8 @@ function bumbaru_page_generator() {
 	?>
 	<div class="bg-wrap" data-gen>
 		<aside class="bu-card bg-orders">
-			<h2>Porudžbine sa ukrasima i privescima</h2>
-			<p class="description">Nove porudžbine se pojave ovde same, sa imenima, motivom (ili stilom slova) i bojama. „Skini 3MF” odmah preuzme model; „Otvori” ga učita ispod da ga pregledate ili izmenite.</p>
+			<h2>Porudžbine sa ukrasima, privescima i CS2 mapama</h2>
+			<p class="description">Nove porudžbine se pojave ovde same, sa imenima, motivom (ili stilom slova) i bojama. „Skini 3MF” odmah preuzme model; „Otvori” ga učita ispod da ga pregledate ili izmenite. Za CS2 mapu u ramu „Štampaj podlogu A4” otvara podlogu za štampu na foto papiru.</p>
 			<div class="bg-tabs" role="tablist">
 				<button type="button" class="bg-tab is-on" data-gen-tab="nove" role="tab">Za štampu <span data-gen-ceka></span></button>
 				<button type="button" class="bg-tab" data-gen-tab="sve" role="tab">Sve</button>

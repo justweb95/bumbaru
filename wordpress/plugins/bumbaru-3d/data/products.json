@@ -2982,6 +2982,180 @@
   }
  },
  {
+  "id": "PK-02",
+  "slug": "cs2-mapa-u-ramu",
+  "title": "Counter-Strike 2 mapa u ramu sa imenom",
+  "category": "pokloni-sa-imenom",
+  "short": "3D štampana CS2 mapa na podlozi sa imenom igrača, u crnom A4 ramu sa staklom. Dust II, Mirage, Inferno i još 4 mape.",
+  "lead": "Poklon za gejmera: mapa iz Counter-Strike 2 odštampana u 3D, zalepljena na podlogu sa njegovim nickom i spakovana u crni A4 ram sa staklom. Izaberite mapu, izgled podloge i jezik, a pregled se menja odmah.",
+  "about": [
+   "Mapu štampamo u 3D od bež PLA plastike, sa zidovima i nivoima kao u igri. Slova A i B su crvena, T spawn je označen crvenom mrežicom, a CT spawn tamno plavom. Mapa je zalepljena na odštampanu sjajnu (glossy) podlogu, preko velikog sivog loga mape, i sve ide u crni A4 ram sa staklom (21 × 29,7 cm).",
+   "Birate jednu od 7 mapa: Dust II, Mirage, Inferno, Ancient, Cache, Nuke ili Vertigo. Podloga može biti MVP (natpis „Most Valuable Player”, slika profila i ime igrača) ili General Info (podaci o mapi: kada je izašla, ko je napravio, tip mape, igrači i lokacija, uz posvetu po želji). Tekst na podlozi je na engleskom ili srpskom.",
+   "Sliku profila ne otpremate na sajtu: upišite link do Steam profila i avatar preuzimamo sami, ili nam sliku pošaljite posle porudžbine. Može i bez slike. Izrada traje 3–5 radnih dana, a plaćate pouzećem."
+  ],
+  "specs": [
+   [
+    "Mape",
+    "Dust II, Mirage, Inferno, Ancient, Cache, Nuke, Vertigo"
+   ],
+   [
+    "Podloga",
+    "MVP ili General Info, tekst na engleskom ili srpskom, sjajni foto papir A4"
+   ],
+   [
+    "Ime igrača",
+    "do 16 znakova, latinica, ćirilica, brojevi i znaci iz nicka"
+   ],
+   [
+    "Ram",
+    "crni A4 ram sa staklom, 21 × 29,7 cm, za zid ili sto"
+   ],
+   [
+    "3D mapa",
+    "PLA plastika, bež sa crvenim i plavim oznakama"
+   ],
+   [
+    "Rok",
+    "izrada 3–5 radnih dana"
+   ],
+   [
+    "Plaćanje",
+    "pouzećem, kuriru"
+   ]
+  ],
+  "details": [
+   {
+    "q": "Pakovanje",
+    "a": "Ram pakujemo u karton sa zaštitom za staklo, spremno za poklon."
+   },
+   {
+    "q": "Rok izrade i dostava",
+    "a": "Izrada 3–5 radnih dana, zatim kurir za 1–2 radna dana. Ako šaljete sliku profila, pošaljite je odmah posle porudžbine da ne kasnimo."
+   },
+   {
+    "q": "Povraćaj i reklamacije",
+    "a": "Proizvod sa imenom pravimo samo za vas, pa ga ne primamo nazad zbog predomišljanja. Ako stigne oštećen ili sa našom greškom, šaljemo novi bez troška za vas."
+   },
+   {
+    "q": "Održavanje",
+    "a": "Staklo brišite mekom krpom. Ram ne kačite iznad grejanja ni na direktno sunce: PLA omekšava na oko 55–60 °C, a sunce bledi štampu."
+   }
+  ],
+  "faq": [
+   {
+    "q": "Kako da pošaljem sliku profila?",
+    "a": "Upišite link do Steam profila i avatar preuzimamo sami. Ako ne želite link, pošaljite sliku posle porudžbine u Messenger-u ili na prodavnica@bumbaru.rs, uz broj porudžbine. Može i bez slike."
+   },
+   {
+    "q": "Koja je razlika između MVP i General Info podloge?",
+    "a": "MVP ima natpis „Most Valuable Player”, sliku profila i ime igrača, kao nagrada iz igre. General Info ima podatke o mapi: kada je izašla, autora, tip mape, 5 na 5 i lokaciju, a ime po želji ide kao posveta u dnu."
+   },
+   {
+    "q": "Može li tekst na srpskom?",
+    "a": "Može. Izaberite SR i natpisi na podlozi su na srpskom (npr. „Najkorisniji igrač”). Naziv mape i „Counter-Strike 2” ostaju isti."
+   },
+   {
+    "q": "Koliko je velika mapa?",
+    "a": "Mapa zauzima sredinu A4 podloge, oko 13 × 13 cm, i izdignuta je nekoliko milimetara, pa se vide zidovi i nivoi."
+   },
+   {
+    "q": "Da li gotov ram izgleda isto kao pregled?",
+    "a": "Skoro isto. Pregled je računarski prikaz, a gotov ram sa 3D mapom može izgledati malo drugačije: nijanse filamenta, senke na reljefu i odsjaj stakla. Raspored, mapa, natpisi i ime su isti kao u pregledu."
+   }
+  ],
+  "seoTitle": "CS2 mapa u ramu sa imenom: poklon za gejmere | Bumbaru",
+  "meta": "3D štampana Counter-Strike 2 mapa sa imenom igrača u A4 ramu: Dust II, Mirage, Inferno, Ancient, Cache, Nuke, Vertigo. Pregled uživo, plaćanje pouzećem.",
+  "focus": "cs2 mapa u ramu",
+  "categories": [
+   "pokloni-sa-imenom"
+  ],
+  "tags": [
+   "ime"
+  ],
+  "custom": true,
+  "price": 1490,
+  "priceFrom": false,
+  "images": [
+   {
+    "full": "p/cs2-mapa-u-ramu/u4e6202ebb-lg.webp",
+    "card": "p/cs2-mapa-u-ramu/u4e6202ebb-sq.webp",
+    "w": 1200,
+    "h": 1200,
+    "alt": "CS2 mapa Dust II u crnom ramu na stolu, pored tastature, slušalica i miša"
+   },
+   {
+    "full": "p/cs2-mapa-u-ramu/u8c5b74eca-lg.webp",
+    "card": "p/cs2-mapa-u-ramu/u8c5b74eca-sq.webp",
+    "w": 900,
+    "h": 1200,
+    "alt": "Ram sa 3D mapom Dust II i natpisom Most Valuable Player ispred monitora sa Counter-Strike 2"
+   },
+   {
+    "full": "p/cs2-mapa-u-ramu/u766537294-lg.webp",
+    "card": "p/cs2-mapa-u-ramu/u766537294-sq.webp",
+    "w": 891,
+    "h": 1200,
+    "alt": "3D štampana mapa Dust II u ramu sa staklom, spreda, sa imenom igrača"
+   },
+   {
+    "full": "p/cs2-mapa-u-ramu/ufe8c5aa86-lg.webp",
+    "card": "p/cs2-mapa-u-ramu/ufe8c5aa86-sq.webp",
+    "w": 1200,
+    "h": 923,
+    "alt": "CS2 mapa u ramu pod uglom: reljef 3D mape preko podloge sa logom mape"
+   }
+  ],
+  "related": [
+   "porodicni-privezak-sa-imenima",
+   "privezak-sa-imenom",
+   "pikselasti-privezak-sa-imenom"
+  ],
+  "homeOrder": 0,
+  "hidden": false,
+  "og": "p/cs2-mapa-u-ramu/u4e6202ebb-og.jpg",
+  "config": {
+   "type": "csmapa",
+   "options": "",
+   "csmapa": {
+    "mape": [
+     "dust2",
+     "mirage",
+     "inferno",
+     "ancient",
+     "cache",
+     "nuke",
+     "vertigo"
+    ],
+    "pocetna": "dust2"
+   }
+  },
+  "calc": {
+   "filaments": [
+    {
+     "id": "pla-bez",
+     "g": 45
+    }
+   ],
+   "hours": 1,
+   "minutes": 36,
+   "labor_min": 20,
+   "extras": [
+    {
+     "id": "ram-a4",
+     "qty": 1
+    },
+    {
+     "id": "foto-papir-a4",
+     "qty": 1
+    }
+   ],
+   "other": 0,
+   "margin": "",
+   "pieces": 1,
+   "prati": 1
+  }
+ },
+ {
   "id": "PR-01",
   "slug": "privezak-sa-imenom",
   "title": "Privezak sa imenom",

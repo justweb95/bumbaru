@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       Bumbaru 3D
- * Description:       Generator 3MF/STL modela za štampu, sajt na srpskom (latinica), konfiguratori proizvoda (ukras sa imenom, porodični set, privesci sa imenom u 5 stilova, slavske modlice i slavski set, izbor boja i motiva sa popustom, komplet, jelke sa zvezdicom), akcija za kategoriju, boje, filamenti i kalkulator cene 3D štampe, uvoz proizvoda i podešavanje prodavnice (plaćanje pouzećem, Post Express, besplatna dostava od 2.500 din).
- * Version:           2.6.4
+ * Description:       Generator 3MF/STL modela za štampu, sajt na srpskom (latinica), konfiguratori proizvoda (ukras sa imenom, porodični set, privesci sa imenom u 5 stilova, slavske modlice i slavski set, CS2 mapa u ramu, izbor boja i motiva sa popustom, komplet, jelke sa zvezdicom), akcija za kategoriju, boje, filamenti i kalkulator cene 3D štampe, uvoz proizvoda i podešavanje prodavnice (plaćanje pouzećem, Post Express, besplatna dostava od 2.500 din).
+ * Version:           2.6.5
  * Author:            Bumbaru
  * Requires at least: 6.5
  * Requires PHP:      7.4
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BUMBARU3D_VERSION', '2.6.4' );
+define( 'BUMBARU3D_VERSION', '2.6.5' );
 define( 'BUMBARU3D_FILE', __FILE__ );
 define( 'BUMBARU3D_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BUMBARU3D_URL', plugin_dir_url( __FILE__ ) );
@@ -25,6 +25,7 @@ require_once BUMBARU3D_DIR . 'includes/config.php';
 require_once BUMBARU3D_DIR . 'includes/pricing.php';
 require_once BUMBARU3D_DIR . 'includes/grupa.php';
 require_once BUMBARU3D_DIR . 'includes/scena.php';
+require_once BUMBARU3D_DIR . 'includes/csmapa.php';
 require_once BUMBARU3D_DIR . 'includes/recenzije.php';
 require_once BUMBARU3D_DIR . 'includes/calculator.php';
 require_once BUMBARU3D_DIR . 'includes/frontend.php';
@@ -46,6 +47,7 @@ if ( is_admin() ) {
 	require_once BUMBARU3D_DIR . 'includes/admin-category.php';
 	require_once BUMBARU3D_DIR . 'includes/admin-order.php';
 	require_once BUMBARU3D_DIR . 'includes/generator.php';
+	require_once BUMBARU3D_DIR . 'includes/csmapa-admin.php';
 }
 
 // WooCommerce: plugin radi sa novim tabelama porudžbina (HPOS) i sa blokovima korpe.
@@ -86,6 +88,7 @@ add_action( 'init', function () {
 	bumbaru_migrate_262();
 	bumbaru_migrate_263();
 	bumbaru_migrate_264();
+	bumbaru_migrate_265();
 	update_option( 'bumbaru3d_db', BUMBARU3D_VERSION );
 } );
 

@@ -185,6 +185,8 @@ if ( 'sastav' === $type ) {
 	$korak1 = 'Izaberite modlice za set';
 } elseif ( 'scena' === $type ) {
 	$korak1 = 'Sastavite set: tacna, lutkice, jelke';
+} elseif ( 'csmapa' === $type ) {
+	$korak1 = 'Izaberite mapu, podlogu i ime igrača';
 } elseif ( 'jelka' === $type ) {
 	$korak1 = 'Izaberite zvezdicu i visinu';
 }

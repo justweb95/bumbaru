@@ -14,6 +14,7 @@
  *  boje      – kupac bira boje filamenta i broj komada svake (npr. klipovi), popust raste sa brojem komada
  *  sastav    – slavski set: kupac bira modlice za set uz medaljon sveca, pregled seta u krug
  *  scena     – napravite svoj set (tacna, lutkice, jelke): kupac dodaje i skida proizvode, pregled na tacni (scena.php)
+ *  csmapa    – Counter-Strike 2 mapa u ramu: mapa, model podloge, jezik, ime igrača, Steam link, pregled podloge (csmapa.php)
  *
  * Uz svaki tip mogu da idu: opcije (sa doplatom ili sopstvenom cenom), izbor boja, poziv na Messenger,
  * komplet „Uz ovo često uzimaju”, popusti za firme i crtež u izabranim bojama.
@@ -31,6 +32,7 @@ function bumbaru_config_types() {
 		'boje'     => 'Kupac bira boje i broj komada (popust za više komada)',
 		'sastav'   => 'Slavski set (kupac bira modlice uz medaljon)',
 		'scena'    => 'Napravite svoj set (tacna, lutkice, jelke, pregled na tacni)',
+		'csmapa'   => 'CS2 mapa u ramu (mapa, podloga MVP/General Info, ime igrača, pregled)',
 		'jelka'    => 'Jelka sa zvezdicom (bira se boja zvezdice, pregled uživo)',
 		'ime'      => 'Privezak sa imenom, jednostavno (jedno ime)',
 		'imena'    => 'Porodični privezak, jednostavno (2–4 imena)',
@@ -262,6 +264,7 @@ function bumbaru_config( $product ) {
 		'motivi'       => null,
 		'sastav'       => null,
 		'scena'        => null,
+		'csmapa'       => null,
 		'poziv'        => null,
 		'komplet'      => null,
 		'firme'        => null,
@@ -329,6 +332,9 @@ function bumbaru_config( $product ) {
 	if ( 'scena' === $type && function_exists( 'bumbaru_scena_parse' ) ) {
 		$c['scena'] = bumbaru_scena_parse( isset( $raw['scena'] ) ? $raw['scena'] : array() );
 	}
+	if ( 'csmapa' === $type && function_exists( 'bumbaru_cs_parse' ) ) {
+		$c['csmapa'] = bumbaru_cs_parse( isset( $raw['csmapa'] ) ? $raw['csmapa'] : array() );
+	}
 	if ( ! empty( $raw['poziv']['tekst'] ) && ! empty( $raw['poziv']['dugme'] ) ) {
 		$c['poziv'] = array( 'tekst' => (string) $raw['poziv']['tekst'], 'dugme' => (string) $raw['poziv']['dugme'], 'poruka' => isset( $raw['poziv']['poruka'] ) ? (string) $raw['poziv']['poruka'] : '' );
 	}
@@ -380,7 +386,7 @@ function bumbaru_motivi_za( $config ) {
 
 function bumbaru_has_live( $product ) {
 	$c = bumbaru_config( $product );
-	return in_array( $c['type'], array( 'ukras', 'set', 'jelka', 'privezak' ), true );
+	return in_array( $c['type'], array( 'ukras', 'set', 'jelka', 'privezak', 'csmapa' ), true );
 }
 
 /** Kupac bira komade (motive ili boje) sa popustom po broju komada. */

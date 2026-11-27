@@ -111,6 +111,16 @@ function bumbaru_read_choice( $product, $src ) {
 		return $r;
 	}
 
+	// CS2 mapa u ramu: mapa, model podloge, jezik, ime igrača, Steam link (csmapa.php).
+	if ( 'csmapa' === $type ) {
+		$r = bumbaru_cs_choice( $product, $get );
+		if ( is_wp_error( $r ) ) {
+			return $r;
+		}
+		$lines = $r['lines'];
+		$raw   = $r['raw'];
+	}
+
 	if ( 'ukras' === $type || 'ime' === $type ) {
 		$ime = bumbaru_clean_name( $get( 'ime', '' ), $c['ime_max'] );
 		if ( '' === $ime ) {

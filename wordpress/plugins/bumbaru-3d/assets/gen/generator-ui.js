@@ -152,7 +152,7 @@
   var tab = 'nove';
   function pendingRows(o) {
     var n = 0;
-    o.items.forEach(function (it) { if (!it.skinuto) n += it.rows.length; });
+    o.items.forEach(function (it) { if (!it.skinuto) n += it.rows.length || (it.podloga ? 1 : 0); });
     return n;
   }
   function visibleOrders() {
@@ -174,6 +174,19 @@
       var items = o.items.filter(function (it) { return tab === 'sve' || !it.skinuto; });
       return '<div class="bg-order"><div class="bg-order-h"><strong>#' + esc(o.broj) + '</strong> ' + esc(o.kupac) + ' <span>' + esc(o.datum) + ' · ' + esc(o.status) + '</span></div>'
         + items.map(function (it) {
+          if (it.podloga) {
+            // CS2 mapa u ramu: 3MF mape (gotov fajl) i podloga A4 (štampa ili PNG); obe oznake se pamte na serveru
+            var zn = function (t, da) { return t ? '<span class="bg-badge bg-badge-done">' + da + ' ' + esc(t) + '</span>' : ''; };
+            return '<div class="bg-item' + (it.skinuto ? ' is-done' : '') + '" data-o="' + o.id + '" data-i="' + it.id + '">'
+              + '<div class="bg-item-t"><b>' + esc(it.naziv) + (it.kom > 1 ? ' × ' + it.kom : '') + '</b>'
+              + (it.sk3mf || it.skPodloga ? zn(it.sk3mf, '3MF') + zn(it.skPodloga, 'Podloga') : '<span class="bg-badge bg-badge-new">Novo</span>') + '</div>'
+              + '<small>' + esc(it.opis) + '</small>'
+              + '<div class="bg-item-a">'
+              + (it.mapa3mf ? '<a class="button button-small button-primary" href="' + esc(it.mapa3mf) + '" data-cs-dl="sk3mf">' + (it.sk3mf ? 'Skini 3MF mape ponovo' : 'Skini 3MF mape') + '</a>' : '<span class="description">3MF mape nije u pluginu</span>')
+              + '<a class="button button-small button-primary" target="_blank" href="' + esc(it.podloga) + '" data-cs-dl="skPodloga">Štampaj podlogu A4</a>'
+              + '<a class="button button-small" target="_blank" href="' + esc(it.png) + '" data-cs-dl="skPodloga">Skini A4 (PNG)</a>'
+              + '</div></div>';
+          }
           var names = it.rows.map(function (r) { return r.ime; }).join(', ');
           return '<div class="bg-item' + (it.skinuto ? ' is-done' : '') + '" data-o="' + o.id + '" data-i="' + it.id + '">'
             + '<div class="bg-item-t"><b>' + esc(it.naziv) + (it.kom > 1 ? ' × ' + it.kom : '') + '</b>'
@@ -182,7 +195,7 @@
             + '<div class="bg-item-a"><button type="button" class="button button-small button-primary" data-skini>' + (it.skinuto ? 'Skini ponovo' : 'Skini 3MF') + '</button>'
             + '<button type="button" class="button button-small" data-otvori>Otvori</button></div></div>';
         }).join('')
-        + (items.length > 1 ? '<button type="button" class="button button-small bg-all" data-o="' + o.id + '" data-skini-sve-o>Skini celu porudžbinu u jedan 3MF</button>' : '')
+        + (items.filter(function (x) { return x.rows.length; }).length > 1 ? '<button type="button" class="button button-small bg-all" data-o="' + o.id + '" data-skini-sve-o>Skini celu porudžbinu u jedan 3MF</button>' : '')
         + '</div>';
     }).join('');
   }
@@ -193,6 +206,7 @@
     o.items.forEach(function (it) {
       if (iid && it.id !== iid) return;
       if (samoNove && it.skinuto) return;
+      if (!it.rows.length) return; // podloga (CS2 mapa) nema 3D model u generatoru
       it.rows.forEach(function (r) { list.push(r); });
       keys.push(o.id + ':' + it.id);
     });
@@ -247,6 +261,18 @@
     if (!card) return;
     var o = findOrder(+card.getAttribute('data-o')), iid = +card.getAttribute('data-i') || 0;
     if (!o) return;
+    var dl = e.target.closest('[data-cs-dl]');
+    if (dl) {
+      // server upiše oznaku pri preuzimanju; ovde se samo osveži lista (stavka je gotova kad su skinuti 3MF i podloga)
+      var k = dl.getAttribute('data-cs-dl');
+      o.items.forEach(function (it) {
+        if (it.id !== iid) return;
+        if (!it[k]) it[k] = 'sada';
+        if (it.sk3mf && it.skPodloga && !it.skinuto) it.skinuto = 'sada';
+      });
+      setTimeout(renderOrders, 300);
+      return;
+    }
     if (e.target.closest('[data-skini]') || e.target.closest('[data-skini-sve-o]')) {
       var c = collect(o, iid, false);
       quick(c, nameFor(o, c));

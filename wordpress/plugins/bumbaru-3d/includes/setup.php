@@ -632,3 +632,48 @@ function bumbaru_migrate_264() {
 	do_action( 'litespeed_purge_all' );
 	update_option( 'bumbaru_migrate_264', 1 );
 }
+
+/**
+ * 2.6.5: CS2 mapa u ramu (PK-02). Dodaci „A4 ram sa staklom” i „A4 glossy foto papir + štampa” i filament „PLA bež”
+ * se dodaju u postojeće liste (po oznaci; ono što je već upisano ostaje). Proizvod pravi uvoz (poruka u administraciji),
+ * a obračun cene ide iz data/products.json („calc”), samo ako proizvod još nema svoj obračun.
+ */
+function bumbaru_migrate_265() {
+	if ( get_option( 'bumbaru_migrate_265' ) ) {
+		return;
+	}
+	$dodaj = function ( $opcija, $podrazumevano, $novi ) {
+		$lista = get_option( $opcija );
+		if ( ! is_array( $lista ) ) {
+			return; // opcija još ne postoji: bumbaru_install_defaults() upisuje podrazumevane (sa novim stavkama)
+		}
+		$ids   = wp_list_pluck( $lista, 'id' );
+		$izmen = false;
+		foreach ( $podrazumevano as $x ) {
+			if ( in_array( $x['id'], $novi, true ) && ! in_array( $x['id'], $ids, true ) ) {
+				$lista[] = $x;
+				$izmen   = true;
+			}
+		}
+		if ( $izmen ) {
+			update_option( $opcija, array_values( $lista ) );
+		}
+	};
+	$dodaj( 'bumbaru_extras', bumbaru_default_extras(), array( 'ram-a4', 'foto-papir-a4' ) );
+	$dodaj( 'bumbaru_filaments', bumbaru_default_filaments(), array( 'pla-bez' ) );
+	// Ako je proizvod već tu (npr. uvoz pre ove nadogradnje), dobija obračun iz paketa.
+	if ( function_exists( 'bumbaru_import_calc' ) ) {
+		foreach ( bumbaru_import_data( 'products.json' ) as $p ) {
+			if ( ! empty( $p['calc'] ) ) {
+				$post = get_page_by_path( $p['slug'], OBJECT, 'product' );
+				if ( $post ) {
+					bumbaru_import_calc( $post->ID, $p['calc'] );
+				}
+			}
+		}
+	}
+	update_option( 'bumbaru_update_notice', 1 ); // uvoz pravi novi proizvod
+	wp_cache_flush();
+	do_action( 'litespeed_purge_all' );
+	update_option( 'bumbaru_migrate_265', 1 );
+}

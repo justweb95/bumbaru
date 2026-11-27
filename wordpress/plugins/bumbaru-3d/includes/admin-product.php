@@ -165,6 +165,21 @@ add_action( 'woocommerce_product_data_panels', function () {
 			woocommerce_wp_textarea_input( array( 'id' => 'bu_mot_lista', 'name' => 'bu_config[motivi][lista]', 'label' => 'Motivi', 'value' => implode( "\n", $lines ), 'rows' => 8, 'placeholder' => "Krst | | | 1234\nSv. Nikola | 500 | 500/400/400 | 1240", 'description' => 'Samo za „Kupac bira motive”. Jedan po redu: Naziv | cena po komadu (prazno = cena proizvoda) | cene po veličini, redom (npr. 500/400/400) | ID fotografije iz Medija | oznaka (ne menjajte).', 'desc_tip' => false ) );
 			?>
 		</div>
+		<div class="options_group" data-for-type="csmapa">
+			<?php
+			$csm = $cfg['csmapa'] ? $cfg['csmapa'] : bumbaru_cs_parse( array() );
+			echo '<p class="form-field"><label>Mape</label><span>';
+			foreach ( bumbaru_cs_mape() as $mid => $mm ) {
+				echo '<label style="display:inline-block;margin:0 14px 4px 0;float:none;width:auto"><input type="checkbox" name="bu_config[csmapa][mape][]" value="' . esc_attr( $mid ) . '"' . checked( in_array( $mid, $csm['mape'], true ), true, false ) . ' /> ' . esc_html( $mm['naziv'] ) . '</label>';
+			}
+			echo '<input type="hidden" name="bu_config[csmapa][mape][]" value="" /></span><span class="description" style="display:block;clear:both">Koje mape kupac bira. Ništa označeno = sve. Slike su u pluginu (assets/cs/), pravi ih scripts/cs-mape.mjs.</span></p>';
+			$cso = array();
+			foreach ( bumbaru_cs_mape() as $mid => $mm ) {
+				$cso[ $mid ] = $mm['naziv'];
+			}
+			woocommerce_wp_select( array( 'id' => 'bu_cs_poc', 'name' => 'bu_config[csmapa][pocetna]', 'label' => 'Mapa na početku', 'value' => $csm['pocetna'], 'options' => $cso ) );
+			?>
+		</div>
 		<div class="options_group" data-for-type="sastav">
 			<?php
 			$sas = $cfg['sastav'] ? $cfg['sastav'] : array( 'medaljon' => 'sv-nikola', 'broj' => 8 );
@@ -299,6 +314,17 @@ add_action( 'woocommerce_process_product_meta', function ( $id ) {
 	}
 	if ( isset( $in['sastav'] ) && 'sastav' === $cfg['type'] ) {
 		$cfg['sastav'] = array( 'medaljon' => sanitize_key( $in['sastav']['medaljon'] ), 'broj' => (int) $in['sastav']['broj'] );
+	}
+	// CS2 mapa: mape i početna mapa iz obrasca, a ako ih obrazac nema, ostaju kakve su bile.
+	if ( 'csmapa' === $cfg['type'] ) {
+		if ( isset( $in['csmapa'] ) && is_array( $in['csmapa'] ) ) {
+			$cfg['csmapa'] = array(
+				'mape'    => array_values( array_filter( array_map( 'sanitize_key', isset( $in['csmapa']['mape'] ) ? (array) $in['csmapa']['mape'] : array() ) ) ),
+				'pocetna' => isset( $in['csmapa']['pocetna'] ) ? sanitize_key( $in['csmapa']['pocetna'] ) : 'dust2',
+			);
+		} elseif ( ! empty( $prev['csmapa'] ) ) {
+			$cfg['csmapa'] = $prev['csmapa'];
+		}
 	}
 	// Napravite svoj set: nema polja u obrascu, podešavanje ostaje kakvo je bilo (proizvodi, najviše komada, početni set).
 	if ( 'scena' === $cfg['type'] && ! empty( $prev['scena'] ) ) {

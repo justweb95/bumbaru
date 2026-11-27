@@ -142,3 +142,19 @@ body:has(form.is-set) .sbar { display: none !important; }
 .rv-file { position: relative; cursor: pointer; text-transform: none; letter-spacing: 0; font-size: 15px; width: auto; justify-self: start; display: inline-flex; }
 .rv-file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
 .rv-file:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* CS2 mapa u ramu (csmapa.php, csmapa.js): podloga u crnom ramu, čipovi sa logom mape, napomena za sliku. */
+.tpl-product .slide.cs-slide { background: radial-gradient(circle at 50% 38%, #3a3f46, #1d2025 78%); }
+.tpl-product .cs-stage { position: absolute; inset: 4% 0 12%; display: flex; align-items: center; justify-content: center; }
+.tpl-product .cs-stage svg { position: static; width: 100%; height: 100%; }
+.cs-cfg { display: flex; flex-direction: column; gap: 22px; }
+.cs-cfg > .mot-err:empty { display: none; }
+.cs-mape { gap: 8px; }
+.cs-chip { padding-left: 6px; }
+.cs-chip img { width: 30px; height: 30px; object-fit: contain; flex: none; }
+.cs-note { display: flex; gap: 10px; align-items: flex-start; margin: 10px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--surface-raised, #f4efe6); font-size: 14px; line-height: 1.45; color: var(--ink, #312018); }
+.cs-note svg { flex: none; margin-top: 2px; }
+.cs-cfg .input.is-err { border-color: #B3261E; box-shadow: 0 0 0 2px rgba(179, 38, 30, .15); }
+.cs-cfg [data-cs-err-ime], .cs-cfg [data-cs-err-steam] { min-height: 1em; }
+.gallery.is-mini .cs-stage { inset: 2% 0; }
+.tpl-product .slide.cs-slide .cs-hint { z-index: 1; bottom: 10px; font-size: 12px; line-height: 16px; color: rgba(255, 255, 255, .72); }
